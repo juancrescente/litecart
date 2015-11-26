@@ -1,7 +1,11 @@
-<nav class="pagination">
-  <ul class="list-horizontal">
-    <?php foreach($items as $item) { ?>
-    <li><a class="page button<?php if ($item['disabled']) echo ' disabled'; ?><?php if ($item['active']) echo ' active'; ?>" href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-    <?php } ?>
+<nav>
+  <ul class="pagination">
+  <?php foreach($items as $item) { ?>
+    <?php if ($item['disabled']) ?>
+    <li class="disabled<?php echo ($item['active']) ? 'active' : ''; ?>"><span><?php echo $item['title']; ?></span></li>
+    <?php } else { ?>
+    <li class="<?php echo ($item['active']) ? 'active' : ''; ?>"><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
+    <?php }
+  <?php } ?>
   </ul>
 </nav>
