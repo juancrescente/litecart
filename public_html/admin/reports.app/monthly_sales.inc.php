@@ -35,15 +35,18 @@
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?></h1>
 
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
-    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
-    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
-    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
-    <th style="text-align: center;" class="border-left"><?php echo language::translate('title_total', 'Total'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-  </tr>
+<table class="table table-striped data-table">
+  <thead>
+    <tr>
+      <th width="100%"><?php echo language::translate('title_month', 'Month'); ?></th>
+      <th style="text-align: center;" class="border-left"><?php echo language::translate('title_subtotal', 'Subtotal'); ?></th>
+      <th style="text-align: center;" class="border-left"><?php echo language::translate('title_shipping_fees', 'Shipping Fees'); ?></th>
+      <th style="text-align: center;" class="border-left"><?php echo language::translate('title_payment_fees', 'Payment Fees'); ?></th>
+      <th style="text-align: center;" class="border-left"><?php echo language::translate('title_total', 'Total'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -85,7 +88,7 @@
     
     $orders = database::fetch($orders_query);
 ?>
-  <tr class="row">
+  <tr>
     <td><?php echo ucfirst(strftime('%B, %Y', $timestamp)); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
@@ -103,7 +106,8 @@
   
   if (!empty($total)) {
 ?>
-  <tr class="footer">
+  <tr>
+    <tr>
     <td style="text-align: right;"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($total['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
     <td style="text-align: right;" class="border-left"><?php echo currency::format($total['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
@@ -114,4 +118,5 @@
 <?php
   }
 ?>
+  </tbody>
 </table>

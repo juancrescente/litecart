@@ -58,11 +58,11 @@
   $stats['num_products'] = $products['num_products'];
 ?>
 <div class="widget">
-  <table width="100%" class="dataTable">
-    <tr class="header">
+  <table>
+    <tr>
       <th colspan="2"><?php echo language::translate('title_statistics', 'Statistics'); ?></th>
     </tr>
-    <tr class="odd">
+    <tr>
       <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
       <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
     </tr>
@@ -70,7 +70,7 @@
       <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
       <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, false, settings::get('store_currency_code')); ?></td>
     </tr>
-    <tr class="odd">
+    <tr>
       <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. strftime('%B'); ?>:</td>
       <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, false, settings::get('store_currency_code')); ?></td>
     </tr>
@@ -78,7 +78,7 @@
       <td><?php echo language::translate('title_average_order_amount', 'Average Order Amount'); ?>:</td>
       <td style="text-align: right;"><?php echo currency::format($stats['average_order_amount'], false, false, settings::get('store_currency_code')); ?></td>
     </tr>
-    <tr class="odd">
+    <tr>
       <td><?php echo language::translate('title_number_of_customers', 'Number of Customers'); ?>:</td>
       <td style="text-align: right;"><?php echo (int)$stats['num_customers']; ?></td>
     </tr>

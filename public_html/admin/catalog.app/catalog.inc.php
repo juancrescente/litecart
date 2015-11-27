@@ -194,13 +194,16 @@
 
 <?php echo functions::form_draw_form_begin('catalog_form', 'post'); ?>
 
-  <table class="dataTable" width="100%">
-    <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th style="text-align: center;"></th>
-      <th>&nbsp;</th>
-    </tr>
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th style="text-align: center;"></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php
   $num_category_rows = 0;
   $num_product_rows = 0;
@@ -231,19 +234,22 @@
       while ($product = database::fetch($products_query)) {
         $num_product_rows++;
 ?>
-    <tr class="row<?php echo $product['status'] ? false : ' semi-transparent'; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
-      <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
-      <td style="text-align: right;"></td>
-      <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
-    </tr>
+      <tr class="row<?php echo $product['status'] ? false : ' semi-transparent'; ?>">
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($product['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('products['. $product['id'] .']', $product['id']); ?></td>
+        <td><?php echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product['image'], 16, 16, 'FIT_USE_WHITESPACING') .'" width="16" height="16" align="absbottom" />'; ?><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>"> <?php echo $product['name']; ?></a></td>
+        <td style="text-align: right;"></td>
+        <td><a href="<?php echo document::href_link('', array('app' => $_GET['app'], 'doc' => 'edit_product', 'product_id' => $product['id'])); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      </tr>
 <?php
       }
     }
 ?>
-    <tr class="footer">
-      <td colspan="4"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-    </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      </tr>
+    </tfoot>
 <?php
     
   } else {
@@ -367,37 +373,40 @@
 
     echo admin_catalog_category_tree();
 ?>
-    <tr class="footer">
-      <td colspan="4"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
-    </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><?php echo language::translate('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?> | <?php echo language::translate('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?></td>
+      </tr>
+    </tfoot>
 <?php
   }
 ?>
   </table>
-
-  <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
-      $(this).closest("form").find(":checkbox").each(function() {
-        $(this).attr('checked', !$(this).attr('checked'));
-      });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
-    });
-
-    $('.dataTable tr').click(function(event) {
-      if ($(event.target).is('input:checkbox')) return;
-      if ($(event.target).is('a, a *')) return;
-      if ($(event.target).is('th')) return;
-      $(this).find('input:checkbox').trigger('click');
-    });
-  </script>
-
-<p>
-  <ul class="list-horizontal">
-    <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
-    <li><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span></li>
-    <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <span class="button-set"><?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></span></li>
-    <span class="button-set"><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></span></li>
-  </ul>
-</p>
+  
+  <p>
+    <ul class="list-horizontal">
+      <li><?php echo language::translate('text_with_selected', 'With selected'); ?>:</li>
+      <li><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span></li>
+      <li><?php echo functions::form_draw_categories_list('category_id', isset($_POST['category_id']) ? $_POST['category_id'] : ''); ?> <span class="button-set"><?php echo functions::form_draw_button('move', language::translate('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('warning_mounting_points_will_be_replaced', 'Warning: All current mounting points will be replaced.')) .'\')) return false;"'); ?><?php echo functions::form_draw_button('copy', language::translate('title_copy', 'Copy'), 'submit'); ?><?php echo functions::form_draw_button('duplicate', language::translate('title_duplicate', 'Duplicate'), 'submit'); ?></span></li>
+      <span class="button-set"><?php echo functions::form_draw_button('unmount', language::translate('title_unmount', 'Unmount'), 'submit'); ?><?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", language::translate('text_are_you_sure', 'Are you sure?')) .'\')) return false;"'); ?></span></li>
+    </ul>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $(".data-table input[name='checkbox_toggle']").click(function() {
+    $(this).closest("form").find(":checkbox").each(function() {
+      $(this).attr('checked', !$(this).attr('checked'));
+    });
+    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
+  });
+
+  $('.data-table tr').click(function(event) {
+    if ($(event.target).is('input:checkbox')) return;
+    if ($(event.target).is('a, a *')) return;
+    if ($(event.target).is('th')) return;
+    $(this).find('input:checkbox').trigger('click');
+  });
+</script>

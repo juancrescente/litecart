@@ -29,15 +29,17 @@
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
-
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
 
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
-    <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
-  </tr>
+<table class="table table-striped data-table">
+  <thead>
+    <tr>
+      <th><?php echo language::translate('title_customer', 'Customer'); ?></th>
+      <th width="100%"><?php echo language::translate('title_email_address', 'Email Address'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_total_amount', 'Total Amount'); ?></th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -63,16 +65,17 @@
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
 ?>
-  <tr class="row">
-    <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
-    <td><?php echo $customer['email']; ?></td>
-    <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>
-  </tr>
+    <tr>
+      <td><?php echo !empty($customer['id']) ? '<a href="'. document::link('', array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. language::translate('title_guest', 'Guest') .')</em>'; ?></td>
+      <td><?php echo $customer['email']; ?></td>
+      <td style="text-align: right;"><?php echo currency::format($customer['total_amount'], false, false, settings::get('store_currency_code')); ?></td>
+    </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
+  </tbody>
 </table>
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($customers_query)/settings::get('data_table_rows_per_page'))); ?>

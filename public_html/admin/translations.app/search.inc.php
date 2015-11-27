@@ -114,12 +114,15 @@ ul.filter li {
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
-  <table align="center" width="100%" class="dataTable">
-    <tr class="header">
-      <th style="width: 100%;"><?php echo language::translate('title_code', 'Code');?></th>
-      <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
-      <th>&nbsp;</th>
-    </tr>
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th style="width: 100%;"><?php echo language::translate('title_code', 'Code');?></th>
+        <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php 
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
@@ -133,7 +136,6 @@ ul.filter li {
 
   if (database::num_rows($translations_query) > 0) {
     
-  // Jump to data for current page
     if ($_GET['page'] > 1) database::seek($translations_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
@@ -141,34 +143,35 @@ ul.filter li {
       
       $row['pages'] = rtrim($row['pages'], ',');
 ?>
-    <tr class="row">
-      <td><?php echo $row['code']; ?><br />
-        <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
-        <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
-      </td>
-      <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="display: block; max-width: 250px;" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
-      <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-    </tr>
+      <tr>
+        <td><?php echo $row['code']; ?><br />
+          <small style="color: #999;"><a href="javascript:alert('<?php echo str_replace(',', "\\n", $row['pages']); ?>');"><?php echo sprintf(language::translate('text_shared_by_pages', 'Shared by %d pages'), substr_count($row['pages'], ',')+1); ?></a><br />
+          <?php echo functions::form_draw_checkbox('translations['. $row['code'] .'][html]', '1', (isset($_POST['translations'][$row['code']]['html']) ? $_POST['translations'][$row['code']]['html'] : $row['html'])); ?> <?php echo language::translate('text_html_enabled', 'HTML enabled'); ?></small>
+        </td>
+        <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" style="display: block; max-width: 250px;" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
+        <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+      </tr>
 <?php      
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
     } else {
 ?>
-    <tr class="odd">
-      <td colspan="<?php echo 2+count(language::$languages); ?>" align="left" nowrap="nowrap"><?php echo language::translate('text_no_entries_found_in_database', 'No entries found in database'); ?></td>
-    </tr>
+      <tr>
+        <td colspan="<?php echo 2+count(language::$languages); ?>" align="left" nowrap="nowrap"><?php echo language::translate('text_no_entries_found_in_database', 'No entries found in database'); ?></td>
+      </tr>
 <?php
     }
 ?>
+    </tbody>
   </table>
-  <p style="display: inline; float: right;"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?></p>
-
-<?php
-// Display page links
-  echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page')));
-?>
+  
+  <p style="display: inline; float: right;">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', 'tabindex="9999"', 'save'); ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
   function delete_translation(id) {

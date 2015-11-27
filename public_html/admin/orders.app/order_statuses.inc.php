@@ -5,17 +5,21 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_order_statuses', 'Order Statuses'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('order_statuses_form', 'post'); ?>
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th><?php echo language::translate('title_icon', 'Icon'); ?></th>
-    <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-    <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
-    <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
-    <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
-    <th>&nbsp;</th>
-  </tr>
+
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+      <th><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th><?php echo language::translate('title_icon', 'Icon'); ?></th>
+      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+      <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
+      <th><?php echo language::translate('title_notify', 'Notify'); ?></th>
+      <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
 
   $orders_status_query = database::query(
@@ -26,7 +30,6 @@
 
   if (database::num_rows($orders_status_query) > 0) {
     
-  // Jump to data for current page
     if ($_GET['page'] > 1) database::seek($orders_status_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
     
     $page_items = 0;
@@ -35,7 +38,7 @@
       if (empty($order_status['icon'])) $order_status['icon'] = 'fa-circle-thin';
       if (empty($order_status['color'])) $order_status['color'] = '#cccccc';
 ?>
-  <tr class="row">
+  <tr>
     <td><?php echo functions::form_draw_checkbox('order_statuses['. $order_status['id'] .']', $order_status['id']); ?></td>
     <td><?php echo $order_status['id']; ?></td>
     <td><?php echo functions::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
@@ -50,29 +53,30 @@
     }
   }
 ?>
-  <tr class="footer">
-    <td colspan="8"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
-  </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="8"><?php echo language::translate('title_order_statuses', 'Order Statuses'); ?>: <?php echo database::num_rows($orders_status_query); ?></td>
+    </tr>
+  </tfoot>
 </table>
 
+<?php echo functions::form_draw_form_end(); ?>
+
+<?php echo functions::draw_pagination(ceil(database::num_rows($orders_status_query)/settings::get('data_table_rows_per_page'))); ?>
+
 <script>
-  $(".dataTable input[name='checkbox_toggle']").click(function() {
+  $(".data-table input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));
     });
-    $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
   });
 
-  $('.dataTable tr').click(function(event) {
+  $('.data-table tr').click(function(event) {
     if ($(event.target).is('input:checkbox')) return;
     if ($(event.target).is('a, a *')) return;
     if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 </script>
-
-<?php
-  echo functions::form_draw_form_end();
-  
-  echo functions::draw_pagination(ceil(database::num_rows($orders_status_query)/settings::get('data_table_rows_per_page')));
-?>

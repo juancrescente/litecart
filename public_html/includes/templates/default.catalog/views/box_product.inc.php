@@ -141,21 +141,23 @@
         <?php if ($attributes) { ?>
         <div id="tab-details" class="tab">
           <table>
+            <tbody>
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
       @list($key, $value) = explode(':', $attributes[$i]);
-      echo '<tr class="row">' . PHP_EOL
-         . '  <td>'. trim($key) .':</td>' . PHP_EOL
-         . '  <td>'. trim($value) .'</td>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
+      echo '              <tr>' . PHP_EOL
+         . '                <td>'. trim($key) .':</td>' . PHP_EOL
+         . '                <td>'. trim($value) .'</td>' . PHP_EOL
+         . '              </tr>' . PHP_EOL;
     } else if (trim($attributes[$i] != '')) {
-      echo '<tr class="row header">' . PHP_EOL
-         . '  <th colspan="2" class="header">'. $attributes[$i] .'</th>' . PHP_EOL
-         . '</tr>' . PHP_EOL;
+      echo '              <tr>' . PHP_EOL
+         . '                <th colspan="2">'. $attributes[$i] .'</th>' . PHP_EOL
+         . '              </tr>' . PHP_EOL;
     }
   }
 ?>
+            </tbody>
           </table>
         </div>
         <?php } ?>

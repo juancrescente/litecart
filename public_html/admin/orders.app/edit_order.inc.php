@@ -153,7 +153,7 @@
 
   <h2><?php echo language::translate('title_order_information', 'Order Information'); ?></h2>
 
-  <table class="dataTable">
+  <table>
     <tr>
       <td><?php echo language::translate('title_language', 'Language'); ?><br />
         <?php echo functions::form_draw_languages_list('language_code', true); ?>
@@ -172,8 +172,9 @@
     </tr>
   </table>
 
-  <table id="customer" class="dataTable">
-    <tr class="header">
+  <table class="table table-striped data-table">
+    <thead>
+    <tr>
       <th colspan="2"><?php echo language::translate('title_customer_information', 'Customer Information'); ?></th>
     </tr>
     <tr>
@@ -350,7 +351,7 @@
     </tr>
   </table>
   
-  <table id="order-info" class="dataTable">
+  <table class="table table-striped data-table">
     <tr>
       <td style="vertical-align: top;">
         <h3><?php echo language::translate('title_payment_information', 'Payment Information'); ?></h3>
@@ -389,8 +390,9 @@
   </table>
 
   <h2><?php echo language::translate('title_order_items', 'Order Items'); ?></h2>
-  <table id="order-items" class="dataTable" style="width: 100%;">
-    <tr class="header">
+  <table class="table table-striped data-table">
+    <thead>
+    <tr>
       <th style="width: 100%;"><?php echo language::translate('title_item', 'Item'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
@@ -399,6 +401,8 @@
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
       <th>&nbsp;</th>
     </tr>
+  </thead>
+  <tbody>
 <?php
   if (!empty($_POST['items'])) {
     foreach (array_keys($_POST['items']) as $key) {
@@ -441,11 +445,14 @@
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
+  </thead>
+  <tbody>
 <?php
     }
   }
 ?>
-    <tr class="footer">
+    <tfoot>
+    <tr>
       <td colspan="7">
         <a class="button add-product fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_product', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
         <a class="button add-custom-item fancybox-iframe" href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>" data-href="<?php echo document::link('', array('doc' => 'add_custom_item', 'return_method' => 'addItem'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
@@ -519,8 +526,9 @@
   </script>
 
   <h2><?php echo language::translate('title_order_total', 'Order Total'); ?></h2>
-  <table id="order-total" width="100%" class="dataTable">
-    <tr class="header">
+  <table class="table table-striped data-table">
+    <thead>
+    <tr>
       <th>&nbsp;</th>
       <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
       <th style="text-align: right;" width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
@@ -528,6 +536,8 @@
       <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
       <th>&nbsp;</th>
     </tr>
+  </thead>
+  <tbody>
 <?php
   if (empty($_POST['order_total'])) {
     $_POST['order_total'][] = array(
@@ -551,6 +561,8 @@
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true, 'style="text-align: right;"'); ?></td>
       <td>&nbsp;</td>
     </tr>
+  </thead>
+  <tbody>
 <?php
         break;
       default:
@@ -563,6 +575,8 @@
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'order_total['. $key .'][tax]', true); ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
+  </thead>
+  <tbody>
 <?php
         break;
     }
@@ -634,13 +648,16 @@
   </script>
   
   <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
-  <table id="comments" class="dataTable" style="width: 100%;">
-    <tr class="header">
+  <table class="table table-striped data-table">
+    <thead>
+    <tr>
       <th style="text-align: center;"><?php echo language::translate('title_date', 'Date'); ?></th>
       <th style="width: 100%;"><?php echo language::translate('title_comment', 'Comment'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_hidden', 'Hidden'); ?></th>
       <th>&nbsp;</th>
     </tr>
+  </thead>
+  <tbody>
 <?php
   if (!empty($_POST['comments'])) {
     foreach (array_keys($_POST['comments']) as $key) {
@@ -651,6 +668,8 @@
       <td><?php echo !empty($_POST['comments'][$key]['hidden']) ? 'x' : '-'; ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
+  </thead>
+  <tbody>
 <?php
     }
   }

@@ -41,15 +41,18 @@
 
 <?php echo functions::form_draw_form_begin('vqmods_form', 'post'); ?>
 
-  <table width="100%" align="center" class="dataTable">
-    <tr class="header">
-      <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-      <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-      <th><?php echo language::translate('title_code', 'Code'); ?></th>
-      <th style="text-align: center;"><?php echo language::translate('title_version', 'Version'); ?></th>
-      <th><?php echo language::translate('title_author', 'Author'); ?></th>
-      <th>&nbsp;</th>
-    </tr>
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th><?php echo language::translate('title_code', 'Code'); ?></th>
+        <th style="text-align: center;"><?php echo language::translate('title_version', 'Version'); ?></th>
+        <th><?php echo language::translate('title_author', 'Author'); ?></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php
 
   $vqmods = glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/xml/*.{xml,disabled}', GLOB_BRACE);
@@ -73,32 +76,35 @@
     }
   }
 ?>
-    <tr class="footer">
-      <td colspan="6"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
-    </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="6"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
+      </tr>
+    </tfoot>
   </table>
-
-  <script>
-    $(".dataTable input[name='checkbox_toggle']").click(function() {
-      $(this).closest("form").find(":checkbox").each(function() {
-        $(this).attr('checked', !$(this).attr('checked'));
-      });
-      $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
-    });
-
-    $('.dataTable tr').click(function(event) {
-      if ($(event.target).is('input:checkbox')) return;
-      if ($(event.target).is('a, a *')) return;
-      if ($(event.target).is('th')) return;
-      $(this).find('input:checkbox').trigger('click');
-    });
-  </script>
 
   <p><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span> <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?></p>
   
-  <?php echo functions::form_draw_form_end(); ?>
-  
-  <fieldset style="display: inline; border: 1px solid #ccc;">
-    <legend><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</legend>
-    <?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true) . functions::form_draw_file_field('vqmod', 'accept="application/xml"') .' '. functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit') . functions::form_draw_form_end(); ?>
-  </fieldset>
+<?php echo functions::form_draw_form_end(); ?>
+
+<fieldset style="display: inline; border: 1px solid #ccc;">
+  <legend><?php echo language::translate('title_upload_new_vqmod', 'Upload a New vQmod'); ?> (*.xml)</legend>
+  <?php echo functions::form_draw_form_begin('vqmod_form', 'post', '', true) . functions::form_draw_file_field('vqmod', 'accept="application/xml"') .' '. functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit') . functions::form_draw_form_end(); ?>
+</fieldset>
+
+<script>
+  $(".data-table input[name='checkbox_toggle']").click(function() {
+    $(this).closest("form").find(":checkbox").each(function() {
+      $(this).attr('checked', !$(this).attr('checked'));
+    });
+    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
+  });
+
+  $('.data-table tr').click(function(event) {
+    if ($(event.target).is('input:checkbox')) return;
+    if ($(event.target).is('a, a *')) return;
+    if ($(event.target).is('th')) return;
+    $(this).find('input:checkbox').trigger('click');
+  });
+</script>

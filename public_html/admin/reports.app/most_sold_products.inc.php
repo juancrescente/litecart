@@ -37,13 +37,16 @@
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?></h1>
 
-<table width="100%" align="center" class="dataTable">
-  <tr class="header">
-    <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_sales', 'Sales'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-  </tr>
+<table class="table table-striped data-table">
+  <thead>
+    <tr>
+      <th width="100%"><?php echo language::translate('title_product', 'Product'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_sales', 'Sales'); ?></th>
+      <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -76,17 +79,18 @@
     $page_items = 0;
     while ($order_item = database::fetch($order_items_query)) {
 ?>
-  <tr class="row">
-    <td><?php echo $order_item['name']; ?></td>
-    <td style="text-align: center;" class="border-left"><?php echo rtrim($order_item['total_quantity'], '.0'); ?></td>
-    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
-    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-  </tr>
+    <tr>
+      <td><?php echo $order_item['name']; ?></td>
+      <td style="text-align: center;" class="border-left"><?php echo rtrim($order_item['total_quantity'], '.0'); ?></td>
+      <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+      <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
+    </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
+  </tbody>
 </table>
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($order_items_query)/settings::get('data_table_rows_per_page'))); ?>

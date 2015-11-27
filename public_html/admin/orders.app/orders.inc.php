@@ -46,20 +46,24 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('orders_form', 'post'); ?>
-<table width="100%" class="dataTable">
-  <tr class="header">
-    <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-    <th><?php echo language::translate('title_id', 'ID'); ?></th>
-    <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-    <th width="100%"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></th>
-    <th><?php echo language::translate('title_country', 'Country'); ?></th>
-    <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-    <th><?php echo language::translate('title_date', 'Date'); ?></th>
-    <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-    <th>&nbsp;</th>
-  </tr>
+
+  <table class="table table-striped data-table">
+    <thead>
+      <tr>
+        <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+        <th width="100%"><?php echo language::translate('title_tax_id', 'Tax ID'); ?></th>
+        <th><?php echo language::translate('title_country', 'Country'); ?></th>
+        <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
+        <th style="text-align: center;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
+        <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
+        <th><?php echo language::translate('title_date', 'Date'); ?></th>
+        <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
 <?php
   if (!empty($_GET['query'])) {
     $sql_find = array(
@@ -99,35 +103,38 @@
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
-  <tr class="row<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
-    <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
-    <td><?php echo $order['id']; ?></td>
-    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
-    <td><?php echo $order['customer_tax_id']; ?></td>
-    <td><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
-    <td><?php echo $order['payment_option_name']; ?></td>
-    <td style="text-align: right;"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
-    <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-    <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
-    <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
-    <td>
-      <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-      <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
-      <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
-    </td>
-  </tr>
+    <tr class="row<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
+      <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
+      <td><?php echo $order['id']; ?></td>
+      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
+      <td><?php echo $order['customer_tax_id']; ?></td>
+      <td><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
+      <td><?php echo $order['payment_option_name']; ?></td>
+      <td style="text-align: right;"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
+      <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+      <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+      <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
+      <td>
+        <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+        <a class="fancybox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+        <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
+      </td>
+    </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }
   }
 ?>
-  <tr class="footer">
-    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
-  </tr>
-</table>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+      </tr>
+    </tfoot>
+  </table>
 
-<p>
-  <ul id="order-actions" class="list-horizontal">
+  <p>
+    <ul id="order-actions" class="list-horizontal">
 <?php
   $order_action = new mod_order_action();
   
@@ -144,36 +151,34 @@
     }
   }
 ?>
-  </ul>
-  <script>
-  $(".dataTable input[name^='orders[']").change(function() {
-    if ($(".dataTable input[name^='orders[']:checked").length > 0) {
+    </ul>
+  </p>
+
+<?php echo functions::form_draw_form_end(); ?>
+
+<?php echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page'))); ?>
+
+<script>
+  $(".data-table input[name^='orders[']").change(function() {
+    if ($(".data-table input[name^='orders[']:checked").length > 0) {
       $("#order-actions button").removeAttr('disabled');
     } else {
       $("#order-actions button").attr('disabled', 'disabled');
     }
   });
-  $(".dataTable input[name^='orders[']").trigger('change');
-  </script>
-</p>
+  $(".data-table input[name^='orders[']").trigger('change');
 
-<script>
-  $(".dataTable input[name='checkbox_toggle']").click(function() {
+  $(".data-table input[name='checkbox_toggle']").click(function() {
     $(this).closest("form").find(":checkbox").each(function() {
       $(this).attr('checked', !$(this).attr('checked'));
     });
-    $(".dataTable input[name='checkbox_toggle']").attr("checked", true);
+    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
   });
 
-  $('.dataTable tr').click(function(event) {
+  $('.data-table tr').click(function(event) {
     if ($(event.target).is('input:checkbox')) return;
     if ($(event.target).is('a, a *')) return;
     if ($(event.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 </script>
-<?php
-  echo functions::form_draw_form_end();
-  
-  echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page')));
-?>

@@ -37,8 +37,8 @@
       }
 ?>
 <div class="widget">
-  <table style="width: 100%;" class="dataTable">
-    <tr class="header">
+  <table>
+    <tr>
       <th colspan="4"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></th>
     </tr>
     <tr>
@@ -53,11 +53,11 @@
             $rowclass = 'even';
           }
 ?>
-        <tr>
-          <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
-            <span style="color: #666;"><?php echo (string)$item->description; ?></span>
-          </td>
-        </tr>
+    <tr>
+      <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
+        <span style="color: #666;"><?php echo (string)$item->description; ?></span>
+      </td>
+    </tr>
 <?php
         }
         echo '  </table>' . PHP_EOL

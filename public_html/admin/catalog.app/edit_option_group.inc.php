@@ -128,12 +128,16 @@
 
   <div id="option-values-multiset">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-    <table width="100%" class="dataTable">
-      <tr class="header">
-        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
-        <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
-      </tr>
+    
+    <table class="table table-striped data-table">
+      <thead>
+        <tr>
+          <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
+          <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
 <?php
     if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
 ?>
@@ -154,9 +158,12 @@
 <?php
     }
 ?>
-      <tr>
-        <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
-      </tr>  
+      </tbody>
+      </tfoot>
+        <tr>
+          <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
+        </tr>
+      </tfoot>      
     </table>
     <script>
       var new_value_index = 1;
@@ -201,12 +208,15 @@
 
   <div id="option-values-range">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-    <table width="100%" class="dataTable">
-      <tr class="header">
+    <table class="table table-striped data-table">
+      <thead>
+    <tr>
         <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
+  </thead>
+  <tbody>
 <?php
     if (!empty($_POST['values'])) {
       $keys = array_keys($_POST['values']);
@@ -224,12 +234,15 @@
   </div>
   <div id="option-values-input">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-    <table width="100%" class="dataTable">
-      <tr class="header">
+    <table class="table table-striped data-table">
+      <thead>
+    <tr>
         <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
+  </thead>
+  <tbody>
 <?php
     if (!empty($_POST['values'])) {
       $keys = array_keys($_POST['values']);
@@ -247,12 +260,15 @@
   </div>
   <div id="option-values-textarea">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-    <table width="100%" class="dataTable">
-      <tr class="header">
+    <table class="table table-striped data-table">
+      <thead>
+    <tr>
         <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
+  </thead>
+  <tbody>
 <?php
     if (!empty($_POST['values'])) {
       $keys = array_keys($_POST['values']);
