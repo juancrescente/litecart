@@ -60,6 +60,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th style="text-align: center;">&nbsp;</th>
         <th><?php echo language::translate('title_version', 'Version'); ?></th>
@@ -77,7 +78,8 @@
       $num_module_rows++;
 ?>
       <tr class="row<?php echo empty($module->status) ? ' semi-transparent' : null; ?>">
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+        <td><?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
         <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
         <td style="text-align: center;"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
@@ -102,6 +104,7 @@
 ?>
       <tr class="row semi-transparent">
         <td></td>
+        <td></td>
         <td><?php echo $module->name; ?></td>
         <td style="text-align: center;"></td>
         <td style="text-align: right;"><?php echo $module->version; ?></td>
@@ -117,7 +120,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="8"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_module_rows; ?></td>
+        <td colspan="9"><?php echo language::translate('title_modules', 'Modules'); ?>: <?php echo $num_module_rows; ?></td>
       </tr>
     </tfoot>
   </table>

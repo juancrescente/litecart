@@ -58,6 +58,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="text-align: center;"><?php echo language::translate('title_code', 'Code'); ?></th>
         <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -82,7 +83,8 @@
     while ($currency = database::fetch($currencies_query)) {
 ?>
     <tr class="row<?php echo !$currency['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $currency['id']; ?></td>
       <td><?php echo $currency['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>
@@ -101,7 +103,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="11"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo database::num_rows($currencies_query); ?></td>
+        <td colspan="12"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo database::num_rows($currencies_query); ?></td>
       </tr>
     </tfoot>
   </table>

@@ -10,6 +10,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th width="100%"><?php echo language::translate('title_title', 'Title'); ?></th>
         <th>&nbsp;</th>
@@ -31,7 +32,8 @@
     while ($page = database::fetch($pages_query)) {
 ?>
       <tr class="row<?php echo !$page['status'] ? ' semi-transparent' : null; ?>">
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('delivery_statuses['. $page['id'] .']', $page['id']); ?></td>
+        <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $page['id'] .']', $page['id']); ?></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($page['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><?php echo $page['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>"><?php echo $page['title']; ?></a></td>
         <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_page', 'pages_id' => $page['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
@@ -44,7 +46,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="6"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo database::num_rows($pages_query); ?></td>
+        <td colspan="7"><?php echo language::translate('title_pages', 'Pages'); ?>: <?php echo database::num_rows($pages_query); ?></td>
       </tr>
     </tfoot>
   </table>

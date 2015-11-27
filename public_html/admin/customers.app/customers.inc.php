@@ -25,6 +25,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th><?php echo language::translate('title_name', 'Name'); ?></th>
         <th width="100%"><?php echo language::translate('title_company', 'Company'); ?></th>
@@ -59,7 +60,8 @@
     while ($customer = database::fetch($customers_query)) {
 ?>
     <tr class="row<?php echo !$customer['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $customer['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
       <td><?php echo $customer['company']; ?></td>
@@ -74,7 +76,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="6"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
+        <td colspan="7"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
       </tr>
     </tfoot>
   </table>

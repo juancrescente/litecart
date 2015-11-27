@@ -45,6 +45,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th><?php echo language::translate('title_code', 'Code'); ?></th>
         <th style="text-align: center;"><?php echo language::translate('title_version', 'Version'); ?></th>
@@ -65,7 +66,8 @@
       $enabled = preg_match('/\.xml$/', $vqmod) ? true : false;
 ?>
     <tr class="row<?php echo !$enabled ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::form_draw_checkbox('vqmods['. htmlspecialchars($vqmod) .']', $vqmod); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. ($enabled ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo (string)$xml->id; ?></td>
       <td><?php echo pathinfo($vqmod, PATHINFO_FILENAME); ?></td>
       <td><?php echo (string)$xml->version; ?></td>
@@ -79,7 +81,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="6"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
+        <td colspan="7"><?php echo language::translate('title_vqmods', 'vQmods'); ?>: <?php echo count($vqmods); ?></td>
       </tr>
     </tfoot>
   </table>

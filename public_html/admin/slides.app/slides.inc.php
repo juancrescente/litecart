@@ -25,6 +25,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th style="text-align: center;"><?php echo language::translate('title_language', 'Language'); ?></th>
@@ -36,7 +37,6 @@
     </thead>
     <tbody>
 <?php
-
   $slides_query = database::query(
     "select * from ". DB_TABLE_SLIDES ."
     order by language_code asc, priority asc;"
@@ -50,7 +50,8 @@
     while ($slide = database::fetch($slides_query)) {
 ?>
       <tr class="row<?php echo !$slide['status'] ? ' semi-transparent' : null; ?>">
-        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+        <td><?php echo functions::form_draw_checkbox('slides['. $slide['id'] .']', $slide['id']); ?></td>
+        <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($slide['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><?php echo $slide['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_slide', 'slide_id' => $slide['id']), true); ?>"><?php echo $slide['name']; ?></a></td>
         <td><?php echo $slide['language_code']; ?></td>
@@ -67,7 +68,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="8"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
+        <td colspan="9"><?php echo language::translate('title_slides', 'Slides'); ?>: <?php echo database::num_rows($slides_query); ?></td>
       </tr>
     </tfoot>
   </table>

@@ -24,6 +24,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th style="text-align: center;"><?php echo language::translate('title_id', 'ID'); ?></th>
         <th style="text-align: center;"><?php echo language::translate('title_code', 'Code'); ?></th>
         <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
@@ -48,7 +49,8 @@
     while ($language = database::fetch($languages_query)) {
 ?>
     <tr class="row<?php echo !$language['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('languages['. $language['code'] .']', $language['code']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($language['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $language['id']; ?></td>
       <td style="text-align: center;"><?php echo $language['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']), true); ?>"><?php echo $language['name']; ?></a></td>
@@ -65,7 +67,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="8"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo database::num_rows($languages_query); ?></td>
+        <td colspan="9"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo database::num_rows($languages_query); ?></td>
       </tr>
     </tfoot>
   </table>

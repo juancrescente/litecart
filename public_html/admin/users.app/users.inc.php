@@ -26,6 +26,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th></th>
         <th style="width: 100%;"><?php echo language::translate('title_username', 'Username'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -45,7 +46,8 @@
     while ($user = database::fetch($users_query)) {
 ?>
     <tr class="row<?php echo !$user['status'] ? ' semi-transparent' : null; ?>">
-      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?> <?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+      <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
+      <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
       <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
@@ -57,7 +59,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
+        <td colspan="4"><?php echo language::translate('title_users', 'Users'); ?>: <?php echo database::num_rows($users_query); ?></td>
       </tr>
     </tfoot>
   </table>
