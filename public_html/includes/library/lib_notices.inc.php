@@ -14,7 +14,6 @@
           'warnings' => array(),
           'notices' => array(),
           'success' => array(),
-          'debugs' => array(),
         );
       }
       
@@ -37,38 +36,31 @@
       
       $notices = array();
       
-      foreach(array('debugs', 'errors', 'notices', 'warnings', 'success') as $notice_type) {
-        if (!empty(notices::$data[$notice_type])) {
-          
-          switch ($notice_type) {
-            case 'warnings':
-            case 'errors':
-              $icon = functions::draw_fonticon('fa-exclamation-triangle');
-              break;
-            case 'notices':
-              $icon = functions::draw_fonticon('fa-exclamation-circle');
-              break;
-            case 'success':
-              $icon = functions::draw_fonticon('fa-check-circle');
-              break;
-            default:
-              $icon = '';
-              break;
+      if (!empty(notices::$data)) {
+        document::$snippets['notices'] = '<div id="notices-wrapper" class="container notices">' . PHP_EOL;
+        foreach (array_keys(notices::$data) as $type) {
+          foreach (notices::$data[$type] as $notice) {
+            switch ($type) {
+              case 'errors':
+                 document::$snippets['notices'] .= '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+                break;
+              case 'warnings':
+                 document::$snippets['notices'] .= '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+                break;
+              case 'notices':
+                 document::$snippets['notices'] .= '<div class="alert alert-info"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice .'</div>' . PHP_EOL;
+                break;
+              case 'success':
+                 document::$snippets['notices'] .= '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">×</a>' .functions::draw_fonticon('fa-check-circle') . ' ' . $notice .'</div>' . PHP_EOL;
+                break;
+            }
           }
-          
-          $notices[] = '  <div class="notice '. $notice_type .'">' . $icon .' '. implode('</div>' . PHP_EOL . '  <div class="notice '. $notice_type .'">' . $icon . ' ', array_unique(notices::$data[$notice_type])) . '</div>' . PHP_EOL;
         }
+        document::$snippets['notices'] .= '</div>' . PHP_EOL
+           . '<script>setTimeout(function(){$("#notices-wrapper").slideUp();}, 15000);</script>';
       }
       
       self::reset();
-      
-      if (!empty($notices)) {
-        document::$snippets['notices'] = '<div id="notices-wrapper">' . PHP_EOL
-                                       . '  <div id="notices">'. PHP_EOL . implode(PHP_EOL, $notices) . '</div>' . PHP_EOL
-                                       . '</div>' . PHP_EOL
-                                       . '<script>setTimeout(function(){$("#notices-wrapper").slideUp();}, 15000);</script>';
-        unset($notices);
-      }
     }
     
     public static function before_output() {
