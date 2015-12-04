@@ -1,5 +1,5 @@
-<div id="box-category" class="box">
-  <nav class="filter" style="float: right;">
+<div class="row container" id="box-category">
+  <nav class="pull-right">
 <?php
     $separator = false;
     foreach ($sort_alternatives as $key => $value) {
@@ -12,32 +12,26 @@
       $separator = true;
     }
 ?>
-  </nav>
-  
-  <h1 class="title"><?php echo $h1_title; ?></h1>
-  
-  <div class="content">
-    
+    </nav>
+    <h1><?php echo $h1_title; ?></h1>
+
     <?php if ($_GET['page'] == 1) { ?>
-    <?php if ($description) { ?>
-    <div class="description-wrapper">
-      <p class="category-description"><?php echo $description; ?></p>
-    </div>
-    <?php } ?>
+    <?php if ($description) { ?><p class="category-description"><?php echo $description; ?></p><?php } ?>
 
     <?php if ($subcategories) { ?>
-    <ul class="listing-wrapper categories">
+    <div class="row">
       <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
-    </ul>
+    </div>
     <?php } ?>
     <?php } ?>
     
     <?php if ($products) { ?>
-    <ul class="listing-wrapper products">
+    <div class="row container">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
-    </ul>
+    </div>
     <?php } ?>
     
-    <?php echo $pagination; ?>
-  </div>
+    <div class="row">
+      <?php echo $pagination; ?>
+    </div>
 </div>

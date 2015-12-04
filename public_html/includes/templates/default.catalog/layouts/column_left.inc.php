@@ -35,10 +35,25 @@
 
   <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
   
-  <!--snippet:top-->
-
-  <!--snippet:notices-->
-  <!--snippet:content-->
+  <div class="container">
+    <div class="col-md-2">
+      <div class="row">
+        <!--snippet:column_left-->
+          <div>
+            <p class="lead"><?php echo language::translate('title_categories', 'Categories'); ?></p>
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Category 1</a>
+              <a href="#" class="list-group-item">Category 2</a>
+              <a href="#" class="list-group-item">Category 3</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <!--snippet:notices-->
+        <!--snippet:content-->
+      </div>
+  </div>  
     
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
   

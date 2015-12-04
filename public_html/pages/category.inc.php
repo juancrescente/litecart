@@ -1,4 +1,7 @@
 <?php
+  
+  document::$layout = 'column_left';
+  
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
     exit;
