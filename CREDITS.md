@@ -28,7 +28,6 @@ JavaScript
 * jqPlot by Chris Leonello - MIT and GPL version 2 - http://www.jqplot.com
 * jQuery by jQuery Foundation - MIT License - http://www.jquery.com
 * jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com
-* Nivo Slider by Dev7studios - MIT License - http://dev7studios.com/nivo-slider/
 * Trumbowyg by Alex-D - MIT license - http://alex-d.github.io/Trumbowyg/
 * jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie
 
