@@ -158,43 +158,30 @@
   function draw_pagination($pages) {
     
     $pages = ceil($pages);
-    
+  
     if ($pages < 2) return false;
     
-    if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
+    if ($_GET['page'] < 2) $_GET['page'] = 1;
     
-    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prefetch'] = '<link rel="prefetch" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Mozilla
-    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />'; // Webkit
+    if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']-1), true)) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />';
+    if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. htmlspecialchars(document::link('', array('page' => $_GET['page']+1), true)) .'" />';
     
-    $link = $_SERVER['REQUEST_URI'];
-    $link = preg_replace('/page=[0-9]/', '', $link);
+    $html = '<nav class="">'. PHP_EOL
+          . '  <ul class="pagination">' . PHP_EOL;
     
-    while (strstr($link, '&&')) $link = str_replace('&&', '&', $link);
-    
-    if (!strpos($link, '?')) $link = $link . '?';
-    
-    $pagination = new view();
-    
-    $pagination->snippets['items'][] = array(
-      'title' => language::translate('title_previous', 'Previous'),
-      'link' => document::ilink(null, array('page' => $_GET['page']-1), true),
-      'disabled' => ($_GET['page'] <= 1) ? true : false,
-      'active' => false,
-    );
+    if ($_GET['page'] > 1) {
+      $html .= '    <li><a href="'. document::href_link($_SERVER['REQUEST_URI'], array('page' => $_GET['page']-1), true) .'">&laquo;</a></li>' . PHP_EOL;
+    } else {
+      $html .= '    <li class="disabled"><span>&laquo;</span></li>' . PHP_EOL;
+    }
     
     for ($i=1; $i<=$pages; $i++) {
       
       if ($i < $pages-5) {
         if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
           $rewind = round(($_GET['page']-1)/2);
-          $pagination->snippets['items'][] = array(
-            'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
-            'link' => document::ilink(null, array('page' => $rewind), true),
-            'disabled' => false,
-            'active' => false,
-          );
+          $html .= '    <li><a href="'. document::href_link($_SERVER['REQUEST_URI'], array('page' => $rewind), true) .'">'. (($rewind == $_GET['page']-2) ? $rewind : '...') .'</a></li>' . PHP_EOL;
           $i = $_GET['page'] - 1;
           if ($i > $pages-4) $i = $pages-4;
         }
@@ -203,32 +190,26 @@
       if ($i > 5) {  
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
-          $pagination->snippets['items'][] = array(
-            'title' => ($forward == $_GET['page']+2) ? $forward : '...',
-            'link' => document::ilink(null, array('page' => $forward), true),
-            'disabled' => false,
-            'active' => false,
-          );
+          $html .= '    <li><a href="'. document::href_link($_SERVER['REQUEST_URI'], array('page' => $forward), true) .'">'. (($forward == $_GET['page']+2) ? $forward : '...') .'</a></li>' . PHP_EOL;
           $i = $pages;
         }
       }
-      
-      $pagination->snippets['items'][] = array(
-        'title' => $i,
-        'link' => document::ilink(null, array('page' => $i), true),
-        'disabled' => false,
-        'active' => ($i == $_GET['page']) ? true : false,
-      );
+    
+      if ($i == $_GET['page']) {
+        $html .= '    <li class="active"><span>'. $i .'</span></li>' . PHP_EOL;
+      } else {
+        $html .= '    <li><a href="'. document::href_link($_SERVER['REQUEST_URI'], array('page' => $i), true) .'">'. $i .'</a></li>' . PHP_EOL;
+      }
     }
     
-    $pagination->snippets['items'][] = array(
-      'title' => language::translate('title_next', 'Next'),
-      'link' => document::ilink(null, array('page' => $_GET['page']+1), true),
-      'disabled' => ($_GET['page'] >= $pages) ? true : false,
-      'active' => false,
-    );
+    if ($_GET['page'] < $pages) {
+      $html .= '    <li><a href="'. document::href_link($_SERVER['REQUEST_URI'], array('page' => $_GET['page']+1), true) .'">&raquo;</a></li>' . PHP_EOL;
+    } else {
+      $html .= '    <li class="disabled"><span>&raquo;</span></li>' . PHP_EOL;
+    }
     
-    $html = $pagination->stitch('views/pagination');
+    $html .= '  </ul>'
+           . '</nav>';
     
     return $html;
   }
