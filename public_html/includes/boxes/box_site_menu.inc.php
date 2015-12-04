@@ -4,15 +4,6 @@
     
     $box_site_menu = new view();
     
-    $box_site_menu->snippets['items'][] = array(
-      'type' => 'general',
-      'id' => 0,
-      'title' => functions::draw_fonticon('fa-home', 'title="'. htmlspecialchars(language::translate('title_home', 'Home')) .'"'),
-      'link' => document::ilink(''),
-      'image' => null,
-      'subitems' => array(),
-    );
-    
     if (!function_exists('custom_site_menu_category_tree')) {
       function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
         
