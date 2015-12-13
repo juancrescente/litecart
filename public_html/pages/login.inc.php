@@ -8,6 +8,6 @@
 
   if (!empty($_POST['lost_password'])) customer::password_reset($_POST['email']);
   
-  $page = new view();
-  echo $page->stitch('views/box_login');
+  $_page = new view();
+  echo $_page->stitch('pages/login');
 ?>

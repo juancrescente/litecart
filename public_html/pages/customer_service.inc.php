@@ -11,7 +11,9 @@
       $captcha = functions::captcha_get('contact_us');
       if (empty($captcha) || $captcha != $_POST['captcha']) notices::add('errors', language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
     }
+    
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
+    
     if (empty($_POST['email'])) notices::add('errors', language::translate('error_must_enter_email', 'You must enter a valid email address'));
     
     if (empty(notices::$data['errors'])) {
@@ -33,24 +35,33 @@
     }
   }
   
+  $_page = new view();
+  $_page->snippets = array(
+    'title' => language::translate('title_customer_service', 'Customer Service'),
+    'content' => '',
+  );
+  
 // Information box
   ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php');
-  document::$snippets['column_left'] = ob_get_clean();
-
+  $_page->snippets['box_customer_service_links'] = ob_get_clean();
+  
+// Store map
   if (empty($_GET['page_id'])) {
+    ob_start();
+    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_store_map.inc.php');
+    $_page->snippets['box_store_map'] = ob_get_clean();
+  }
   
-  // Store map
-    $box_store_map = new view();
-    echo $box_store_map->stitch('views/box_store_map');
+// Contact us
+  if (empty($_GET['page_id'])) {
+    ob_start();
+    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_contact_us.inc.php');
+    $_page->snippets['box_contact_us'] = ob_get_clean();
+  }
   
-  // Contact us
-    $box_contact_us = new view();
-    echo $box_contact_us->stitch('views/box_contact_us');
-    
-  } else {
-  
-  // Box information
+// Information page
+  if (!empty($_GET['page_id'])) {
     $pages_query = database::query(
       "select p.id, p.status, pi.title, pi.content, pi.head_title, pi.meta_description from ". DB_TABLE_PAGES ." p
       left join ". DB_TABLE_PAGES_INFO ." pi on (p.id = pi.page_id and pi.language_code = '". language::$selected['code'] ."')
@@ -78,14 +89,12 @@
     
     breadcrumbs::add($page['title'], document::ilink(null, array(), true));
     
-    $box_information = new view();
-    
-    $box_information->snippets = array(
+    $_page->snippets = array(
       'title' => $page['title'],
       'content' => $page['content'],
     );
-    
-    echo $box_information->stitch('views/box_information');
   }
+  
+  echo $_page->stitch('pages/customer_service');
   
 ?>

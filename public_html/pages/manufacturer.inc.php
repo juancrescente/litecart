@@ -13,8 +13,6 @@
   
   $lightbox_id = functions::draw_lightbox();
   
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-  
   $manufacturer = catalog::manufacturer($_GET['manufacturer_id']);
   
   if (empty($manufacturer->id)) {
@@ -41,9 +39,9 @@
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($manufacturer_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
   
-    $page = new view();
+    $_page = new view();
     
-    $page->snippets = array(
+    $_page->snippets = array(
       'id' => $manufacturer->id,
       'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
       'name' => $manufacturer->name,
@@ -72,18 +70,18 @@
     if (database::num_rows($products_query) > 0) {
       if ($_GET['page'] > 1) database::seek($products_query, (settings::get('items_per_page', 20) * ($_GET['page']-1)));
       
-      $page_items = 0;
+      $_page_items = 0;
       while ($listing_item = database::fetch($products_query)) {
-        $page->snippets['products'][] = $listing_item;
+        $_page->snippets['products'][] = $listing_item;
         
-        if (++$page_items == settings::get('items_per_page', 20)) break;
+        if (++$_page_items == settings::get('items_per_page', 20)) break;
       }
     }
     
-    $page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page', 20)));
+    $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page', 20)));
     
     
-    echo $page->stitch('views/box_manufacturer');
+    echo $_page->stitch('pages/manufacturer');
     
     cache::end_capture($manufacturer_cache_id);
   }

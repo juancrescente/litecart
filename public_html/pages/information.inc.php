@@ -32,12 +32,12 @@
   
   breadcrumbs::add($page['title']);
   
-  $box_information = new view();
+  $_page = new view();
   
-  $box_information->snippets = array(
+  $_page->snippets = array(
     'title' => $page['title'],
     'content' => $page['content'],
   );
   
-  echo $box_information->stitch('views/box_information');
+  echo $_page->stitch('pages/information');
 ?>
