@@ -1,4 +1,6 @@
 <?php
+  document::$layout = 'column_left';
+  
   if (!empty($_GET['product_id'])) {
     $product = catalog::product($_GET['product_id']);
   }
@@ -79,14 +81,12 @@
     'image' => $product->image,
   );
   
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-  
 // Page
-  $box_product = new view();
+  $_page = new view();
   
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
   
-  $box_product->snippets = array(
+  $_page->snippets = array(
     'product_id' => $product->id,
     'code' => $product->code,
     'sku' => $product->sku,
@@ -108,6 +108,7 @@
       ),
     ),
     'sticker' => '',
+    'lightbox_id' => functions::draw_lightbox(),
     'extra_images' => array(),
     'manufacturer_id' => !empty($product->manufacturer['id']) ? $product->manufacturer['id'] : '',
     'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
@@ -135,7 +136,7 @@
 // Extra Images 
   list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
   foreach (array_slice(array_values($product->images), 1) as $image) {
-    $box_product->snippets['extra_images'][] = array(
+    $_page->snippets['extra_images'][] = array(
       'original' => WS_DIR_IMAGES . $image,
       'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width, $height, settings::get('product_image_clipping')),
       'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, $width*2, $height*2, settings::get('product_image_clipping')),
@@ -148,24 +149,24 @@
   
 // Watermark Images
   if (settings::get('product_image_watermark')) {
-    $box_product->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['image']['original'], array('watermark' => true));
-    foreach (array_keys($box_product->snippets['extra_images']) as $key) {
-      $box_product->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $box_product->snippets['extra_images'][$key]['original'], array('watermark' => true));
+    $_page->snippets['image']['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['image']['original'], array('watermark' => true));
+    foreach (array_keys($_page->snippets['extra_images']) as $key) {
+      $_page->snippets['extra_images'][$key]['original'] = functions::image_process(FS_DIR_HTTP_ROOT . $_page->snippets['extra_images'][$key]['original'], array('watermark' => true));
     }
   }
   
 // Stickers
   if (!empty($product->campaign['price'])) {
-    $box_product->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
+    $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
-    $box_product->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+    $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }
   
 // Tax
   $tax_rates = tax::get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id);
   if (!empty($tax_rates)) {
     foreach ($tax_rates as $tax_rate) {
-      $box_product->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
+      $_page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
     }
   }
   
@@ -197,7 +198,7 @@
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
       $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-      $box_product->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      $_page->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
     }
   }
   
@@ -297,7 +298,7 @@
           break;
       }
       
-      $box_product->snippets['options'][] = array(
+      $_page->snippets['options'][] = array(
         'name' => $group['name'][language::$selected['code']],
         'description' => $group['description'][language::$selected['code']],
         'required' => !empty($group['required']) ? 1 : 0,
@@ -306,9 +307,14 @@
     }
   }
   
-  echo $box_product->stitch('views/box_product');
-  
+  ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
+  $_page->snippets['box_also_purchased_products'] = ob_get_clean();
   
+  ob_start();
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');
+  $_page->snippets['box_similar_products'] = ob_get_clean();
+  
+  echo $_page->stitch('pages/product');
+  
 ?>

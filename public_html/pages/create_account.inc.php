@@ -106,6 +106,6 @@
     }
   }
   
-  $page = new view();
-  echo $page->stitch('views/box_create_account');
+  $_page = new view();
+  echo $_page->stitch('pages/create_account');
 ?>
