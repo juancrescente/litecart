@@ -11,7 +11,7 @@
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
   
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+  $lightbox_id = functions::draw_lightbox();
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   

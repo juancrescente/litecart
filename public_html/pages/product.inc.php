@@ -38,7 +38,7 @@
   
   document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
   
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product']");
+  $lightbox_id = functions::draw_lightbox();
   
   document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   

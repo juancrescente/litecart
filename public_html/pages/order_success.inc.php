@@ -18,18 +18,7 @@
   
   cart::reset();
   
-  functions::draw_fancybox('a.fancybox', array(
-    'type'          => 'iframe',
-    'padding'       => '40',
-    'width'         => 640,
-    'height'        => 800,
-    'titlePosition' => 'inside',
-    'transitionIn'  => 'elastic',
-    'transitionOut' => 'elastic',
-    'speedIn'       => 600,
-    'speedOut'      => 200,
-    'overlayShow'   => true
-  ));
+  $modal_id = functions::draw_modal();
 
   $page = new view();
   

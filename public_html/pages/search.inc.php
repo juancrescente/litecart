@@ -9,7 +9,7 @@
   
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'));
   
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+  $lightbox_id = functions::draw_lightbox();
   
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   

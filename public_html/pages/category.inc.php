@@ -37,7 +37,7 @@
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+  $lighbox_id = functions::draw_lightbox();
   
   include(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
   

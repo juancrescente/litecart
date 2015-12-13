@@ -12,18 +12,7 @@
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
   breadcrumbs::add(language::translate('title_order_history', 'Order History'));
   
-  functions::draw_fancybox('a.fancybox', array(
-    'type'          => 'iframe',
-    'padding'       => '40',
-    'width'         => 640,
-    'height'        => 800,
-    'titlePosition' => 'inside',
-    'transitionIn'  => 'elastic',
-    'transitionOut' => 'elastic',
-    'speedIn'       => 600,
-    'speedOut'      => 200,
-    'overlayShow'   => true
-  ));
+  $modal_id = functions::draw_modal();
   
   $page = new view();
   

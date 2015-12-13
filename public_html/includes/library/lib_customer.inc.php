@@ -52,17 +52,12 @@
         if (settings::get('regional_settings_screen_enabled')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             
-            functions::draw_fancybox('', array(
-              'centerOnScroll' => true,
-              'hideOnContentClick' => true,
-              'href' => document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])),
-              //'modal' => true,
-              'speedIn' => 600,
-              'transitionIn' => 'fade',
-              'transitionOut' => 'fade',
-              'type' => 'ajax',
-              'scrolling' => 'false',
-            ));
+            $modal_id = functions::draw_modal();
+            document::$snippets['foot_tags'] = '<script>' . PHP_EOL
+                                             . '  $(#'. $modal_id .').modal({' . PHP_EOL
+                                             . '    remote: "'. document::ilink('regional_settings', array('redirect' => $_SERVER['REQUEST_URI'])) .'"' . PHP_EOL
+                                             . '  });' . PHP_EOL
+                                             . '</script>';
           }
         }
       }
