@@ -22,14 +22,8 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
-<link rel="stylesheet" href="{snippet:template_path}styles/theme.css">
-<link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
 <!--snippet:head_tags-->
-<!--snippet:javascript-->
-<script src="//oss.maxcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<!--[if lt IE 9]><script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script><![endif]-->
-<!--[if lt IE 9]><script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <body>
 
@@ -58,5 +52,6 @@
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
   
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>
