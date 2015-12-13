@@ -2,14 +2,14 @@
   
   class document {
     
-    private static $_cache = array();
     public static $template = '';
     public static $layout = 'default';
     public static $snippets = array();
     public static $settings = array();
     
-    //public static function construct() {
-    //}
+    public static function construct() {
+      header('X-Powered-By: '. PLATFORM_NAME);
+    }
     
     //public static function load_dependencies() {
     //}
@@ -17,9 +17,10 @@
     //public static function initiate() {
     //}
     
-    public static function startup() {
-      
-      header('X-Powered-By: '. PLATFORM_NAME);
+    //public static function startup() {
+    //}
+    
+    public static function before_capture() {
       
     // Set template
       if (preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
@@ -31,14 +32,15 @@
     // Set before-snippets
       self::$snippets['title'] = array(settings::get('store_name'));
       
-      self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">' . PHP_EOL;
+      self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">';
       
-      self::$snippets['head_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-2.1.4.min.js"></script>';
+      self::$snippets['head_tags']['bootstrap'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" media="screen" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" media="screen" />';
       
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" media="screen" />';
-    }
-    
-    public static function before_capture() {
+      self::$snippets['head_tags']['html5shiv'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/html5shiv"></script><![endif]-->';
+      self::$snippets['head_tags']['respond'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/respond"></script><![endif]-->';
+      
+      self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6" ></script>';
       
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
