@@ -14,12 +14,3 @@
     </div>
   </div>
 </div>
-
-<script>
-$('<?php echo $selector; ?>').click(function(){
-  $('.modal-body').empty();
-  $('.modal-title').html($(this).parent('a').attr("title"));
-  $($(this).parents('div').html()).appendTo('.modal-body');
-  $('#<?php echo $id; ?>').modal({show:true});
-});
-</script>

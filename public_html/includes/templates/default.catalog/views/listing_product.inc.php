@@ -4,7 +4,7 @@
       <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
       <div class="caption">
         <h3><?php echo $name; ?></h3>
-        <p><?php echo $short_description; ?></p>
+        <p><?php echo $manufacturer_name; ?></p>
         <p>
           <!--<a href="#" class="btn btn-primary">Buy Now!</a>--> <a href="<?php echo htmlspecialchars($link) ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
         </p>
@@ -15,11 +15,13 @@
   <div class="col-md-12">
     <div class="row thumbnail">
       <div class="col-md-3">
-        <img class="img-responsive" src="<?php echo hhtmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+        <a href="<?php echo htmlspecialchars($image['orignial']); ?>" data-toggle="modal" data-target="<?php echo htmlspecialchars($modal); ?>">
+          <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+        </a>
       </div>
       <div class="col-md-9 caption">
         <h3><?php echo $name; ?></h3>
-        <p><?php echo $short_description; ?></p>
+        <p><?php echo $manufacturer_name; ?></p>
         <p>
           <!--<a href="#" class="btn btn-primary">Buy Now!</a>--> <a href="<?php echo htmlspecialchars($link) ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
         </p>

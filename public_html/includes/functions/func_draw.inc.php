@@ -73,6 +73,7 @@
         ),
       ),
       'sticker' => $sticker,
+      'lightbox_id' => functions::draw_lightbox(),
       'manufacturer_name' => $product['manufacturer_name'],
       'short_description' => $product['short_description'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
@@ -88,19 +89,43 @@
     return $listing_product->stitch('views/listing_product');
   }
   
-  function draw_fancybox($selector='a.fancybox', $params=array()) {
-    trigger_error('draw_fancybox() is deprecated. Use instead draw_modal()', E_USER_DEPRECATED);
-    return functions::draw_modal($selector, $params);
+  function draw_fancybox() {
+    trigger_error('draw_fancybox() is deprecated. Use instead draw_lightbox()', E_USER_DEPRECATED);
   }
-
-  function draw_modal($selector='a.modal', $params=array()) {
-    $_modal = new view();
-    $_modal->snippets = array(
-      'id' => 'modal-'.uniqid(),
-      'selector' => $selector,
+  
+  function draw_lightbox($name='default') {
+    
+    $_lightbox = new view();
+    
+    $_lightbox->snippets = array(
+      'id' => 'lightbox-'.$name,
     );
     
-    return $_modal->stitch('views/modal');
+    document::$snippets['foot_tags']['lightbox-'.$_lightbox->snippets['id']] = $_lightbox->stitch('views/lightbox');
+    
+    return $_lightbox->snippets['id'];
+  }
+
+  function draw_modal($type) {
+    
+    $_modal = new view();
+    
+    $_modal->snippets = array(
+      'id' => $type,
+    );
+    
+    document::$snippets['foot_tags']['modal-'.$type] = $_modal->stitch('views/modal_'.$type);
+    /*
+    . '<script>' . PHP_EOL
+    . '  $("<?php echo $selector; ?>").click(function(){' . PHP_EOL
+    . '  $(".modal-body").empty();' . PHP_EOL
+    . '  $(".modal-title").html($(this).parent("a").attr("title"));' . PHP_EOL
+    . '  $($(this).parents("div").html()).appendTo(".modal-body");' . PHP_EOL
+    . '  $("#'. $id .'").modal({show:true});'
+    . '</script>';
+    */
+    
+    return $_modal->snippets['id'];
   }
   
   function draw_pagination($pages) {
