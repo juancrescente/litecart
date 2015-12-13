@@ -1,7 +1,9 @@
 <?php if ($listing_type == 'column') { ?>
   <div class="col-xs-6 col-sm-4 col-md-3">
     <div class="thumbnail">
-      <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+      <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($lightbox_id); ?>">
+        <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+      </a>
       <div class="caption">
         <h3><?php echo $name; ?></h3>
         <p><?php echo $manufacturer_name; ?></p>
@@ -15,7 +17,7 @@
   <div class="col-md-12">
     <div class="row thumbnail">
       <div class="col-md-3">
-        <a href="<?php echo htmlspecialchars($image['orignial']); ?>" data-toggle="modal" data-target="<?php echo htmlspecialchars($modal); ?>">
+        <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($lightbox_id); ?>">
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
         </a>
       </div>
