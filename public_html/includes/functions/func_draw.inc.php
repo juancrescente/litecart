@@ -95,6 +95,15 @@
   
   function draw_lightbox($name='default') {
     
+    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lighbox/ekko-lightbox.min.css">';
+    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lighbox/ekko-lightbox.min.js"></script>'
+                                                      . '<script>' . PHP_EOL
+                                                      . '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
+                                                      . '    event.preventDefault();' . PHP_EOL
+                                                      . '    $(this).ekkoLightbox();' . PHP_EOL
+                                                      . '  });' . PHP_EOL
+                                                      . '</script>';
+    
     $_lightbox = new view();
     
     $_lightbox->snippets = array(
