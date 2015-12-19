@@ -108,10 +108,7 @@
     'sticker' => '',
     'lightbox_id' => functions::draw_lightbox(),
     'extra_images' => array(),
-    'manufacturer_id' => !empty($product->manufacturer['id']) ? $product->manufacturer['id'] : '',
-    'manufacturer_name' => !empty($product->manufacturer['name']) ? $product->manufacturer['name'] : '',
-    'manufacturer_image' => !empty($product->manufacturer['image']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60) : '',
-    'manufacturer_url' => !empty($product->manufacturer['id']) ? document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])) : '',
+    'manufacturer' => array(),
     'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
     'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : 0,
     'regular_price_value' => tax::get_price($product->price, $product->tax_class_id),
@@ -158,6 +155,16 @@
     $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+  }
+  
+// Manufacturer
+  if (!empty($product->manufacturer['id'])) {
+    $_page->snippets['manufacturer'] = array(
+      'id' => $product->manufacturer['id'],
+      'name' => $product->manufacturer['name'],
+      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60),
+      'link' => document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])),
+    );
   }
   
 // Tax
