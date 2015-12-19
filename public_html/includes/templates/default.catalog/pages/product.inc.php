@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6">
     <div class="thumbnail">
-      <a href="<?php echo htmlspecialchars($image['original']); ?>">
+      <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo $lighbox_id; ?>" data-gallery="product">
         <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
       </a>
     </div>
@@ -11,7 +11,7 @@
       <?php foreach ($extra_images as $image) { ?>
       <div class="col-md-4">
         <div class="thumbnail">
-          <a href="<?php echo htmlspecialchars($image['original']); ?>">
+          <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo $lighbox_id; ?>" data-gallery="product">
             <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
           </a>
         </div>

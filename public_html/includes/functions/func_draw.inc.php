@@ -74,12 +74,19 @@
       ),
       'sticker' => $sticker,
       'lightbox_id' => functions::draw_lightbox(),
-      'manufacturer_name' => $product['manufacturer_name'],
+      'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
       'quantity' => $product['quantity'],
       'campaign_price' => $product['campaign_price'] ? currency::format(tax::get_price($product['campaign_price'], $product['tax_class_id'])) : null,
     );
+    
+    if (!empty($product['manufacturer_id'])) {
+      $listing_product->snippets['manufacturer'] = array(
+        'id' => $product['manufacturer_id'],
+        'name' => $product['manufacturer_name'],
+      );
+    }
     
   // Watermark Original Image
     if (settings::get('product_image_watermark')) {
@@ -95,8 +102,8 @@
   
   function draw_lightbox($name='default') {
     
-    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lighbox/ekko-lightbox.min.css">';
-    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lighbox/ekko-lightbox.min.js"></script>'
+    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.css">';
+    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.js"></script>'
                                                       . '<script>' . PHP_EOL
                                                       . '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
                                                       . '    event.preventDefault();' . PHP_EOL
