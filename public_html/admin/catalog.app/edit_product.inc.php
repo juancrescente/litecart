@@ -94,8 +94,6 @@
     header('Location: '. document::link('', array('app' => $_GET['app'], 'doc' => 'catalog', 'category_id' => $_POST['categories'][0])));
     exit();
   }
-  
-  document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($product->data['id'])) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?></h1>
   
@@ -111,19 +109,19 @@
   
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
   
-  <div class="tabs">
+  <div class="">
   
-    <ul class="index">
-      <li><a href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-      <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
-      <li><a href="#tab-data"><?php echo language::translate('title_data', 'Data'); ?></a></li>
-      <li><a href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
-      <li><a href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
-      <li><a href="#tab-options-stock"><?php echo language::translate('title_options_stock', 'Options Stock'); ?></a></li>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-data"><?php echo language::translate('title_data', 'Data'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-prices"><?php echo language::translate('title_prices', 'Prices'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-options"><?php echo language::translate('title_options', 'Options'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-options-stock"><?php echo language::translate('title_options_stock', 'Options Stock'); ?></a></li>
     </ul>
     
-    <div class="content">
-      <div id="tab-general">
+    <div class="tab-content">
+      <div id="tab-general" class="tab-pane active">
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
@@ -368,7 +366,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         </table>
       </div>
     
-      <div id="tab-information">
+      <div id="tab-information" class="tab-pane">
         <table>
           <tr>
             <td>
@@ -384,7 +382,7 @@ foreach (array_keys(language::$languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_keywords', 'Keywords'); ?></strong><br />
-              <?php echo functions::form_draw_text_field('keywords', true, 'data-size="large"'); ?>
+              <?php echo functions::form_draw_tags_field('keywords', true, 'data-size="large"'); ?>
             </td>
           </tr>
           <tr>
@@ -438,7 +436,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         </table>
       </div>
       
-      <div id="tab-data">
+      <div id="tab-data" class="tab-pane">
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_sku', 'SKU'); ?></strong> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a><br />
@@ -484,7 +482,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         </table>
       </div>
       
-      <div id="tab-prices">
+      <div id="tab-prices" class="tab-pane">
         <h2><?php echo language::translate('title_prices', 'Prices'); ?></h2>
         
         <table>
@@ -785,7 +783,7 @@ foreach (currency::$currencies as $currency) {
         </script>
       </div>
       
-      <div id="tab-options">
+      <div id="tab-options" class="tab-pane">
         <h2><?php echo language::translate('title_options', 'Options'); ?></h2>
         <table id="table-options">
           <tr>
@@ -907,7 +905,7 @@ foreach (currency::$currencies as $currency) {
         </script>
       </div>
       
-      <div id="tab-options-stock">
+      <div id="tab-options-stock" class="tab-pane">
         <h2><?php echo language::translate('title_options_stock', 'Options Stock'); ?></h2>
         <table id="table-options-stock">
           <tr>

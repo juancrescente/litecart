@@ -64,9 +64,6 @@
     header('Location: '. document::link('', array('doc' => 'catalog', 'category_id' => $_POST['parent_id']), array('app')));
     exit();
   }
-  
-  document::$snippets['head_tags']['jquery-tabs'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.tabs.js"></script>';
-
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($category->data['id'])) ? language::translate('title_add_new_category', 'Add New Category') : language::translate('title_edit_category', 'Edit Category') .': '. $category->data['name'][language::$selected['code']]; ?></h1>
 
@@ -77,15 +74,15 @@
 ?>
 <?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
   
-  <div class="tabs">
+  <div class="">
   
-    <ul class="index">
-      <li><a href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
-      <li><a href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
+      <li role="presentation"><a data-toggle="tab" href="#tab-information"><?php echo language::translate('title_information', 'Information'); ?></a></li>
     </ul>
     
-    <div class="content">
-      <div id="tab-general">
+    <div class="tab-content">
+      <div id="tab-general" class="tab-pane active">
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
@@ -158,7 +155,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         </table>
       </div>
     
-      <div id="tab-information">
+      <div id="tab-information" class="tab-pane">
         <table>
           <tr>
             <td><strong><?php echo language::translate('title_h1_title', 'H1 Title'); ?></strong><br />
