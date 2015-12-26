@@ -74,6 +74,7 @@
       ),
       'sticker' => $sticker,
       'lightbox_id' => functions::draw_lightbox(),
+      'modal_id' => functions::draw_modal(),
       'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
@@ -122,24 +123,15 @@
     return $_lightbox->snippets['id'];
   }
 
-  function draw_modal($type) {
+  function draw_modal($name='default') {
     
     $_modal = new view();
     
     $_modal->snippets = array(
-      'id' => $type,
+      'id' => 'modal-'.$name,
     );
     
-    document::$snippets['foot_tags']['modal-'.$type] = $_modal->stitch('views/modal_'.$type);
-    /*
-    . '<script>' . PHP_EOL
-    . '  $("<?php echo $selector; ?>").click(function(){' . PHP_EOL
-    . '  $(".modal-body").empty();' . PHP_EOL
-    . '  $(".modal-title").html($(this).parent("a").attr("title"));' . PHP_EOL
-    . '  $($(this).parents("div").html()).appendTo(".modal-body");' . PHP_EOL
-    . '  $("#'. $id .'").modal({show:true});'
-    . '</script>';
-    */
+    document::$snippets['foot_tags']['modal-'.$name] = $_modal->stitch('views/modal');
     
     return $_modal->snippets['id'];
   }
