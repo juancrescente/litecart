@@ -1,28 +1,25 @@
 <?php
   
-  function form_draw_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters='') {
-    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
+  function form_draw_form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
+    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" role="form" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
           . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', form::session_post_token()) . PHP_EOL : '');
   }
   
-  function form_draw_protected_form_begin($name='', $method='post', $action=false, $multipart=false, $parameters=false) {
+  function form_draw_protected_form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
+
+    document::$snippets['javascript']['form_protect'] = '  $("form").submit(function() {' . PHP_EOL
+                                                      . '    $(this).find(".changed-input").each(function(){' . PHP_EOL
+                                                      . '      $(this).removeClass("unsaved");' . PHP_EOL
+                                                      . '    });' . PHP_EOL
+                                                      . '  });' . PHP_EOL
+                                                      . '  $(window).on("beforeunload", function(){' . PHP_EOL
+                                                      . '    if ($(".unsaved").length) return "'. htmlspecialchars(language::translate('warning_changes_will_go_lost', 'Any changes will go lost!')) .'";' . PHP_EOL
+                                                      . '  });';
     
-    document::$snippets['head_tags'][] = '<script>' . PHP_EOL
-                                       . '  $(document).ready(function(){' . PHP_EOL
-                                       . '    $("form[name=\''. $name .'\']").on("change keyup keydown", ":input", function(){' . PHP_EOL
-                                       . '      $(this).addClass("unsaved");' . PHP_EOL
-                                       . '    });' . PHP_EOL
-                                       . '    $("form").submit(function() {' . PHP_EOL
-                                       . '      $(this).find(".changed-input").each(function(){' . PHP_EOL
-                                       . '        $(this).removeClass("unsaved");' . PHP_EOL
-                                       . '      });' . PHP_EOL
-                                       . '    });' . PHP_EOL
-                                       . '    $(window).on("beforeunload", function(){' . PHP_EOL
-                                       . '      if ($(".unsaved").length) return "'. htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) .'";' . PHP_EOL
-                                       . '    });' . PHP_EOL
-                                       . '  });' . PHP_EOL
-                                       . '</script>' . PHP_EOL;
-    
+    document::$snippets['javascript']['form[name='.$name.']'] = '  $("form[name=\''. $name .'\']").on("change keyup keydown", ":input", function(){' . PHP_EOL
+                                                              . '    $(this).addClass("unsaved");' . PHP_EOL
+                                                              . '  });' . PHP_EOL;
+
     return form_draw_form_begin($name, $method, $action, $multipart, $parameters);
   }
   
@@ -115,8 +112,8 @@
                                                                         . '    });' . PHP_EOL
                                                                         . '  });';
     
-    //return '<span class="input-wrapper">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
-    return '<span class="input-wrapper"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
+    //return '<span class="input-group">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
+    return '<span class="input-group"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='') {
@@ -221,7 +218,7 @@
       }
     }
     
-    return '<a class="button" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
+    return '<a class="btn btn-default" href="'. htmlspecialchars($url) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. ((!empty($icon)) ? $icon . ' ' : false) . $title .'</a>';
   }
   
   function form_draw_month_field($name, $value=true, $parameters='') {
@@ -273,19 +270,31 @@
 
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    return '<inpu class="form-control"t type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<input class="form-control" type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_text_field($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
   
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
+    
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_textarea($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
   
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="form-control" class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
+//    return '<span class="form-control" class="input-group" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '.  .'</span>';
+    
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon" style="vertical-align: top;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /></span>' . PHP_EOL
+         . '  ' . form_draw_wysiwyg_field($name, $value, $parameters) . PHP_EOL
+         . '</div>';
   }
   
   function form_draw_search_field($name, $value=true, $parameters='') {
@@ -326,6 +335,10 @@
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
+    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
+    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
+    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize();';
+    
     $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
@@ -343,75 +356,22 @@
   }
   
   function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null) {
+    trigger_error('form_draw_select2_field() is deprecated. Use instead form_draw_select_field', E_USER_DEPRECATED);
+  }
+  
+  function form_draw_tags_field($name, $options=array(), $input=true, $delimiter=',', $parameters='') {
     
     if (!is_array($options)) $options = array($options);
     
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
-    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/select2.min.css" />' . PHP_EOL
-                                                . '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/select2-bootstrap.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['select2'] =  '<script src="'. WS_DIR_EXT .'select2/select2.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'select2/i18n/'. language::$selected['code'] .'.js"></script>';
-                                               
-    if (!empty($ajax_url)) {
-      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
-                                          . '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
-                                          . '    minimumInputLength: 1,' . PHP_EOL
-                                          . '    ajax: {' . PHP_EOL
-                                          . '      url: "'. $ajax_url .'",' . PHP_EOL
-                                          . '      cache: false,' . PHP_EOL
-                                          . '      dataType: "json",' . PHP_EOL
-                                          . '      delay: 250,' . PHP_EOL
-                                          . '      data: function(params) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          query: params.term,' . PHP_EOL
-                                          . '          page: params.page || 1' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          /*
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: data' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      }' . PHP_EOL
-                                          */
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        var results = [];' . PHP_EOL
-                                          . '        $.each(data, function(i, v) {' . PHP_EOL
-                                          . '          var o = {};' . PHP_EOL
-                                          . '          o.id = v.id;' . PHP_EOL
-                                          . '          o.text = v.name;' . PHP_EOL
-                                          . '          results.push(o);' . PHP_EOL
-                                          . '        });' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: results' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          . '    }' . PHP_EOL
-                                          //.   '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
-                                          //.   '  templateResult: formatRepo,' . PHP_EOL
-                                          //.   '  templateSelection: formatRepoSelection' . PHP_EOL
-                                          . '  });' . PHP_EOL
-                                          . '});';
-    } else {
-      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
-                                          . '  $(\'select[name="'.$name.'"]\').select2();' . PHP_EOL
-                                          . '});';
-    }
+    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
+    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'select2/select2.min.js"></script>';
+    document::$snippets['javascript']['input[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize({' . PHP_EOL
+                                                                  . '  delimiter: "'. $delimiter .'"' . PHP_EOL
+                                                                  . '});';
     
-    $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-    
-    foreach ($options as $option) {
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-      
-      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-    }
-    
-    $html .= '</select>';
+    $html = '<input class="form-control" type="text" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .' />' . PHP_EOL;
     
     return $html;
   }
@@ -461,7 +421,12 @@
         break;
     }
     
-    return '<label><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label> <label><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>';
+    return '<div>' . PHP_EOL
+         . '  <div class="btn-group" data-toggle="buttons">'. PHP_EOL
+         . '    <label class="btn btn-default'. (($input == '1') ? ' active' : '') .'"><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
+         . '    <label class="btn btn-default'. (($input == '0') ? ' active' : '') .'"><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
+         . '  </div>' . PHP_EOL
+         . '</div>';
   }
   
   function form_draw_time_field($name, $value=true, $parameters='') {
@@ -486,12 +451,12 @@
     
     if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
     
-    document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
-                                                 . '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                 . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>';
     
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
@@ -684,7 +649,7 @@
       $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
     
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"');
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"');
   }
   
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
@@ -728,7 +693,7 @@
       }
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"', document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"', document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
   }
   
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
