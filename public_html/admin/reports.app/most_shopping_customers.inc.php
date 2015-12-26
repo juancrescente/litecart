@@ -15,20 +15,16 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 
-<div style="float: right; display: inline;">
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app'); ?>
-    <?php echo functions::form_draw_hidden_field('doc'); ?>
-    <table>
-      <tr>
-        <td><?php echo language::translate('title_date_period', 'Date Period'); ?>:</td>
-        <td><?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></td>
-        <td><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></td>
-      </tr>
-    </table>
-  <?php echo functions::form_draw_form_end(); ?>
-</div>
-
+<?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+  <?php echo functions::form_draw_hidden_field('app'); ?>
+  <?php echo functions::form_draw_hidden_field('doc'); ?>
+  <ul class="list-inline pull-right">
+    <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
+    <li style="white-space: nowrap;"><?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></li>
+    <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+  </ul>
+<?php echo functions::form_draw_form_end(); ?>
+  
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_shopping_customers', 'Most Shopping Customers'); ?></h1>
 
 <table class="table table-striped data-table">

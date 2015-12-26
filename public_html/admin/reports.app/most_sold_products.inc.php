@@ -21,20 +21,16 @@
 }
 </style>
 
-<div style="float: right; display: inline;">
-  <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
-    <?php echo functions::form_draw_hidden_field('app'); ?>
-    <?php echo functions::form_draw_hidden_field('doc'); ?>
-    <table>
-      <tr>
-        <td><?php echo language::translate('title_item_name', 'Item Name'); ?>: <?php echo functions::form_draw_search_field('name'); ?></td>
-        <td><?php echo language::translate('title_date_period', 'Date Period'); ?>: <?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></td>
-        <td><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></td>
-      </tr>
-    </table>
-  <?php echo functions::form_draw_form_end(); ?>
-</div>
-
+<?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
+  <?php echo functions::form_draw_hidden_field('app'); ?>
+  <?php echo functions::form_draw_hidden_field('doc'); ?>
+  <ul class="list-inline pull-right">
+    <li><?php echo language::translate('title_item_name', 'Item Name'); ?>: <?php echo functions::form_draw_search_field('name'); ?></li>
+    <li style="white-space: nowrap;"><?php echo language::translate('title_date_period', 'Date Period'); ?>: <?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></li>
+    <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
+  </ul>
+<?php echo functions::form_draw_form_end(); ?>
+  
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_most_sold_products', 'Most Sold Products'); ?></h1>
 
 <table class="table table-striped data-table">
