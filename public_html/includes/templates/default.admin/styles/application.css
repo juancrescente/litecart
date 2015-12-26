@@ -19,27 +19,16 @@ a:hover, a:active{
   text-decoration: underline;
 }
 
-h1{
-  font: 1.5em;
-  font-weight: normal;
-}
-h2{
-  font: 1.3em;
-  font-weight: normal;
-}
-h3{
-  font: 1.1em;
-  font-weight: normal;
+tr.semi-transparent td {
+  opacity: 0.5;
 }
 
-hr {
-  margin: 10px 0;
-  width: 100%;
-  height: 1px;
-  border: none;
-  border-bottom: 1px #ccc dotted;
+.shadow {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-img {
-  border: none;
+h1 .icon-wrapper {
+  font-size: 18px;
+  vertical-align: text-bottom;
+  font-weight: normal;
 }

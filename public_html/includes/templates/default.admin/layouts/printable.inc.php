@@ -3,11 +3,9 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="print, screen" />
-<link rel="stylesheet" href="{snippet:template_path}styles/printable.css" media="print, screen" />
+<link rel="stylesheet" href="{snippet:template_path}styles/application.css" />
+<link rel="stylesheet" href="{snippet:template_path}styles/printable.css" />
 <!--snippet:head_tags-->
-<!--snippet:styles-->
-<!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
 <script>
   window.onload = function() {
@@ -21,5 +19,6 @@
 <!--snippet:content-->
 
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>

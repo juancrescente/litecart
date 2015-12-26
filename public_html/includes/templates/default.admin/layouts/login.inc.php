@@ -6,13 +6,12 @@
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" href="{snippet:template_path}styles/loader.css" media="print, screen" />
 <!--snippet:head_tags-->
-<!--snippet:styles-->
-<!--snippet:javascript-->
 </head>
 <body>
 
 <!--snippet:content-->
 
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>
