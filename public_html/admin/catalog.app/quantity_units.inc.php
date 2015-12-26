@@ -1,7 +1,10 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_quantity_unit'), true), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_quantity_unit'), true), language::translate('title_add_new_unit', 'Add New Unit'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_quantity_units', 'Quantity Units'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('quantity_units_form', 'post'); ?>
@@ -12,7 +15,7 @@
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th width="100%"><?php echo language::translate('title_description', 'Description'); ?></th>
+        <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -36,7 +39,7 @@
       <td><?php echo $quantity_unit['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>"><?php echo $quantity_unit['name']; ?></a></td>
       <td><?php echo $quantity_unit['description']; ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_quantity_unit', 'quantity_unit_id' => $quantity_unit['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

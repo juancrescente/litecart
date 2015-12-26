@@ -61,12 +61,12 @@
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th style="text-align: center;">&nbsp;</th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th>&nbsp;</th>
         <th><?php echo language::translate('title_version', 'Version'); ?></th>
         <th><?php echo language::translate('title_developer', 'Developer'); ?></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_priority', 'Priority'); ?></th>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -77,20 +77,20 @@
     foreach ($modules->modules as $module) {
       $num_module_rows++;
 ?>
-      <tr class="row<?php echo empty($module->status) ? ' semi-transparent' : null; ?>">
+      <tr class="<?php echo empty($module->status) ? ' semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
         <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
         <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
-        <td style="text-align: center;"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
+        <td class="text-center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
         <?php } else { ?>
-        <td style="text-align: center;"></td>
+        <td class="text-center"></td>
         <?php } ?>
-        <td style="text-align: right;"><?php echo $module->version; ?></td>
+        <td class="text-right"><?php echo $module->version; ?></td>
         <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
         <td><?php echo $module->id; ?></td>
-        <td style="text-align: center;"><?php echo $module->priority; ?></td>
-        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-center"><?php echo $module->priority; ?></td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
     }

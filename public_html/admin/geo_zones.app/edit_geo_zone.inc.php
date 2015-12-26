@@ -70,6 +70,7 @@
         <th style="vertical-align: text-top;"><?php echo language::translate('title_country', 'Country'); ?></th>
         <th style="vertical-align: text-top;"><?php echo language::translate('title_zone', 'Zone'); ?></th>
         <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
+        <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>

@@ -1,7 +1,10 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_geo_zone'), true, array('geo_zone_id')), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_geo_zone'), true, array('geo_zone_id')), language::translate('title_add_new_geo_zone', 'Add New Geo Zone'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_geo_zones', 'Geo Zones'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
@@ -11,7 +14,7 @@
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th><?php echo language::translate('title_zones', 'Zones'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -35,8 +38,8 @@
       <td><?php echo functions::form_draw_checkbox('geo_zones['. $geo_zone['id'] .']', $geo_zone['id']); ?></td>
       <td><?php echo $geo_zone['id']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>"><?php echo $geo_zone['name']; ?></a></td>
-      <td><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = '". (int)$geo_zone['id'] ."'")); ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      <td class="text-center"><?php echo database::num_rows(database::query("select id from ". DB_TABLE_ZONES_TO_GEO_ZONES ." where geo_zone_id = '". (int)$geo_zone['id'] ."'")); ?></td>
+      <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_geo_zone', 'geo_zone_id' => $geo_zone['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

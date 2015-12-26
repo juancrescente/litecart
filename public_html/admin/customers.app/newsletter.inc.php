@@ -27,7 +27,7 @@
 
 <h2><?php echo language::translate('title_list_of_subscribers', 'List of Subscribers'); ?></h2>
 
-<ul class="list-horizontal">
+<ul class="list-inline">
   <li><a href="<?php echo document::href_link('', array('template' => 'raw'), array('app', 'doc')); ?>">Raw</a></li>
   <li><a href="<?php echo document::href_link('', array('template' => 'email'), array('app', 'doc')); ?>">Email Formatted</a></li>
   <li><a href="<?php echo document::href_link('', array('template' => 'csv'), array('app', 'doc')); ?>">CSV</a></li>

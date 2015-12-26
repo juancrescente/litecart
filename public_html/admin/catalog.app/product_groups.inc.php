@@ -1,4 +1,7 @@
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc'=> 'edit_product_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc'=> 'edit_product_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_product_groups', 'Product Groups'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('product_groups_form', 'post'); ?>
@@ -7,8 +10,8 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th class="text-center"><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th><?php echo language::translate('title_values', 'Values'); ?></th>
         <th>&nbsp;</th>
       </tr>

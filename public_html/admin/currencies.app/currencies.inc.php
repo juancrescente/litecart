@@ -48,8 +48,11 @@
     exit;
   }
 ?>
-<div style="float: right;"><?php echo functions::form_draw_form_begin() . functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'fa-refresh') . functions::form_draw_form_end(); ?></div>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_form_begin() . functions::form_draw_button('update_rates', language::translate('title_update_rates', 'Update Rates'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'fa-refresh') . functions::form_draw_form_end(); ?></li>
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_currency'), true), language::translate('title_add_new_currency', 'Add New Currency'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_currencies', 'Currencies'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('currencies_form', 'post'); ?>
@@ -60,14 +63,14 @@
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_code', 'Code'); ?></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_value', 'Value'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_prefix', 'Prefix'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_suffix', 'Suffix'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_store_currency', 'Store Currency'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_priority', 'Priority'); ?></th>
+        <th><?php echo language::translate('title_code', 'Code'); ?></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th><?php echo language::translate('title_prefix', 'Prefix'); ?></th>
+        <th><?php echo language::translate('title_suffix', 'Suffix'); ?></th>
+        <th><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
+        <th><?php echo language::translate('title_store_currency', 'Store Currency'); ?></th>
+        <th><?php echo language::translate('title_priority', 'Priority'); ?></th>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -82,19 +85,19 @@
     
     while ($currency = database::fetch($currencies_query)) {
 ?>
-    <tr class="row<?php echo !$currency['status'] ? ' semi-transparent' : null; ?>">
+    <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('currencies['. $currency['code'] .']', $currency['code']); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($currency['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $currency['id']; ?></td>
       <td><?php echo $currency['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>
-      <td style="text-align: right;"><?php echo $currency['value']; ?></td>
-      <td style="text-align: center;"><?php echo $currency['prefix']; ?></td>
-      <td style="text-align: center;"><?php echo $currency['suffix']; ?></td>
-      <td style="text-align: center;"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? 'x' : ''; ?></td>
-      <td style="text-align: center;"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? 'x' : ''; ?></td>
-      <td style="text-align: right;"><?php echo $currency['priority']; ?></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      <td class="text-right"><?php echo $currency['value']; ?></td>
+      <td class="text-center"><?php echo $currency['prefix']; ?></td>
+      <td class="text-center"><?php echo $currency['suffix']; ?></td>
+      <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+      <td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
+      <td class="text-center"><?php echo $currency['priority']; ?></td>
+      <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
     }

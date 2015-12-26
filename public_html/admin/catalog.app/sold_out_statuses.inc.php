@@ -1,7 +1,10 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_sold_out_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_sold_out_status'), true), language::translate('title_create_new_status', 'Create New Status'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_sold_out_statuses', 'Sold Out Statuses'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('sold_out_statuses_form', 'post'); ?>
@@ -11,7 +14,7 @@
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th><?php echo language::translate('title_orderable', 'Orderable'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -36,8 +39,8 @@
         <td><?php echo functions::form_draw_checkbox('delivery_statuses['. $sold_out_status['id'] .']', $sold_out_status['id']); ?></td>
         <td><?php echo $sold_out_status['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>"><?php echo $sold_out_status['name']; ?></a></td>
-        <td style="text-align: center;"><?php echo !empty($sold_out_status['orderable']) ? 'x' : ''; ?></td>
-        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-center"><?php echo !empty($sold_out_status['orderable']) ? 'x' : ''; ?></td>
+        <td style="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_sold_out_status', 'sold_out_status_id' => $sold_out_status['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
@@ -51,6 +54,10 @@
       </tr>
     </tfoot>
   </table>
+  
+<?php echo functions::form_draw_form_end(); ?>
+  
+<?php echo functions::draw_pagination(ceil(database::num_rows($sold_out_status_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
   $(".data-table input[name='checkbox_toggle']").click(function() {
@@ -67,8 +74,3 @@
     $(this).find('input:checkbox').trigger('click');
   });
 </script>
-<?php
-  echo functions::form_draw_form_end();
-  
-  echo functions::draw_pagination(ceil(database::num_rows($sold_out_status_query)/settings::get('data_table_rows_per_page')));
-?>

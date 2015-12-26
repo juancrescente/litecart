@@ -1,4 +1,7 @@
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier')), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier')), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
+</ul>  
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('suppliers_form', 'post'); ?>
@@ -7,7 +10,7 @@
     <thead>
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
-        <th width="100%"><?php echo language::translate('title_name', 'Name'); ?></th>
+        <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th>&nbsp;</th>
       </tr>
     </thead>

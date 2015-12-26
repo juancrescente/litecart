@@ -7,11 +7,11 @@
       <tr>
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th width="100%"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_amount', 'Amount'); ?></th>
-        <th style="text-align: center;"><?php echo language::translate('title_date', 'Date'); ?></th>
-        <th style="text-align: center;">&nbsp;</th>
+        <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+        <th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+        <th><?php echo language::translate('title_amount', 'Amount'); ?></th>
+        <th><?php echo language::translate('title_date', 'Date'); ?></th>
+        <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
@@ -32,12 +32,12 @@
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
-      <tr class="row<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
+      <tr class="<?php echo ($order['order_status_id'] == 0) ? ' semi-transparent' : null; ?>">
         <td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
         <td><?php echo $order['id']; ?></td>
         <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
-        <td style="text-align: center;"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
-        <td style="text-align: right;"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
+        <td><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
+        <td><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
         <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
         <td>
           <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="modal" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>

@@ -55,11 +55,11 @@ ul.filter li {
 }
 </style>
 
-<ul class="filter list-horizontal" style="float: right;">
-  <?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
-  <?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
+<?php echo functions::form_draw_form_begin('search_form', 'get', document::link('')); ?>
+<?php echo functions::form_draw_hidden_field('app') . functions::form_draw_hidden_field('doc'); ?>
+<ul class="filter list-inline pull-right">
   <li>
-  <?php echo language::translate('title_find', 'Find'); ?>
+    <?php echo language::translate('title_find', 'Find'); ?>
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
   </li>
   
@@ -104,12 +104,10 @@ ul.filter li {
     <?php foreach (array_merge(array('en'), array_keys(language::$languages)) as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
   </li>
   
-  <li>
-    <?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?>
-  </li>
-  <?php echo functions::form_draw_form_end(); ?>
+  <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>
 </ul>
-
+<?php echo functions::form_draw_form_end(); ?>
+  
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>

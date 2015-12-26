@@ -1,7 +1,10 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_rate'), true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_tax_rate'), true), language::translate('title_add_new_tax_rate', 'Add New Tax Rate'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_tax_rates', 'Tax Rates'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('tax_rates_form', 'post'); ?>
@@ -14,7 +17,7 @@
         <th><?php echo language::translate('title_tax_class', 'Tax Class'); ?></th>
         <th><?php echo language::translate('title_geo_zone', 'Geo Zone'); ?></th>
         <th><?php echo language::translate('title_name', 'Name'); ?></th>
-        <th style="width: 100%;"><?php echo language::translate('title_description', 'Description'); ?></th>
+        <th class="main"><?php echo language::translate('title_description', 'Description'); ?></th>
         <th><?php echo language::translate('title_rate', 'Rate'); ?></th>
         <th><?php echo language::translate('title_type', 'Type'); ?></th>
         <th>&nbsp;</th>
@@ -45,7 +48,7 @@
         <td><?php echo $tax_rate['description']; ?></td>
         <td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
         <td><?php echo $tax_rate['type']; ?></td>
-        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_tax_rate', 'tax_rate_id' => $tax_rate['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;

@@ -17,7 +17,10 @@
     }
   }
 ?>
-<div style="float: right;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_user'), true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></div>
+<ul class="list-inline pull-right">
+  <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_user'), true), language::translate('title_create_new_user', 'Create New User'), '', 'add'); ?></li>
+</ul>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_users', 'Users'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('users_form', 'post'); ?>
@@ -27,7 +30,7 @@
       <tr>
         <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
         <th></th>
-        <th style="width: 100%;"><?php echo language::translate('title_username', 'Username'); ?></th>
+        <th class="main"><?php echo language::translate('title_username', 'Username'); ?></th>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -45,11 +48,11 @@
     $page_items = 0;
     while ($user = database::fetch($users_query)) {
 ?>
-    <tr class="row<?php echo !$user['status'] ? ' semi-transparent' : null; ?>">
+    <tr class="<?php echo empty($user['status']) ? 'semi-transparent' : null; ?>">
       <td><?php echo functions::form_draw_checkbox('users['. $user['id'] .']', $user['id']); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($user['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>"><?php echo $user['username']; ?></a></td>
-      <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+      <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_user', 'user_id' => $user['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
     </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
