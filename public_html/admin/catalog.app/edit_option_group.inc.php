@@ -53,51 +53,53 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('form_option_group', 'post'); ?>
+<?php echo functions::form_draw_protected_form_begin('option_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table>
-    <tr>
-      <td><strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-<?php
-  $use_br = false;
-  foreach (array_keys(language::$languages) as $language_code) {
-    if ($use_br) echo '<br />';
-    echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
-    $use_br = true;
-  }
-?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
-<?php
-  $use_br = false;
-  foreach (array_keys(language::$languages) as $language_code) {
-    if ($use_br) echo '<br />';
-    echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"');
-    $use_br = true;
-  }
-?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_required', 'Required'); ?></strong><br />
-        <?php echo functions::form_draw_checkbox('required', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_sort', 'Sort'); ?></strong><br />
-        <?php echo functions::form_draw_radio_button('sort', 'alphabetical', true); ?> <?php echo language::translate('title_alphabetical', 'Alphabetical'); ?><br />
-        <?php echo functions::form_draw_radio_button('sort', 'priority', true); ?> <?php echo language::translate('title_priority', 'Priority'); ?><br />
-        <?php echo functions::form_draw_radio_button('sort', 'product', true); ?> <?php echo language::translate('text_set_by_product', 'Set by product'); ?>
-      </td>
-    </tr>
-    <tr>
-      <td><strong><?php echo language::translate('title_function', 'Function'); ?></strong><br />
-        <?php echo functions::form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), true); ?>
-      </td>
-    </tr>
-  </table>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label><?php echo language::translate('title_description', 'Description'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"'); ?>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_required', 'Required'); ?></label>
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('required', '1', true); ?> <?php echo language::translate('title_required', 'Required'); ?></label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_sort', 'Sort'); ?></label>
+      <div class="radio">
+        <label><?php echo functions::form_draw_radio_button('sort', 'alphabetical', true); ?> <?php echo language::translate('title_alphabetical', 'Alphabetical'); ?></label>
+      </div>
+      <div class="radio">
+        <label><?php echo functions::form_draw_radio_button('sort', 'priority', true); ?> <?php echo language::translate('title_priority', 'Priority'); ?></label>
+      </div>
+      <div class="radio">
+        <label><?php echo functions::form_draw_radio_button('sort', 'product', true); ?> <?php echo language::translate('text_set_by_product', 'Set by product'); ?></label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_function', 'Function'); ?></label>
+      <?php echo functions::form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), true); ?>
+    </div>
+  </div>
+  
   <script>
     $("select[name='function']").change(function() {
       $("div[id^='option-values']").hide();
@@ -143,16 +145,7 @@
 ?>
       <tr>
         <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
-        <td>
-<?php
-      $use_br = false;
-      foreach (array_keys(language::$languages) as $language_code) {
-        if ($use_br) echo '<br />';
-        echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, '');
-        $use_br = true;
-      }
-?>
-        </td>
+        <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
         <td style="text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?> title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
       </tr>
 <?php
@@ -288,6 +281,10 @@
     $('select[name=function]').trigger('change');
   </script>
 
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($option_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></p>
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (!empty($option_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>

@@ -49,16 +49,14 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('form_product_group', 'post'); ?>
+<?php echo functions::form_draw_protected_form_begin('product_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-<?php
-  $use_br = false;
-  foreach (array_keys(language::$languages) as $language_code) {
-    if ($use_br) echo '<br />';
-    echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, '');
-    $use_br = true;
-  }
-?>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
+    </div>
+  </div>
 
   <div id="product-values">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
@@ -84,16 +82,7 @@
 ?>
         <tr>
           <td><?php echo $group_value['id']; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', $group_value['id']); ?></td>
-          <td>
-<?php
-      $use_br = false;
-      foreach (array_keys(language::$languages) as $language_code) {
-        if ($use_br) echo '<br />';
-        echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, '');
-        $use_br = true;
-      }
-?>
-          </td>
+          <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
           <td style="text-align: center;"><?php echo $num_products; ?></td>
           <td style="text-align: right;"><?php echo empty($num_products) ? '<a href="#" id="remove-group-value" title="'. language::translate('title_remove', 'Remove') .'">'. functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"') .'</a>' : false; ?></td>
         </tr>
@@ -110,7 +99,11 @@
 
   </div>
 
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($product_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (!empty($product_group->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
 
@@ -121,12 +114,7 @@
     while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';
-    $use_br = false;
-    foreach (array_keys(language::$languages) as $language_code) {
-      if ($use_br) $name_fields .=  '<br />';
-      $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
-      $use_br = true;
-    }
+    foreach (array_keys(language::$languages) as $language_code) $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
 ?>
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '')); ?></td>'

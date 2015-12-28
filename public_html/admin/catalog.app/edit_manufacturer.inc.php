@@ -75,7 +75,7 @@
   }
 ?>
 
-<?php echo functions::form_draw_form_begin(false, 'post', false, true); ?>
+<?php echo functions::form_draw_protected_form_begin('manufacturer_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
 
   <div class="">
   
@@ -86,117 +86,97 @@
     
     <div class="tab-content">
       <div id="tab-general" class="tab-pane active">
-        <table>
-          <tr>
-            <td><strong><?php echo language::translate('title_status', 'Status'); ?></strong><br />
-              <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong><?php echo language::translate('title_name', 'Name'); ?></strong><br />
-              <?php echo functions::form_draw_text_field('name', true); ?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_code', 'Code'); ?></strong><br />
-              <?php echo functions::form_draw_text_field('code', true); ?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo !empty($manufacturer->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></strong><br />
-            <?php echo functions::form_draw_file_field('image', ''); ?></td>
-          </tr>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_status', 'Status'); ?></label>
+            <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_code', 'Code'); ?></label>
+            <?php echo functions::form_draw_text_field('code', true); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_name', 'Name'); ?></label>
+            <?php echo functions::form_draw_text_field('name', true); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo !empty($manufacturer->data['image']) ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image'); ?></label>
+            <?php echo functions::form_draw_file_field('image', ''); ?>
+          </div>
+          
           <?php if (!empty($manufacturer->data['image'])) { ?>
-          <tr>
-            <td><?php echo $manufacturer->data['image']; ?><br />
-            <?php echo functions::form_draw_checkbox('remove_image', '1', true); ?> <?php echo language::translate('text_remove_image', 'Remove image'); ?></td>
-          </tr>
+          <div class="form-group col-md-6">
+            <label><?php echo $manufacturer->data['image']; ?></label>
+            <?php echo functions::form_draw_checkbox('remove_image', '1', true); ?> <?php echo language::translate('text_remove_image', 'Remove image'); ?>
+          </div>
           <?php } ?>
-          <tr>
-            <td><strong><?php echo language::translate('title_keywords', 'Keywords'); ?></strong><br />
-              <?php echo functions::form_draw_text_field('keywords', true, 'data-size="large"'); ?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_short_description', 'Short Description'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'data-size="large"');  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-        </table>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
+            <?php echo functions::form_draw_text_field('keywords', true, 'data-size="large"'); ?>
+          </div>
+        </div>
       </div>
     
       <div id="tab-information" class="tab-pane">
-        <table>
-          <tr>
-            <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 240px;"');  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_head_title', 'Head Title'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, '');
-  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_h1_title', 'H1 Title'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, '');
-  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_meta_description', 'Meta Description'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"');
-  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-          <tr>
-            <td><strong><?php echo language::translate('title_link', 'Link'); ?></strong><br />
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '<br />';
-  echo functions::form_draw_regional_input_field($language_code, 'link['. $language_code .']', true, 'data-size="large"');  $use_br = true;
-}
-?>
-            </td>
-          </tr>
-        </table>
+      
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'data-size="large"'); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label><?php echo language::translate('title_description', 'Description'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 240px;"'); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, ''); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_h1_title', 'H1 Title'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'h1_title['. $language_code .']', true, ''); ?>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label><?php echo language::translate('title_link', 'Link'); ?></label>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'link['. $language_code .']', true, 'data-size="large"'); ?>
+          </div>
+        </div>
       </div>
     </div>
   </div>  
   
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
+  <p class="btn-group">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+    <?php echo (!empty($manufacturer->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+  </p>
   
 <?php echo functions::form_draw_form_end(); ?>

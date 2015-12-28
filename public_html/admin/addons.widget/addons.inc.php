@@ -1,7 +1,8 @@
 <?php
   
   $widget_addons_cache_id = cache::cache_id('widget_addons');
-  if (cache::capture($widget_addons_cache_id, 'file', 43200, true)) {
+  //if (cache::capture($widget_addons_cache_id, 'file', 43200, true)) {
+  if (cache::capture($widget_addons_cache_id, 'file', 0, true)) {
     
     $url = document::link('https://www.litecart.net/feeds/addons', array('whoami' => document::ilink(''), 'version' => PLATFORM_VERSION));
     
@@ -26,50 +27,35 @@
       $count = 0;
       $total = 0;
       foreach ($rss->channel->item as $item) {
-        if (!isset($count) || $count == 3) {
+        $col++;
+        if (!isset($count) || $count == 6) {
           $count = 0;
-          $col++;
         }
         $columns[$col][] = $item;
         $count++;
         $total++;
-        if ($total == 12) break;
+        if ($total == 18) break;
       }
 ?>
 <div class="widget">
-  <table>
-    <tr>
-      <th colspan="4"><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></th>
-    </tr>
-    <tr>
-<?php
-      foreach ($columns as $column) {
-        echo '<td style="vertical-align: top;">' . PHP_EOL
-           . '  <table style="width: 100%;">' . PHP_EOL;
-        foreach ($column as $item) {
-          if (!isset($rowclass) || $rowclass == 'even') {
-            $rowclass = 'odd';
-          } else {
-            $rowclass = 'even';
-          }
-?>
-    <tr>
-      <td><?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
-        <span style="color: #666;"><?php echo (string)$item->description; ?></span>
-      </td>
-    </tr>
-<?php
-        }
-        echo '  </table>' . PHP_EOL
-           . '</td>' . PHP_EOL;
-      }
-?>
-    </tr>
-  </table>
+  <strong><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></strong>
+  <div class="row">
+    <?php foreach (array_keys($columns) as $key) { ?>
+    <div class="col-sm-4 col-md-3 col-lg-2">
+      <ul class="list-unstyled">
+        <?php foreach ($columns[$key] as $item) { ?>
+        <li style="margin-bottom: 0.5em;">
+          <?php //echo strftime('%e %b', strtotime((string)$item->pubDate)) . ' - '; ?><a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
+          <span style="color: #666;"><?php echo (string)$item->description; ?></span>
+        </li>
+        <?php } ?>
+      </ul>
+    </div>
+    <?php } ?>
+  </div>
 </div>
 <?php
     }
-  
     cache::end_capture($widget_addons_cache_id);
   }
 ?>
