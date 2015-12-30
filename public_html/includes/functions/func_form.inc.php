@@ -113,7 +113,7 @@
                                                                         . '  });';
     
     //return '<span class="input-group">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
-    return '<span class="input-group"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
+    return '<div class="input-group"><input class="form-control" type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong class="input-group-addon" style="opacity: 0.5;">'. $currency_code .'</strong></div>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='') {
@@ -366,9 +366,11 @@
     if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'select2/select2.min.js"></script>';
-    document::$snippets['javascript']['input[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize({' . PHP_EOL
-                                                                  . '  delimiter: "'. $delimiter .'"' . PHP_EOL
+    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
+    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'input[name="'.$name.'"]\').selectize({' . PHP_EOL
+                                                                  . '  delimiter: "'. $delimiter .'",' . PHP_EOL
+                                                                  . '  persist: false,' . PHP_EOL
+                                                                  . '  create: function(input){return {value: input,text: input}}' . PHP_EOL
                                                                   . '});';
     
     $html = '<input class="form-control" type="text" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .' />' . PHP_EOL;
@@ -451,26 +453,14 @@
     
     if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
     
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'summernote/summernote.min.css" rel="stylesheet" />';
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'summernote/summernote.min.js"></script>';
     
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
+    return '<textarea class="form-control" name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
-         . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
-         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
-         . '    btnsDef: {' . PHP_EOL
-         . '      image: {' . PHP_EOL
-         . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
-         . '       ico: "insertImage"' . PHP_EOL
-         . '      }' . PHP_EOL
-         . '    },' . PHP_EOL
-         . '    semantic: true,' . PHP_EOL
-         . '    removeformatPasted: true,' . PHP_EOL
-         . '    btns: ["viewHTML", "|", "formatting", "|", "btnGrp-design", "|", "link", "|", "image", "|", "btnGrp-justify", "|", "btnGrp-lists", "|", "foreColor", "backColor", "|", "horizontalRule"],' . PHP_EOL
+         . '  $("textarea[name=\''. $name .'\']").summernote({' . PHP_EOL
+         . '    height: $(\'textarea[name="'. $name .'"]\').height()' . PHP_EOL
+         //. '    toolbar: [ ["style", ["style"]], ["font", ["bold", "italic", "underline", "clear"]], ["fontname", ["fontname"]], ["color", ["color"]], ["para", ["ul", "ol", "paragraph"]], ["height", ["height"]], ["table", ["table"]], ["insert", ["link", "picture", "hr"]], ["view", ["fullscreen", "codeview"]], ["help", ["help"]]]' . PHP_EOL
          . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
   }
