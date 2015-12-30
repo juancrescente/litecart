@@ -8,7 +8,8 @@
         <h3><?php echo $name; ?></h3>
         <p><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></p>
         <p>
-          <!--<a href="#" class="btn btn-primary">Buy Now!</a>--> <a href="<?php echo htmlspecialchars($link) ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
+          <!--<a href="#" class="btn btn-primary">Buy Now!</a>-->
+          <a href="<?php echo htmlspecialchars($link) ?>" data-toggle="lightbox" data-target="#<?php echo htmlspecialchars($lightbox_id); ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
         </p>
       </div>
     </div>
@@ -25,7 +26,8 @@
         <h3><?php echo $name; ?></h3>
         <p><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></p>
         <p>
-          <!--<a href="#" class="btn btn-primary">Buy Now!</a>--> <a href="<?php echo htmlspecialchars($link) ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
+          <!--<a href="#" class="btn btn-primary">Buy Now!</a>-->
+          <a href="<?php echo htmlspecialchars($link) ?>" data-toggle="lightbox" data-target="#<?php echo htmlspecialchars($lightbox_id); ?>" class="btn btn-default"><?php echo language::translate('title_more_info', 'More Info'); ?></a>
         </p>
       </div>
     </div>

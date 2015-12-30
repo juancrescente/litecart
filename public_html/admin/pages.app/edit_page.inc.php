@@ -55,7 +55,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($pages->data['id']) ? language::translate('title_edit_page', 'Edit Page') : language::translate('title_create_new_pages', 'Create New Page'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_protected_form_begin('pages_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">
@@ -65,57 +65,29 @@
     
     <div class="form-group col-md-12">
       <label>
-        <?php echo language::translate('title_title', 'Title'); ?></label>
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '</label>';
-  echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, '');
-  $use_br = true;
-}
-?>
+      <?php echo language::translate('title_title', 'Title'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
     </div>
   </div>
   
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_content', 'Content'); ?></label>
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '</label>';
-  echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"');
-  $use_br = true;
-}
-?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"'); ?>
     </div>
   </div>
   
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '</label>';
-  echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"');
-  $use_br = true;
-}
-?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"'); ?>
     </div>
   </div>
   
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-<?php
-$use_br = false;
-foreach (array_keys(language::$languages) as $language_code) {
-  if ($use_br) echo '</label>';
-  echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"');
-  $use_br = true;
-}
-?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); } ?>
     </div>
   </div>
   

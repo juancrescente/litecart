@@ -1,5 +1,4 @@
-  <?php /*<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">*/ ?>
-  <nav class="navbar navbar-inverse" role="navigation">
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -20,6 +19,7 @@
 
         <ul class="nav navbar-nav navbar-right">
           <li class="btn-group">
+            <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
             <button type="button" class="" data-toggle="dropdown" aria-expanded="false">
               <span class="pull-left"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>: 2 item(s)</span>
               <span class="pull-right"><i class="fa fa-caret-down"></i></span>

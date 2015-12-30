@@ -4,6 +4,7 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>

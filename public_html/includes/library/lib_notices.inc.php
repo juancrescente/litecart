@@ -36,7 +36,7 @@
       
       $notices = array();
       
-      if (!empty(notices::$data)) {
+      if (!empty(array_filter(notices::$data))) {
         document::$snippets['notices'] = '<div id="notices-wrapper" class="container notices">' . PHP_EOL;
         foreach (array_keys(notices::$data) as $type) {
           foreach (notices::$data[$type] as $notice) {
