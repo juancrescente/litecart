@@ -192,32 +192,33 @@
       
       database::query(
         "update ". DB_TABLE_PRODUCTS ." set
-        status = '". (int)$this->data['status'] ."',
-        manufacturer_id = '". (int)$this->data['manufacturer_id'] ."',
-        supplier_id = '". (int)$this->data['supplier_id'] ."',
-        delivery_status_id = '". (int)$this->data['delivery_status_id'] ."',
-        sold_out_status_id = '". (int)$this->data['sold_out_status_id'] ."',
-        default_category_id = '". (int)$this->data['default_category_id']."',
+        status = ". (int)$this->data['status'] .",
+        manufacturer_id = ". (int)$this->data['manufacturer_id'] .",
+        supplier_id = ". (int)$this->data['supplier_id'] .",
+        delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
+        sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
+        default_category_id = ". (int)$this->data['default_category_id'].",
         product_groups = '". database::input(implode(',', $this->data['product_groups'])) ."',
         keywords = '". database::input(rtrim(trim($this->data['keywords']), ',')) ."',
-        quantity = '". database::input($this->data['quantity']) ."',
-        quantity_unit_id = '". (int)$this->data['quantity_unit_id'] ."',
-        purchase_price = '". database::input($this->data['purchase_price']) ."',
+        quantity = ". (float)$this->data['quantity'] .",
+        quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
+        purchase_price = ". (float)$this->data['purchase_price'] .",
+        purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
         tax_class_id = '". database::input($this->data['tax_class_id']) ."',
         code = '". database::input($this->data['code']) ."',
         sku = '". database::input($this->data['sku']) ."',
         gtin = '". database::input($this->data['gtin']) ."',
         taric = '". database::input($this->data['taric']) ."',
-        dim_x = '". (float)$this->data['dim_x'] ."',
-        dim_y = '". (float)$this->data['dim_y'] ."',
-        dim_z = '". (float)$this->data['dim_z'] ."',
+        dim_x = ". (float)$this->data['dim_x'] .",
+        dim_y = ". (float)$this->data['dim_y'] .",
+        dim_z = ". (float)$this->data['dim_z'] .",
         dim_class = '". database::input($this->data['dim_class']) ."',
-        weight = '". (float)$this->data['weight'] ."',
+        weight = ". (float)$this->data['weight'] .",
         weight_class = '". database::input($this->data['weight_class']) ."',
         date_valid_from = ". (empty($this->data['date_valid_from']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_from'])) ."'") .",
         date_valid_to = ". (empty($this->data['date_valid_to']) ? "NULL" : "'". date('Y-m-d H:i:s', strtotime($this->data['date_valid_to'])) ."'") .",
         date_updated = '". date('Y-m-d H:i:s') ."'
-        where id='". (int)$this->data['id'] ."'
+        where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
       
@@ -253,7 +254,7 @@
         database::query(
           "update ". DB_TABLE_PRODUCTS_INFO ." set
           name = '". database::input($this->data['name'][$language_code]) ."',
-          short_description = '". database::input($this->data['short_description'][$language_code]) ."',
+          short_description = '". @database::input($this->data['short_description'][$language_code]) ."',
           description = '". database::input($this->data['description'][$language_code], true) ."',
           head_title = '". database::input($this->data['head_title'][$language_code]) ."',
           meta_description = '". database::input($this->data['meta_description'][$language_code]) ."',
@@ -412,14 +413,14 @@
           database::query(
             "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." 
             set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
-            sku = '". database::input(@$this->data['options_stock'][$key]['sku']) ."',
-            weight = '". database::input(@$this->data['options_stock'][$key]['weight']) ."',
-            weight_class = '". database::input(@$this->data['options_stock'][$key]['weight_class']) ."',
-            dim_x = '". database::input(@$this->data['options_stock'][$key]['dim_x']) ."',
-            dim_y = '". database::input(@$this->data['options_stock'][$key]['dim_y']) ."',
-            dim_z = '". database::input(@$this->data['options_stock'][$key]['dim_z']) ."',
-            dim_class = '". database::input(@$this->data['options_stock'][$key]['dim_class']) ."',
-            quantity = '". database::input(@$this->data['options_stock'][$key]['quantity']) ."',
+            sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
+            weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',
+            weight_class = '". database::input($this->data['options_stock'][$key]['weight_class']) ."',
+            dim_x = '". database::input($this->data['options_stock'][$key]['dim_x']) ."',
+            dim_y = '". database::input($this->data['options_stock'][$key]['dim_y']) ."',
+            dim_z = '". database::input($this->data['options_stock'][$key]['dim_z']) ."',
+            dim_class = '". database::input($this->data['options_stock'][$key]['dim_class']) ."',
+            quantity = '". database::input($this->data['options_stock'][$key]['quantity']) ."',
             priority = '". $i++ ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'
             where product_id = '". (int)$this->data['id'] ."'

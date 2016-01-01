@@ -76,11 +76,11 @@
     while ($order_item = database::fetch($order_items_query)) {
 ?>
     <tr>
-      <td><?php echo $order_item['name']; ?></td>
-      <td style="text-align: center;" class="border-left"><?php echo rtrim($order_item['total_quantity'], '.0'); ?></td>
-      <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
-      <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-    </tr>
+    <td><?php echo $order_item['name']; ?></td>
+    <td style="text-align: center;" class="border-left"><?php echo (float)$order_item['total_quantity']; ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+    <td style="text-align: right;" class="border-left"><?php echo currency::format($order_item['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
+  </tr>
 <?php
       if (++$page_items == settings::get('data_table_rows_per_page')) break;
     }

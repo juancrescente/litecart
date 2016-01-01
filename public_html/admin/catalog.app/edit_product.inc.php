@@ -45,6 +45,7 @@
         'quantity',
         'quantity_unit_id',
         'purchase_price',
+        'purchase_price_currency_code',
         'prices',
         'campaigns',
         'tax_class_id',
