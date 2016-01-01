@@ -28,19 +28,21 @@
       } else {
         self::$template = settings::get('store_template_catalog');
       }
-      
+    
     // Set before-snippets
       self::$snippets['title'] = array(settings::get('store_name'));
       
+      self::$snippets['head_tags']['X-UA-Compatible'] = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
+      
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">';
       
-      self::$snippets['head_tags']['bootstrap'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" media="screen" />';
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" media="screen" />';
+      self::$snippets['head_tags']['bootstrap'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" />';
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
       
       self::$snippets['head_tags']['html5shiv'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/html5shiv"></script><![endif]-->';
       self::$snippets['head_tags']['respond'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/respond"></script><![endif]-->';
       
-      self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6" ></script>';
+      self::$snippets['head_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6" ></script>';
       
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -54,6 +56,14 @@
     }
     
     public static function after_capture() {
+      
+    // Extract javascript
+      if (preg_match_all('#<script(?:.*?)>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['javascript'][] = $match[1];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
     
     // Set after-snippets
       self::$snippets['language'] = language::$selected['code'];

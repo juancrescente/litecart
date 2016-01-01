@@ -1,5 +1,10 @@
 <?php
-  document::$layout = 'column_left';
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+    document::$layout = 'ajax';
+    header('X-Robots-Tag: noindex');
+  } else {
+    document::$layout = 'column_left';
+  }
   
   if (!empty($_GET['product_id'])) {
     $product = catalog::product($_GET['product_id']);
@@ -35,10 +40,9 @@
   );
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id']), false) .'" />';
+  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
   
-  $lightbox_id = functions::draw_lightbox();
-  
-  document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  functions::draw_lightbox();
   
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
     if (count($product->category_ids)) {
@@ -106,7 +110,6 @@
       ),
     ),
     'sticker' => '',
-    'lightbox_id' => functions::draw_lightbox(),
     'extra_images' => array(),
     'manufacturer' => array(),
     'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
@@ -214,11 +217,8 @@
       switch ($group['function']) {
       
         case 'checkbox':
-          $use_br = false;
           
           foreach (array_keys($group['values']) as $value_id) {
-            if ($use_br) $values .= '<br />';
-            
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust']) {
               $price_adjust_text = currency::format(tax::get_price($group['values'][$value_id]['price_adjust'], $product->tax_class_id));
@@ -227,8 +227,9 @@
               }
             }
             
-            $values .= '<label>' . functions::form_draw_checkbox('options['.$group['name'][language::$selected['code']].'][]', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
-            $use_br = true;
+            $values .= '<div class="checkbox">' . PHP_EOL
+                     . '  <label>' . functions::form_draw_checkbox('options['.$group['name'][language::$selected['code']].'][]', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '</div>';
           }
           break;
           
@@ -250,9 +251,7 @@
           
         case 'radio':
         
-          $use_br = false;
           foreach (array_keys($group['values']) as $value_id) {
-            if ($use_br) $values .= '<br />';
             
             $price_adjust_text = '';
             if ($group['values'][$value_id]['price_adjust']) {
@@ -262,7 +261,9 @@
               }
             }
             
-            $values .= '<label>' . functions::form_draw_radio_button('options['.$group['name'][language::$selected['code']].']', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL;
+            $values .= '<div class="radio">' . PHP_EOL
+                     . '  <label>'. functions::form_draw_radio_button('options['.$group['name'][language::$selected['code']].']', $group['values'][$value_id]['name'][language::$selected['code']], true, !empty($group['required']) ? 'required="required"' : '') .' '. $group['values'][$value_id]['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL
+                     . '</div>';
             $use_br = true;
           }
           break;
@@ -321,5 +322,4 @@
   $_page->snippets['box_similar_products'] = ob_get_clean();
   
   echo $_page->stitch('pages/product');
-  
 ?>

@@ -22,10 +22,11 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
-<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" media="screen,print" />
+<!--snippet:head_tags-->
 <link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/theme.css" />
-<!--snippet:head_tags-->
+
 </head>
 <body>
 

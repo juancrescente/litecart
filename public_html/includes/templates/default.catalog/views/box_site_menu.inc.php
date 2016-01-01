@@ -18,34 +18,37 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-          <li class="btn-group">
-            <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
-            <button type="button" class="" data-toggle="dropdown" aria-expanded="false">
-              <span class="pull-left"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_cart', 'Cart'); ?>: 2 item(s)</span>
-              <span class="pull-right"><i class="fa fa-caret-down"></i></span>
-            </button>
-            <ul class="dropdown-menu cart-content" role="menu">
-              <li>
-                <a href="detail.html">
-                  <b>Penn State College T-Shirt</b>
-                  <span>x1 $528.96</span>
-                </a>
-              </li>
-              <li>
-                <a href="detail.html">
-                  <b>Live Nation ACDC Gray T-Shirt</b>
-                  <span>x1 $428.96</span>
-                </a>
-              </li>
-              <li class="divider"></li>
-              <li><a href="cart.html">Total: $957.92</a></li>
-            </ul>
+          <li>
+            <div class="form-inline">
+              <div class="input-group" data-toggle="tooltip" title="<?php echo language::translate('title_cart', 'Cart'); ?>">
+                <a class="input-group-addon" href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?></a>
+                <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+                <div class="form-control">
+                  <div type="button" data-toggle="dropdown" aria-expanded="false">
+                    <span class="pull-left"><span class="num-items">2</span> item(s)</span>
+                    <span class="pull-right" style="margin-left: 1em;"><i class="fa fa-caret-down"></i></span>
+                  </div>
+                  <ul class="items dropdown-menu" role="menu">
+                    <li>
+                      <a href="detail.html">
+                        <b>Penn State College T-Shirt</b>
+                        <span>x1 $528.96</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="detail.html">
+                        <b>Live Nation ACDC Gray T-Shirt</b>
+                        <span>x1 $428.96</span>
+                      </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_total'); ?>: <span class="cart-total-formatted">$957.92</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
-      </div>
-      
-      <div class="">
-
       </div>
     </div>
   </nav>

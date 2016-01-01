@@ -73,8 +73,6 @@
         ),
       ),
       'sticker' => $sticker,
-      'lightbox_id' => functions::draw_lightbox(),
-      'modal_id' => functions::draw_modal(),
       'manufacturer' => array(),
       'short_description' => $product['short_description'],
       'price' => currency::format(tax::get_price($product['price'], $product['tax_class_id'])),
@@ -108,19 +106,11 @@
                                                       . '<script>' . PHP_EOL
                                                       . '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
                                                       . '    event.preventDefault();' . PHP_EOL
-                                                      . '    $(this).ekkoLightbox();' . PHP_EOL
+                                                      . '    $(this).ekkoLightbox({' . PHP_EOL
+                                                      . '      loadingMessage: \'<i class="fa fa-spinner fa-spin"></i>\'' . PHP_EOL  
+                                                      . '    });' . PHP_EOL
                                                       . '  });' . PHP_EOL
                                                       . '</script>';
-    
-    $_lightbox = new view();
-    
-    $_lightbox->snippets = array(
-      'id' => 'lightbox-'.$name,
-    );
-    
-    document::$snippets['foot_tags']['lightbox-'.$_lightbox->snippets['id']] = $_lightbox->stitch('views/lightbox');
-    
-    return $_lightbox->snippets['id'];
   }
 
   function draw_modal($name='default') {
@@ -131,7 +121,18 @@
       'id' => 'modal-'.$name,
     );
     
-    document::$snippets['foot_tags']['modal-'.$name] = $_modal->stitch('views/modal');
+    document::$snippets['foot_tags'][$_modal->snippets['id']] = '<script>' . PHP_EOL
+                                                     . '  $("body").on("hidden.bs.modal", ".modal", function(e){' . PHP_EOL
+                                                     . '    e.preventDefault();' . PHP_EOL
+                                                     . '    var link = $(e.relatedTarget);' . PHP_EOL
+                                                     . '    $(this).find(".modal-body").load(link.attr("href"));' . PHP_EOL
+                                                     . '  });' . PHP_EOL
+                                                     . '  $("body").on("hidden.bs.modal", ".modal", function(){' . PHP_EOL
+                                                     . '    $(this).removeData("bs.modal").find(".modal-body").html("");' . PHP_EOL
+                                                     . '  });' . PHP_EOL
+                                                     . '</script>';
+    
+    document::$snippets['foot_tags'][$_modal->snippets['id']] .= $_modal->stitch('views/modal');
     
     return $_modal->snippets['id'];
   }
