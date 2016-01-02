@@ -1,11 +1,11 @@
 <?php  
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language', isset($_GET['category_id']) ? $_GET['category_id'] : 0, isset($_GET['page_id']) ? $_GET['page_id'] : 0));
+  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language'));
   if (cache::capture($box_site_menu_cache_id, 'file')) {
     
     $box_site_menu = new view();
     
     if (!function_exists('custom_site_menu_category_tree')) {
-      function custom_site_menu_category_tree($parent_id=0, $depth=0, &$output) {
+      function custom_site_menu_category_tree($parent_id=0, $depth=0, $max_depth=1, &$output) {
         
         $categories_query = database::query(
           "select c.id, c.image, ci.name
@@ -46,8 +46,8 @@
             limit 1;"
           );
           
-          if (database::num_rows($subcategories_query) > 0) {
-            custom_site_menu_category_tree($category['id'], $depth+1, $output[$category['id']]['subitems']);
+          if ($depth != $max_depth && database::num_rows($subcategories_query) > 0) {
+            custom_site_menu_category_tree($category['id'], $depth+1, $max_depth, $output[$category['id']]['subitems']);
           }
         }
         
@@ -55,7 +55,7 @@
       }
     }
     
-    custom_site_menu_category_tree(0, 0, $box_site_menu->snippets['items']);
+    custom_site_menu_category_tree(0, 0, 1, $box_site_menu->snippets['items']);
     
     $pages_query = database::query(
       "select p.id, pi.title from ". DB_TABLE_PAGES ." p

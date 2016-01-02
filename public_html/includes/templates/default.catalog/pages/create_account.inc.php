@@ -3,7 +3,7 @@
 
     <h1><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
 
-    <?php echo functions::form_draw_form_begin('customer_form', 'post'); ?>
+    <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
     
       <div class="row">
         <div class="col-md-6">
@@ -121,7 +121,9 @@
         <div class="col-md-6">
           <div class="form-group">
             <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-            <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
+            <div class="checkbox">
+              <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
+            </div>
           </div>
         </div>
         

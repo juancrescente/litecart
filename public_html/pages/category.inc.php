@@ -8,6 +8,8 @@
   if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $_GET['category_id']), false) .'" />';
+  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
+  functions::form_draw_select_field('dummy'); // Load selectize.js script sources
   
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
@@ -28,7 +30,11 @@
   }
   
   foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    breadcrumbs::add($category_name, document::ilink(null, array('category_id' => $category_id)));
+    if ($category_id == $category->id) {
+      breadcrumbs::add($category_name);
+    } else {
+      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+    }
   }
   
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];

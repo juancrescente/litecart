@@ -55,25 +55,38 @@
 
 <?php echo !empty($module->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $module->website .'" target="_blank">'. $module->author .'</a></p>' : false; ?>
 
-<?php echo !empty($module->description) ? '<p style="max-width: 400px;">'. $module->description .'</p>' : false; ?>
+<?php echo !empty($module->description) ? '<p style="max-width: 400px;">'. $module->description .'</p>' : ''; ?>
 
-<?php echo functions::form_draw_form_begin('module_form', 'post'); ?>
+<?php echo functions::form_draw_protected_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table>
-<?php
-  foreach ($module->settings as $setting) {
-?>
-    <tr>
-      <td><strong><?php echo $setting['title']; ?></strong><?php echo !empty($setting['description']) ? '<br />' . $setting['description'] : false; ?><br />
-      <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
-    </tr>
-<?php 
-  }
-?>
+  <table class="table table-striped data-table">
+    <tbody>
+      <?php foreach ($module->settings as $setting) { ?>
+      <tr>
+        <td class="col-md-6">
+          <label><?php echo $setting['title']; ?></label>
+          <?php echo !empty($setting['description']) ? '<p>'.$setting['description'].'</p>' : ''; ?>
+        </td>
+        <td>
+          <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value'], !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+        </td>
+      </tr>
+      <?php } ?>
+      <tr>
+        <td class="col-md-6">
+          <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
+        </td>
+        <td>
+          <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+        </td>
+      </tr>
+    </tbody>
   </table>
   
-  <p><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?> <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></span></p>
+  <p class="button-set">
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+    <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+    <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+  </p>
   
 <?php echo functions::form_draw_form_end(); ?>
-
-<p><a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a></p>

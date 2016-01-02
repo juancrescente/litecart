@@ -10,8 +10,8 @@
     
     <div class="col-md-9">
       {snippet:breadcrumbs}
-     
-      <div id="category">
+      
+      <div id="box-manufacturer" class="box">
         <div class="btn-group pull-right">
 <?php
   $separator = false;
@@ -27,23 +27,22 @@
 ?>
         </div>
         
-        <h1><?php echo $h1_title; ?></h1>
+        <h1 class="title"><?php echo $title; ?></h1>
         
-        <?php if ($_GET['page'] == 1 && $description) { ?><p class="description"><?php echo $description; ?></p><?php } ?>
-      
-        <?php if ($_GET['page'] == 1 && $subcategories) { ?>
-        <div class="subcategories row">
-          <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
-        </div>
-        <?php } ?>
+        <div class="content">
         
-        <?php if ($products) { ?>
-        <div class="products row">
-          <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
-        </div>
-        <?php } ?>
-        
-        <div class="row">
+          <?php if ($_GET['page'] == 1 && $description) { ?>
+          <div class="description-wrapper">
+            <p class="manufacturer-description"><?php echo $description; ?></p>
+          </div>
+          <?php } ?>
+          
+          <?php if ($products) { ?>
+          <ul class="listing-wrapper products">
+            <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+          </ul>
+          <?php } ?>
+          
           <?php echo $pagination; ?>
         </div>
       </div>

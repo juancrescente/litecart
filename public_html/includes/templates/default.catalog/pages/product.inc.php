@@ -2,9 +2,9 @@
 
 <div id="product" class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-4">
       <div class="image thumbnail">
-        <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo $lighbox_id; ?>" data-gallery="product">
+        <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
         </a>
       </div>
@@ -14,7 +14,7 @@
         <?php foreach ($extra_images as $image) { ?>
         <div class="extra-image col-xs-4">
           <div class="thumbnail">
-            <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-target="<?php echo $lighbox_id; ?>" data-gallery="product">
+            <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
               <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
             </a>
           </div>
@@ -24,12 +24,18 @@
       <?php } ?>
     </div>
     
-    <div class="col-md-6">
+    <div class="col-sm-8">
       <div class="caption-full">
       
         <div class="pull-right">
-          <h2>$24.99</h2>
-          <div>
+          <h2 class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <?php if ($campaign_price) { ?>
+            <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
+            <?php } else { ?>
+            <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
+            <?php } ?>
+          </h2>
+          <div class="tax">
           <?php if ($tax_rates) { ?>
             <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <?php echo implode('<br />', $tax_rates); ?>
           <?php } else { ?>
@@ -160,6 +166,12 @@
           },
           success: function(data) {
             if (data['alert']) alert(data['alert']);
+            $('#cart .items').html('');
+            console.log(data['items']);
+            $.each(data['items'], function(i, item){
+              $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
+            });
+            
             $('#cart .quantity').html(data['quantity']);
             $('#cart .formatted_value').html(data['formatted_value']);
             if (data['quantity'] > 0) {

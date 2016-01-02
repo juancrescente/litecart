@@ -47,17 +47,15 @@
   $_page->snippets['box_customer_service_links'] = ob_get_clean();
   
 // Store map
-  if (empty($_GET['page_id'])) {
-    ob_start();
-    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_store_map.inc.php');
-    $_page->snippets['box_store_map'] = ob_get_clean();
-  }
+  //if (empty($_GET['page_id']) && settings::get('store_visiting_address')) {
+    $box_store_map = new view();
+    $_page->snippets['content'] .= $box_store_map->stitch('views/box_store_map');
+  //}
   
 // Contact us
   if (empty($_GET['page_id'])) {
-    ob_start();
-    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_contact_us.inc.php');
-    $_page->snippets['box_contact_us'] = ob_get_clean();
+    $box_contact_us = new view();
+    $_page->snippets['content'] .= $box_contact_us->stitch('views/box_contact_us');
   }
   
 // Information page
