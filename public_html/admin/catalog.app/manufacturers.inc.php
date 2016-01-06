@@ -63,22 +63,25 @@
     </tfoot>
   </table>
 
-  <script>
-    $(".data-table input[name='checkbox_toggle']").click(function() {
-      $(this).closest("form").find(":checkbox").each(function() {
-        $(this).attr('checked', !$(this).attr('checked'));
-      });
-      $(".data-table input[name='checkbox_toggle']").attr("checked", true);
-    });
-
-    $('.data-table tr').click(function(event) {
-      if ($(event.target).is('input:checkbox')) return;
-      if ($(event.target).is('a, a *')) return;
-      if ($(event.target).is('th')) return;
-      $(this).find('input:checkbox').trigger('click');
-    });
-  </script>
-
-  <p><span class="button-set"><?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?> <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?></span></p>
+  <p class="button-set">
+    <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+    <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+  </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $(".data-table input[name='checkbox_toggle']").click(function() {
+    $(this).closest("form").find(":checkbox").each(function() {
+      $(this).attr('checked', !$(this).attr('checked'));
+    });
+    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
+  });
+
+  $('.data-table tr').click(function(event) {
+    if ($(event.target).is('input:checkbox')) return;
+    if ($(event.target).is('a, a *')) return;
+    if ($(event.target).is('th')) return;
+    $(this).find('input:checkbox').trigger('click');
+  });
+</script>

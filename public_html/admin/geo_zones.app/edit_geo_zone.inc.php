@@ -89,7 +89,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4"><a href="#" class="add" title="<?php echo language::translate('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+        <td colspan="4"><a href="#" class="add" title="<?php echo language::translate('title_add_zone', 'Add Zone'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
       </tr>
     </tfoot>
   </table>
@@ -139,22 +139,22 @@
   });
   
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
-  $("body").on("click", ".add", function(event) {
-    event.preventDefault();
+  $('form[name="form_geo_zone"]').on("click", ".add", function(e) {
+    e.preventDefault();
     if ($("select[name='country[code]']").find("option:selected").val() == "") return;
     new_zone_i++;
     var output = '    <tr>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_countries_list('zones[new_zone_i][country_code]', '')); ?></td>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_zones_list('', 'zones[new_zone_i][zone_code]', '', false, '', 'all')); ?></td>'
-               + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
-    $("#table-zones tr:last").before(output);
+    $(this).closest('table').find('tbody').append(output);
   });
   
-  $("body").on("click", ".remove", function(event) {
-    event.preventDefault();
+  $('form[name="form_geo_zone"]').on("click", ".remove", function(e) {
+    e.preventDefault();
     $(this).closest('tr').remove();
   });
 </script>

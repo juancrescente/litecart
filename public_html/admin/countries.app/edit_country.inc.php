@@ -123,19 +123,17 @@
   </div>
   
   <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('postcode_format', true); ?>
     </div>
     
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
       <label><?php echo language::translate('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
     </div>
-  </div>
-  
-  <div class="row">
-    <div class="form-group col-md-6">
+
+    <div class="form-group col-md-4">
       <label><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
     </div>
@@ -158,21 +156,20 @@
   ?>
       <tr>
         <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-        <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][code]', true); ?><?php echo $_POST['zones'][$key]['code']; ?></td>
-        <td><?php echo functions::form_draw_hidden_field('zones['. $key .'][name]', true); ?><?php echo $_POST['zones'][$key]['name']; ?></td>
+        <td><?php echo functions::form_draw_text_field('zones['. $key .'][code]', true); ?></td>
+        <td><?php echo functions::form_draw_text_field('zones['. $key .'][name]', true); ?></td>
         <td class="text-right"><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
       </tr>
   <?php
         }
       }
   ?>
-      <tr>
-        <td>&nbsp;</td>
-        <td><?php echo functions::form_draw_text_field('zone[code]', '', 'data-size="small"'); ?></td>
-        <td><?php echo functions::form_draw_text_field('zone[name]', ''); ?></td>
-        <td class="text-right"><a class="btn btn-default add" href="#" title="<?php echo htmlspecialchars(language::translate('title_add', 'Add')); ?>"><?php echo language::translate('title_add', 'Add'); ?></a></td>
-      </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_zone', 'Add Zone'); ?></a></td>
+      </tr>
+    </tfoot>
   </table>
   
   <p class="btn-group">
@@ -184,35 +181,6 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $("select[name='country[code]']").change(function(){
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name=\'zone[code]\']').html('');
-        if ($('select[name=\'zone[code]\']').attr('disabled')) $('select[name=\'zone[code]\']').removeAttr('disabled');
-        if (data) {
-          $('select[name=\'zone[code]\']').append('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
-          $.each(data, function(i, zone) {
-            $('select[name=\'zone[code]\']').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name=\'zone[code]\']').attr('disabled', 'disabled');
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
-    });
-  });
-  
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="country_form"] .add').click(function(event) {
     event.preventDefault();
@@ -220,17 +188,17 @@
     new_zone_i++;
     var output = '    <tr>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][code]', 'new_zone_code')); ?>new_zone_code</td>'
-               + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][name]', 'new_zone_name')); ?>new_zone_name</td>'
-               + '      <td style="text-align: right;"><a id="remove-zone" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+               + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][code]', '')); ?></td>'
+               + '      <td><?php echo functions::general_escape_js(functions::form_draw_text_field('zones[new_zone_i][name]', '')); ?></td>'
+               + '      <td style="text-align: right;"><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '    </tr>';
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     output = output.replace(/new_zone_code/g, $('input[name="zone[code]"]').val());
     output = output.replace(/new_zone_name/g, $('input[name="zone[name]"]').val());
-    $(this).closest('tbody').find('tr:last').before(output);
+    $(this).closest('table').find('tbody').append(output);
   });
   
-  $('body').on('click', 'form[name="country_form"] .remove', function(event) {
+  $('form[name="country_form"]').on('click', '.remove', function(event) {
     event.preventDefault();
     $(this).closest('tr').remove();
   });

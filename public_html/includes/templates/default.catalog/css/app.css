@@ -108,6 +108,13 @@
   }
 }
 
+table.data-table th.main {
+  width: 100%;
+}
+table.data-table td, table.data-table th {
+  white-space: nowrap;
+}
+
 .curved-shadow {
   position: relative;
   background: #fff;
@@ -169,6 +176,10 @@
   -moz-border-radius-topright: 0;
   border-radius: 1em;
   border-top-right-radius: 0;
+}
+
+.products .product .regular-price {
+  font-size: 0.75em;
 }
 
 /* Category Page */

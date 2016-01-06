@@ -68,7 +68,7 @@
   
   <div class="row">
     <div class="form-group col-md-12">
-      <div class="radio">
+      <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('set_database_default', 'true'); ?> <?php echo language::translate('text_also_set_as_database_default', 'Also set as database default (when new tables are created)'); ?></label>
       </div>
     </div>

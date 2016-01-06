@@ -134,25 +134,21 @@
     <table class="table table-striped data-table">
       <thead>
         <tr>
-          <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_values', 'Values'); ?></th>
-          <th style="vertical-align: text-top; text-align: center;">&nbsp;</th>
+          <th><?php echo language::translate('title_id', 'ID'); ?></th>
+          <th class="main"><?php echo language::translate('title_values', 'Values'); ?></th>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
-<?php
-    if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) {
-?>
-      <tr>
-        <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
-        <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
-        <td style="text-align: right;"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?> title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-      </tr>
-<?php
-    }
-?>
+        <?php if (!empty($_POST['values'])) foreach (array_keys($_POST['values']) as $key) { ?>
+        <tr>
+          <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?><?php echo functions::form_draw_hidden_field('values['. $key .'][value]', ''); ?></td>
+          <td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'values['. $key .'][name]['. $language_code .']', true, ''); ?></td>
+          <td class="text-right"><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a href="#"<?php echo empty($num_products) ? ' class="remove"' : ''; ?> title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+        </tr>
+        <?php } ?>
       </tbody>
-      </tfoot>
+      <tfoot>
         <tr>
           <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
         </tr>
@@ -165,29 +161,26 @@
         while ($("input[name^='values[new_"+ new_value_index +"][id]']").length) new_value_index++;
 <?php
     $name_fields = '';
-    $use_br = false;
     foreach (array_keys(language::$languages) as $language_code) {
-      if ($use_br) $name_fields .=  '<br />';
       $name_fields .= functions::form_draw_regional_input_field($language_code, 'values[new_value_index][name]['. $language_code .']', '', '');
-      $use_br = true;
     }
 ?>
         var output = '<tr>'
                    + '  <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('values[new_value_index][id]', '') . functions::form_draw_hidden_field('values[new_value_index][value]', '')); ?></td>'
                    + '  <td><?php echo functions::general_escape_js($name_fields); ?></td>'
-                   + '  <td><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
+                   + '  <td class="text-right"><a class="move-up" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_up', 'Move up'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="move-down" href="#" title="<?php echo functions::general_escape_js(language::translate('text_move_down', 'Move down'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"')); ?></a> <a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                    + '</tr>';
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
-        $(this).closest('tr').before(output);
+        $(this).closest('table').find('tbody').append(output);
       });
       
       $("#option-values-multiset").on("click", ".move-up, .move-down", function(event) {
         event.preventDefault();
         var row = $(this).closest("tr");
 
-        if ($(this).is(".move-up") && $(row).prevAll().length > 1) {
+        if ($(this).is(".move-up") && $(row).prevAll().length) {
           $(row).insertBefore($(row).prev());
-        } else if ($(this).is(".move-down") && $(row).nextAll().length > 1) {
+        } else if ($(this).is(".move-down") && $(row).nextAll().length) {
           $(row).insertAfter($(row).next());
         }
       });
@@ -204,8 +197,8 @@
     <table class="table table-striped data-table">
       <thead>
     <tr>
-        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
   </thead>
@@ -225,13 +218,14 @@
       </tr>
     </table>
   </div>
+  
   <div id="option-values-input">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
       <thead>
     <tr>
-        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
   </thead>
@@ -251,13 +245,14 @@
       </tr>
     </table>
   </div>
+  
   <div id="option-values-textarea">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
       <thead>
     <tr>
-        <th style="vertical-align: text-top;"><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th style="vertical-align: text-top;" width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th><?php echo language::translate('title_id', 'ID'); ?></th>
+        <th width="100%"><?php echo language::translate('title_value', 'Value'); ?></th>
         <th></th>
       </tr>
   </thead>
@@ -277,10 +272,7 @@
       </tr>
     </table>
   </div>
-  <script>
-    $('select[name=function]').trigger('change');
-  </script>
-
+  
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -288,3 +280,7 @@
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<script>
+  $('select[name=function]').trigger('change');
+</script>

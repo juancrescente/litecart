@@ -32,3 +32,15 @@ h1 .icon-wrapper {
   vertical-align: text-bottom;
   font-weight: normal;
 }
+
+
+table.data-table th.main {
+  width: 100%;
+}
+table.data-table td, table.data-table th {
+  white-space: nowrap;
+}
+
+.tab-content {
+  padding-top: 1em;
+}

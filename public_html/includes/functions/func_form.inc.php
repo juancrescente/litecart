@@ -94,15 +94,11 @@
   function form_draw_color_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="color" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="color" '. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_currency_field($currency_code, $name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
     
@@ -125,8 +121,6 @@
       $value = '';
     }
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="date" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="date" maxlength="10" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="YYYY-MM-DD"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
@@ -139,8 +133,6 @@
       $value = '';
     }
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="datetime-local" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="datetime" maxlength="16" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}.*" placeholder="YYYY-MM-DD [hh:nn]"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
@@ -148,8 +140,6 @@
     if ($value === true) $value = form_reinsert_value($name);
     
     $value = number_format((float)$value, (int)$decimals, '.', '');
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="small"';
     
     document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
                                                                        . '    $("body").on("change", "input[data-type=\'decimal\']", function(){' . PHP_EOL
@@ -163,13 +153,10 @@
   function form_draw_email_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_file_field($name, $parameters='') {
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
     
     return '<input class="form-control" type="file" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -186,8 +173,6 @@
   
   function form_draw_input($name, $value=true, $type='text', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input class="form-control" type="'. htmlspecialchars($type) .'" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -230,15 +215,11 @@
       $value = '';
     }
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="month" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="month" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_number_field($name, $value=true, $min=null, $max=null, $parameters='') {
     if ($value === true) $value = (int)form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="tiny"';
     
     return '<input class="form-control" type="number" name="'. htmlspecialchars($name) .'" value="'. (int)$value .'" data-type="number" step="1" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -246,15 +227,11 @@
   function form_draw_password_field($name, $value='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_phone_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input class="form-control" type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -267,8 +244,6 @@
   
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input class="form-control" type="range" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="range" min="'. (float)$min .'" max="'. (float)$max .'" step="'. (float)$step .'"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -300,15 +275,11 @@
   function form_draw_search_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
     if (!is_array($groups)) $groups = array($groups);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
@@ -333,12 +304,6 @@
   function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
     if (!is_array($options)) $options = array($options);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
-    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
-    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize();';
-    
     $html = '<select class="form-control" name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
     
     foreach ($options as $option) {
@@ -355,6 +320,16 @@
     return $html;
   }
   
+  function form_draw_selectize_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
+    if (!is_array($options)) $options = array($options);
+    
+    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
+    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
+    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize();';
+    
+    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
   function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null) {
     trigger_error('form_draw_select2_field() is deprecated. Use instead form_draw_select_field', E_USER_DEPRECATED);
   }
@@ -362,8 +337,6 @@
   function form_draw_tags_field($name, $options=array(), $input=true, $delimiter=',', $parameters='') {
     
     if (!is_array($options)) $options = array($options);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
     document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
@@ -381,15 +354,11 @@
   function form_draw_textarea($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="large"';
-    
     return '<textarea class="form-control" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
   
   function form_draw_text_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name, $value);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input class="form-control" type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -434,15 +403,11 @@
   function form_draw_time_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-    
     return '<input class="form-control" type="time" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="time"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
   function form_draw_url_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
     
     return '<input class="form-control" type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="url"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
@@ -450,8 +415,6 @@
   function form_draw_wysiwyg_field($name, $value=true, $parameters='') {
     
     if ($value === true) $value = form_reinsert_value($name);
-    
-    if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
     
     document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'summernote/summernote.min.css" rel="stylesheet" />';
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'summernote/summernote.min.js"></script>';
@@ -493,17 +456,17 @@
       case 'currency':
         return functions::form_draw_currency_field(!empty($options[0]) ? $options[0] : null, $name, $input);
       case 'smallinput':
-        return functions::form_draw_input($name, $input, 'text', 'data-size="small"');
+        return functions::form_draw_input($name, $input, 'text');
       case 'input':
-        return functions::form_draw_input($name, $input, 'text', 'data-size="medium"');
+        return functions::form_draw_input($name, $input, 'text');
       case 'password':
-        return functions::form_draw_input($name, $input, 'password', 'data-size="medium"');
+        return functions::form_draw_input($name, $input, 'password');
       case 'smalltext':
-        return functions::form_draw_textarea($name, $input, 'rows="2" data-size="medium"');
+        return functions::form_draw_textarea($name, $input, 'rows="2"');
       case 'mediumtext':
-        return functions::form_draw_textarea($name, $input, 'rows="5" data-size="large"');
+        return functions::form_draw_textarea($name, $input, 'rows="5"');
       case 'bigtext':
-        return functions::form_draw_textarea($name, $input, 'rows="10" data-size="large"');
+        return functions::form_draw_textarea($name, $input, 'rows="10"');
       case 'category':
       case 'categories':
         return functions::form_draw_categories_list($name, $input);
@@ -639,7 +602,7 @@
       $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
     
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"');
+    return functions::form_draw_selectize_field($name, $options, $input, $multiple, $parameters);
   }
   
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
@@ -759,8 +722,6 @@
     foreach (length::$classes as $class) {
       $options[] = array($class['unit']);
     }
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
@@ -930,8 +891,6 @@
     if ($input === true) $input = form_reinsert_value($name);
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
     
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
-    
     $quantity_units_query = database::query(
       "select qu.id, qui.name from ". DB_TABLE_QUANTITY_UNITS ." qu
       left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
@@ -1069,8 +1028,6 @@
     foreach (weight::$classes as $class) {
       $options[] = array($class['unit']);
     }
-    
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="auto"';
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }

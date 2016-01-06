@@ -87,7 +87,7 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); } ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
     </div>
   </div>
   

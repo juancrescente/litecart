@@ -15,7 +15,8 @@
   }
   
 ?>
-<div class="widget">
+<div class="row">
+  <div class="widget col-md-6">
 <?php
   $monthly_sales = array();
   $monthly_tax = array();
@@ -33,55 +34,56 @@
   }
   
 ?>
-  <div id="chart-sales-monthly" style="float: left; width: 50%; height: 150px;"></div>
-  <script>
-    var bar1 = [<?php echo implode(',', $monthly_sales); ?>];
-    var plot1 = $.jqplot('chart-sales-monthly', [bar1], {
-      title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_months', '%s months'), '12'); ?>)',
-      grid:{
-        borderColor: 'transparent',
-        shadow: false,
-        drawBorder: false,
-        shadowColor: 'transparent'
-      },
-      seriesDefaults: {
-        renderer: $.jqplot.BarRenderer,
-        rendererOptions: {barWidth: 30},
-        shadow: false
-      },
-      series:[
-        {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
-        {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
-      ],
-      axesDefaults: {
-        tickOptions: {
-          fontSize: '8pt',
-        }
-      },
-      axes: {
-        xaxis: {
-          renderer: $.jqplot.CategoryAxisRenderer
+    <div id="chart-sales-monthly" style="height: 200px;"></div>
+    <script>
+      var bar1 = [<?php echo implode(',', $monthly_sales); ?>];
+      var plot1 = $.jqplot('chart-sales-monthly', [bar1], {
+        title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_months', '%s months'), '12'); ?>)',
+        grid:{
+          borderColor: 'transparent',
+          shadow: false,
+          drawBorder: false,
+          shadowColor: 'transparent'
         },
-        yaxis:{
+        seriesDefaults: {
+          renderer: $.jqplot.BarRenderer,
+          rendererOptions: {barWidth: 30},
+          shadow: false
+        },
+        series:[
+          {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
+          {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
+        ],
+        axesDefaults: {
           tickOptions: {
-            formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+            fontSize: '8pt',
           }
+        },
+        axes: {
+          xaxis: {
+            renderer: $.jqplot.CategoryAxisRenderer
+          },
+          yaxis:{
+            tickOptions: {
+              formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+            }
+          }
+        },
+        legend: {
+          show: false,
+          placement: 'insideGrid'
+        },
+        highlighter: {
+          show: true
         }
-      },
-      legend: {
-        show: false,
-        placement: 'insideGrid'
-      },
-      highlighter: {
-        show: true
-      }
-    });
-    
-    $(window).resize(function() {
-      plot1.replot({resetAxes: true});
-    });
-  </script>
-
+      });
+      
+      $(window).resize(function() {
+        plot1.replot({resetAxes: true});
+      });
+    </script>
+  </div>
+  <div class="widget col-md-6">
 <?php
   $daily_sales = array();
   for ($timestamp = strtotime('-29 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
@@ -99,54 +101,54 @@
   }
   
 ?>
-  <div id="chart-sales-daily" style="float: right; width: 50%; height: 150px;"></div>
-  <script>
-    var bar2 = [<?php echo implode(',', $daily_sales); ?>];
-    var plot2 = $.jqplot('chart-sales-daily', [bar2], {
-      title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',
-      grid:{
-        borderColor: 'transparent',
-        shadow: false,
-        drawBorder: false,
-        shadowColor: 'transparent'
-      },
-      seriesDefaults: {
-        renderer: $.jqplot.BarRenderer,
-        rendererOptions: {barWidth: 10},
-        shadow: false
-      },
-      series:[
-        {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
-        {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
-      ],
-      axesDefaults: {
-        tickOptions: {
-          fontSize: '8pt',
-        }
-      },
-      axes: {
-        xaxis: {
-          renderer: $.jqplot.CategoryAxisRenderer
+    <div id="chart-sales-daily" style="height: 200px"></div>
+    <script>
+      var bar2 = [<?php echo implode(',', $daily_sales); ?>];
+      var plot2 = $.jqplot('chart-sales-daily', [bar2], {
+        title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',
+        grid:{
+          borderColor: 'transparent',
+          shadow: false,
+          drawBorder: false,
+          shadowColor: 'transparent'
         },
-        yaxis:{
+        seriesDefaults: {
+          renderer: $.jqplot.BarRenderer,
+          rendererOptions: {barWidth: 10},
+          shadow: false
+        },
+        series:[
+          {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
+          {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
+        ],
+        axesDefaults: {
           tickOptions: {
-            formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+            fontSize: '8pt',
           }
+        },
+        axes: {
+          xaxis: {
+            renderer: $.jqplot.CategoryAxisRenderer
+          },
+          yaxis:{
+            tickOptions: {
+              formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+            }
+          }
+        },
+        legend: {
+          show: false,
+          placement: 'insideGrid'
+        },
+        highlighter: {
+          show: true
         }
-      },
-      legend: {
-        show: false,
-        placement: 'insideGrid'
-      },
-      highlighter: {
-        show: true
-      }
-    });
-    
-    
-    $(window).resize(function() {
-      plot2.replot({resetAxes: true});
-    });
-  </script>
-  <div style="clear: both;"></div>
+      });
+      
+      
+      $(window).resize(function() {
+        plot2.replot({resetAxes: true});
+      });
+    </script>
+  </div>
 </div>

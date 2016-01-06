@@ -146,7 +146,7 @@
     
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
-        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="xx_XX.utf8" data-size="small"'); ?>
+        <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english" data-size="small"'); ?>
     </div>
   </div>
     

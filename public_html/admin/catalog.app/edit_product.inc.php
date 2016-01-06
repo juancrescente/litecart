@@ -147,17 +147,13 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_categories', 'Categories'); ?></label>
             <div class="form-control" style="height: auto; max-height: 240px; overflow-y: auto;">
-              <table>
 <?php
   function custom_catalog_tree($category_id=0, $depth=1, $count=0) {
     
     $output = '';
     
     if ($category_id == 0) {
-      $output .= '<tr>' . PHP_EOL
-               . '  <td>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', '[Root]')) .'" data-priority="0"') .'</td>' . PHP_EOL
-               . '  <td width="100%" id = "category-id-'. $category_id .'">'. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', '[Root]') .'" style="color: #cccc66;"') .'</td>' . PHP_EOL
-               . '</tr>' . PHP_EOL;
+      $output .= '<div id="category-id-'. $category_id .'"><strong>'. functions::form_draw_checkbox('categories[]', '0', (isset($_POST['categories']) && in_array('0', $_POST['categories'], true)) ? '0' : false, 'data-name="'. htmlspecialchars(language::translate('title_root', '[Root]')) .'" data-priority="0"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'title="'. language::translate('title_root', '[Root]') .'" style="color: #cccc66;"') .'</strong></div>' . PHP_EOL;
     }
     
   // Output categories
@@ -171,10 +167,8 @@
     
     while ($category = database::fetch($categories_query)) {
       $count++;
-      $output .= '<tr>' . PHP_EOL
-               . '  <td>'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .'</td>' . PHP_EOL
-               . '  <td>'. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*16) .'px;"') .' '. $category['name'] .'</td>' . PHP_EOL
-               . '</tr>' . PHP_EOL;
+      
+      $output .= '  <div><label style="font-weight: normal;">'. functions::form_draw_checkbox('categories[]', $category['id'], true, 'data-name="'. htmlspecialchars($category['name']) .'" data-priority="'. $count .'"') .' '. functions::draw_fonticon('fa-folder fa-lg', 'style="color: #cccc66; margin-left: '. ($depth*1) .'em;"') .' '. $category['name'] .'</label></div>' . PHP_EOL;
                
       if (database::num_rows(database::query("select * from ". DB_TABLE_CATEGORIES ." where parent_id = '". $category['id'] ."' limit 1;")) > 0) {
         $output .= custom_catalog_tree($category['id'], $depth+1, $count);
@@ -188,7 +182,6 @@
   
   echo custom_catalog_tree();
 ?>
-              </table>
             </div>
           </div>
         </div>
@@ -234,8 +227,6 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_product_groups', 'Product Groups'); ?></label>
             <div style="height: auto; max-height: 240px; overflow-y: auto;" class="form-control">
-              <table>
-                <tbody>
 <?php
   // Output product groups
     $product_groups_query = database::query(
@@ -245,9 +236,7 @@
     );
     if (database::num_rows($product_groups_query)) {
       while ($product_group = database::fetch($product_groups_query)) {
-        echo '<tr>' . PHP_EOL
-           . '  <td colspan="2">'. $product_group['name'] .'</td>' . PHP_EOL
-           . '</tr>' . PHP_EOL;
+        echo '<div><strong>'. $product_group['name'] .'</strong></div>' . PHP_EOL;
         $product_groups_values_query = database::query(
           "select pgv.id, pgvi.name from ". DB_TABLE_PRODUCT_GROUPS_VALUES ." pgv
           left join ". DB_TABLE_PRODUCT_GROUPS_VALUES_INFO ." pgvi on (pgvi.product_group_value_id = pgv.id and pgvi.language_code = '". language::$selected['code'] ."')
@@ -255,22 +244,15 @@
           order by pgvi.name asc;"
         );
         while ($product_group_value = database::fetch($product_groups_values_query)) {
-        echo '<tr>' . PHP_EOL
-           . '  <td>'. functions::form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .'</td>' . PHP_EOL
-           . '  <td>'. $product_group_value['name'] .'</td>' . PHP_EOL
-           . '</tr>' . PHP_EOL;
+        echo '<div>'. functions::form_draw_checkbox('product_groups[]', $product_group['id'].'-'.$product_group_value['id'], true) .' '. $product_group_value['name'] .'</div>' . PHP_EOL;
         }
       }
     } else {
 ?>
-                  <tr>
-                    <td><em><?php echo language::translate('description_no_existing_product_groups', 'There are no existing product groups.'); ?></em></td>
-                  </tr>
+              <div><em><?php echo language::translate('description_no_existing_product_groups', 'There are no existing product groups.'); ?></em></div>
 <?php
     }
 ?>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
@@ -456,9 +438,7 @@ foreach (array_keys(language::$languages) as $language_code) {
             <label><?php echo language::translate('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
             <?php echo functions::form_draw_text_field('taric', true); ?>
           </div>
-        </div>
           
-        <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
             <div class="input-group">
@@ -466,8 +446,10 @@ foreach (array_keys(language::$languages) as $language_code) {
               <?php echo functions::form_draw_weight_classes_list('weight_class', true, false, 'style="width: 50%;"'); ?>
             </div>
           </div>
+        </div>
           
-          <div class="form-group col-md-6">
+        <div class="row">
+          <div class="form-group col-md-12">
             <label><?php echo language::translate('title_dimensions', 'Dimensions'); ?> (<?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?>)</label>
             <div class="input-group" style="white-space: nowrap;">
             <?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="text-align: center;"'); ?>

@@ -59,7 +59,7 @@
 
 <?php echo functions::form_draw_protected_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
-  <table class="table table-striped data-table">
+  <table class="table table-striped">
     <tbody>
       <?php foreach ($module->settings as $setting) { ?>
       <tr>
@@ -67,13 +67,13 @@
           <label><?php echo $setting['title']; ?></label>
           <?php echo !empty($setting['description']) ? '<p>'.$setting['description'].'</p>' : ''; ?>
         </td>
-        <td>
+        <td class="col-md-6">
           <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value'], !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
       <?php } ?>
       <tr>
-        <td class="col-md-6">
+        <td>
           <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
         </td>
         <td>

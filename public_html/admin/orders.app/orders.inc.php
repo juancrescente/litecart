@@ -2,7 +2,7 @@
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (!isset($_GET['page'])) $_GET['page'] = 1;
   
-  $modal_id = functions::draw_modal();
+  functions::draw_lightbox();
   
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
@@ -109,8 +109,8 @@
       <td class="text-center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
       <td><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
       <td>
-        <a data-toggle="modal" data-target="#<?php echo $modal_id; ?>" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-        <a data-toggle="modal" data-target="#<?php echo $modal_id; ?>" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+        <a data-toggle="lightbox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+        <a data-toggle="lightbox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
         <a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id'], 'redirect' => $_SERVER['REQUEST_URI']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
       </td>
     </tr>
