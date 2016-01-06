@@ -121,20 +121,21 @@
     </div>
     
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?>
+      <label><?php echo language::translate('title_name', 'Name'); ?></label>
+        <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
+
   </div>
     
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-        <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?>
+      <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+        <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?>
     </div>
     
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_name', 'Name'); ?></label>
-        <?php echo functions::form_draw_text_field('name', true); ?>
+      <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
+        <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?>
     </div>
   </div>
     

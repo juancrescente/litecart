@@ -22,34 +22,21 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="description" content="{snippet:description}" />
-<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" media="screen,print" />
 <!--snippet:head_tags-->
 <link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/theme.css" />
+
 </head>
 <body>
 
   <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
   
-  <div class="container">
-    <div class="col-md-2">
-      <div class="row">
-        <!--snippet:column_left-->
-          <div>
-            <p class="lead"><?php echo language::translate('title_categories', 'Categories'); ?></p>
-            <div class="list-group">
-              <a href="#" class="list-group-item active">Category 1</a>
-              <a href="#" class="list-group-item">Category 2</a>
-              <a href="#" class="list-group-item">Category 3</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-10">
-        <!--snippet:notices-->
-        <!--snippet:content-->
-      </div>
-  </div>  
+  <!--snippet:top-->
+
+  <!--snippet:notices-->
+  <!--snippet:content-->
     
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
   

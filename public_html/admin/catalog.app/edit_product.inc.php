@@ -129,7 +129,9 @@
             <label><?php echo language::translate('title_status', 'Status'); ?></label>
               <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '0', 'e/d'); ?>
           </div>
-          
+        </div>
+        
+        <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_code', 'Code'); ?></label>
             <?php echo functions::form_draw_text_field('code', true); ?>
@@ -260,12 +262,10 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
-            <?php echo functions::form_draw_number_field('quantity', true); ?>
-          </div>
-          
-          <div class="form-group col-md-6">
-            <label><?php echo language::translate('title_quantity Unit', 'Quantity Unit'); ?></label>
-            <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
+            <div class="input-group">
+              <?php echo functions::form_draw_number_field('quantity', true); ?>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
+            </div>
           </div>
         </div>
         

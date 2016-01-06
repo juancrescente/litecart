@@ -1,6 +1,5 @@
 <style>
 .carousel {
-  overflow: hidden;
   max-height: 100%;
 }
 .carousel-inner > .item > img,
@@ -10,7 +9,7 @@
 }
 </style>
 
-<div id="box-slider" class="carousel slide" data-ride="carousel">
+<div id="slider" class="carousel slide curved-shadow" data-ride="carousel">
   <ol class="carousel-indicators">
     <?php foreach (array_values($slides) as $key => $slide) { ?>
     <li data-target="#box-slider" data-slide-to="<?php echo $key; ?>"<?php if ($key == 0) echo ' class="active"' ?>></li>

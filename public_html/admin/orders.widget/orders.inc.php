@@ -1,5 +1,5 @@
 <?php
-  $modal_id = functions::draw_modal();
+  functions::draw_lightbox();
 ?>
 <div class="widget">
   <table class="table table-striped data-table">
@@ -40,8 +40,8 @@
         <td><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
         <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
         <td>
-          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="modal" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="modal" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
           <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
         </td>
       </tr>

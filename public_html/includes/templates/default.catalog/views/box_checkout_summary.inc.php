@@ -6,23 +6,23 @@
     <table class="table table-striped data-table">
       <thead>
         <tr class="header">
-          <th class="quantity" style="width: 50px; text-align: center;"><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
-          <th class="item"><?php echo language::translate('title_product', 'Product'); ?></th>
+          <th class="quantity text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+          <th class="name"><?php echo language::translate('title_product', 'Product'); ?></th>
           <th class="sku"><?php echo language::translate('title_sku', 'SKU'); ?></th>
-          <th class="unit-cost" style="text-align: right;"><?php echo language::translate('title_unit_cost', 'Unit Cost'); ?></th>
-          <th class="tax" style="text-align: right;"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_incl_tax', 'Incl. Tax') : language::translate('title_excl_tax', 'Excl. Tax'); ?></th>
-          <th class="sum" style="text-align: right;"><?php echo language::translate('title_total', 'Total'); ?></th>
+          <th class="unit-price text-right"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+          <th class="tax text-right"><?php echo !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_incl_tax', 'Incl. Tax') : language::translate('title_excl_tax', 'Excl. Tax'); ?></th>
+          <th class="sum text-right"><?php echo language::translate('title_total', 'Total'); ?></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($items as $item) { ?>
         <tr>
-          <td style="text-align: center;"><?php echo $item['quantity']; ?></td>
-          <td class="item" class="unit-cost"><?php echo $item['name']; ?></td>
+          <td class="quantity text-center"><?php echo $item['quantity']; ?></td>
+          <td class="name"><?php echo $item['name']; ?></td>
           <td class="sku"><?php echo $item['sku']; ?></td>
-          <td class="unit-cost" style="text-align: right;"><?php echo $item['price']; ?></td>
-          <td class="tax" style="text-align: right;"><?php echo $item['tax']; ?></td>
-          <td class="sum" style="text-align: right;"><?php echo $item['sum']; ?></td>
+          <td class="unit-price text-right"><?php echo $item['price']; ?></td>
+          <td class="tax text-right"><?php echo $item['tax']; ?></td>
+          <td class="sum text-right"><?php echo $item['sum']; ?></td>
         </tr>
         <?php } ?>
        
@@ -60,7 +60,8 @@
         </div>
         
         <div class="col-md-3">
-          <?php echo functions::form_draw_button('confirm_order', $confirm, 'submit', 'style="width: 100%;"' . (!empty($error) ? ' disabled="disabled"' : '')); ?>
+          <?php //echo functions::form_draw_button('confirm_order', $confirm, 'submit', 'style="width: 100%;"' . (!empty($error) ? ' disabled="disabled"' : '')); ?>
+          <button class="btn btn-block btn-lg btn-default btn-success" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled="disabled"' : ''; ?>><?php echo $confirm; ?></button>
         </div>
       </div>
 

@@ -80,7 +80,7 @@
 
         <?php if (!$catalog_only_mode) { ?>
         <div class="row">
-          <div class="form-group col-md-6 col-lg-4">
+          <div class="form-group col-xs-12 col-sm-6 col-lg-4">
             <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
             <div class="input-group">
               <?php echo (!empty($quantity_unit_decimals)) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>

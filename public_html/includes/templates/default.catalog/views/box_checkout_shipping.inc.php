@@ -1,17 +1,17 @@
 <div id="checkout-shipping">
   <h2><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
   
-  <ul id="shipping-options">
+  <ul id="shipping-options" class="list-unstyled">
 <?php
   foreach ($options as $module) {
     foreach ($module['options'] as $option) {
 ?>
-    <li class="option<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' selected' : false; ?>">
+    <li class="option well<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : false; ?>">
     <?php echo functions::form_draw_form_begin('shipping_form') . functions::form_draw_hidden_field('selected_shipping', $module['id'].':'.$option['id'], $selected['id']); ?>
       <div class="icon-wrapper"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 200, 70, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" /></div>
-      <div class="title"><?php echo $module['title']; ?></div>
+      <h3 class="title"><?php echo $module['title']; ?></h3>
       <div class="name"><?php echo $option['name']; ?></div>
-      <div class="description"><?php echo $option['fields'] . $option['description']; ?></div>
+      <p class="description"><?php echo $option['fields'] . $option['description']; ?></p>
       <div class="footer">
         <div class="price"><?php if ($option['cost'] != 0) echo '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])); ?></div>
         <div class="select">

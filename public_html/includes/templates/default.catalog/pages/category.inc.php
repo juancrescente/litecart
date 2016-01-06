@@ -5,7 +5,6 @@
       <div class="sidebar">
         <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
       </div>
-    
     </div>
     
     <div class="col-md-9">
