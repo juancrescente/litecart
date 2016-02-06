@@ -87,7 +87,7 @@
       
     // Session Protection
       if (settings::get('security_session_hijacking')) {
-        if ($_SERVER['REMOTE_ADDR'] != session::$data['last_ip'] && $_SERVER['HTTP_USER_AGENT'] != session::$data['last_agent']) { // Decreased session security due to GoogleBot and mobile networks
+        if ($_SERVER['REMOTE_ADDR'] != session::$data['last_ip'] && $_SERVER['HTTP_USER_AGENT'] != session::$data['last_agent']) { // Decreased session security due to iOS AJAX, GoogleBot, and mobile networks
           error_log('Session hijacking attempt from '. $_SERVER['REMOTE_ADDR'] .' ['. $_SERVER['HTTP_USER_AGENT'] .'] on '. $_SERVER['REQUEST_URI'] .'. Expected '. session::$data['last_ip'] .' ['. session::$data['last_agent'] .']');
           session::clear();
           sleep(5);
@@ -101,7 +101,7 @@
       if (settings::get('security_http_post')) {
         if (!empty($_POST) && (!defined('REQUIRE_POST_TOKEN') || REQUIRE_POST_TOKEN) && (!isset(route::$route['post_security']) || route::$route['post_security'])) {
           if (!isset($_POST['token']) || $_POST['token'] != form::session_post_token()) {
-            error_log('Warning: Blocked a potential CSRF hacking attempt by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
+            error_log('Warning: Blocked a potential form hacking attempt (CSRF) by '. $_SERVER['REMOTE_ADDR'] .' ['. (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') .'] requesting '. $_SERVER['REQUEST_URI'] .'.');
             session::clear();
             sleep(5);
             header('HTTP/1.1 400 Bad Request');

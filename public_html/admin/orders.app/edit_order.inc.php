@@ -1,10 +1,17 @@
 <?php
   
-  if (empty($_GET['order_id'])) {
-    $order = new ctrl_order('new');
-    
-  } else {
+  if (!empty($_GET['order_id'])) {
     $order = new ctrl_order('load', $_GET['order_id']);
+  } else {
+    $order = new ctrl_order('new');
+  }
+  
+  if (empty($_POST)) {
+    foreach ($order->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+    
+    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
     
   // Convert to local currency
     foreach (array_keys($order->data['items']) as $key) {
@@ -17,12 +24,7 @@
     }
   }
   
-  if (empty($_POST)) {
-    foreach ($order->data as $key => $value) {
-      $_POST[$key] = $value;
-    }
-    if (empty($_POST['customer']['country_code'])) $_POST['customer']['country_code'] = settings::get('default_country_code');
-  }
+  breadcrumbs::add(!empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'));
   
 // Save data to database
   if (isset($_POST['save'])) {
@@ -772,9 +774,7 @@
   
   <p style="text-align: right;""><strong><?php echo language::translate('title_order_status', 'Order Status'); ?>:</strong> <?php echo functions::form_draw_order_status_list('order_status_id', true); ?></p>
   
-  <?php if (empty($order->data['id'])) { ?>
   <p style="text-align: right;"><label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_email_order_copy', 'Send email order copy'); ?></label></p>
-  <?php } ?>
 
   <p style="text-align: right;"><span class="button-set"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?> <?php echo (isset($order->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?></span></p>
   

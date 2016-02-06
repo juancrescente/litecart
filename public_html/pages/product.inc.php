@@ -25,7 +25,7 @@
   }
   
   if ($product->date_valid_from > date('Y-m-d H:i:s')) {
-    notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
+    notices::add('errors', sprintf(language::translate('text_product_cannot_be_purchased_until_s', 'The product cannot be purchased until %s'), language::strftime(language::$selected['format_date'], strtotime($product->date_valid_from))));
   }
   
   if (substr($product->date_valid_to, 0, 10) != '0000-00-00' && substr($product->date_valid_to, 0, 4) > '1971' && $product->date_valid_to < date('Y-m-d H:i:s')) {
@@ -55,7 +55,7 @@
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
     foreach (functions::catalog_category_trail($_GET['category_id']) as $category_id => $category_name) {
       document::$snippets['title'][] = $category_name;
-      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => (int)$_GET['category_id'])));
     }
   } else if (!empty($product->manufacturer)) {
     document::$snippets['title'][] = $product->manufacturer['name'];
@@ -70,7 +70,7 @@
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
   }
   
-  breadcrumbs::add($product->name[language::$selected['code']]);
+  breadcrumbs::add($product->name[language::$selected['code']], document::ilink('product', array('product_id' => $product->id), false));
   
 // Recently viewed products
   if (isset(session::$data['recently_viewed_products'][$product->id])) {

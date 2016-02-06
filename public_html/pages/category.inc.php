@@ -90,7 +90,7 @@
         'category_id' => $category->id,
         'manufacturers' => !empty($_GET['manufacturers']) ? $_GET['manufacturers'] : null,
         'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
-        'sort' => $_GET['sort']
+        'sort' => $_GET['sort'],
       )
     );
     
@@ -112,7 +112,6 @@
         }
         if (++$_page_items == $items_per_page) break;
       }
-      
     }
     
     $_page->snippets['num_products_page'] = count($_page->snippets['products']);

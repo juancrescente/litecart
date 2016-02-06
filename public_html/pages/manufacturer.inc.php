@@ -28,7 +28,7 @@
   }
   
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-  breadcrumbs::add($manufacturer->name);
+  breadcrumbs::add($manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $manufacturer->id), false));
   
   //document::$snippets['title'] = array(); // reset
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
@@ -62,7 +62,7 @@
     $products_query = functions::catalog_products_query(array(
       'manufacturer_id' => $manufacturer->id,
       'product_groups' => !empty($_GET['product_groups']) ? $_GET['product_groups'] : null,
-      'sort' => $_GET['sort']
+      'sort' => $_GET['sort'],
     ));
     
     if (database::num_rows($products_query) > 0) {

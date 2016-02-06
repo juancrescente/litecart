@@ -1,17 +1,18 @@
 <?php
 
-  if (isset($_GET['user_id'])) {
+  if (!empty($_GET['user_id'])) {
     $user = new ctrl_user($_GET['user_id']);
-    
-    if (empty($_POST)) {
-      foreach ($user->data as $key => $value) {
-        $_POST[$key] = $value;
-      }
-    }
-    
   } else {
     $user = new ctrl_user();
   }
+  
+  if (empty($_POST)) {
+    foreach ($user->data as $key => $value) {
+      $_POST[$key] = $value;
+    }
+  }
+  
+  breadcrumbs::add(!empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'));
   
   if (isset($_POST['save'])) {
     
@@ -45,7 +46,7 @@
       $user->save();
       
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array(), array('app')));
+      header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
     }
   }
@@ -57,13 +58,13 @@
       $user->delete();
     
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
-      header('Location: '. document::link('', array(), array('app')));
+      header('Location: '. document::link('', array('doc' => 'users'), array('app')));
       exit;
     }
   }
   
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($user->data['username'])) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($user->data['username']) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 

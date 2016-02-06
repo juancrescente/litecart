@@ -10,7 +10,7 @@
   document::$snippets['title'][] = language::translate('title_order_history', 'Order History');
 
   breadcrumbs::add(language::translate('title_account', 'Account'), '');
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'));
+  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
   
   $modal_id = functions::draw_modal();
   
@@ -35,7 +35,7 @@
         'id' => $order['id'],
         'link' => document::ilink('printable_order_copy', array('order_id' => $order['id'], 'checksum' => functions::general_order_public_checksum($order['id']), 'media' => 'print')),
         'order_status' => $order['order_status_name'],
-        'date_created' => strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
+        'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
         'payment_due' => currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']),
       );
       if (++$_page_items == settings::get('data_table_rows_per_page')) break;

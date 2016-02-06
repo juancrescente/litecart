@@ -4,7 +4,7 @@
     if (!empty($breadcrumb['link'])) {
       echo '<li><a href="'. htmlspecialchars($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a></li>';
     } else {
-      echo '<li>'. $breadcrumb['title'] .'</li>';
+      echo '<li>'. $separator . htmlspecialchars($breadcrumb['title']) .'</li>';
     }
   }
 ?>

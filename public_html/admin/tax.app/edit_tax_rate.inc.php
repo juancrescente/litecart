@@ -1,17 +1,16 @@
 <?php
   
-  if (isset($_GET['tax_rate_id'])) {
+  if (!empty($_GET['tax_rate_id'])) {
     $tax_rate = new ctrl_tax_rate($_GET['tax_rate_id']);
   } else {
     $tax_rate = new ctrl_tax_rate();
   }
   
-  if (!$_POST) {
+  if (empty($_POST)) {
     foreach ($tax_rate->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-
   
   if (isset($_POST['save'])) {
 
@@ -56,7 +55,7 @@
   }
 
 ?>
-<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($tax_rate->data['id'])) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?></h1>
+<h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($tax_rate->data['id']) ? language::translate('title_edit_tax_rate', 'Edit Tax Rate') : language::translate('title_add_new_tax_rate', 'Add New Tax Rate'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
