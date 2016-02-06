@@ -65,7 +65,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($user->data['username'])) ? language::translate('title_edit_user', 'Edit User') : language::translate('title_create_new_user', 'Create New User'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('user_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('user_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
     <div class="row">
       <div class="form-group col-sm-6">

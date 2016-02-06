@@ -149,13 +149,6 @@
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['prerender'] = '<link rel="prerender" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';
     
-    $link = $_SERVER['REQUEST_URI'];
-    $link = preg_replace('/page=[0-9]/', '', $link);
-    
-    while (strstr($link, '&&')) $link = str_replace('&&', '&', $link);
-    
-    if (!strpos($link, '?')) $link = $link . '?';
-    
     $pagination = new view();
     
     $pagination->snippets['items'][] = array(

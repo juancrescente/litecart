@@ -1,6 +1,8 @@
 <?php
-  if (!is_object($product)) return;
+  if (empty($_GET['product_id'])) return;
   
+  $product = new ref_product($_GET['product_id']);
+
   if (settings::get('box_similar_products_num_items') == 0) return;
   
   functions::draw_lightbox();
@@ -9,7 +11,7 @@
   if (cache::capture($box_similar_products_cache_id, 'file')) {
     
     $product_groups = array();
-    if ($product->product_group_ids) {
+    if (!empty($product->product_group_ids)) {
       foreach ($product->product_group_ids as $product_group) {
         $product_groups[] = "find_in_set('". database::input($product_group) ."', p.product_groups)";
       }
@@ -29,7 +31,7 @@
       'categories' => isset($_GET['category_id']) ? array($_GET['category_id']) : array_keys($product->categories),
       'manufacturers' => array($product->manufacturer_id),
       'product_groups' => $product_groups,
-      'exclude_products' => $product->id,
+      'exclude_products' => (int)$_GET['product_id'],
       'keywords' => $keywords,
       'sort' => 'occurrences',
       'limit' => settings::get('box_similar_products_num_items'),

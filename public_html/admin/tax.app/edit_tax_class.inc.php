@@ -50,7 +50,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($tax_class->data['id'])) ? language::translate('title_edit_tax_class', 'Edit Tax Class') : language::translate('title_add_new_tax_class', 'Add New Tax Class'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('tax_class_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('tax_class_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

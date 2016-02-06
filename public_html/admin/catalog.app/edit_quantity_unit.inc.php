@@ -52,7 +52,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($quantity_unit->data['id']) ? language::translate('title_edit_quantity_unit', 'Edit Quantity Unit') : language::translate('title_add_new_quantity_unit', 'Add New Quantity Unit'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

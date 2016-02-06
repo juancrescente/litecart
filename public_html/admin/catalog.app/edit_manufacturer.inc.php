@@ -75,7 +75,7 @@
   }
 ?>
 
-<?php echo functions::form_draw_protected_form_begin('manufacturer_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('manufacturer_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
 
   <div class="">
   

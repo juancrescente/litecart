@@ -53,7 +53,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('option_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('option_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

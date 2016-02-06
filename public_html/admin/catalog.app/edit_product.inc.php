@@ -108,7 +108,7 @@
   }
 ?>
   
-<?php echo functions::form_draw_protected_form_begin('product_form', 'post', false, true); ?>
+<?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
   
   <div class="">
   

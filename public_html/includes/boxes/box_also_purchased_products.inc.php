@@ -1,5 +1,5 @@
 <?php
-  if (!is_object($product)) return;
+  if (empty($_GET['product_id'])) return;
   
   functions::draw_lightbox();
   
@@ -15,7 +15,7 @@
     while ($order = database::fetch($orders_query)) {
       $orders_items_query = database::query(
         "select product_id from ". DB_TABLE_ORDERS_ITEMS ."
-        where product_id not like '". (int)$product->id ."%'
+        where product_id not like '". (int)$_GET['product_id'] ."%'
         and order_id = '". (int)$order['id'] ."';"
       );
       while ($order_item = database::fetch($orders_items_query)) {

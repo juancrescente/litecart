@@ -1,7 +1,6 @@
 <div id="category-tree" class="box">
   <h3><?php echo language::translate('title_categories', 'Categories'); ?></h3>
 <?php
-  var_dump($categories);
   if (!function_exists('custom_draw_category_tree')) {
     function custom_draw_category_tree($categories, $indent=0) {
       echo '<ul class="">' . PHP_EOL;

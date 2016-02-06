@@ -49,7 +49,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($product_group->data['id']) ? language::translate('title_edit_product_group', 'Edit Product Group') : language::translate('title_new_product_group', 'Create New Product Group'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('product_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('product_group_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

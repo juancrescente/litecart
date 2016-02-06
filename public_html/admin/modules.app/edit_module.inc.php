@@ -57,7 +57,7 @@
 
 <?php echo !empty($module->description) ? '<p style="max-width: 400px;">'. $module->description .'</p>' : ''; ?>
 
-<?php echo functions::form_draw_protected_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <table class="table table-striped">
     <tbody>

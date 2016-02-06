@@ -50,7 +50,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (!empty($sold_out_status->data['id'])) ? language::translate('title_edit_sold_out_status', 'Edit Sold Out Status') : language::translate('title_create_new_sold_out_status', 'Create New Sold Out Status'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

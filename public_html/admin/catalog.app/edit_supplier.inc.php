@@ -54,7 +54,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo (empty($supplier->data['id'])) ? language::translate('title_add_new_supplier', 'Add New Supplier') : language::translate('title_edit_supplier', 'Edit Supplier'); ?></h1>
 
-<?php echo functions::form_draw_protected_form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('supplier_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <div class="row">
     <div class="form-group col-md-6">

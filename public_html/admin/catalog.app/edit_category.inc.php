@@ -72,7 +72,7 @@
     echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" /></p>';
   }
 ?>
-<?php echo functions::form_draw_protected_form_begin('category_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('category_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
   
   <div class="">
   
