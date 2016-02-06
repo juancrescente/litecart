@@ -1,5 +1,5 @@
 <?php if ($listing_type == 'column') { ?>
-  <div class="product col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-5col">
+  <div class="product col-xxs-12 col-xs-6 col-sm-4 col-md-3">
     <div class="thumbnail curved-shadow">
       <a href="<?php echo htmlspecialchars($link) ?>" data-toggle="lightbox" data-gallery="listing" title="<?php echo htmlspecialchars($name); ?>">
         <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />

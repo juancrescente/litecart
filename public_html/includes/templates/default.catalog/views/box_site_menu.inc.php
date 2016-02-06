@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-default navbar-fixed-top shadow" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -30,29 +30,31 @@
           <?php } ?>
         </ul>
 
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav pull-right">
           <li>
             <div id="cart" class="form-inline" style="margin-top: 0.5em; box-sizing: border-box;">
-              <div class="input-group" data-toggle="tooltip" title="<?php echo language::translate('title_cart', 'Cart'); ?>">
-                <a class="input-group-addon" href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?></a>
+              <img src="/litecart/includes/templates/default.catalog/images/cart_filled.png" height="32" alt="" class="" />
+              <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
+                  <?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
+                  
+                </a>
                 <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
-                <div class="form-control">
-                  <div type="button" data-toggle="dropdown" aria-expanded="false">
-                    <span class="pull-left"><span class="quantity"><?php echo cart::$total['items']; ?></span> item(s)</span>
-                    <span class="pull-right" style="margin-left: 1em;"><i class="fa fa-caret-down"></i></span>
-                  </div>
-                  <ul class="items dropdown-menu" role="menu">
-                    <?php foreach(cart::$items as $item) { ?>
-                    <li>
-                      <a href="<?php echo document::href_link('product', array('product_id' => $item['product_id'])); ?>">
-                        <?php echo (float)$item['quantity']; ?> x <?php echo $item['name']; ?> - <?php echo currency::format($item['price']); ?>
-                      </a>
-                    </li>
-                    <?php } ?>
-                    <li class="divider"></li>
-                    <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_total'); ?>: <span class="formatted-value">$957.92</a></li>
-                  </ul>
+                <div class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+                  <span class="pull-right" style="margin-left: 1em;"><i class="fa fa-caret-down"></i></span>
+                  <span class="quantity"><?php echo cart::$total['items']; ?></span> item(s)
                 </div>
+                <ul class="items dropdown-menu" role="menu">
+                  <?php foreach(cart::$items as $item) { ?>
+                  <li>
+                    <a href="<?php echo document::href_link('product', array('product_id' => $item['product_id'])); ?>">
+                      <?php echo (float)$item['quantity']; ?> x <?php echo $item['name']; ?> - <?php echo currency::format($item['price']); ?>
+                    </a>
+                  </li>
+                  <?php } ?>
+                  <li class="divider"></li>
+                  <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo language::translate('title_total'); ?>: <span class="formatted-value">$957.92</a></li>
+                </ul>
               </div>
             </div>
           </li>

@@ -138,6 +138,14 @@
   </div>
 </div>
 
+<div class="container">
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');?>
+</div>
+
+<div class="container">
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');?>
+</div>
+
 <script>
   $('body').on('submit', 'form[name=buy_now_form]', function(e) {
     var form = $(this);

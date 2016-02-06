@@ -1,4 +1,4 @@
-<div class="subcategory col-xs-12 col-sm-6 col-md-4">
+<div class="category category-<?php echo $category_id; ?> col-xs-12 col-sm-6">
   <a href="<?php echo htmlspecialchars($link); ?>">
     <div class="thumbnail">
       <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" alt="" title="<?php echo htmlspecialchars($name); ?>" />

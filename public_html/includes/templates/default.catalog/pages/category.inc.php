@@ -1,15 +1,18 @@
 <div class="container">
-
-  <div class="rows">
-    <div class="col-md-3">
-      <div class="sidebar">
-        <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
+  
+  <div class="row">
+    <div class="sidebar col-md-3">
+      <div class="well">
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php'); ?>
+        <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
       </div>
     </div>
     
     <div class="col-md-9">
       {snippet:breadcrumbs}
-     
+      
       <div id="category">
         <div class="btn-group pull-right">
 <?php
@@ -31,7 +34,7 @@
         <?php if ($_GET['page'] == 1 && $description) { ?><p class="description"><?php echo $description; ?></p><?php } ?>
       
         <?php if ($_GET['page'] == 1 && $subcategories) { ?>
-        <div class="subcategories row">
+        <div class="categories row">
           <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
         </div>
         <?php } ?>
@@ -42,9 +45,7 @@
         </div>
         <?php } ?>
         
-        <div class="row">
-          <?php echo $pagination; ?>
-        </div>
+        <?php echo $pagination; ?>
       </div>
     </div>
   </div>

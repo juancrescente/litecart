@@ -4,9 +4,9 @@
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
-<link href="{snippet:template_path}styles/application.css" rel="stylesheet" />
-<link href="{snippet:template_path}styles/theme.css" rel="stylesheet" />
 <!--snippet:head_tags-->
+<link href="{snippet:template_path}styles/app.css" rel="stylesheet" />
+<link href="{snippet:template_path}styles/bootstrap-theme.css" rel="stylesheet" />
 <script>
 var $buoop = {c:2}; 
 function $buo_f(){ 
