@@ -65,11 +65,11 @@
     <tbody>
       <?php foreach ($module->settings as $setting) { ?>
       <tr>
-        <td class="col-md-6">
+        <td class="col-md-4">
           <label><?php echo $setting['title']; ?></label>
           <?php echo !empty($setting['description']) ? '<p>'.$setting['description'].'</p>' : ''; ?>
         </td>
-        <td class="col-md-6">
+        <td class="col-md-8">
           <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value'], !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
@@ -85,7 +85,7 @@
     </tbody>
   </table>
   
-  <p class="button-set">
+  <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
     <?php echo functions::form_draw_button('uninstall', language::translate('title_uninstall', 'Uninstall'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>

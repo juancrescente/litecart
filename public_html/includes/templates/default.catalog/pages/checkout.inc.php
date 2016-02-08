@@ -1,19 +1,23 @@
-<div class="container">
+<div class="twelve-eighty">
   <div id="checkout-cart-wrapper">
   {snippet:box_checkout_cart}
   </div>
 
-  <div id="checkout-customer-wrapper">
-   {snippet:box_checkout_customer}
-  </div>
-
   <div class="row">
-    <div id="checkout-shipping-wrapper" class="col-md-6">
-      {snippet:box_checkout_shipping}
+    <div class="col-md-6">
+      <div id="checkout-customer-wrapper">
+       {snippet:box_checkout_customer}
+      </div>
     </div>
     
-    <div id="checkout-payment-wrapper" class="col-md-6">
-      {snippet:box_checkout_payment}
+    <div class="col-md-6">
+      <div id="checkout-shipping-wrapper">
+        {snippet:box_checkout_shipping}
+      </div>
+      
+      <div id="checkout-payment-wrapper">
+        {snippet:box_checkout_payment}
+      </div>
     </div>
   </div>
 

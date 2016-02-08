@@ -36,13 +36,13 @@
       
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">';
       
-      self::$snippets['head_tags']['bootstrap'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css" />';
-      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
-      
       self::$snippets['head_tags']['html5shiv'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/html5shiv"></script><![endif]-->';
-      self::$snippets['head_tags']['respond'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/respond"></script><![endif]-->';
+      self::$snippets['head_tags']['respond'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/respond"></script><![endif]-->';      
       
-      self::$snippets['head_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6" ></script>';
+      self::$snippets['head_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-2.1.4.min.js"></script>';
+      //self::$snippets['head_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6"></script>';
+      
+      self::$snippets['foot_tags']['bootstrap'] = '<script src="'. WS_DIR_EXT .'bootstrap/bootstrap.min.js"></script>';
       
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -57,14 +57,30 @@
     
     public static function after_capture() {
       
-    // Extract javascript
-      if (preg_match_all('#<script(?:.*?)>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+    // Extract in content styles
+      if (preg_match_all('#<style>(.*?)</style>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['styles'][] = $match[1];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
+      
+    // Extract in content javascript resources
+      if (preg_match_all('#<script[^>]+></script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+          document::$snippets['foot_tags'][] = $match[1];
+          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+        }
+      }
+      
+    // Extract in content javascript
+      if (preg_match_all('#<script(?:[^>]+)?>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
           document::$snippets['javascript'][] = $match[1];
           $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
         }
       }
-    
+      
     // Set after-snippets
       self::$snippets['language'] = language::$selected['code'];
       self::$snippets['charset'] = language::$selected['charset'];
@@ -83,20 +99,22 @@
       
     // Prepare styles
       if (!empty(self::$snippets['styles'])) {
-        self::$snippets['styles'] = '<style>' . PHP_EOL
-                                  . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                                  . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
-                                  . '/*]]>*/-->' . PHP_EOL
-                                  . '</style>' . PHP_EOL;
+        self::$snippets['head_tags'][] = '<style>' . PHP_EOL
+                                       . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                                       . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
+                                       . '/*]]>*/-->' . PHP_EOL
+                                       . '</style>' . PHP_EOL;
+        self::$snippets['styles'] = null;
       }
       
     // Prepare javascript
       if (!empty(self::$snippets['javascript'])) {
-        self::$snippets['javascript'] = '<script>' . PHP_EOL
-                                      . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                                      . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
-                                      . '/*]]>*/-->' . PHP_EOL
-                                      . '</script>' . PHP_EOL;
+        self::$snippets['foot_tags'][] = '<script>' . PHP_EOL
+                                        . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                                        . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
+                                        . '/*]]>*/-->' . PHP_EOL
+                                        . '</script>' . PHP_EOL;
+        self::$snippets['javascript'] = null;
       }
       
     // Prepare snippets

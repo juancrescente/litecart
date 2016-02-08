@@ -3,7 +3,7 @@
   
   <div id="order_confirmation-wrapper">
   
-    <table class="table table-striped data-table">
+    <table class="table table-striped table-bordered data-table">
       <thead>
         <tr class="header">
           <th class="quantity text-center"><?php echo language::translate('title_qty', 'Qty'); ?></th>

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="twelve-eighty">
   <div id="box-search-results">
     <nav class="filter pull-right">
   <?php

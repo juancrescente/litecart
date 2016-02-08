@@ -37,7 +37,7 @@
       $notices = array();
       
       if (!empty(array_filter(notices::$data))) {
-        document::$snippets['notices'] = '<div id="notices-wrapper" class="container notices">' . PHP_EOL;
+        document::$snippets['notices'] = '<div id="notices">' . PHP_EOL;
         foreach (array_keys(notices::$data) as $type) {
           foreach (notices::$data[$type] as $notice) {
             switch ($type) {
@@ -57,7 +57,7 @@
           }
         }
         document::$snippets['notices'] .= '</div>' . PHP_EOL
-           . '<script>setTimeout(function(){$("#notices-wrapper").slideUp();}, 15000);</script>';
+           . '<script>setTimeout(function(){$("#notices").slideUp();}, 25000);</script>';
       }
       
       self::reset();

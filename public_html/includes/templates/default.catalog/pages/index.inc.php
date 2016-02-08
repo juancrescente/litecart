@@ -1,4 +1,4 @@
-<div class="container">
+<div class="twelve-eighty">
   <div class="row">
     <div class="sidebar col-md-3">
       <div class="well">

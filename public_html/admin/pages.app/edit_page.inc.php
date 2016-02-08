@@ -64,43 +64,36 @@
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', (isset($_POST['status'])) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
-    
-    <div class="form-group col-md-12">
-      <label>
-      <?php echo language::translate('title_title', 'Title'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
-    </div>
   </div>
   
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label><?php echo language::translate('title_content', 'Content'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_title', 'Title'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
   </div>
   
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_content', 'Content'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"'); ?>
   </div>
   
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
-    </div>
+  <div class="form-group">
+    <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"'); ?>
+  </div>
+  
+  <div class="form-group">
+    <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
   </div>
   
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
       <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label></label>
+        <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label>
       </div>
       <div class="checkbox">      
-        <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label></label>
+        <label><?php echo functions::form_draw_checkbox('dock[]', 'customer_service', (isset($_POST['dock']) && in_array('customer_service', $_POST['dock'])) ? 'customer_service' : ''); ?> <?php echo language::translate('text_dock_in_customer_service', 'Dock in customer service'); ?></label>
       </div>
       <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('dock[]', 'information', (isset($_POST['dock']) && in_array('information', $_POST['dock'])) ? 'information' : '0'); ?> <?php echo language::translate('text_dock_in_information', 'Dock in information'); ?></label>

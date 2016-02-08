@@ -1,3 +1,3 @@
-<div class="container">
+<div class="twelve-eighty">
   <?php echo $content; ?>
 </div>

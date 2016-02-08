@@ -1,6 +1,6 @@
 {snippet:breadcrumbs}
 
-<div id="product" class="container">
+<div id="product" class="twelve-eighty">
   <div class="row">
     <div class="col-sm-4">
       <div class="image thumbnail">
@@ -138,11 +138,11 @@
   </div>
 </div>
 
-<div class="container">
+<div class="twelve-eighty">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');?>
 </div>
 
-<div class="container">
+<div class="twelve-eighty">
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');?>
 </div>
 

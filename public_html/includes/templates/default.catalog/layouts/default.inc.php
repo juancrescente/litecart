@@ -24,8 +24,9 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--snippet:head_tags-->
-<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 </head>
 <body>
 

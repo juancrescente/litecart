@@ -5,18 +5,9 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <!--snippet:head_tags-->
-<link href="{snippet:template_path}styles/app.css" rel="stylesheet" />
-<link href="{snippet:template_path}styles/bootstrap-theme.css" rel="stylesheet" />
-<script>
-var $buoop = {c:2}; 
-function $buo_f(){ 
-  var e = document.createElement("script"); 
-  e.src = "//browser-update.org/update.js"; 
-  document.body.appendChild(e);
-};
-try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-catch(e){window.attachEvent("onload", $buo_f)}
-</script>
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 </head>
 <body>
 

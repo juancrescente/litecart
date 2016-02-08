@@ -10,6 +10,10 @@
   
   document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
   
+// Validate data
+  if (!empty($_POST['confirm_order'])) {
+  }
+  
   $_page = new view();
   
   ob_start();
@@ -34,3 +38,6 @@
   
   echo $_page->stitch('pages/checkout');
 ?>
+<style>
+Blaha blaha
+</style>

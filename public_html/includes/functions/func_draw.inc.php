@@ -1,18 +1,14 @@
 <?php
-
-  function draw_fontawesome_icon($name, $params=null, $class=null) {
-    //trigger_error('draw_fontawesome_icon() is deprecated. Use instead draw_fonticon()', E_USER_DEPRECATED);
-    return functions::draw_fonticon('fa-'.$name . ($class ? ' ' . $class : null), $params);
-  }
   
   function draw_fonticon($class, $params=null) {
     
     switch(true) {
-      case (substr($class, 0, 3) == 'fa '):
-        return '<i classes="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
-        
       case (substr($class, 0, 3) == 'fa-'):
+        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; 
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        
+      case (substr($class, 0, 3) == 'glyphicon-'):
+        return '<span class="glyphicon '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></span>';
         
       default:
         trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="twelve-eighty">
   {snippet:breadcrumbs}
   
   <div class="row">
@@ -35,7 +35,7 @@
         <?php } ?>
         
         <?php if ($products) { ?>
-        <div class="products row">
+        <div class="products row half-gutter">
           <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
         </div>
         <?php } ?>

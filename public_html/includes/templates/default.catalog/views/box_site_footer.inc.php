@@ -1,10 +1,10 @@
 <hr />
 
 <footer>
-  <div class="container">
+  <div class="twelve-eighty">
     <div class="row">
 
-        <div class="categories col-xs-6 col-sm-3 col-md-5col col-lg-5col">
+        <div class="categories col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_categories', 'Categories'); ?></h4>
           <ul class="list-unstyled">
             <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
@@ -12,7 +12,7 @@
         </div>
         
         <?php if ($manufacturers) { ?>
-        <div class="manufacturers col-xs-6 col-sm-3 col-md-5col col-lg-5col">
+        <div class="manufacturers col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
           <ul class="list-unstyled">
           <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
@@ -20,7 +20,7 @@
         </div>
         <?php } ?>
         
-        <div class="account col-xs-6 col-sm-3 col-md-5col col-lg-5col">
+        <div class="account col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
           <ul class="list-unstyled">
             <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
@@ -36,14 +36,14 @@
           </ul>
         </div>
         
-        <div class="information col-xs-6 col-sm-3 col-md-5col col-lg-5col">
+        <div class="information col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_information', 'Information'); ?></h4>
           <ul class="list-unstyled">
             <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
           </ul>
         </div>
         
-        <div class="contact col-xs-12 col-sm-3 col-md-5col col-lg-5col">
+        <div class="contact col-xs-12 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
           <p><?php echo settings::get('store_phone'); ?><br />

@@ -2,8 +2,6 @@
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     document::$layout = 'ajax';
     header('X-Robots-Tag: noindex');
-  } else {
-    document::$layout = 'column_left';
   }
   
   if (!empty($_GET['product_id'])) {

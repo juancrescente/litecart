@@ -1,4 +1,4 @@
-<div id="regional-settings" class="container">
+<div id="regional-settings" class="twelve-eighty">
   <h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
   
   <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>

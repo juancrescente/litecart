@@ -1,11 +1,12 @@
-<div id="checkout-customer">
-  <h2 class="title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
-  
-  <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false); ?>
-  
-    <div class="row">
+<div id="checkout-customer" class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title title"><?php echo language::translate('title_customer_details', 'Customer Details'); ?></h2>
+  </div>
+
+  <div class="panel-body">
+    <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false); ?>
     
-      <div class="billing-address col-md-6">
+      <div class="billing-address">
       
         <div class="row">
           <div class="col-md-6">
@@ -122,13 +123,11 @@
         </div>
         <?php } ?>
         <?php } ?>
-        
-        <?php echo functions::form_draw_button('set_addresses', language::translate('title_save_changes', 'Save Changes'), 'submit', 'disabled="disabled"'); ?>
       </div>
     
-      <div class="shipping-address col-md-6">
+      <div class="shipping-address">
         
-        <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
+        <h3><label><?php echo functions::form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
           
         <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
         
@@ -205,11 +204,10 @@
             </div>
           </div>
         
-          <?php echo functions::form_draw_button('set_addresses', language::translate('title_save_changes', 'Save Changes'), 'submit', 'disabled="disabled"'); ?>
         </div>
       </div>
-    </div>
-  <?php echo functions::form_draw_form_end(); ?>
+    <?php echo functions::form_draw_form_end(); ?>
+  </div>
 </div>
 
 <script>

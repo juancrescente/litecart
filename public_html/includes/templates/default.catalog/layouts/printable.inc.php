@@ -3,7 +3,8 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 <!--snippet:head_tags-->
 <!--snippet:javascript-->

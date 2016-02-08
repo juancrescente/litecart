@@ -77,7 +77,7 @@
     foreach ($modules->modules as $module) {
       $num_module_rows++;
 ?>
-      <tr class="<?php echo empty($module->status) ? ' semi-transparent' : null; ?>">
+      <tr class="<?php echo empty($module->status) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
         <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
@@ -102,7 +102,7 @@
       $num_module_rows++;
       $module = new $module_id;
 ?>
-      <tr class="row semi-transparent">
+      <tr class="semi-transparent">
         <td></td>
         <td></td>
         <td><?php echo $module->name; ?></td>

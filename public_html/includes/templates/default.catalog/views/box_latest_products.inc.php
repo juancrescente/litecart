@@ -4,7 +4,7 @@
     </div>
   </div>
 
-  <div class="products row text-center">
+  <div class="products row half-gutter text-center">
     <?php foreach($products as $product) echo functions::draw_listing_product($product); ?>
   </div>
 </div>

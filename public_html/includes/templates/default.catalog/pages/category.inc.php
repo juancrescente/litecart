@@ -1,4 +1,4 @@
-<div class="container">
+<div class="twelve-eighty">
   
   <div class="row">
     <div class="sidebar col-md-3">
@@ -34,13 +34,13 @@
         <?php if ($_GET['page'] == 1 && $description) { ?><p class="description"><?php echo $description; ?></p><?php } ?>
       
         <?php if ($_GET['page'] == 1 && $subcategories) { ?>
-        <div class="categories row">
+        <div class="categories row half-gutter">
           <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
         </div>
         <?php } ?>
         
         <?php if ($products) { ?>
-        <div class="products row">
+        <div class="products row half-gutter">
           <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
         </div>
         <?php } ?>

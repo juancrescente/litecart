@@ -2,7 +2,7 @@
   require_once('../includes/app_header.inc.php');
   
   document::$template = settings::get('store_template_admin');
-  document::$layout = 'login';
+  document::$layout = 'blank';
   
   if (!isset($_POST['redirect_url'])) $_POST['redirect_url'] = null;
   
@@ -25,7 +25,7 @@
     'action' => !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link(WS_DIR_ADMIN),
   );
   
-  echo $page_login->stitch('views/login');
+  echo $page_login->stitch('pages/login');
   
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');
 ?>
