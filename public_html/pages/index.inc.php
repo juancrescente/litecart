@@ -13,25 +13,5 @@
   
   $_page = new view();
   
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_slider.inc.php');
-  $_page->snippets['box_slider'] = ob_get_clean();
-  
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturer_logotypes.inc.php');
-  $_page->snippets['box_manufacturer_logotypes'] = ob_get_clean();
-  
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_campaign_products.inc.php');
-  $_page->snippets['box_campaign_products'] = ob_get_clean();
-  
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_most_popular_products.inc.php');
-  $_page->snippets['box_most_popular_products'] = ob_get_clean();
-  
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_latest_products.inc.php');
-  $_page->snippets['box_latest_products'] = ob_get_clean();
-  
   echo $_page->stitch('pages/index');
 ?>

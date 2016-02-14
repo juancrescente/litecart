@@ -1,10 +1,10 @@
 <div id="checkout-payment">
   <h2><?php echo language::translate('title_payment', 'Payment'); ?></h2>
   
-  <div class="options">
+  <div class="options btn-group-vertical btn-block">
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <?php echo functions::form_draw_radio_button('payment_option', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"'); ?>
-    <div class="option btn btn-block btn-default <?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? 'active' : ''; ?>">
+    <div class="option btn btn-default <?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? 'active' : ''; ?>">
     <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $selected['id']); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-md-3 thumbnail" style="margin: 0;">
@@ -15,14 +15,16 @@
           <div class="name"><?php echo $option['name']; ?></div>
         </div>
         <div class="col-md-4 text-right">
-          <div class="price"><?php echo ($option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
+          <div class="price"><?php echo ($option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
         </div>
       </div>
       
+      <?php if (!empty($option['description']) || !empty($option['fields'])) { ?>
       <div class="content">
         <hr />
         <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?>breeeeeeeeeeeeeee</p>
       </div>
+      <?php } ?>
     <?php echo functions::form_draw_form_end(); ?>
     </div>
     <?php } ?>
@@ -51,7 +53,7 @@
 }
 </style>
 <script>
-$('#checkout-payment').on('click', '.option:not(.active)', function(){
+$('body').on('click', '#checkout-payment .option:not(.active)', function(){
   $('#checkout-payment .option').removeClass('active');
   $(this).prev('input[name="payment_option"]').click();
   $(this).addClass('active');

@@ -1,4 +1,6 @@
 <div class="twelve-eighty">
+  <!--snippet:notices-->
+  
   <div id="box-search-results">
     <nav class="filter pull-right">
   <?php

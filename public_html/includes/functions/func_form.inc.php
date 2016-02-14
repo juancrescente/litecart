@@ -115,7 +115,10 @@
                                                                         . '  });';
     
     //return '<span class="input-group">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
-    return '<div class="input-group"><input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong class="input-group-addon" style="opacity: 0.5;">'. $currency_code .'</strong></div>';
+    return '<span class="input-group">' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />' . PHP_EOL
+         . '  <strong class="input-group-addon" style="opacity: 0.5;">'. $currency_code .'</strong>' . PHP_EOL
+         . '</span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='') {
@@ -159,7 +162,10 @@
   function form_draw_email_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<span class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">@</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="email" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="email"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</span>';
   }
   
   function form_draw_file_field($name, $parameters='') {
@@ -233,13 +239,19 @@
   function form_draw_password_field($name, $value='', $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<span class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-key') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="password" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="password"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</span>';
   }
   
   function form_draw_phone_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<span class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-phone') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="tel" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="phone" pattern="^\+?([0-9]|-| )+$"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</span>';
   }
   
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
@@ -281,7 +293,10 @@
   function form_draw_search_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
     
-    return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search"'. (($parameters) ? ' '.$parameters : false) .' />';
+    return '<span class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-search') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="search" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="search"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</span>';
   }
   
   function form_draw_select_optgroup_field($name, $groups=array(), $input=true, $multiple=false, $parameters='') {
@@ -369,7 +384,7 @@
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />';
   }
   
-  function form_draw_toggle($name, $input=true, $type='e/d') {
+  function form_draw_toggle($name, $input=true, $type='e/d', $parameters='') {
     if ($input === true) $input = form_reinsert_value($name);
     
     $input = in_array(strtolower($input), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? '1' : '0';
@@ -627,7 +642,12 @@
       $options[] = array($currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"');
     }
     
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+    return '<span class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">@</span>' . PHP_EOL
+         . '  ' . functions::form_draw_select_field($name, $options, $input, $multiple, $parameters) . PHP_EOL
+         . '</span>';
+
+    return ;
   }
   
   function form_draw_customers_list($name, $input=true, $multiple=false, $parameters='') {

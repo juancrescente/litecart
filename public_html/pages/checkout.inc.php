@@ -10,10 +10,6 @@
   
   document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
   
-// Validate data
-  if (!empty($_POST['confirm_order'])) {
-  }
-  
   $_page = new view();
   
   ob_start();
@@ -36,8 +32,29 @@
   include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php');
   $_page->snippets['box_checkout_summary'] = ob_get_clean();
   
+  if (!empty($_GET['return'])) {
+    switch($_GET['return']) {
+      case 'cart':
+        echo $_page->snippets['box_checkout_cart'];
+        exit;
+        
+      case 'customer':
+        echo $_page->snippets['box_checkout_customer'];
+        exit;
+        
+      case 'shipping':
+        echo $_page->snippets['box_checkout_shipping'];
+        exit;
+        
+      case 'payment':
+        echo $_page->snippets['box_checkout_payment'];
+        exit;
+        
+      case 'summary':
+        echo $_page->snippets['box_checkout_summary'];
+        exit;
+    }
+  }
+  
   echo $_page->stitch('pages/checkout');
 ?>
-<style>
-Blaha blaha
-</style>

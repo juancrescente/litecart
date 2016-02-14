@@ -311,13 +311,9 @@
     }
   }
   
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');
-  $_page->snippets['box_also_purchased_products'] = ob_get_clean();
-  
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_similar_products.inc.php');
-  $_page->snippets['box_similar_products'] = ob_get_clean();
-  
-  echo $_page->stitch('pages/product');
+  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+    echo $_page->stitch('pages/product.ajax');
+  } else {
+    echo $_page->stitch('pages/product');
+  }
 ?>

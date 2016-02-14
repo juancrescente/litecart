@@ -1,10 +1,4 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
-  
   if (empty(cart::$items)) return;
   
   if (!isset($shipping)) $shipping = new mod_shipping();
@@ -70,5 +64,4 @@
   }
   
   echo $box_checkout_summary->stitch('views/box_checkout_summary');
-  
 ?>

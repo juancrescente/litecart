@@ -1,9 +1,11 @@
 <div class="twelve-eighty">
-  <div class="row">
-  <div class="col-sm-3">
+  <!--snippet:notices-->
+  
+  <div id="sidebar">
     {snippet:box_customer_service_links}
   </div>
-  <div class="col-sm-9">
+  
+  <div id="main">
     <?php echo $content; ?>
   </div>
 </div>

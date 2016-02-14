@@ -7,8 +7,8 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?php echo document::ilink(''); ?>" style="margin-top: -0.5em;">
-          <img class="img-responsive" src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 2em;" />
+        <a class="navbar-brand" href="<?php echo document::ilink(''); ?>">
+          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 2em;" />
         </a>
       </div>
       
@@ -30,19 +30,18 @@
           <?php } ?>
         </ul>
 
-        <ul class="nav navbar-nav pull-right">
+        <ul class="nav pull-right">
           <li>
-            <div id="cart" class="form-inline " style="margin-top: 0.5em; box-sizing: border-box;">
-              <img src="/litecart/includes/templates/default.catalog/images/cart_filled.png" height="32" alt="" class="" />
+            <div id="cart" class="form-inline" style="margin-top: 0.5em; box-sizing: border-box;">
+              <?php /* <img src="/litecart/includes/templates/default.catalog/images/cart_filled.png" height="32" alt="" class="" /> */ ?>
               <div class="btn-group">
                 <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
                   <?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
-                  
+                  <span class="quantity"><?php echo cart::$total['items']; ?></span> <?php echo language::translate('title_items_s', 'Item(s)'); ?>
                 </a>
                 <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
-                <div class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="min-width: 150px;">
-                  <span class="pull-right" style="margin-left: 1em;"><i class="fa fa-caret-down"></i></span>
-                  <span class="quantity"><?php echo cart::$total['items']; ?></span> item(s)
+                <div class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-caret-down"></i>
                 </div>
                 <ul class="items dropdown-menu">
                   <?php foreach(cart::$items as $item) { ?>

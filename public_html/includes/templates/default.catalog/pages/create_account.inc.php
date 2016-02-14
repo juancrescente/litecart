@@ -1,6 +1,7 @@
-<div class="container">
+<div class="twelve-eighty">
+  <!--snippet:notices-->
+  
   <div id="create-account" class="">
-
     <h1><?php echo language::translate('title_create_account', 'Create Account'); ?></h1>
 
     <?php echo functions::form_draw_form_begin('customer_form', 'post', false, false, 'style="max-width: 640px;"'); ?>

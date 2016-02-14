@@ -1,6 +1,7 @@
 <style>
 .carousel {
   max-height: 100%;
+  margin-bottom: 2em;
 }
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {

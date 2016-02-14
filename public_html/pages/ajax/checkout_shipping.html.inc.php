@@ -1,26 +1,18 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
-  
   if (empty(cart::$items)) return;
   
   if (empty(customer::$data['country_code'])) return;
   
   $shipping = new mod_shipping();
   
-  if (!empty($_POST['set_shipping'])) {
-    list($module_id, $option_id) = explode(':', $_POST['selected_shipping']);
+  if (!empty($_POST['shipping_option'])) {
+    list($module_id, $option_id) = explode(':', $_POST['shipping_option']);
     $result = $shipping->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $shipping->select($module_id, $option_id, $_POST);
     }
-    header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
-    exit;
   }
   
   $options = $shipping->options();
@@ -28,7 +20,7 @@
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id])) {
-      $shipping->data['selected'] = array();
+      $shipping->data['selected'] = array(); // Clear
     } else {
       $shipping->select($module_id, $option_id); // Refresh
     }

@@ -26,18 +26,43 @@
 <!--snippet:head_tags-->
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-extras.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.css" />
 </head>
 <body>
 
-  <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
-  
-  <!--snippet:top-->
+  <nav class="navbar navbar-default navbar-fixed-top shadow" role="navigation">
+    <div class="twelve-eighty">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="<?php echo document::ilink(''); ?>">
+          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 2em;" />
+        </a>
+      </div>
+      
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="<?php echo document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('fa-caret-left'); ?> <?php echo language::translate('title_continue_shopping', 'Continue Shopping'); ?></a>
+          </li>
+        </ul>
 
-  <!--snippet:notices-->
+        <ul class="nav pull-right">
+          <li>
+            <h4 style="margin-bottom: 0;"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></h4>
+            <div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
   <!--snippet:content-->
-    
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
   
 <!--snippet:foot_tags-->
 <!--snippet:javascript-->

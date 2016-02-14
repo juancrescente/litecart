@@ -116,25 +116,17 @@
                                         . '</script>' . PHP_EOL;
         self::$snippets['javascript'] = null;
       }
+    }
+    
+    public static function before_output() {
       
     // Prepare snippets
       foreach (array_keys(self::$snippets) as $snippet) {
         if (is_array(self::$snippets[$snippet])) self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);
       }
-    }
-    
-    public static function before_output() {
       
     // Get template settings
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
-      
-    // Clean orphan snippets
-      $search = array(
-        '/\{snippet:[^\}]+\}/',
-        '/<!--snippet:[^-->]+-->/',
-      );
-      
-      $GLOBALS['output'] = preg_replace($search, '', $GLOBALS['output']);
     }
     
     //public static function shutdown() {

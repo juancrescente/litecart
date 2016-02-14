@@ -1,26 +1,18 @@
 <?php
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    header('Content-type: text/html; charset='. language::$selected['charset']);
-    document::$layout = 'ajax';
-    header('X-Robots-Tag: noindex');
-  }
-  
   if (empty(cart::$items)) return;
   
   if (empty(customer::$data['country_code'])) return;
   
   $payment = new mod_payment();
   
-  if (!empty($_POST['set_payment'])) {
-    list($module_id, $option_id) = explode(':', $_POST['selected_payment']);
+  if (!empty($_POST['payment_option'])) {
+    list($module_id, $option_id) = explode(':', $_POST['payment_option']);
     $result = $payment->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
       notices::add('errors', is_string($result) ? $result : $result['error']);
     } else {
       $payment->select($module_id, $option_id, $_POST);
     }
-    header('Location: '. ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') ? $_SERVER['REQUEST_URI'] : document::ilink('checkout')));
-    exit;
   }
   
   $options = $payment->options();
@@ -28,7 +20,7 @@
   if (!empty($payment->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id])) {
-      $payment->data['selected'] = array();
+      $payment->data['selected'] = array(); // Clear
     } else {
       $payment->select($module_id, $option_id); // Refresh
     }

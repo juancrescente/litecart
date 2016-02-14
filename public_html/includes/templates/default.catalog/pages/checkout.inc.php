@@ -1,4 +1,6 @@
 <div class="twelve-eighty">
+  <!--snippet:notices-->
+  
   <div id="checkout-cart-wrapper">
   {snippet:box_checkout_cart}
   </div>

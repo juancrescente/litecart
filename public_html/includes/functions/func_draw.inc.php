@@ -98,16 +98,23 @@
   
   function draw_lightbox($name='default') {
     
-    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.css">';
-    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.js"></script>'
-                                                      . '<script>' . PHP_EOL
-                                                      . '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
-                                                      . '    event.preventDefault();' . PHP_EOL
-                                                      . '    $(this).ekkoLightbox({' . PHP_EOL
-                                                      . '      loadingMessage: \'<i class="fa fa-spinner fa-spin"></i>\'' . PHP_EOL  
-                                                      . '    });' . PHP_EOL
-                                                      . '  });' . PHP_EOL
-                                                      . '</script>';
+    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.css">' . PHP_EOL
+                                                      . '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.stack-fix.css">';
+    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.js"></script>' . PHP_EOL
+                                                      . '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.stack-fix.js"></script>';
+    document::$snippets['javascript']['ekko-lightbox'] = '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
+                                                       . '    event.preventDefault();' . PHP_EOL
+                                                       . '    $(this).ekkoLightbox({' . PHP_EOL
+                                                       //. '      loadingMessage: \''. functions::draw_fonticon('fa-spinner fa-spin') .'\',' . PHP_EOL
+                                                       //. '      left_arrow_class: \''. functions::draw_fonticon('fa-chevron-left') .'\',' . PHP_EOL
+                                                       //. '      right_arrow_class: \''. functions::draw_fonticon('fa-chevron-right') .'\',' . PHP_EOL
+                                                       . '      loadingMessage: \'<i class="fa fa-spinner fa-spin"></i>\',' . PHP_EOL
+                                                       . '      left_arrow_class: \'fa fa-chevron-left\',' . PHP_EOL
+                                                       . '      right_arrow_class: \'fa fa-chevron-right\',' . PHP_EOL
+                                                       . '      max_width: \'1024px\',' . PHP_EOL
+                                                       . '      effect_class: null' . PHP_EOL
+                                                       . '    });' . PHP_EOL
+                                                       . '  });';
   }
 
   function draw_modal($name='default') {

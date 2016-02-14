@@ -167,11 +167,6 @@
       );
     }
     
-    public static function set_breakpoint() {
-      trigger_error('The method '.__CLASS__.'::set_breakpoint() is deprecated, use instead '.__CLASS__.'::clear_cache()', E_USER_DEPRECATED);
-      self::clear_cache();
-    }
-    
     public static function cache_id($keyword, $dependants=array()) {
       
       if (!is_array($dependants)) $dependants = array($dependants);
@@ -230,7 +225,7 @@
       return $keyword .'_'. md5($hash_string);
     }
     
-    /* This option is not affected by $enabled since new data is always recorded */
+  // This method is not affected by self::$enabled since new data is always recorded
     public static function capture($cache_id, $type='session', $max_age=900, $force=false) {
       
       if (isset(self::$_recorders[$cache_id])) trigger_error('Cache recorder already initiated ('. $cache_id .')', E_USER_ERROR);
@@ -245,6 +240,7 @@
       self::$_recorders[$cache_id] = array(
         'id' => $cache_id,
         'type' => $type,
+        'snippets' => document::$snippets, // Record snippets
       );
       
       ob_start();
@@ -252,7 +248,7 @@
       return true;
     }
     
-    /* This option is not affected by $enabled since new data is always recorded */
+  // This method is not affected by self::$enabled since new data is always recorded
     public static function end_capture($cache_id=null) {
       
       if (empty($cache_id)) $cache_id = current(array_reverse(self::$_recorders));
@@ -265,6 +261,31 @@
       $_data = ob_get_flush();
       
       if ($_data === false) trigger_error('No active recording while trying to end buffer recorder', E_USER_ERROR);
+      
+    // Function to extract snippets recorded during session
+      if (!function_exists('array_diff_assoc_recursive')) {
+        function array_diff_assoc_recursive($array, $compare) {
+          
+          $output = array();
+          foreach ($array as $key => $value) { 
+            if (array_key_exists($key, $compare)) { 
+              if (is_array($value)) { 
+                $diff = array_diff_assoc_recursive($value, $compare[$key]); 
+                if (count($diff)) $output[$key] = $diff;
+              } else { 
+                if ($value != $compare[$key]) $output[$key] = $value; 
+              }
+            } else { 
+              $output[$key] = $value; 
+            }
+          }
+
+          return $output; 
+        }
+      }
+      
+      $snippets = array_diff_assoc_recursive(document::$snippets, self::$_recorders[$cache_id]['snippets']);
+      //var_dump($snippets);exit;
       
       self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
       
