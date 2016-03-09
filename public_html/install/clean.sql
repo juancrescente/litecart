@@ -60,6 +60,8 @@ DROP TABLE IF EXISTS `lc_products_info`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_options`;
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_products_stock`;
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_to_categories`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_products_options_stock`;
@@ -99,6 +101,8 @@ DROP TABLE IF EXISTS `lc_tax_rates`;
 DROP TABLE IF EXISTS `lc_translations`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_users`;
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `lc_warehouses`;
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `lc_zones`;
 -- --------------------------------------------------------
