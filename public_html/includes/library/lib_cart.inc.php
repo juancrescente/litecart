@@ -279,34 +279,34 @@
       }
       
     // Match options with options stock
-      if (count($product->options_stock) > 0) {
-        foreach ($product->options_stock as $option_stock) {
+      if (count($product->stock) > 0) {
+        foreach ($product->stock as $stock_option) {
           
           $option_match = true;
-          foreach (explode(',', $option_stock['combination']) as $pair) {
+          foreach (explode(',', $stock_option['combination']) as $pair) {
             if (!in_array($pair, $selected_options)) {
               $option_match = false;
             }
           }
           
           if ($option_match) {
-            if (($option_stock['quantity'] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
+            if (($stock_option['warehouse_'.(int)settings::get('default_warehouse_id')] - $quantity) < 0 && empty($product->sold_out_status['orderable'])) {
               if (!$silent) {
                 notices::add('errors', language::translate('text_not_enough_products_in_stock_for_options', 'There are not enough products for the selected options.') . ' ('. round($option_stock['quantity'], $product->quantity_unit['decimals']) .')');
                 return;
               } else {
-                $quantity = $option_stock['quantity'];
+                $quantity = $stock_option['warehouse_'.(int)settings::get('default_warehouse_id')];
               }
             }
             
-            $item['option_stock_combination'] = $option_stock['combination'];
-            if (!empty($option_stock['sku'])) $item['sku'] = $option_stock['sku'];
-            if (!empty($option_stock['weight'])) $item['weight'] = $option_stock['weight'];
-            if (!empty($option_stock['weight_class'])) $item['weight_class'] = $option_stock['weight_class'];
-            if (!empty($option_stock['dim_x'])) $item['dim_x'] = $option_stock['dim_x'];
-            if (!empty($option_stock['dim_y'])) $item['dim_y'] = $option_stock['dim_y'];
-            if (!empty($option_stock['dim_z'])) $item['dim_z'] = $option_stock['dim_z'];
-            if (!empty($option_stock['dim_class'])) $item['dim_class'] = $option_stock['dim_class'];
+            $item['option_stock_combination'] = $stock_option['combination'];
+            if (!empty($stock_option['sku'])) $item['sku'] = $stock_option['sku'];
+            if (!empty($stock_option['weight'])) $item['weight'] = $stock_option['weight'];
+            if (!empty($stock_option['weight_class'])) $item['weight_class'] = $stock_option['weight_class'];
+            if (!empty($stock_option['dim_x'])) $item['dim_x'] = $stock_option['dim_x'];
+            if (!empty($stock_option['dim_y'])) $item['dim_y'] = $stock_option['dim_y'];
+            if (!empty($stock_option['dim_z'])) $item['dim_z'] = $stock_option['dim_z'];
+            if (!empty($stock_option['dim_class'])) $item['dim_class'] = $stock_option['dim_class'];
             break;
           }
         }
@@ -355,9 +355,9 @@
       // Stock
         if (empty($product->sold_out_status['orderable'])) {
           if (!empty(self::$items[$item_key]['option_stock_combination'])) {
-            foreach (array_keys($product->options_stock) as $key) {
-              if ($product->options_stock[$key]['combination'] == self::$items[$item_key]['option_stock_combination']) {
-                if (($product->options_stock[$key]['quantity'] - $quantity) < 0) {
+            foreach (array_keys($product->stock) as $key) {
+              if ($product->stock[$key]['combination'] == self::$items[$item_key]['option_stock_combination']) {
+                if (($product->stock[$key]['warehouse_'.(int)settings::get('default_warehouse_id')] - $quantity) < 0) {
                   if (!$silent) notices::add('errors', language::translate('text_not_enough_products_option_in_stock', 'There are not enough products of the selected option in stock.') . ' ('. round($product->options_stock[$key]['quantity'], $product->quantity_unit['decimals']) .')');
                   return;
                 }

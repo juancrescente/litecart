@@ -197,25 +197,27 @@
     return $products_query;
   }
   
-  function catalog_stock_adjust($product_id, $option_stock_combination, $quantity) {
+  function catalog_stock_adjust($product_id, $combination, $quantity, $warehouse_id=null) {
     
     if (empty($product_id)) return;
     
-    if (!empty($option_stock_combination)) {
+    if (empty($warehouse_id)) $warehouse_id = settings::get('default_warehouse_id');
+    
+    if (!empty($combination)) {
       $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        "select id from ". DB_TABLE_PRODUCTS_STOCK ."
         where product_id = '". (int)$product_id ."'
-        and combination = '". database::input($option_stock_combination) ."';"
+        and combination = '". database::input($combination) ."';"
       );
       if (database::num_rows($products_options_stock_query) > 0) {
-        if (empty($option_stock_combination)) {
-          trigger_error('Invalid option stock combination ('. $option_stock_combination .') for product id '. $product_id, E_USER_ERROR);
+        if (empty($combination)) {
+          trigger_error('Invalid option stock combination ('. $combination .') for product id '. $product_id, E_USER_ERROR);
         } else {
           database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-            set quantity = quantity + ". (int)$quantity ."
+            "update ". DB_TABLE_PRODUCTS_STOCK ."
+            set warehouse_". (int)$warehouse_id ." = warehouse_". (int)$warehouse_id ." + ". (float)$quantity ."
             where product_id = '". (int)$product_id ."'
-            and combination =  '". database::input($option_stock_combination) ."'
+            and combination =  '". database::input($combination) ."'
             limit 1;"
           );
         }
@@ -224,9 +226,19 @@
       }
     }
     
+    if (!empty($combination)) {
+      database::query(
+        "update ". DB_TABLE_PRODUCTS_STOCK ."
+        set warehouse_". (int)$warehouse_id ." = warehouse_". (int)$warehouse_id ." + ". (float)$quantity ."
+        where id = '". (int)$product_id ."'
+        and combination = ''
+        limit 1;"
+      );
+    }
+    
     database::query(
       "update ". DB_TABLE_PRODUCTS ."
-      set quantity = quantity + ". (int)$quantity ."
+      set quantity = quantity + ". (float)$quantity ."
       where id = '". (int)$product_id ."'
       limit 1;"
     );

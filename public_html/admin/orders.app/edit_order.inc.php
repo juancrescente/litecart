@@ -400,6 +400,7 @@
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_sku', 'SKU'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_weight', 'Weight'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_qty', 'Qty'); ?></th>
+      <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_warehouse', 'Warehouse'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
       <th style="text-align: center; min-width: 50px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
       <th>&nbsp;</th>
@@ -442,6 +443,7 @@
       <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
       <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true); ?></td>
       <td style="text-align: center;"><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
+      <td style="text-align: center;"><?php echo functions::form_draw_warehouses_list('items['. $key .'][warehouse_id]', true); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
       <td style="text-align: right;"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
       <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
@@ -474,6 +476,7 @@
                  + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
                  + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '')); ?></td>'
                  + '    <td style="text-align: center;"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
+                 + '    <td style="text-align: center;"><?php echo functions::form_draw_warehouses_list('items[new_item_index][warehouse_id]', ''); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                  + '    <td style="text-align: right;"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
                  + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'

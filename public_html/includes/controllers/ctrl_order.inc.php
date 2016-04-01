@@ -360,7 +360,7 @@
         
       // Restock
         if (!empty($previous_order_status['is_sale'])) {
-          functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+          functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity'], $previous_order_item['warehouse_id']);
         }
       }
       
@@ -396,15 +396,16 @@
           
         // Adjust stock
           if (!empty($previous_order_status['is_sale'])) {
-            functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity']);
+            functions::catalog_stock_adjust($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], $previous_order_item['quantity'], $previous_order_item['warehouse_id']);
           }
           if (!empty($current_order_status['is_sale'])) {
-            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity']);
+            functions::catalog_stock_adjust($this->data['items'][$key]['product_id'], $this->data['items'][$key]['option_stock_combination'], -$this->data['items'][$key]['quantity'], $this->data['items'][$key]['warehouse_id']);
           }
           
           database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
+            warehouse_id = '". (int)$this->data['items'][$key]['warehouse_id'] ."',
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
             options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',
@@ -572,6 +573,7 @@
       $this->data['items']['new'.$key_i] = array(
         'id' => '',
         'product_id' => $item['product_id'],
+        'warehouse_id' => settings::get('default_warehouse_id'),
         'options' => $item['options'],
         'option_stock_combination' => $item['option_stock_combination'],
         'name' => $item['name'],

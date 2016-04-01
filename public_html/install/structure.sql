@@ -319,6 +319,7 @@ CREATE TABLE `lc_orders_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
+  `warehouse_id` INT(11) NOT NULL,
   `option_stock_combination` varchar(32) NOT NULL,
   `options` varchar(512) NOT NULL,
   `name` varchar(128) NOT NULL,

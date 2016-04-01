@@ -983,24 +983,6 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_product_stock_options_list($product_id, $name, $input=true, $multiple=false, $parameters='') {
-    
-    $options = array();
-    
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-    
-    if (!empty($product_id)) {
-      $product = catalog::product($product_id);
-      if (count($product->options_stock) > 0) {
-        foreach (array_keys($product->options_stock) as $key) {
-          $options[] = array($product->options_stock[$key]['name'][language::$selected['code']] .' ['. $product->options_stock[$key]['quantity'] .'] ', $product->id);
-        }
-      }
-    }
-    
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-  
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
     
     if ($input === true) $input = form_reinsert_value($name);
@@ -1130,6 +1112,24 @@
     
     while ($tax_class = database::fetch($tax_classes_query)) {
       $options[] = array($tax_class['name'], $tax_class['id']);
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
+  function form_draw_warehouses_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    $warehouses_query = database::query(
+      "select id, name from ". DB_TABLE_WAREHOUSES ."
+      order by name;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($warehouse = database::fetch($warehouses_query)) {
+      $options[] = array($warehouse['name'], $warehouse['id']);
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

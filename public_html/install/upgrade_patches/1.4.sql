@@ -50,3 +50,7 @@ CHANGE COLUMN `dim_z` `dim_z` decimal(10,4) NOT NULL COMMENT 'Moved to lc_produc
 CHANGE COLUMN `dim_class` `dim_class` varchar(2) NOT NULL COMMENT 'Moved to lc_products_stock as of version 1.4';
 -- --------------------------------------------------------
 ALTER TABLE `lc_products_options_stock` COMMENT='Moved to lc_products_stock as of 1.4';
+-- --------------------------------------------------------
+ALTER TABLE `lc_orders_items` ADD COLUMN `warehouse_id` INT(11) NOT NULL AFTER `product_id`;
+-- --------------------------------------------------------
+UPDATE `lc_orders_items` set `warehouse_id` = 1;

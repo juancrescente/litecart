@@ -30,7 +30,7 @@
       if (!isset($_POST['images'])) $_POST['images'] = array();
       if (!isset($_POST['campaigns'])) $_POST['campaigns'] = array();
       if (!isset($_POST['options'])) $_POST['options'] = array();
-      if (!isset($_POST['options_stock'])) $_POST['options_stock'] = array();
+      if (!isset($_POST['stock'])) $_POST['stock'] = array();
       if (!isset($_POST['product_groups'])) $_POST['product_groups'] = array();
       
       $fields = array(

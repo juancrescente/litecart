@@ -43,7 +43,7 @@
         $product->data['image'] = null;
         $product->data['images'] = array();
         
-        foreach (array('campaigns', 'options', 'options_stock') as $field) {
+        foreach (array('campaigns', 'options', 'stock') as $field) {
           if (empty($product->data[$field])) continue;
           foreach (array_keys($product->data[$field]) as $key) {
             $product->data[$field][$key]['id'] = null;

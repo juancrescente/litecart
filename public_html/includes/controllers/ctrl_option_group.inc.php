@@ -141,11 +141,11 @@
       
       while ($option_value = database::fetch($option_values_query)) {
         
-        $products_options_stock_query = database::query(
-          "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
+        $products_stock_query = database::query(
+          "select id from ". DB_TABLE_PRODUCTS_STOCK ."
           where combination like '%". (int)$this->data['id'] ."-". (int)$option_value['id'] ."%';"
         );
-        if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option value linked to products.', E_USER_ERROR);
+        if (database::num_rows($products_stock_query) > 0) trigger_error('Cannot delete option value linked to stock options.', E_USER_ERROR);
         
         database::query(
           "delete from ". DB_TABLE_OPTION_VALUES ."
@@ -219,13 +219,6 @@
     
       if (empty($this->data['id'])) return;
     
-    // Check products for option group
-      $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
-        where combination like '%". (int)$this->data['id'] ."-%';"
-      );
-      if (database::num_rows($products_options_stock_query) > 0) trigger_error('Cannot delete option group linked to products.', E_USER_ERROR);
-    
     // Check products for option values
       $option_values_query = database::query(
         "select id from ". DB_TABLE_OPTION_VALUES ."
@@ -237,9 +230,15 @@
         
         $products_options_query = database::query(
           "select id from ". DB_TABLE_PRODUCTS_OPTIONS ."
-          where combination like '%". (int)$this->data['id'] ."-". (int)$option_value['id'] ."%';"
+          where find_in_set('". (int)$this->data['id'] ."-". (int)$option_value['id'] ."', combination);"
         );
         if (database::num_rows($products_options_query) > 0) trigger_error('Cannot delete option value linked to products.', E_USER_ERROR);
+        
+        $products_stock_query = database::query(
+          "select id from ". DB_TABLE_PRODUCTS_STOCK ."
+          where find_in_set('". (int)$this->data['id'] ."-". (int)$option_value['id'] ."', combination);"
+        );
+        if (database::num_rows($products_stock_query) > 0) trigger_error('Cannot delete option group linked to stock.', E_USER_ERROR);
         
       // Delete option values
         database::query(

@@ -39,9 +39,8 @@
       $this->data['images'] = array();
       $this->data['prices'] = array();
       $this->data['campaigns'] = array();
-      $this->data['stock'] = array();
       $this->data['options'] = array();
-      $this->data['options_stock'] = array();
+      $this->data['stock'] = array();
     }
     
     public function load($product_id) {
