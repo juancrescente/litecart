@@ -454,7 +454,7 @@ foreach (array_keys(language::$languages) as $language_code) {
           </tr>
           <tr>
             <td><strong><?php echo language::translate('title_dimensions', 'Dimensions'); ?></strong> (<?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?>)<br />
-              <span class="input-wrapper"><?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> x <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?></span>  <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
+              <span class="input-wrapper"><?php echo functions::form_draw_decimal_field('dim_x', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('dim_y', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?> <sub>x</sub> <?php echo functions::form_draw_decimal_field('dim_z', true, 2, 0, null, 'style="width: 75px; text-align: center;"'); ?></span>  <?php echo functions::form_draw_length_classes_list('dim_class', true); ?>
             </td>
           </tr>
           <tr>

@@ -757,8 +757,8 @@ CREATE TABLE `lc_zones` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `country_code` (`country_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
--- --------------------------------------------------------
+  KEY `code` (`code`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};-- --------------------------------------------------------
 CREATE TABLE `lc_zones_to_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `geo_zone_id` int(11) NOT NULL,
