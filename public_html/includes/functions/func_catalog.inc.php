@@ -197,43 +197,37 @@
     return $products_query;
   }
   
-  function catalog_stock_adjust($product_id, $combination, $quantity, $warehouse_id=null) {
+  function catalog_stock_adjust($product_id, $combination, $quantity, $warehouse_id) {
     
     if (empty($product_id)) return;
     
     if (empty($warehouse_id)) $warehouse_id = settings::get('default_warehouse_id');
     
     if (!empty($combination)) {
-      $products_options_stock_query = database::query(
-        "select id from ". DB_TABLE_PRODUCTS_STOCK ."
-        where product_id = '". (int)$product_id ."'
-        and combination = '". database::input($combination) ."';"
-      );
-      if (database::num_rows($products_options_stock_query) > 0) {
-        if (empty($combination)) {
-          trigger_error('Invalid option stock combination ('. $combination .') for product id '. $product_id, E_USER_ERROR);
-        } else {
-          database::query(
-            "update ". DB_TABLE_PRODUCTS_STOCK ."
-            set warehouse_". (int)$warehouse_id ." = warehouse_". (int)$warehouse_id ." + ". (float)$quantity ."
-            where product_id = '". (int)$product_id ."'
-            and combination =  '". database::input($combination) ."'
-            limit 1;"
-          );
-        }
-      } else {
-        $option_id = 0;
-      }
-    }
-    
-    if (!empty($combination)) {
+
       database::query(
         "update ". DB_TABLE_PRODUCTS_STOCK ."
         set warehouse_". (int)$warehouse_id ." = warehouse_". (int)$warehouse_id ." + ". (float)$quantity ."
-        where id = '". (int)$product_id ."'
-        and combination = ''
+        where product_id = '". (int)$product_id ."'
+        and combination =  '". database::input($combination) ."'
         limit 1;"
       );
+        
+      if (database::affected_rows() == 0) {
+        trigger_error('Invalid stock option combination ('. $combination .') for product id '. $product_id, E_USER_ERROR);
+      }
+    }
+    
+    database::query(
+      "update ". DB_TABLE_PRODUCTS_STOCK ."
+      set warehouse_". (int)$warehouse_id ." = warehouse_". (int)$warehouse_id ." + ". (float)$quantity ."
+      where product_id = '". (int)$product_id ."'
+      and combination = ''
+      limit 1;"
+    );
+    
+    if (database::affected_rows() == 0) {
+      trigger_error('Invalid stock product for product id '. $product_id, E_USER_ERROR);
     }
     
     database::query(

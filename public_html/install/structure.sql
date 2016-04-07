@@ -547,7 +547,7 @@ CREATE TABLE `lc_products_options_stock` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION} COMMENT='Moved to lc_products_stock as of 1.4';
 -- --------------------------------------------------------
 CREATE TABLE `lc_products_prices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

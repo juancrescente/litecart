@@ -10,7 +10,7 @@
     foreach ($product->data as $key => $value) {
       $_POST[$key] = $value;
     }
-    if (empty($_POST['stock']))$_POST['stock'] = array(array('id' => null));
+    if (empty($_POST['stock']))$_POST['stock'] = array(array('id' => null, 'combination' => ''));
     if (!empty($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
   }
   
@@ -929,10 +929,10 @@ foreach (currency::$currencies as $currency) {
             </tr>
             <tr class="header">
               <th><?php echo language::translate('title_description', 'Description'); ?></th>
-              <th><?php echo language::translate('title_option', 'Option'); ?></th>
+              <th><?php echo language::translate('title_combination', 'Combination'); ?></th>
               <th><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></th>
               <th><?php echo language::translate('title_weight', 'Weight'); ?></th>
-              <th style="width: 100%;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?> (<?php echo language::translate('title_width_height_length', 'Width x Height x Length'); ?>)</th>
+              <th style="width: 100%;"><?php echo language::translate('title_dimensions', 'Dimensions'); ?> (<?php echo language::translate('title_length', 'Length'); ?> x <?php echo language::translate('title_width', 'Width'); ?> x <?php echo language::translate('title_height', 'Height'); ?>)</th>
               <?php foreach($warehouses as $warehouse) { ?>
               <th><?php echo $warehouse['name']; ?><?php echo ($warehouse['id'] == settings::get('default_warehouse_id')) ? ' *' : null; ?></th>
               <?php } ?>

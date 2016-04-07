@@ -405,7 +405,7 @@
           database::query(
             "update ". DB_TABLE_ORDERS_ITEMS ." 
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
-            warehouse_id = '". (int)$this->data['items'][$key]['warehouse_id'] ."',
+            warehouse_id = '". (!empty($this->data['items'][$key]['warehouse_id']) ? (int)$this->data['items'][$key]['warehouse_id'] : settings::get('default_warehouse_id')) ."',
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
             options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
             name = '". database::input($this->data['items'][$key]['name']) ."',

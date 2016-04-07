@@ -69,7 +69,7 @@
     if (!(error_reporting() & $errno)) return;
     $errfile = preg_replace('#^'. FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME .'#', '~/', str_replace('\\', '/', $errfile));
     
-    $href_link = htmlspecialchars('http://lmgtfy.com/?q='.urlencode($errstr));
+    $href_link = document::href_link('http://lmgtfy.com/', array('q' => $errstr));
 
     switch($errno) {
       case E_WARNING:
