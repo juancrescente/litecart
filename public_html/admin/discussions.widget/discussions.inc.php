@@ -29,10 +29,10 @@
   <strong><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></strong>
   <div class="row">
     <?php foreach (array_keys($columns) as $key) { ?>
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-4 col-md-3 col-lg-2">
       <ul class="list-unstyled">
         <?php foreach ($columns[$key] as $item) { ?>
-        <li style="margin-bottom: 0.5em;">
+        <li style="margin-bottom: 0.5em; white-space: word-wrap; text-overflow: ellipsis;">
           <a href="<?php echo htmlspecialchars((string)$item->link); ?>" target="_blank"><?php echo htmlspecialchars((string)$item->title); ?></a><br/>
           <span style="color: #777;"><?php echo strftime('%e %b', strtotime($item->pubDate)); ?> <?php echo language::translate('text_by', 'by'); ?> <?php echo (string)$item->author; ?></span>
         </li>

@@ -124,7 +124,7 @@
     'delivery_status_value' => !empty($product->delivery_status['name'][language::$selected['code']]) ? $product->delivery_status['name'][language::$selected['code']] : '',
     'sold_out_status_value' => !empty($product->sold_out_status['name'][language::$selected['code']]) ? $product->sold_out_status['name'][language::$selected['code']] : '',
     'orderable' => $product->sold_out_status['orderable'],
-    'cheapest_shipping' => null,
+    'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),
     'options' => array(),
   );
@@ -204,7 +204,7 @@
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
       $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
-      $_page->snippets['cheapest_shipping'] = str_replace('%price', currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)), language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'));
+      $_page->snippets['cheapest_shipping_fee'] = tax::get_price($shipping_cost, $shipping_tax_class_id);
     }
   }
   

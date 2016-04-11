@@ -2,12 +2,18 @@
   functions::draw_lightbox();
 ?>
 <div class="widget">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><?php echo language::translate('title_orders', 'Orders'); ?></h3>
+  </div>
+
+  <div class="panel-body table-responsive">
   <table class="table table-striped data-table">
     <thead>
       <tr>
         <th></th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
-        <th><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
+          <th class="main"><?php echo language::translate('title_customer', 'Customer'); ?></th>
         <th><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
         <th><?php echo language::translate('title_amount', 'Amount'); ?></th>
         <th><?php echo language::translate('title_date', 'Date'); ?></th>
@@ -38,10 +44,10 @@
         <td><a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?></a></td>
         <td><?php echo ($order['order_status_id'] == 0) ? language::translate('title_uncompleted', 'Uncompleted') : $order['order_status_name']; ?></td>
         <td><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
-        <td style="text-align: right;"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
-        <td>
-          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
-          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox" data-target="#<?php echo $modal_id; ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
+          <td class="text-right"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+          <td class="text-right">
+          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
+          <a href="<?php echo document::href_link(WS_DIR_ADMIN .'orders.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>" data-toggle="lightbox"><?php echo functions::draw_fonticon('fa-print'); ?></a>
           <a href="<?php echo document::href_link('', array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id']), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a>
         </td>
       </tr>
@@ -51,4 +57,6 @@
 ?>
     </tbody>
   </table>
+  </div>
+</div>
 </div>

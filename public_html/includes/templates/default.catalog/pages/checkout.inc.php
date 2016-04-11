@@ -1,357 +1,172 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
   
-  <div id="checkout-cart-wrapper">
-  {snippet:box_checkout_cart}
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div id="checkout-customer-wrapper">
-       {snippet:box_checkout_customer}
-      </div>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
+  
+    <div id="checkout-cart-wrapper">
+    {snippet:box_checkout_cart}
     </div>
-    
-    <div class="col-md-6">
-      <div id="checkout-shipping-wrapper">
-        {snippet:box_checkout_shipping}
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="checkout-customer-wrapper">
+         {snippet:box_checkout_customer}
+        </div>
       </div>
       
-      <div id="checkout-payment-wrapper">
-        {snippet:box_checkout_payment}
+      <div class="col-md-6">
+        <div id="checkout-shipping-wrapper">
+          {snippet:box_checkout_shipping}
+        </div>
+        
+        <div id="checkout-payment-wrapper">
+          {snippet:box_checkout_payment}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="checkout-summary-wrapper">
-    {snippet:box_checkout_summary}
-  </div>
+    <div id="checkout-summary-wrapper">
+      {snippet:box_checkout_summary}
+    </div>
+    
+  <?php echo functions::form_draw_form_end(); ?>
 </div>
 
 <script>
-  function refreshCart() {
-    if (console) console.log("Refreshing cart");
-    $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_cart.html'); ?>',
-      data: false,
-      type: 'get',
-      cache: false,
-      context: $('#checkout-cart-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
-      },
-      success: function(data) {
-        $('#checkout-cart-wrapper').html(data).fadeTo('slow', 1);
-      },
+  var updateQueue = [];
+  function queueUpdateTask(component, data) {
+    updateQueue = jQuery.grep(updateQueue, function(tasks) {
+      return (tasks[0] == component) ? false : true;
     });
-  }
-  
-  function refreshCustomer() {
-    if (console) console.log("Refreshing customer");
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_customer.html'); ?>',
-      data: false,
-      type: 'get',
-      cache: false,
-      context: $('#checkout-customer-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
-      },
-      success: function(data) {
-        $('#checkout-customer-wrapper').html(data);
-      },
-    });
-  }
-
-  function refreshShipping() {
-    if (console) console.log("Refreshing shipping");
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>',
-      data: false,
-      type: 'get',
-      cache: false,
-      context: $('#checkout-shipping-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown);
-      },
-      success: function(data) {
-        $('#checkout-shipping-wrapper').html(data);
-      },
-    });
-  }
-
-  function refreshPayment() {
-    if (console) console.log("Refreshing payment");
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_payment.html'); ?>',
-      data: false,
-      type: 'get',
-      cache: false,
-      context: $('#checkout-payment-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown);
-      },
-      success: function(data) {
-        $('#checkout-payment-wrapper').html(data);
-      },
-    });
-  }
-  
-  function refreshSummary() {
-    if (console) console.log("Refreshing summary");
-    var comments = $("textarea[name='comments']").val();
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_summary.html'); ?>',
-      data: false,
-      type: 'get',
-      cache: false,
-      context: $('#checkout-summary-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-summary-wrapper').html(textStatus + ': ' + errorThrown);
-      },
-      success: function(data) {
-        $('#checkout-summary-wrapper').html(data);
-        $("textarea[name='comments']").val(comments);
-      },
-    });
-  }
     
-  $("body").on("click", "form button[type='submit']", function(e) {
-    $(this).closest("form").append('<input type="hidden" name="'+ $(this).attr("name") +'" value="'+ $(this).text() +'" />');
-  });
+    updateQueue.push([component, data]);
+    
+    runQueue();
+  }
   
-  $("body").on('submit', "form[name='cart_form']", function(e) {
-    if (console) console.log("Saving cart");
-    e.preventDefault();
-    $('body').css('cursor', 'wait');
-    $('#checkout-cart-wrapper').fadeTo('slow', 0.25);
+  var queueRunLock = false;
+  function runQueue() {
+    
+    if (queueRunLock) return;
+    
+    if (updateQueue.length == 0) return;
+    
+    queueRunLock = true;
+    
+    task = updateQueue.shift();
+    
+    if (console) console.log('Refreshing ' + task[0] + '...');
+    
+    if (!$('#loading').length) {
+      var progress_bar = '<div id="loading" style="position: fixed; top: 50%; left: 10%; right: 10%; text-align: center; font-size: 256px; margin-top: -128px; opacity: 0.05; z-index: 999999;">'
+                       + '  <i class="fa fa-spinner fa-spin"></i>'
+                       + '</div>';
+      $('body').append(progress_bar);
+    }
+    
+    $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
+    
     $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_cart.html'); ?>',
-      data: $(this).serialize(),
       type: 'post',
-      cache: false,
-      async: true,
+      url: '?return='+task[0],
+      data: $('form[name="checkout_form"]').serialize(),
       dataType: 'html',
       beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
+        jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         if (console) console.warn("Error");
-        $('#checkout-cart-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
+        $('#checkout-'+ task[0] +'-wrapper').html(textStatus + ': ' + errorThrown);
       },
-      success: function(data) {
-        $('#checkout-cart-wrapper').html(data).fadeTo('slow', 1);
-        if (jQuery.isFunction(window.updateCart)) updateCart();
-        refreshCustomer();
-        refreshShipping();
-        refreshPayment();
-        refreshSummary();
+      success: function(html) {
+        console.log(task[0] + ' refreshed');
+        $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
-      complete: function() {
-        $('body').css('cursor', '');
+      complete: function(html) {  
+        if (!updateQueue.length) $('body #loading').remove();
+        queueRunLock = false;
+        runQueue();
       }
     });
-  });
+  }
   
+  /*
+  $('body').on('change', '#checkout-cart-wrapper :input', function(e){
+    var data = $('form[name="checkout_form"]').serialize();
+    queueUpdateTask('cart', data);
+    queueUpdateTask('shipping', data);
+    queueUpdateTask('payment', data);
+    queueUpdateTask('summary', data);
+  });
+  */
+  
+// Customer form
   var customer_form_changed = false;
-  var customer_form_checksum = $("form[name='customer_form']").serialize();
-  $("body").on('change keyup', "form[name='customer_form']", function(e) {
-    if ($("form[name='customer_form']").serialize() != customer_form_checksum) {
+  var customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+  $("body").on('change keyup', '#checkout-customer-wrapper', function(e) {
+    if ($('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize() != customer_form_checksum) {
       customer_form_changed = true;
-      $("#box-checkout-customer button[name='set_addresses']").removeAttr('disabled');
+      $('#checkout-customer-wrapper button[name="save_address"]').removeAttr('disabled');
     } else {
       customer_form_changed = false;
-      $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
+      $('#checkout-customer-wrapper button[name="save_address"]').attr('disabled', 'disabled');
     }
   });
   
   var timerSubmitCustomer;
-  $("body").on('focusout', "form[name='customer_form']", function() {
+  $("body").on('focusout', '#checkout-customer-wrapper', function() {
     timerSubmitCustomer = setTimeout(
       function() {
-        if (!$("form[name='customer_form']").is(':focus')) {
+        if (!$(this).is(':focus')) {
           if (customer_form_changed) {
-            if (console) console.log("Autosaving customer details");
-            $("form[name='customer_form']").trigger('submit');
+            if (console) console.log('Autosaving customer details');
+            var data = $('form[name="checkout_form"]').serialize();
+            queueUpdateTask('cart', data);
+            queueUpdateTask('customer', data);
+            queueUpdateTask('payment', data);
+            queueUpdateTask('summary', data);
+            customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+            customer_form_changed = false;
           }
         }
       }, 50
     );
   });
-  $("body").on('focusin', "form[name='customer_form']", function() {
+  
+  $("body").on('focusin', '#checkout-customer-wrapper', function() {
     clearTimeout(timerSubmitCustomer);
   });
   
-  $("body").on('submit', "form[name='order_form']", function(e) {
+  $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
+    e.preventDefault();
+    var data = $('form[name="checkout_form"]').serialize();
+    queueUpdateTask('cart', data);
+    queueUpdateTask('customer', data);
+    queueUpdateTask('payment', data);
+    queueUpdateTask('summary', data);
+    customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+    customer_form_changed = false;
+  });
+
+  $('body').on('change', '#checkout-shipping-wrapper :input', function(e){
+    var data = $('form[name="checkout_form"]').serialize();
+    queueUpdateTask('payment', data);
+    queueUpdateTask('summary', data);
+  });
+  
+  $('body').on('change', '#checkout-payment-wrapper :input', function(e){
+    var data = $('form[name="checkout_form"]').serialize();
+    queueUpdateTask('summary', data);
+  });
+
+  $("body").on('click', '#checkout-summary-wrapper button[name="confirm_order"]', function(e) {
     if (customer_form_changed) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
   
-  $("body").on('submit', "form[name='customer_form']", function(e) {
-    if (console) console.log("Saving customer details");
-    e.preventDefault();
-    clearTimeout(timerSubmitCustomer);
-    $('*').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_customer.html'); ?>',
-      data: $(this).serialize()+'&set_addresses=true',
-      type: 'post',
-      cache: false,
-      context: $('#checkout-customer-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-customer-wrapper').html(textStatus + ': ' + errorThrown);
-      },
-      success: function(data) {
-        $("#box-checkout-customer button[name='set_addresses']").attr('disabled', 'disabled');
-        $('#checkout-customer-wrapper').html(data);
-        customer_form_changed = false;
-        customer_form_checksum = $("form[name='customer_form']").serialize();
-        if (jQuery.isFunction(window.updateCart)) updateCart();
-        refreshCart();
-        refreshShipping();
-        refreshPayment();
-        refreshSummary();
-      },
-      complete: function() {
-        $('*').css('cursor', '');
-        $('html, body').animate({
-          scrollTop: $('#checkout-customer-wrapper').offset().top
-        }, 800);
-      }
-    });
-  });
-  
-  $("body").on('submit', "form[name='shipping_form']", function(e) {
-    if (console) console.log("Saving shipping details");
-    e.preventDefault();
-    $('*').css('cursor', 'wait');
-    $('#checkout-shipping-wrapper').fadeTo('slow', 0.25);
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>',
-      data: $(this).serialize(),
-      type: 'post',
-      cache: false,
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-shipping-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
-      },
-      success: function(data) {
-        $('#checkout-shipping-wrapper').html(data).fadeTo('slow', 1);
-        refreshPayment();
-        refreshSummary();
-        $('html, body').animate({
-          scrollTop: $('#checkout-shipping-wrapper').offset().top
-        }, 800);
-      },
-      complete: function() {
-        $('*').css('cursor', '');
-      }
-    });
-  });
-  
-  $("body").on('submit', "form[name='payment_form']", function(e) {
-    if (console) console.log("Saving payment details");
-    e.preventDefault();
-    $('*').css('cursor', 'wait');
-    $('#checkout-payment-wrapper').fadeTo('slow', 0.25);
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_payment.html'); ?>',
-      data: $(this).serialize(),
-      type: 'post',
-      cache: false,
-      context: $('#checkout-payment-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-payment-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
-      },
-      success: function(data) {
-        $('#checkout-payment-wrapper').html(data).fadeTo('slow', 1);
-        refreshSummary();
-        $('html, body').animate({
-          scrollTop: $('#checkout-payment-wrapper').offset().top
-        }, 800);
-      },
-      complete: function() {
-        $('*').css('cursor', '');
-      }
-    });
-  });
-  
-  $("body").on('blur', "form[name='comments_form']", function(e) {
-    if (console) console.log("Saving comments");
-    e.preventDefault();
-    $('*').css('cursor', 'wait');
-    $('#checkout-comments-wrapper').fadeTo('slow', 0.25);
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/checkout_comments.html'); ?>',
-      data: $(this).serialize(),
-      type: 'post',
-      cache: false,
-      context: $('#checkout-comments-wrapper'),
-      async: true,
-      dataType: 'html',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType("text/html;charset=<?php echo language::$selected['charset']; ?>");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn("Error");
-        $('#checkout-comments-wrapper').html(textStatus + ': ' + errorThrown).fadeTo('slow', 1);
-      },
-      success: function(data) {
-        $('#checkout-comments-wrapper').html(data).fadeTo('slow', 1);
-      },
-      complete: function() {
-        $('*').css('cursor', '');
-      }
-    });
+  $("body").on('submit', 'form[name="checkout_form"]', function(e) {
+    $('#checkout-summary-wrapper button[name="confirm_order"]').prepend('<i class="fa fa-spinner fa-spin"></i> ');
   });
 </script>

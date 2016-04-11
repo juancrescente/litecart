@@ -5,9 +5,9 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <!--snippet:head_tags-->
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <script>
 var $buoop = {c:2}; 
 function $buo_f(){ 

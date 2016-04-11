@@ -26,7 +26,7 @@
       $type = 'shipping';
       break;
     default:
-      die('Unknown module type');
+      trigger_error('Unknown module type ('. @$_GET['doc'] .')', E_USER_ERROR);
   }
   
   $installed = in_array($module_id, explode(';', settings::get($type.'_modules'))) ? true : false;

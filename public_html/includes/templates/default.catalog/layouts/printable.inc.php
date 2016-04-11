@@ -3,9 +3,10 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/extras.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
 <?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>

@@ -5,13 +5,13 @@
 <meta charset="{snippet:charset}" />
 <meta name="robots" content="noindex, nofollow" />
 <!--snippet:head_tags-->
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 </head>
-<body>
-
-<div id="sidebar" class="pull-left">
+<body style="display: table; width: 100%;">
+  <div style="display: table-row;">
+    <div id="sidebar" class="" style="display: table-cell; vertical-align: top;">
 
   <div id="logotype">
     <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
@@ -40,10 +40,13 @@
   <div id="copyright" class="row text-center">&copy; <?php echo date('2012-Y'); ?> LiteCart<br />
     <a href="http://www.litecart.net" target="_blank">www.litecart.net</a>
   </div>
-</div>
+    </div>
 
-<div id="main">
+    <div id="main" style="display: table-cell; vertical-align: top;">
+      <!--snippet:notices-->
   <!--snippet:content-->
+    </div>
+  </div>
 </div>
 
 <!--snippet:foot_tags-->

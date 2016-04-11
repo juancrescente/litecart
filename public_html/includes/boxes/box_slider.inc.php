@@ -26,7 +26,6 @@
       }
       
       echo $box_slider->stitch('views/box_slider');
-      
     }
     
     cache::end_capture($box_slider_cache_id);

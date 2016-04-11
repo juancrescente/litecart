@@ -98,10 +98,8 @@
   
   function draw_lightbox($name='default') {
     
-    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.css">' . PHP_EOL
-                                                      . '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.stack-fix.css">';
-    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.js"></script>' . PHP_EOL
-                                                      . '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.stack-fix.js"></script>';
+    document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.css">';
+    document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/ekko-lightbox.min.js"></script>';
     document::$snippets['javascript']['ekko-lightbox'] = '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
                                                        . '    event.preventDefault();' . PHP_EOL
                                                        . '    $(this).ekkoLightbox({' . PHP_EOL
@@ -147,7 +145,7 @@
     
     if ($pages < 2) return false;
     
-    if (empty($_GET['page']) && $_GET['page'] < 2) $_GET['page'] = 1;
+    if (empty($_GET['page']) || $_GET['page'] < 2) $_GET['page'] = 1;
     
     if ($_GET['page'] > 1) document::$snippets['head_tags']['prev'] = '<link rel="prev" href="'. document::href_ilink(null, array('page' => $_GET['page']-1), true) .'" />';
     if ($_GET['page'] < $pages) document::$snippets['head_tags']['next'] = '<link rel="next" href="'. document::href_ilink(null, array('page' => $_GET['page']+1), true) .'" />';

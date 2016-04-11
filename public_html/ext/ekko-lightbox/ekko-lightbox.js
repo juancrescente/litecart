@@ -57,7 +57,6 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         if (_this.gallery) {
           $(document).off('keydown.ekkoLightbox');
         }
-        console.log($('body .modal').eq(-2));
         $('body .modal').eq(-2).find('.modal-dialog').removeClass('aside');
         _this.modal.remove();
         _this.options.onHidden.call(_this);
@@ -443,3 +442,25 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
   };
 
 }).call(this);
+
+// Scroll fix
+$('*[data-toggle=lightbox]').on('click', function(){
+  var currentDialog = $(this).closest('.modal-dialog'), targetDialog = $($(this).attr('data-target'));
+  if (!currentDialog.length) return;
+  alert('x');
+  targetDialog.data('previous-dialog', currentDialog);
+  currentDialog.addClass('aside');
+  var stackedDialogCount = $('.modal.in .modal-dialog.aside').length;
+  if (stackedDialogCount <= 5){
+    currentDialog.addClass('aside-' + stackedDialogCount);
+  }
+});
+
+$('.modal').on('hide.bs.modal', function(){
+  var $dialog = $(this);  
+  var previousDialog = $dialog.data('previous-dialog');
+  if (previousDialog){
+    previousDialog.removeClass('aside');
+    $dialog.data('previous-dialog', undefined);
+  }
+});

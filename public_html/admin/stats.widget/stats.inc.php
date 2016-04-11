@@ -58,12 +58,13 @@
   $stats['num_products'] = $products['num_products'];
 ?>
 <div class="widget">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><?php echo language::translate('title_statistics', 'Statistics'); ?></h3>
+    </div>
+    
+    <div class="panel-body table-responsive">
   <table class="table table-striped data-table">
-    <thead>
-      <tr>
-        <th colspan="2"><?php echo language::translate('title_statistics', 'Statistics'); ?></th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
         <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
@@ -91,4 +92,6 @@
       </tr>
     </tbody>
   </table>
+    </div>
+  </div>
 </div>

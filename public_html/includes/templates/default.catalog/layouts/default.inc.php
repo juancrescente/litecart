@@ -26,19 +26,19 @@
 <meta name="description" content="{snippet:description}" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--snippet:head_tags-->
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-theme.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap-extras.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/extras.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 </head>
-<body>
+<body id="<?php echo preg_replace('#(_|/)#', '-', route::$route['page']); ?>">
 
   <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
 
   <!--snippet:content-->
-    
+
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
-  
+
 <script src="{snippet:template_path}js/app.js"></script>
 <script>
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
@@ -76,7 +76,7 @@
             $.each(data['items'], function(i, item){
               $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
             });
-            
+
             $('#cart .quantity').html(data['quantity']);
             $('#cart .formatted_value').html(data['formatted_value']);
             if (data['quantity'] > 0) {

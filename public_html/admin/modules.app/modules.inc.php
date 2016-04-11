@@ -50,7 +50,7 @@
       $edit_doc = 'edit_shipping';
       break;
     default:
-      die('Unknown module type');
+      trigger_error('Unknown module type ('. @$_GET['doc'] .')', E_USER_ERROR);
   }
 
 ?>

@@ -68,7 +68,7 @@
     // Extract in content javascript resources
       if (preg_match_all('#<script[^>]+></script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
-          document::$snippets['foot_tags'][] = $match[1];
+          document::$snippets['foot_tags'][] = $match[0];
           $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
         }
       }

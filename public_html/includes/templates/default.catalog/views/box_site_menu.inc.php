@@ -35,12 +35,12 @@
             <div id="cart" class="form-inline" style="margin-top: 0.5em; box-sizing: border-box;">
               <?php /* <img src="/litecart/includes/templates/default.catalog/images/cart_filled.png" height="32" alt="" class="" /> */ ?>
               <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
+                <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
                   <?php echo functions::draw_fonticon('fa-shopping-cart'); ?>
                   <span class="quantity"><?php echo cart::$total['items']; ?></span> <?php echo language::translate('title_items_s', 'Item(s)'); ?>
                 </a>
                 <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
-                <div class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <div class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-caret-down"></i>
                 </div>
                 <ul class="items dropdown-menu">

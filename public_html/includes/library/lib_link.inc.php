@@ -2,8 +2,8 @@
 
   class link {
     
-    public static function construct() {
-    }
+    //public static function construct() {
+    //}
     
     //public static function load_dependencies() {
     //}

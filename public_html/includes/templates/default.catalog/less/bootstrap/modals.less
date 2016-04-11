@@ -27,6 +27,9 @@
   // Prevent Chrome on Windows from adding a focus outline. For details, see
   // https://github.com/twbs/bootstrap/pull/10951.
   outline: 0;
+  
+  // Center screen
+  text-align: center;
 
   // When fading in the modal, animate it to slide down
   &.fade .modal-dialog {
@@ -35,6 +38,16 @@
   }
   &.in .modal-dialog { .translate(0, 0) }
 }
+
+@media screen and (min-width: @screen-sm-min) {
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
 .modal-open .modal {
   overflow-x: hidden;
   overflow-y: auto;
@@ -45,6 +58,11 @@
   position: relative;
   width: auto;
   margin: 10px;
+  
+  // Center screen
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
 
 // Actual modal

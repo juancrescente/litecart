@@ -85,7 +85,8 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_caption', 'Caption'); ?></label>
-      <?php echo functions::form_draw_textarea('caption', true, 'style="height: 125px;"'); ?>
+      <?php echo functions::form_draw_textarea('caption', true, 'style="height: 320px;"'); ?><br />
+      <div><?php echo language::translate('title_example', 'Example'); ?>: <em><?php echo htmlspecialchars('<div class="carousel-caption">Lorem ipsum dolor</div>'); ?></em></div>
     </div>
   </div>
     

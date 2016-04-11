@@ -1,10 +1,7 @@
 <?php
 
-  document::$snippets['head_tags']['jqplot'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.css" />';
-  document::$snippets['foot_tags']['jqplot'] = '<script src="'. WS_DIR_EXT .'jqplot/jquery.jqplot.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.barRenderer.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>' . PHP_EOL
-                                             . '<script src="'. WS_DIR_EXT .'jqplot/plugins/jqplot.highlighter.min.js"></script>';
+  document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'chartist/chartist.min.css" />';
+  document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_EXT .'chartist/chartist.min.js"></script>';
   
   $order_statuses = array();
   $orders_status_query = database::query(
@@ -16,7 +13,7 @@
   
 ?>
 <div class="row">
-  <div class="widget col-md-6">
+  <div class="widget col-md-5">
 <?php
   $monthly_sales = array();
   $monthly_tax = array();
@@ -30,64 +27,43 @@
     );
     $orders = database::fetch($orders_query);
     
-    $monthly_sales[date('Y-m', $timestamp)] = '[\''. language::strftime('%b', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
-  }
+    $monthly_sales[date('Y-m', $timestamp)] = (int)$orders['total_sales'];
+    }
   
 ?>
-    <div id="chart-sales-monthly" style="height: 200px;"></div>
+    <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
     <script>
-      var bar1 = [<?php echo implode(',', $monthly_sales); ?>];
-      var plot1 = $.jqplot('chart-sales-monthly', [bar1], {
-        title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_months', '%s months'), '12'); ?>)',
-        grid:{
-          borderColor: 'transparent',
-          shadow: false,
-          drawBorder: false,
-          shadowColor: 'transparent'
-        },
-        seriesDefaults: {
-          renderer: $.jqplot.BarRenderer,
-          rendererOptions: {barWidth: 30},
-          shadow: false
-        },
-        series:[
-          {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
-          {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
-        ],
-        axesDefaults: {
-          tickOptions: {
-            fontSize: '8pt',
-          }
-        },
-        axes: {
-          xaxis: {
-            renderer: $.jqplot.CategoryAxisRenderer
-          },
-          yaxis:{
-            tickOptions: {
-              formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+      var data = {
+        labels: <?php echo json_encode(array_keys($monthly_sales)); ?>,
+        series: <?php echo json_encode(array(array_values($monthly_sales))); ?>
+      };
+
+      var options = {
+        seriesBarDistance: 10,
+        showArea: true,
+        lineSmooth: true
+      };
+
+      var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc: function (value) {
+              return value[0];
             }
           }
-        },
-        legend: {
-          show: false,
-          placement: 'insideGrid'
-        },
-        highlighter: {
-          show: true
-        }
-      });
-      
-      $(window).resize(function() {
-        plot1.replot({resetAxes: true});
-      });
+        }]
+      ];
+
+      new Chartist.Line('#chart-sales-monthly', data, options, responsiveOptions);
     </script>
   </div>
-  <div class="widget col-md-6">
+  
+  <div class="widget col-md-5">
 <?php
-  $daily_sales = array();
+    $daily_sales = array();
   for ($timestamp = strtotime('-29 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
-    
+
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
@@ -96,59 +72,98 @@
     );
     $orders = database::fetch($orders_query);
     
-    $daily_sales[date('d', $timestamp)] = '[\''. date('j', $timestamp) .'\', '. (int)$orders['total_sales'] .']';
-    $daily_tax[date('d', $timestamp)] = '[\''. date('j', $timestamp) .'\', '. (int)$orders['total_tax'] .']';
-  }
+    $daily_sales[date('d', $timestamp)] = (int)$orders['total_sales'];
+    }
   
 ?>
-    <div id="chart-sales-daily" style="height: 200px"></div>
+    <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
     <script>
-      var bar2 = [<?php echo implode(',', $daily_sales); ?>];
-      var plot2 = $.jqplot('chart-sales-daily', [bar2], {
-        title: '<?php echo language::translate('title_sales', 'Sales'); ?> (<?php echo sprintf(language::translate('title_s_days', '%s days'), '30'); ?>)',
-        grid:{
-          borderColor: 'transparent',
-          shadow: false,
-          drawBorder: false,
-          shadowColor: 'transparent'
-        },
-        seriesDefaults: {
-          renderer: $.jqplot.BarRenderer,
-          rendererOptions: {barWidth: 10},
-          shadow: false
-        },
-        series:[
-          {label: "<?php echo language::translate('title_sales', 'Sales'); ?>"},
-          {label: "<?php echo language::translate('title_tax', 'Tax'); ?>"}
-        ],
-        axesDefaults: {
-          tickOptions: {
-            fontSize: '8pt',
-          }
-        },
-        axes: {
-          xaxis: {
-            renderer: $.jqplot.CategoryAxisRenderer
-          },
-          yaxis:{
-            tickOptions: {
-              formatString: '<?php echo currency::$currencies[settings::get('store_currency_code')]['prefix']; ?>%.2f<?php echo currency::$currencies[settings::get('store_currency_code')]['suffix']; ?>'
+      var data = {
+        labels: <?php echo json_encode(array_keys($daily_sales)); ?>,
+        series: <?php echo json_encode(array(array_values($daily_sales))); ?>
+      };
+
+      var options = {
+        seriesBarDistance: 10
+      };
+
+      var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc: function (value) {
+              return value[0];
             }
           }
-        },
-        legend: {
-          show: false,
-          placement: 'insideGrid'
-        },
-        highlighter: {
-          show: true
+        }]
+      ];
+
+      new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+    </script>
+  </div>
+
+  <div class="widget col-md-2">
+<?php
+    $orders_query = database::query(
+      "select avg(payment_due - tax_total) as total_sales, tax_total as total_tax, weekday(date_created) as weekday from ". DB_TABLE_ORDERS ."
+      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      group by weekday(date_created);"
+    );
+    
+    if (!function_exists('mb_ucfirst')) {
+      function mb_ucfirst($str) {
+        $fc = mb_strtoupper(mb_substr($str, 0, 1));
+        return $fc.mb_substr($str, 1);
+      }
+    }
+    
+    $weekday = array(
+      '0' => ucfirst(language::strftime('%A', strtotime('Monday'))),
+      '1' => ucfirst(language::strftime('%A', strtotime('Tuesday'))),
+      '2' => ucfirst(language::strftime('%A', strtotime('Wednesday'))),
+      '3' => ucfirst(language::strftime('%A', strtotime('Thursday'))),
+      '4' => ucfirst(language::strftime('%A', strtotime('Friday'))),
+      '5' => ucfirst(language::strftime('%A', strtotime('Saturday'))),
+      '6' => ucfirst(language::strftime('%A', strtotime('Sunday'))),
+    );
+    
+    $weekday_sales = array_combine(array_values($weekday), array(0,0,0,0,0,0,0));
+    while($order = database::fetch($orders_query)) {
+      $weekday_sales[$weekday[$order['weekday']]] = (float)$order['total_sales'];
+    }
+  
+?>
+    <div id="chart-sales-weekday" style="height: 200px; margin: 25px 0;" title="<?php echo language::translate('title_sales_by_weekday', 'Sales by Weekday'); ?>"></div>
+    <script>
+      var data = {
+        labels: <?php echo json_encode(array_keys($weekday_sales)); ?>,
+        series: <?php echo json_encode(array_values($weekday_sales)); ?>
+      };
+
+      var options = {
+        donut: true,
+        donutWidth: 25,
+        labelInterpolationFnc: function(value) {
+          return value[0]
         }
-      });
-      
-      
-      $(window).resize(function() {
-        plot2.replot({resetAxes: true});
-      });
+      };
+
+      var responsiveOptions = [
+        ['screen and (min-width: 640px)', {
+          chartPadding: 30,
+          labelOffset: 100,
+          labelDirection: 'explode',
+          labelInterpolationFnc: function(value) {
+            return value;
+          }
+        }],
+        ['screen and (min-width: 1024px)', {
+          labelOffset: 80,
+          chartPadding: 20
+        }]
+      ];
+
+      new Chartist.Pie('#chart-sales-weekday', data, options);
     </script>
   </div>
 </div>

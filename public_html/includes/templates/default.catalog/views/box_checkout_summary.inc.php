@@ -28,23 +28,20 @@
       </tfoot>
     </table>
     
-    <?php echo functions::form_draw_form_begin('order_form', 'post', document::ilink('order_process'));  ?>
-      <div class="comments form-group">
-        <label><?php echo language::translate('title_comments', 'Comments'); ?></label>
-        <?php echo functions::form_draw_textarea('comments', true); ?>
+    <div class="comments form-group">
+      <label><?php echo language::translate('title_comments', 'Comments'); ?></label>
+      <?php echo functions::form_draw_textarea('comments', true); ?>
+    </div>
+    
+    <div class="confirm row">
+      <div class="col-md-9">
+        <?php if ($error) echo '<div class="alert alert-warning">'. $error .'</div>' . PHP_EOL; ?>
       </div>
       
-      <div class="confirm row">
-        <div class="col-md-9">
-          <?php if ($error) echo '<div class="alert alert-warning">'. $error .'</div>' . PHP_EOL; ?>
-        </div>
-        
-        <div class="col-md-3">
-          <?php //echo functions::form_draw_button('confirm_order', $confirm, 'submit', 'style="width: 100%;"' . (!empty($error) ? ' disabled="disabled"' : '')); ?>
-          <button class="btn btn-block btn-lg btn-default btn-success" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled="disabled"' : ''; ?>><?php echo $confirm; ?></button>
-        </div>
+      <div class="col-md-3">
+        <?php //echo functions::form_draw_button('confirm_order', $confirm, 'submit', 'style="width: 100%;"' . (!empty($error) ? ' disabled="disabled"' : '')); ?>
+        <button class="btn btn-block btn-lg btn-default btn-success" name="confirm_order" value="true"<?php echo !empty($error) ? ' disabled="disabled"' : ''; ?>><?php echo $confirm; ?></button>
       </div>
-
-    <?php echo functions::form_draw_form_end(); ?>
+    </div>
   </div>
 </div>

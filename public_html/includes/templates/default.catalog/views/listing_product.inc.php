@@ -15,6 +15,7 @@
           </div>
         </div>
       </a>
+      <?php echo $sticker; ?>
     </div>
   </div>
 <?php } else if ($listing_type == 'row') { ?>

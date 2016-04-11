@@ -3,6 +3,7 @@
   
   require_once('includes/header.inc.php');
   require_once('includes/functions.inc.php');
+  require_once('../includes/library/lib_database.inc.php');
   
   echo '<h1>Installer</h1>' . PHP_EOL;
   
@@ -66,7 +67,6 @@
   define('DB_PERSISTENT_CONNECTIONS', 'false');
   
   require_once('includes/database.class.php');
-  $database = new database(null);
   
   echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL;
   
@@ -74,8 +74,8 @@
 
   echo '<p>Checking MySQL version... ';
   
-  $version_query = $database->query("SELECT VERSION();");
-  $version = $database->fetch($version_query);
+  $version_query = database::query("SELECT VERSION();");
+  $version = database::fetch($version_query);
   
   if (version_compare($version['VERSION()'], '5.5', '<')) {
     die($version['VERSION()'] . ' <span class="error">[Error] MySQL 5.5+ required</span></p>');
@@ -87,12 +87,12 @@
 
   echo '<p>Checking MySQL database default character set... ';
   
-  $charset_query = $database->query(
+  $charset_query = database::query(
     "select default_character_set_name, default_collation_name from information_schema.SCHEMATA
-    where schema_name = '". $database->input(DB_DATABASE) ."'
+    where schema_name = '". database::input(DB_DATABASE) ."'
     limit 1;"
   );
-  $charset = $database->fetch($charset_query);
+  $charset = database::fetch($charset_query);
   
   if ($charset['default_character_set_name'] != 'utf8') {
     echo($charset['default_character_set_name'] . ' <span class="warning">[Warning] The database default charset is not \'utf8\' and you might experience trouble with foreign characters. Try performing the following MySQL query: "ALTER DATABASE `'. DB_DATABASE .'` CHARACTER SET utf8 COLLATE '. $_REQUEST['db_collation'] .';"</span></p>');
@@ -149,7 +149,7 @@
   
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
     $query = preg_replace('/--.*\s/', '', $query);
-    $database->query($query);
+    database::query($query);
   }
   
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -171,7 +171,7 @@
   
   foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
     $query = preg_replace('/--.*\s/', '', $query);
-    $database->query($query);
+    database::query($query);
   }
    
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -191,14 +191,14 @@
   );
   
   foreach ($map as $search => $replace) {
-    $sql = str_replace($search, $database->input($replace), $sql);
+    $sql = str_replace($search, database::input($replace), $sql);
   }
   
   $sql = explode('-- --------------------------------------------------------', $sql);
   
   foreach ($sql as $query) {
     $query = preg_replace('/--.*\s/', '', $query);
-    $database->query($query);
+    database::query($query);
   }
   
   echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -297,10 +297,10 @@
   
   require('../includes/functions/func_password.inc.php');
   
-  $database->query(
+  database::query(
     "insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_users`') ."
     (`id`, `status`, `username`, `password`, `date_updated`, `date_created`)
-    values ('1', '1', '". $database->input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+    values ('1', '1', '". database::input($_REQUEST['username']) ."', '". password_checksum('1', $_REQUEST['password']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
   );
   
   ## Windows OS Adjustments ###################################
@@ -308,7 +308,7 @@
   /*
   if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
     echo '<p>Making adjustments for Windows platform...';
-    $database->query(
+    database::query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
       set locale = 'english',
           charset = 'Windows-1252'
@@ -318,7 +318,7 @@
     echo ' <span class="ok">[OK]</span></p>' . PHP_EOL;
   } else if (strtoupper(substr(PHP_OS, 0, 6)) == 'DARWIN') {
     echo '<p>Making adjustments for Darwin (Mac) platform...';
-    $database->query(
+    database::query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_languages`') ."
       set locale = 'en_US.UTF-8'
       where code = 'en'
@@ -352,7 +352,7 @@
           
           foreach (explode('-- --------------------------------------------------------', $sql) as $query) {
             $query = preg_replace('/--.*\s/', '', $query);
-            $database->query($query);
+            database::query($query);
           }
         }
       }
@@ -379,7 +379,7 @@
       
       foreach ($sql as $query) {
         $query = preg_replace('/--.*\s/', '', $query);
-        $database->query($query);
+        database::query($query);
       }
     }
     
@@ -401,7 +401,7 @@
   
   echo '<p>Set cache breakpoint...';
   
-  $database->query(
+  database::query(
     "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
     set value = '". date('Y-m-d H:i:s') ."'
     where `key` = 'cache_system_breakpoint'

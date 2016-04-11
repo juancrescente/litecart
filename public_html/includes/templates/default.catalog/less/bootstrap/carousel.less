@@ -6,6 +6,10 @@
 // Wrapper for the slide container and indicators
 .carousel {
   position: relative;
+  
+  &:hover .carousel-control {
+    opacity: 0.5;
+  }
 }
 
 .carousel-inner {
@@ -36,13 +40,13 @@
         .translate3d(100%, 0, 0);
         left: 0;
       }
-      &.prev,
+      &.previous,
       &.active.left {
         .translate3d(-100%, 0, 0);
         left: 0;
       }
       &.next.left,
-      &.prev.right,
+      &.previous.right,
       &.active {
         .translate3d(0, 0, 0);
         left: 0;
@@ -52,7 +56,7 @@
 
   > .active,
   > .next,
-  > .prev {
+  > .previous {
     display: block;
   }
 
@@ -61,7 +65,7 @@
   }
 
   > .next,
-  > .prev {
+  > .previous {
     position: absolute;
     top: 0;
     width: 100%;
@@ -70,11 +74,11 @@
   > .next {
     left: 100%;
   }
-  > .prev {
+  > .previous {
     left: -100%;
   }
   > .next.left,
-  > .prev.right {
+  > .previous.right {
     left: 0;
   }
 
@@ -101,18 +105,21 @@
   color: @carousel-control-color;
   text-align: center;
   text-shadow: @carousel-text-shadow;
+  opacity: 0;
   background-color: rgba(0, 0, 0, 0); // Fix IE9 click-thru bug
   // We can't have this transition here because WebKit cancels the carousel
   // animation if you trip this while in the middle of another animation.
 
-  // Set gradients for backgrounds
-  &.left {
-    #gradient > .horizontal(@start-color: rgba(0,0,0,.5); @end-color: rgba(0,0,0,.0001));
-  }
   &.right {
     left: auto;
     right: 0;
-    #gradient > .horizontal(@start-color: rgba(0,0,0,.0001); @end-color: rgba(0,0,0,.5));
+  }
+  
+  &.left:hover {
+    #gradient > .horizontal(@start-color: rgba(255,255,255,.5); @end-color: rgba(255,255,255,.0001));
+  }
+  &.carousel-control.right:hover {
+    #gradient > .horizontal(@start-color: rgba(255,255,255,.0001); @end-color: rgba(255,255,255,.5));
   }
 
   // Hover/focus state
@@ -125,44 +132,27 @@
   }
 
   // Toggles
-  .icon-prev,
-  .icon-next,
-  .glyphicon-chevron-left,
-  .glyphicon-chevron-right {
+  .previous,
+  .next{
     position: absolute;
     top: 50%;
     margin-top: -10px;
     z-index: 5;
     display: inline-block;
   }
-  .icon-prev,
-  .glyphicon-chevron-left {
+  .previous {
     left: 50%;
     margin-left: -10px;
   }
-  .icon-next,
-  .glyphicon-chevron-right {
+  .next {
     right: 50%;
     margin-right: -10px;
   }
-  .icon-prev,
-  .icon-next {
+  .previous,
+  .next {
     width:  20px;
     height: 20px;
     line-height: 1;
-    font-family: serif;
-  }
-
-
-  .icon-prev {
-    &:before {
-      content: '\2039';// SINGLE LEFT-POINTING ANGLE QUOTATION MARK (U+2039)
-    }
-  }
-  .icon-next {
-    &:before {
-      content: '\203a';// SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (U+203A)
-    }
   }
 }
 
@@ -237,21 +227,16 @@
 
   // Scale up the controls a smidge
   .carousel-control {
-    .glyphicon-chevron-left,
-    .glyphicon-chevron-right,
-    .icon-prev,
-    .icon-next {
+    .previous,
+    .next {
       width: (@carousel-control-font-size * 1.5);
       height: (@carousel-control-font-size * 1.5);
       margin-top: (@carousel-control-font-size / -2);
-      font-size: (@carousel-control-font-size * 1.5);
     }
-    .glyphicon-chevron-left,
-    .icon-prev {
+    .previous {
       margin-left: (@carousel-control-font-size / -2);
     }
-    .glyphicon-chevron-right,
-    .icon-next {
+    .next {
       margin-right: (@carousel-control-font-size / -2);
     }
   }

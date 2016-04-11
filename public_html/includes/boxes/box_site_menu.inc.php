@@ -1,8 +1,11 @@
 <?php  
-  $box_site_menu_cache_id = cache::cache_id('box_site_menu', array('language'));
-  if (cache::capture($box_site_menu_cache_id, 'file')) {
     
     $box_site_menu = new view();
+  
+  $box_site_menu_items_cache_id = cache::cache_id('box_site_menu_items', array('language'));
+  if (($box_site_menu->snippets['items'] = cache::get($box_site_menu_items_cache_id, 'file')) === null) {
+    
+    $box_site_menu->snippets['items'] = array();
     
     if (!function_exists('custom_site_menu_category_tree')) {
       function custom_site_menu_category_tree($parent_id=0, $depth=0, $max_depth=1, &$output) {
@@ -75,8 +78,8 @@
       );
     }
     
-    echo $box_site_menu->stitch('views/box_site_menu');
-    
-    cache::end_capture($box_site_menu_cache_id);
+     cache::set($box_site_menu_items_cache_id, 'file', $box_site_menu->snippets['items']);
   }
+  
+  echo $box_site_menu->stitch('views/box_site_menu');
 ?>

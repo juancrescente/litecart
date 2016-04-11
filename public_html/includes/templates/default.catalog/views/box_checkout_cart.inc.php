@@ -23,18 +23,19 @@
         <td><?php if (!empty($item['options'])) echo '<p>'. implode('<br />', $item['options']) .'</p>'; ?></td>
         <td><?php echo currency::format(tax::get_price($item['price'], $item['tax_class_id'])); ?></td>
         <td>
-          <?php echo functions::form_draw_form_begin('cart_form') . functions::form_draw_hidden_field('key', $key); ?>
           <div class="form-inline">
+            <?php if (!empty($item['quantity_unit']['name'])) { ?>
             <div class="input-group" style="max-width: 150px;">
-              <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('quantity', $item['quantity'], $item['quantity_unit']['decimals'], 0, null) : functions::form_draw_number_field('quantity', $item['quantity'], 0, null); ?>
+              <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 0, null) : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 0, null); ?>
               <span class="input-group-addon"><?php echo $item['quantity_unit']['name']; ?></span>
             </div>
-            <?php echo functions::form_draw_button('update_cart_item', array('true', functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'"'); ?>
+            <?php } else { ?>
+              <?php echo !empty($item['quantity_unit']['decimals']) ? functions::form_draw_decimal_field('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']['decimals'], 0, null) : functions::form_draw_number_field('item['.$key.'][quantity]', $item['quantity'], 0, null, 'style="max-width: 150px;"'); ?>
+            <?php } ?>
+            <?php echo functions::form_draw_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate'); ?>
           </div>
-          
-          <?php echo functions::form_draw_form_end(); ?>
         </td>
-        <td><?php echo functions::form_draw_form_begin('cart_form') . functions::form_draw_hidden_field('key', $key); ?><?php echo functions::form_draw_button('remove_cart_item', array('true', functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'"'); ?><?php echo functions::form_draw_form_end(); ?></td>
+        <td><?php echo functions::form_draw_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
       </tr>
       <?php } ?>
     </tbody>

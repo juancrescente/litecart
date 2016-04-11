@@ -21,9 +21,8 @@
       
       <div class="content">
         <hr />
-        <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?>breeeeeeeeeeeeeee</p>
+        <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?></p>
       </div>
-    <?php echo functions::form_draw_form_end(); ?>
     </div>
     <?php } ?>
   </div>

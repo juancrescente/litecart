@@ -128,11 +128,11 @@ body {
         <!--snippet:notices-->
         
         <div class="form-group">
-          <div class="input-group"><span class="input-group-addon"><?php echo functions::draw_fonticon('fa-user'); ?></span> <?php echo functions::form_draw_text_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?></div>
+          <?php echo functions::form_draw_fonticon_field('username', true, 'text', 'fa-user', 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
         </div>
         
         <div class="form-group">
-          <div class="input-group"><span class="input-group-addon"><?php echo functions::draw_fonticon('fa-key'); ?></span> <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?></div>
+          <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
         </div>
         
         <div class="checkbox">
