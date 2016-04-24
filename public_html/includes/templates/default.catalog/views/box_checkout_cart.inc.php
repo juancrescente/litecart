@@ -42,7 +42,7 @@
   </table>
   </div>
   
-  <div class="panel-footer text-right" style="font-size: 1.25em;">
-    <?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong><?php echo currency::format(cart::$total['value']); ?></strong>
+  <div class="panel-footer">
+    <h4 class="text-right"><?php echo language::translate('title_subtotal', 'Subtotal'); ?>: <strong><?php echo currency::format(cart::$total['value']); ?></strong></h4>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<hr />
+<hr style="clear: both;" />
 
 <footer>
   <div class="twelve-eighty">

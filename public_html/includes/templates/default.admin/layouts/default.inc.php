@@ -9,9 +9,8 @@
 <link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/theme.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 </head>
-<body style="display: table; width: 100%;">
-  <div style="display: table-row;">
-    <div id="sidebar" class="" style="display: table-cell; vertical-align: top;">
+<body>
+  <div class="sidebar">
 
   <div id="logotype">
     <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
@@ -42,10 +41,9 @@
   </div>
     </div>
 
-    <div id="main" style="display: table-cell; vertical-align: top;">
+  <div class="content">
       <!--snippet:notices-->
   <!--snippet:content-->
-    </div>
   </div>
 </div>
 

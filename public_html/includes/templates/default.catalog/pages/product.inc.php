@@ -1,7 +1,7 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
   
-  <div id="sidebar">
+  <div class="sidebar">
     <div class="well">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php'); ?>
@@ -9,10 +9,10 @@
     </div>
   </div>
   
-  <div id="main">
+  <div class="content">
     {snippet:breadcrumbs}
 
-    <div id="product">
+    <div id="product" style="overflow: hidden;">
       <div class="row">
         <div class="col-sm-4">
           <div class="image thumbnail">
@@ -43,7 +43,7 @@
             <div class="pull-right">
               <h2 class="price-wrapper text-right" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <?php if ($campaign_price) { ?>
-                <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
+                <del class="regular-price"><?php echo $regular_price; ?></del> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
                 <?php } else { ?>
                 <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
                 <?php } ?>

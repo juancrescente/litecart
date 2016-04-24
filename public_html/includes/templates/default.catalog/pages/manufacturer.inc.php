@@ -1,7 +1,7 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
   
-  <div id="sidebar">
+  <div class="sidebar">
     <div class="well">
       <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
       <?php include(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_filter.inc.php'); ?>
@@ -9,7 +9,7 @@
     </div>
   </div>
   
-  <div id="main">
+  <div class="content">
     {snippet:breadcrumbs}
     <div id="box-manufacturer">
       <div class="btn-group pull-right">

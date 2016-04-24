@@ -38,7 +38,7 @@
           <div class="well">
             <h2 class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
               <?php if ($campaign_price) { ?>
-              <s class="regular-price"><?php echo $regular_price; ?></s> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
+              <del class="regular-price"><?php echo $regular_price; ?></del> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
               <?php } else { ?>
               <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
               <?php } ?>

@@ -8,7 +8,7 @@
           <div class="manufacturer"><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></div>
           <div class="price-wrapper">
             <?php if ($campaign_price) { ?>
-            <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
+            <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
             <?php } else { ?>
             <span class="price"><?php echo $price; ?></span>
             <?php } ?>
@@ -31,7 +31,7 @@
           <?php echo !empty($short_description) ? '<p>'.$short_description.'</p>' : ''; ?>
           <div class="price-wrapper">
             <?php if ($campaign_price) { ?>
-            <s class="regular-price"><?php echo $price; ?></s> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
+            <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
             <?php } else { ?>
             <span class="price"><?php echo $price; ?></span>
             <?php } ?>

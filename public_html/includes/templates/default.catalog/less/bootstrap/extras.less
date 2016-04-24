@@ -2,6 +2,10 @@
 @import "variables.less";
 @import "mixins.less";
 
+// Variables
+
+@sidebar-width: 250px;
+
 // Wrappers
 
 .twelve-eighty {
@@ -9,6 +13,19 @@
   margin: 0 auto;
   padding-left: 15px;
   padding-right: 15px;  
+  clear: both;
+}
+
+// Sidebar
+
+@media (min-width: @screen-sm) {
+  .sidebar {
+    float: left;
+    width: @sidebar-width;
+  }
+  .sidebar + .content {
+    margin-left: @sidebar-width + @grid-gutter-width;
+  }
 }
 
 // Effects

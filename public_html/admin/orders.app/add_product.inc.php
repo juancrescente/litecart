@@ -153,7 +153,7 @@
       <td><strong><?php echo language::translate('title_price', 'Price'); ?></strong></td>
       <td>
         <?php echo functions::form_draw_hidden_field('price', $price); ?>
-        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format($product->price, true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
+        <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($product->price, true, false, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
         <?php echo currency::format(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
       </td>
     </tr>
@@ -161,7 +161,7 @@
       <td><strong><?php echo language::translate('title_tax', 'Tax'); ?></strong></td>
       <td>
         <?php echo functions::form_draw_hidden_field('tax', $tax); ?>
-        <?php echo !empty($product->campaign['price']) ? '<s>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']) .'</s>' : null; ?>
+        <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format(tax::get_tax($product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
         <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
       </td>
     </tr>

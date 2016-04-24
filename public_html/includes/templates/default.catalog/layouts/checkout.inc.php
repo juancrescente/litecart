@@ -26,7 +26,6 @@
 <!--snippet:head_tags-->
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/extras.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 </head>
 <body id="<?php echo preg_replace('#(_|/)#', '-', route::$route['page']); ?>">

@@ -28,16 +28,15 @@
 <!--snippet:head_tags-->
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/extras.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 </head>
 <body id="<?php echo preg_replace('#(_|/)#', '-', route::$route['page']); ?>">
 
-  <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+<?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
 
-  <!--snippet:content-->
+<!--snippet:content-->
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+<?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
 
 <script src="{snippet:template_path}js/app.js"></script>
 <script>

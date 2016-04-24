@@ -5,17 +5,10 @@
 <meta charset="{snippet:charset}" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/extras.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <!--snippet:head_tags-->
 <!--snippet:javascript-->
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?>
-<script>
-  window.onload = function() {
-    window.print();
-  }
-</script>
-<?php } ?>
+<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?><script>window.onload=function(){window.print();}</script><?php } ?>
 </head>
 <body>
 

@@ -1,8 +1,7 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
   
-  <div class="row">
-    <div class="sidebar col-md-3">
+  <div class="sidebar">
       <div class="well">
         <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_search.inc.php'); ?>
         <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
@@ -11,7 +10,7 @@
       </div>
     </div>
     
-    <div class="col-md-9">
+  <div class="content">
       {snippet:breadcrumbs}
       
       <div id="category">
@@ -47,7 +46,6 @@
         <?php } ?>
         
         <?php echo $pagination; ?>
-      </div>
     </div>
   </div>
 </div>
