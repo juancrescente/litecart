@@ -216,7 +216,7 @@ CREATE TABLE `lc_manufacturers_info` (
   `meta_description` varchar(256) NOT NULL,
   `link` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `category` (`category_id`, `language_code`),
+  UNIQUE INDEX `manufacturer` (`manufacturer_id`, `language_code`),
   KEY `manufacturer_id` (`manufacturer_id`),
   KEY `language_code` (`language_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
@@ -730,7 +730,7 @@ CREATE TABLE `lc_zones` (
   `date_updated` datetime NOT NULL,
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `country_code` (`country_code`)
+  KEY `country_code` (`country_code`),
   KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------

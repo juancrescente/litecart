@@ -1,6 +1,6 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
-  
+
   <div class="sidebar">
     <div class="well">
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_category_tree.inc.php'); ?>
@@ -8,7 +8,7 @@
       <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
     </div>
   </div>
-  
+
   <div class="content">
     {snippet:breadcrumbs}
 
@@ -21,7 +21,7 @@
             </a>
             <?php echo $sticker; ?>
           </div>
-          
+
           <?php if ($extra_images) { ?>
           <div class="extra-images row">
             <?php foreach ($extra_images as $image) { ?>
@@ -36,10 +36,10 @@
           </div>
           <?php } ?>
         </div>
-        
+
         <div class="col-sm-8">
           <div class="caption-full">
-          
+
             <div class="pull-right">
               <h2 class="price-wrapper text-right" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <?php if ($campaign_price) { ?>
@@ -48,7 +48,7 @@
                 <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
                 <?php } ?>
               </h2>
-              
+
               <div class="tax text-right">
               <?php if ($tax_rates) { ?>
                 <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <?php echo implode('<br />', $tax_rates); ?>
@@ -57,10 +57,10 @@
               <?php } ?>
               </div>
             </div>
-            
+
             <h1 class="page-title"><?php echo $name; ?></h1>
           </div>
-          
+
           <div class="stock-status">
           <?php if ($quantity > 0) { ?>
             <div class="stock-available"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
@@ -75,11 +75,11 @@
             <?php } ?>
           <?php } ?>
           </div>
-          
+
           <div class="buy_now" style="margin-bottom: 20px;">
             <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
             <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
-            
+
             <?php if ($options) { ?>
               <?php foreach ($options as $option) { ?>
               <div class="row">
@@ -102,24 +102,24 @@
                 </div>
               </div>
             </div>
-            
+
             <?php echo ($quantity > 0 || $orderable) ? functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit') : functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); ?>
 
             <?php } ?>
 
             <?php echo functions::form_draw_form_end(); ?>
           </div>
-          
+
           <?php if ($cheapest_shipping) { ?>
           <div class="cheapest-shipping" style="margin-bottom: 10px;">
             <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo $cheapest_shipping; ?>
           </div>
           <?php } ?>
-          
+
           <?php if ($description) { ?>
           <p><?php echo $description; ?></p>
           <?php } ?>
-          
+
           <?php if ($attributes) { ?>
           <table class="table table-striped">
             <tbody>
@@ -141,7 +141,7 @@
             </tbody>
           </table>
           <?php } ?>
-          
+
           <div class="social-bookmarks">
             <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-2x', 'style="color: #55acee;"'); ?></a>
             <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-2x', 'style="color: #3b5998;"'); ?></a>
