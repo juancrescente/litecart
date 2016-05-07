@@ -4,9 +4,9 @@
   ob_start();
   
   require_once('../includes/config.inc.php');
-  
   require_once('includes/header.inc.php');
   require_once('includes/functions.inc.php');
+  require_once('../includes/library/lib_database.inc.php');
   
 // Turn on errors
   error_reporting(version_compare(PHP_VERSION, '5.4.0', '>=') ? E_ALL & ~E_STRICT : E_ALL);
@@ -41,9 +41,6 @@
     
     if (empty($_REQUEST['from_version'])) die('You must select a version.');
     
-    require('includes/database.class.php');
-    $database = new database(null);
-    
     foreach ($supported_versions as $version) {
       if (version_compare($_REQUEST['from_version'], $version, '<')) {
         if (file_exists('upgrade_patches/'. $version .'.sql')) {
@@ -55,7 +52,7 @@
             
             foreach ($sql as $query) {
               $query = preg_replace('/--.*\s/', '', $query);
-              $database->query($query);
+              database::query($query);
             }
           echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
         }
@@ -68,6 +65,21 @@
       }
     }
     
+    echo '<p>Clear cache... ';
+
+    database::query(
+      "update ". DB_TABLE_SETTINGS ."
+      set value = '1'
+      where `key` = 'cache_clear'
+      limit 1;"
+    );
+    
+    foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+      if (is_file($file)) unlink($file);
+    }
+
+    echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+
     if (!empty($_REQUEST['redirect'])) {
       header('Location: '. $_REQUEST['redirect']);
       exit;

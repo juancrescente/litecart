@@ -39,13 +39,28 @@
       return $fields;
     }
     
-    public function after_save($object) {
+    public function validate($fields) {
+
+      if (empty($this->modules)) return false;
+
+      foreach ($this->modules as $module) {
+        if (!method_exists($module, 'validate')) continue;
+        $result = $module->validate($fields);
+        if (!empty($result['error'])) {
+          return $result;
+        }
+      }
+
+      return true;
+    }
+
+    public function update($fields) {
       
       if (empty($this->modules)) return false;
       
       foreach ($this->modules as $module) {
-        if (!method_exists($module, 'after_save')) continue;
-        $module->after_save($object);
+        if (!method_exists($module, 'update')) continue;
+        $module->update($fields);
       }
     }
     

@@ -1,4 +1,6 @@
 <?php
+  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['manufacturer_id'])) {
     header('Location: '. document::ilink('manufacturers'));
     exit;
@@ -27,12 +29,17 @@
     exit;
   }
   
-  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-  breadcrumbs::add($manufacturer->name, document::ilink('manufacturer', array('manufacturer_id' => $manufacturer->id), false));
   
-  //document::$snippets['title'] = array(); // reset
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
   document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : $manufacturer->short_description[language::$selected['code']];
+
+  breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
+  breadcrumbs::add($manufacturer->name);
+
+  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
+
+  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 
   $manufacturer_cache_id = cache::cache_id('box_manufacturer', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($manufacturer_cache_id, 'file', ($_GET['sort'] == 'popularity') ? 0 : 3600)) {
@@ -44,6 +51,7 @@
       'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
       'name' => $manufacturer->name,
       'description' => $manufacturer->description[language::$selected['code']],
+      'link' => $manufacturer->link[language::$selected['code']],
       'image' => array(
         'original' => WS_DIR_IMAGES . $manufacturer->image,
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),

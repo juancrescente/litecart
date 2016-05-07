@@ -21,6 +21,7 @@
       if (empty($_POST['newsletter'])) $_POST['newsletter'] = 0;
       
       $fields = array(
+        'code',
         'status',
         'email',
         'password',
@@ -109,8 +110,22 @@
     </div>
     
     <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?></label>
+      <?php echo functions::form_draw_text_field('code', true); ?>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
       <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
       <?php echo functions::form_draw_email_field('email', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
+      <div class="checkbox">
+        <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
+      </div>
     </div>
   </div>
     
@@ -185,15 +200,8 @@
       <?php echo functions::form_draw_phone_field('mobile', true); ?>
     </div>
   </div>
-    
+     
   <div class="row">
-    <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_newsletter', 'Newsletter'); ?></label>
-      <div class="checkbox">
-        <label><?php echo functions::form_draw_checkbox('newsletter', '1', true); ?> <?php echo language::translate('title_subscribe', 'Subscribe'); ?></label>
-      </div>
-    </div>
-    
     <div class="form-group col-md-6">
       <label><?php echo !empty($customer->data['id']) ? language::translate('title_new_password', 'New Password') : language::translate('title_password', 'Password'); ?></label>
         <?php echo functions::form_draw_text_field('new_password', '', 'password'); ?>

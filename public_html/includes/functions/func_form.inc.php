@@ -681,7 +681,7 @@
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_delivery_status_id');
     
     $query = database::query(
-      "select ds.id, dsi.name from ". DB_TABLE_DELIVERY_STATUSES ." ds
+      "select ds.id, dsi.name , dsi.description from ". DB_TABLE_DELIVERY_STATUSES ." ds
       left join ". DB_TABLE_DELIVERY_STATUSES_INFO ." dsi on (dsi.delivery_status_id = ds.id and dsi.language_code = '". database::input(language::$selected['code']) ."')
       order by dsi.name asc;"
     );
@@ -691,7 +691,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -778,7 +778,7 @@
     $options = array();
     
     foreach (length::$classes as $class) {
-      $options[] = array($class['unit']);
+      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -920,28 +920,10 @@
     
     $products_query = functions::catalog_products_query(array('sort' => 'name'));
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' ['. $product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
+      $options[] = array($product['name'] .' ['. (float)$product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
     }
     
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-  
-  function form_draw_product_stock_options_list($product_id, $name, $input=true, $multiple=false, $parameters='') {
-    
-    $options = array();
-    
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-    
-    if (!empty($product_id)) {
-      $product = catalog::product($product_id);
-      if (count($product->options_stock) > 0) {
-        foreach (array_keys($product->options_stock) as $key) {
-          $options[] = array($product->options_stock[$key]['name'][language::$selected['code']] .' ['. $product->options_stock[$key]['quantity'] .'] ', $product->id);
-        }
-      }
-    }
-    
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
   }
   
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {
@@ -950,7 +932,7 @@
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_quantity_unit_id');
     
     $quantity_units_query = database::query(
-      "select qu.id, qui.name from ". DB_TABLE_QUANTITY_UNITS ." qu
+      "select qu.*, qui.name, qui.description from ". DB_TABLE_QUANTITY_UNITS ." qu
       left join ". DB_TABLE_QUANTITY_UNITS_INFO ." qui on (qui.quantity_unit_id = qu.id and language_code = '". language::$selected['code'] ."')
       order by qu.priority, qui.name asc;"
     );
@@ -960,7 +942,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($quantity_unit = database::fetch($quantity_units_query)) {
-      $options[] = array($quantity_unit['name'], $quantity_unit['id']);
+      $options[] = array($quantity_unit['name'], $quantity_unit['id'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. htmlspecialchars($quantity_unit['description']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -985,7 +967,7 @@
     if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_sold_out_status_id');
     
     $query = database::query(
-      "select sos.id, sosi.name from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
+      "select sos.id, sosi.name, sosi.description from ". DB_TABLE_SOLD_OUT_STATUSES ." sos
       left join ". DB_TABLE_SOLD_OUT_STATUSES_INFO ." sosi on (sosi.sold_out_status_id = sos.id and sosi.language_code = '". database::input(language::$selected['code']) ."')
       order by sosi.name asc;"
     );
@@ -995,7 +977,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($row = database::fetch($query)) {
-      $options[] = array($row['name'], $row['id']);
+      $options[] = array($row['name'], $row['id'], 'title="'. htmlspecialchars($row['description']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -1004,7 +986,7 @@
   function form_draw_suppliers_list($name, $input=true, $multiple=false, $parameters='') {
     
     $suppliers_query = database::query(
-      "select id, name from ". DB_TABLE_SUPPLIERS ."
+      "select id, name, description from ". DB_TABLE_SUPPLIERS ."
       order by name;"
     );
     
@@ -1013,7 +995,29 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
     while ($supplier = database::fetch($suppliers_query)) {
-      $options[] = array($supplier['name'], $supplier['id']);
+      $options[] = array($supplier['name'], $supplier['id'], 'title="'. htmlspecialchars($supplier['description']) .'"');
+    }
+    
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
+  }
+  
+  
+  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
+    
+    if ($input === true) $input = form_reinsert_value($name);
+    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
+    
+    $tax_classes_query = database::query(
+      "select * from ". DB_TABLE_TAX_CLASSES ."
+      order by name asc;"
+    );
+    
+    $options = array();
+    
+    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
+    
+    while ($tax_class = database::fetch($tax_classes_query)) {
+      $options[] = array($tax_class['name'], $tax_class['id'], 'title="'. htmlspecialchars($tax_class['description']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
@@ -1055,27 +1059,6 @@
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
   
-  function form_draw_tax_classes_list($name, $input=true, $multiple=false, $parameters='') {
-    
-    if ($input === true) $input = form_reinsert_value($name);
-    if ($input == '' && file_get_contents('php://input') == '') $input = settings::get('default_tax_class_id');
-    
-    $tax_classes_query = database::query(
-      "select * from ". DB_TABLE_TAX_CLASSES ."
-      order by name asc;"
-    );
-    
-    $options = array();
-    
-    if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
-    
-    while ($tax_class = database::fetch($tax_classes_query)) {
-      $options[] = array($tax_class['name'], $tax_class['id']);
-    }
-    
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-  
   function form_draw_weight_classes_list($name, $input=true, $multiple=false, $parameters='') {
     
     if ($input === true) $input = form_reinsert_value($name);
@@ -1084,7 +1067,7 @@
     $options = array();
     
     foreach (weight::$classes as $class) {
-      $options[] = array($class['unit']);
+      $options[] = array($class['unit'], $class['unit'], 'data-value="'. (float)$class['value'] .'" data-decimals="'. (int)$class['decimals'] .'" title="'. htmlspecialchars($class['name']) .'"');
     }
     
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

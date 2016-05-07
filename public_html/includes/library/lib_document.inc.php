@@ -29,7 +29,16 @@
         self::$template = settings::get('store_template_catalog');
       }
     
-    // Set before-snippets
+      define('WS_DIR_TEMPLATE', WS_DIR_TEMPLATES . self::$template .'/');
+    }
+
+    public static function before_capture() {
+    // Set some snippets
+      self::$snippets['language'] = language::$selected['code'];
+      self::$snippets['charset'] = language::$selected['charset'];
+      self::$snippets['home_path'] = WS_DIR_HTTP_HOME;
+      self::$snippets['template_path'] = WS_DIR_TEMPLATES . self::$template .'/';
+
       self::$snippets['title'] = array(settings::get('store_name'));
       
       self::$snippets['head_tags']['X-UA-Compatible'] = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
@@ -53,10 +62,14 @@
         }
         self::$snippets['head_tags']['hreflang'] = trim(self::$snippets['head_tags']['hreflang']);
       }
+
+    // Get template settings
+      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
     }
     
     public static function after_capture() {
       
+
     // Extract in content styles
       if (preg_match_all('#<style>(.*?)</style>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {

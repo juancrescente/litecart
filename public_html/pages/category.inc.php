@@ -1,17 +1,10 @@
 <?php
+  if (empty($_GET['page'])) $_GET['page'] = 1;
+  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
   if (empty($_GET['category_id'])) {
     header('Location: '. document::ilink('categories'));
     exit;
   }
-  
-  if (empty($_GET['page'])) $_GET['page'] = 1;
-  if (empty($_GET['sort'])) $_GET['sort'] = 'price';
-  
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $_GET['category_id']), false) .'" />';
-  document::$snippets['foot_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
-  functions::form_draw_select_field('dummy'); // Load selectize.js script sources
-  
-  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   
   $category = catalog::category($_GET['category_id']);
   
@@ -29,17 +22,16 @@
     exit;
   }
   
-  foreach (functions::catalog_category_trail($category->id) as $category_id => $category_name) {
-    if ($category_id == $category->id) {
-      breadcrumbs::add($category_name);
-    } else {
-      breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
-    }
-  }
-  
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';
   document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
   document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']];
   
+  breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
+  foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
+    breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
+  }
+  breadcrumbs::add($category->name[language::$selected['code']]);
+
   $lighbox_id = functions::draw_lightbox();
   
   $box_category_cache_id = cache::cache_id('box_category', array('basename', 'get', 'language', 'currency', 'account', 'prices'));

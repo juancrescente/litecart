@@ -8,14 +8,34 @@
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
       $order_action = new mod_order_action();
+
       $options = $order_action->options();
-      echo $order_action->modules[$module_id]->$options[$module_id]['options'][$option_id]['function']($_POST['orders']);
+
+      if (!method_exists($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function'])) {
+        notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
       return;
+      }
+
+      echo call_user_func(array($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function']), $_POST['orders']);
+      return;
+
     } else {
       notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
     }
   }
   
+  $payment_options_query = database::query(
+    "select distinct payment_option_name
+    from ". DB_TABLE_ORDERS ." o
+    where payment_option_name != ''
+    order by payment_option_name asc"
+  );
+
+  $payment_options = array(array('-- '. language::translate('title_payment_method', 'Payment Method') .' --', ''));
+  while ($payment_option = database::fetch($payment_options_query)) {
+    $payment_options[] = array($payment_option['payment_option_name'], $payment_option['payment_option_name']);
+  }
+
 ?>
 <style>
 #order-actions li {
@@ -32,6 +52,7 @@
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"') . functions::form_draw_form_end(); ?></li>
   <li><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'onchange="location=(\''. document::link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></li>
+  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?></li>
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
 </ul>
 
@@ -46,12 +67,12 @@
         <th>&nbsp;</th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
-        <th><?php echo language::translate('title_tax_id', 'Tax ID'); ?></th>
         <th><?php echo language::translate('title_country', 'Country'); ?></th>
         <th><?php echo language::translate('title_payment_method', 'Payment Method'); ?></th>
         <th class="text-center"><?php echo language::translate('title_tax', 'Tax'); ?></th>
         <th class="text-center"><?php echo language::translate('title_amount', 'Amount'); ?></th>
         <th class="text-center"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
+    <th style="text-align: center;"><?php echo language::translate('title_order_status', 'Order Status'); ?></th>
         <th><?php echo language::translate('title_date', 'Date'); ?></th>
         <th>&nbsp;</th>
       </tr>
@@ -76,8 +97,11 @@
     left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
-    ". ((!empty($_GET['order_status_id'])) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
-    ". ((!empty($sql_find)) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "and (os.is_archived is null or os.is_archived = 0)") ."
+    ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
+    ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
+    ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
+    ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by o.date_created desc, o.id desc;"
   );
   
@@ -100,14 +124,13 @@
       <td><?php echo functions::form_draw_checkbox('orders['.$order['id'].']', $order['id'], (isset($_POST['orders']) && in_array($order['id'], $_POST['orders'])) ? $order['id'] : false); ?></td>
       <td><?php echo functions::draw_fonticon($order['order_status_icon'].' fa-fw', 'style="color: '. $order['order_status_color'] .';"'); ?></td>
       <td><?php echo $order['id']; ?></td>
-      <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a></td>
-      <td><?php echo $order['customer_tax_id']; ?></td>
+    <td><a href="<?php echo document::href_link('', array('doc' => 'edit_order', 'order_id' => $order['id']), true); ?>"><?php echo $order['customer_company'] ? $order['customer_company'] : $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php echo empty($order['customer_id']) ? ' <em>('. language::translate('title_guest', 'Guest') .')</em>' : ''; ?></a> <span style="opacity: 0.5;"><?php echo $order['customer_tax_id']; ?></span></td>
       <td><?php echo functions::reference_get_country_name($order['customer_country_code']); ?></td>
       <td><?php echo $order['payment_option_name']; ?></td>
       <td class="text-right"><?php echo ($order['tax_total'] != 0) ? currency::format($order['tax_total'], false, false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
       <td class="text-right"><?php echo currency::format($order['payment_due'], false, false, $order['currency_code'], $order['currency_value']); ?></td>
       <td class="text-center"><?php echo ($order['order_status_id'] == 0) ? language::translate('title_unprocessed', 'Unprocessed') : $order['order_status_name']; ?></td>
-      <td><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
+      <td class="text-right"><?php echo strftime(language::$selected['format_datetime'], strtotime($order['date_created'])); ?></td>
       <td>
         <a data-toggle="lightbox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_packing_slip.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-file-text-o'); ?></a>
         <a data-toggle="lightbox" href="<?php echo document::href_link(WS_DIR_ADMIN . $_GET['app'] .'.app/printable_order_copy.php', array('order_id' => $order['id'], 'media' => 'print')); ?>"><?php echo functions::draw_fonticon('fa-print'); ?></a>
@@ -122,7 +145,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="12"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
+    <td colspan="11"><?php echo language::translate('title_orders', 'Orders'); ?>: <?php echo database::num_rows($orders_query); ?></td>
       </tr>
     </tfoot>
   </table>

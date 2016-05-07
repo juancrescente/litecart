@@ -247,12 +247,12 @@ INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decim
 INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `date_updated`, `date_created`) VALUES
 (1, 'en', 'eng', 'English', 'en_US.utf8,en_US.UTF-8,english', 'UTF-8', 'm/d/y', 'h:i:s A', 'm/d/y h:i:s A', '%b %e %Y', '%I:%M %p', '%b %e %Y %I:%M %p', '.', ',', 0, NOW(), NOW());
 -- --------------------------------------------------------
-INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `priority`, `date_updated`, `date_created`) VALUES
-(1, 'fa-money', '#c0c0c0', 0, 1, NOW(), NOW()),
-(2, 'fa-clock-o', '#d7d96f', 1, 2, NOW(), NOW()),
-(3, 'fa-cog', '#ffa851', 1, 3, NOW(), NOW()),
-(4, 'fa-truck', '#99cc66', 1, 4, NOW(), NOW()),
-(5, 'fa-times', '#ff6666', 0, 5, NOW(), NOW());
+INSERT INTO `lc_order_statuses` (`id`, `icon`, `color`, `is_sale`, `is_archived`, `priority`, `date_updated`, `date_created`) VALUES
+(1, 'fa-money', '#c0c0c0', 0, 0, 1, NOW(), NOW()),
+(2, 'fa-clock-o', '#d7d96f', 1, 0, 2, NOW(), NOW()),
+(3, 'fa-cog', '#ffa851', 1, 0, 3, NOW(), NOW()),
+(4, 'fa-truck', '#99cc66', 1, 1, 4, NOW(), NOW()),
+(5, 'fa-times', '#ff6666', 0, 1, 5, NOW(), NOW());
 -- --------------------------------------------------------
 INSERT INTO `lc_order_statuses_info` (`id`, `order_status_id`, `language_code`, `name`, `description`) VALUES
 (1, 1, 'en', 'Awaiting payment', ''),
@@ -312,6 +312,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Latest Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_latest_products_num_items', '8', 'int()', 17, NOW(), NOW()),
 ('listings', 'local', 'Most Popular Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_most_popular_products_num_items', '8', 'int()', 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_campaign_products_num_items', '4', 'int()', 19, NOW(), NOW()),
+('listings', 'local', 'Auto Decimals', 'Show only decimals if there are any to display.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
 ('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '16:9', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
 ('images', 'local', 'Product Images: Aspect Ratio', 'The aspect ratio of the product thumbnails', 'product_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '30', NOW(), NOW()),
 ('images', 'local', 'Product Images: Clipping Method', 'The clipping method used for scaled product thumbnails.', 'product_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '31', NOW(), NOW()),

@@ -3,6 +3,9 @@
   function draw_fonticon($class, $params=null) {
     
     switch(true) {
+      case (substr($class, 0, 3) == 'fa '):
+        return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
+        
       case (substr($class, 0, 3) == 'fa-'):
         document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; 
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';

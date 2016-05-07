@@ -1,14 +1,13 @@
 <?php
-  if (settings::get('catalog_only_mode')) return;
-  
   document::$layout = 'checkout';
   
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['title'][] = language::translate('checkout:head_title', 'Checkout');
 
-  breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
+  if (settings::get('catalog_only_mode')) return;
   
-  document::$snippets['title'][] = language::translate('title_checkout', 'Checkout');
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
   
   $_page = new view();
   

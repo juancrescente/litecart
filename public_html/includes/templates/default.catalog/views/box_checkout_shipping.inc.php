@@ -12,6 +12,7 @@
         </div>
         <div class="col-md-5 text-left">
           <h4 class="title" style="margin: 0.5em 0 0 0;"><?php echo $module['title']; ?></h4>
+
           <div class="name"><?php echo $option['name']; ?></div>
         </div>
         <div class="col-md-4 text-right">

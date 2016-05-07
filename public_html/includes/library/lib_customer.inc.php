@@ -340,7 +340,7 @@
       $customer = database::fetch($customer_query);
       
       if (empty($customer) || (!empty($customer['password']) && $customer['password'] != functions::password_checksum($customer['email'], $password))) {
-        sleep(5);
+        sleep(3);
         notices::add('errors', language::translate('error_login_invalid', 'Wrong password or the account is disabled, or does not exist'));
         return;
       }
@@ -391,10 +391,10 @@
       
       notices::add('success', language::translate('description_logged_out', 'You are now logged out.'));
       
-      if ($redirect_url) {
-        header('Location: ' . $redirect_url);
-        exit;
-      }
+      if (empty($redirect_url)) $redirect_url = document::ilink('');
+
+      header('Location: ' . $redirect_url);
+      exit;
     }
   }
   

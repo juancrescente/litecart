@@ -34,6 +34,10 @@
           limit 1;"
         );
         
+        foreach(glob(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . 'vqmod/vqcache/*.php') as $file){
+          if (is_file($file)) unlink($file);
+        }
+
         notices::add('success', 'Cache cleared');
       }
       
@@ -167,14 +171,21 @@
       );
     }
     
-    public static function cache_id($keyword, $dependants=array()) {
+    public static function cache_id($keyword, $dependencies=array()) {
       
-      if (!is_array($dependants)) $dependants = array($dependants);
+      if (!is_array($dependencies)) {
+        $dependencies = array($dependencies);
+      } else {
+        sort($dependencies);
+      }
       
       $hash_string = $keyword;
       
-      foreach ($dependants as $dependant) {
+      foreach ($dependencies as $dependant) {
         switch ($dependant) {
+          case 'basename':
+            $hash_string .= $_SERVER['PHP_SELF'];
+            break;
           case 'currency':
             $hash_string .= currency::$selected['code'];
             break;
@@ -182,36 +193,41 @@
             $hash_string .= serialize(customer::$data);
             break;
           case 'domain':
-            $hash_string .= $_SERVER['HTTP_HOST'];
-            break;
-          case 'region':
-            $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
-            break;
-          case 'login':
-            $hash_string .= customer::$data['id'];
-            break;
           case 'host':
             $hash_string .= $_SERVER['HTTP_HOST'];
-            break;
-          case 'basename':
-            $hash_string .= $_SERVER['PHP_SELF'];
             break;
           case 'get':
             $hash_string .= serialize($_GET);
             break;
-          case 'post':
-            $hash_string .= serialize($_POST);
-            break;
-          case 'uri':
-            $hash_string .= $_SERVER['REQUEST_URI'];
-            break;
           case 'language':
             $hash_string .= language::$selected['code'];
+            break;
+          case 'layout':
+            $hash_string .= document::$layout;
+            break;
+          case 'login':
+            $hash_string .= !empty(customer::$data['id']) ? '1' : '0';
             break;
           case 'prices':
             $hash_string .= !empty(customer::$data['display_prices_including_tax']) ? '1' : '0';
             $hash_string .= !empty(customer::$data['country_code']) ? customer::$data['country_code'] : '';
             $hash_string .= !empty(customer::$data['zone_code']) ? customer::$data['zone_code'] : '';
+            break;
+          case 'post':
+            $hash_string .= serialize($_POST);
+            break;
+          case 'region':
+            $hash_string .= customer::$data['country_code'] . customer::$data['zone_code'];
+            break;
+          case 'site':
+            $hash_string .= document::link(WS_DIR_HTTP_HOME);
+            break;
+          case 'template':
+            $hash_string .= document::$template;
+            break;
+          case 'uri':
+          case 'url':
+            $hash_string .= $_SERVER['REQUEST_URI'];
             break;
           default:
             if (is_array($dependant)) {

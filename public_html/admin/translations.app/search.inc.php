@@ -3,12 +3,12 @@
   if (empty($_GET['page'])) $_GET['page'] = 1;
   if (empty($_GET['languages'])) $_GET['languages'] = array_keys(language::$languages);
   
-  if (isset($_POST['save'])) {
+  if (isset($_POST['save']) && !empty($_POST['translations'])) {
     
     foreach ($_POST['translations'] as $translation) {
       $sql_update_fields = '';
-      foreach (array_keys(language::$languages) as $language) {
-        $sql_update_fields .= "text_".$language ." = '". database::input(trim($translation['text_'.$language]), !empty($translation['html']) ? true : false) ."', ";
+      foreach ($_GET['languages'] as $language_code) {
+        $sql_update_fields .= "text_".database::input($language_code) ." = '". database::input(trim($translation['text_'.database::input($language_code)]), !empty($translation['html']) ? true : false) ."', " . PHP_EOL;
       }
       database::query(
         "update ". DB_TABLE_TRANSLATIONS ."
@@ -29,7 +29,7 @@
     exit;
   }
   
-  if (isset($_POST['delete'])) {
+  if (isset($_POST['delete']) && !empty($_POST['translation_id'])) {
     database::query(
       "delete from ". DB_TABLE_TRANSLATIONS ."
       where id = '". database::input($_POST['translation_id']) ."'
@@ -44,8 +44,15 @@
     exit;
   }
   
-  $languages = array_keys(language::$languages);
-  if (array_search('en', $languages) === false) array_unshift($languages, 'en');
+  $languages_query = database::query(
+    "select code from ". DB_TABLE_LANGUAGES ."
+    order by priority;"
+  );
+
+  $language_codes = array();
+  while ($language = database::fetch($languages_query)) {
+    $language_codes[] = $language['code'];
+  }
 ?>
 <style>
 ul.filter li {
@@ -104,7 +111,7 @@ ul.filter li {
   
   <li>
     <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
-    <?php foreach ($languages as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
+    <?php foreach ($language_codes as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
   </li>
   
   <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>

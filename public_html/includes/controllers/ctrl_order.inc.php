@@ -11,13 +11,13 @@
       switch ($action) {
         case 'load':
           if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          self::load((int)$order_id);
+          $this->load((int)$order_id);
           break;
         case 'new':
-          self::reset();
+          $this->reset();
           break;
         case 'import_session':
-          self::import_session();
+          $this->import_session();
           break;
         case 'resume':
         default:
@@ -80,7 +80,7 @@
     private function import_session() {
       global $shipping, $payment, $order_total;
       
-      self::reset();
+      $this->reset();
       
       $this->data['weight_class'] = settings::get('store_weight_class');
       $this->data['currency_code'] = currency::$selected['code'];
@@ -104,17 +104,17 @@
       }
       
       foreach (cart::$items as $item) {
-        self::add_item($item);
+        $this->add_item($item);
       }
       
       foreach ($order_total->rows as $row) {
-        self::add_ot_row($row);
+        $this->add_ot_row($row);
       }
     }
     
     private function load($order_id) {
       
-      self::reset();
+      $this->reset();
       
       $order_query = database::query(
         "select * from ". DB_TABLE_ORDERS ."
@@ -227,7 +227,7 @@
     public function save() {
       
     // Re-calculate total if there are changes
-      self::calculate_total();
+      $this->calculate_total();
       
       if (empty($this->data['uid'])) $this->data['uid'] = uniqid();
       
@@ -254,6 +254,7 @@
       if (isset($previous_order_status['id']) && isset($current_order_status['id']) && $current_order_status['id'] != $previous_order_status['id']) {
         if (!empty($this->data['id'])) {
           $this->data['comments'][] = array(
+            'author' => 'system',
             'text' => sprintf(language::translate('text_order_status_changed_to_s', 'Order status changed to %s'), $current_order_status['name']),
             'hidden' => 1,
           );
@@ -261,7 +262,7 @@
       }
       
     // Link guests to customer profile
-      if (empty($this->data['customer']['id'])) {
+      if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
         $customers_query = database::query(
           "select id from ". DB_TABLE_CUSTOMERS ."
           where email = '". database::input($this->data['customer']['email']) ."'
@@ -275,19 +276,10 @@
       
     // Insert/update order
       if (empty($this->data['id'])) {
-        
-        $ip = $_SERVER['REMOTE_ADDR'];
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP)) {
-          $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-        }
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
-          $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        
         database::query(
           "insert into ". DB_TABLE_ORDERS ."
           (uid, client_ip, date_created)
-          values ('". database::input($this->data['uid']) ."', '". database::input($ip) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
+          values ('". database::input($this->data['uid']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(date('Y-m-d H:i:s')) ."');"
         );
         $this->data['id'] = database::insert_id();
       }
@@ -335,19 +327,11 @@
         limit 1;"
       );
       
-    // Build array of item ids
-      $item_ids = array();
-      if (!empty($this->data['items'])) {
-        foreach (array_keys($this->data['items']) as $key) {
-          if (!empty($this->data['items'][$key]['id'])) $item_ids[] = $this->data['items'][$key]['id'];
-        }
-      }
-      
     // Delete order items
       $previous_order_items_query = database::query(
         "select * from ". DB_TABLE_ORDERS_ITEMS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $item_ids) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['items'], 'id')) ."');"
       );
       while($previous_order_item = database::fetch($previous_order_items_query)) {
         database::query(
@@ -420,19 +404,11 @@
         }
       }
       
-    // Build array of order total ids
-      $order_total_ids = array();
-      if (!empty($this->data['order_total'])) {
-        foreach (array_keys($this->data['order_total']) as $key) {
-          if (!empty($this->data['order_total'][$key]['id'])) $order_total_ids[] = $this->data['order_total'][$key]['id'];
-        }
-      }
-      
     // Delete order total items
       database::query(
         "delete from ". DB_TABLE_ORDERS_TOTALS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $order_total_ids) ."');;"
+        and id not in ('". @implode("', '", array_column($this->data['order_total'], 'id')) ."');"
       );
       
     // Insert/update order total
@@ -462,19 +438,11 @@
         }
       }
       
-    // Build array of comments ids
-      $comments_ids = array();
-      if (!empty($this->data['comments'])) {
-        foreach (array_keys($this->data['comments']) as $key) {
-          if (!empty($this->data['comments'][$key]['id'])) $comments_ids[] = $this->data['comments'][$key]['id'];
-        }
-      }
-      
     // Delete comments
       database::query(
         "delete from ". DB_TABLE_ORDERS_COMMENTS ."
         where order_id = '". (int)$this->data['id'] ."'
-        and id not in ('". @implode("', '", $comments_ids) ."');"
+        and id not in ('". @implode("', '", array_column($this->data['comments'], 'id')) ."');"
       );
       
     // Insert/update comments
@@ -491,7 +459,7 @@
           }
           database::query(
             "update ". DB_TABLE_ORDERS_COMMENTS ." 
-            set author = '". database::input($this->data['comments'][$key]['author']) ."',
+            set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
               hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
             where order_id = '". (int)$this->data['id'] ."'
@@ -515,9 +483,9 @@
           functions::email_send(
             null,
             $this->data['customer']['email'],
-            strtr(language::translate('email_subject_order_updated', 'Order Update: %s', $this->data['language_code']), array(
-              'id' => (int)$this->data['id'],
-              'status' => $current_order_status['name'],
+            strtr(language::translate('email_subject_order_updated', 'Order %order_id has updated to %order_status', $this->data['language_code']), array(
+              '%order_id' => (int)$this->data['id'],
+              '%order_status' => $current_order_status['name'],
             )),
             $email_body,
             true
@@ -535,8 +503,8 @@
     // Empty order first..
       $this->data['items'] = array();
       $this->data['order_total'] = array();
-      self::calculate_total();
-      self::save();
+      $this->calculate_total();
+      $this->save();
       
     // ..then delete
       database::query(
@@ -552,13 +520,13 @@
       $this->data['weight_total'] = 0;
       
       foreach ($this->data['items'] as $item) {
-        self::add_cost($item['price'], $item['tax'], $item['quantity']);
+        $this->add_cost($item['price'], $item['tax'], $item['quantity']);
         $this->data['weight_total'] += weight::convert($item['weight'], $item['weight_class'], $this->data['weight_class']) * $item['quantity'];
       }
       
       foreach ($this->data['order_total'] as $order_total) {
         if (!empty($order_total['calculate'])) {
-          self::add_cost($order_total['value'], $order_total['tax']);
+          $this->add_cost($order_total['value'], $order_total['tax']);
         }
       }
     }
@@ -584,7 +552,7 @@
       
       $this->data['weight_total'] += $item['quantity'] * weight::convert($item['weight'], $item['weight_class'], settings::get('store_weight_class'));
       
-      self::add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
+      $this->add_cost($item['price'] * $item['quantity'], $this->data['items']['new'.$key_i]['tax'] * $item['quantity']);
     }
     
     public function add_ot_row($row) {
@@ -601,7 +569,7 @@
         'calculate' => !empty($row['calculate']) ? 1 : 0,
       );
       
-      if (!empty($row['calculate'])) self::add_cost($row['value'], $row['tax']);
+      if (!empty($row['calculate'])) $this->add_cost($row['value'], $row['tax']);
     }
     
     private function add_cost($gross, $tax, $quantity=1) {
@@ -647,11 +615,26 @@
         }
       }
       
+      $customer = new mod_customer();
+      $result = $customer->validate($this->data['customer']);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
       return false;
     }
     
     public function inject_email_message($html) {
       
+      $order_status_query = database::query(
+        "select os.*, osi.name, osi.email_message from ". DB_TABLE_ORDER_STATUSES ." os
+        left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (os.id = osi.order_status_id and osi.language_code = '". database::input($this->data['language_code']) ."')
+        where os.id = ". (int)$this->data['order_status_id'] ."
+        limit 1;"
+      );
+      $order_status = database::fetch($order_status_query);
+
       $aliases = array(
         '%order_id' => $this->data['id'],
         '%firstname' => $this->data['customer']['firstname'],
@@ -661,7 +644,8 @@
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_address' => nl2br(functions::format_address($this->data['customer']['shipping_address'])),
         '%shipping_tracking_id' => !empty($this->data['shipping_tracking_id']) ? $this->data['shipping_tracking_id'] : '-',
-        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id'])))
+        '%order_copy_url' => document::ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))),
+        '%order_status' => $order_status['name'],
       );
     
       $html = str_replace(array_keys($aliases), array_values($aliases), $html);
@@ -670,14 +654,22 @@
     }
     
     public function email_order_copy($email) {
-    
+
       if (empty($email)) return;
-    
+
+      $action_button = '<div itemscope itemtype="https://schema.org/EmailMessage" style="display:none">' . PHP_EOL
+                     . '  <div itemprop="potentialAction" itemscope itemtype="https://schema.org/ViewAction">' . PHP_EOL
+                     . '    <link itemprop="target url" href="'. document::href_ilink('printable_order_copy', array('order_id' => $this->data['id'], 'checksum' => functions::general_order_public_checksum($this->data['id']))) .'" />' . PHP_EOL
+                     . '    <meta itemprop="name" content="'. htmlspecialchars(language::translate('title_view_order', 'View Order')) .'" />' . PHP_EOL
+                     . '  </div>' . PHP_EOL
+                     . '  <meta itemprop="description" content="'. htmlspecialchars(language::translate('title_view_printable_order_copy', 'View printable order copy')) .'" />' . PHP_EOL
+                     . '</div>';
+
       functions::email_send(
         null,
         $email,
         language::translate('title_order_copy', 'Order Copy') .' #'. $this->data['id'],
-        self::draw_printable_copy(),
+        $this->draw_printable_copy() . $action_button,
         true
       );
     }

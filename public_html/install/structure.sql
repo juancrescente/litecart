@@ -16,7 +16,7 @@ CREATE TABLE `lc_addresses` (
 CREATE TABLE `lc_cart_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
-  `cart_uid` VARCHAR(13) NOT NULL,
+  `cart_uid` varchar(13) NOT NULL,
   `key` varchar(32) NOT NULL,
   `product_id` int(11) NOT NULL,
   `options` varchar(2048) NOT NULL,
@@ -106,6 +106,7 @@ CREATE TABLE `lc_currencies` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `email` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -340,6 +341,7 @@ CREATE TABLE `lc_order_statuses` (
   `icon` varchar(24) NOT NULL,
   `color` varchar(7) NOT NULL,
   `is_sale` tinyint(1) NOT NULL,
+  `is_archived` TINYINT(1) NOT NULL,
   `notify` tinyint(1) NOT NULL,
   `priority` tinyint(2) NOT NULL,
   `date_updated` datetime NOT NULL,
@@ -389,7 +391,7 @@ CREATE TABLE `lc_pages_info` (
   `page_id` int(11) NOT NULL,
   `language_code` varchar(2) NOT NULL,
   `title` varchar(256) NOT NULL,
-  `content` text NOT NULL,
+  `content` mediumtext NOT NULL,
   `head_title` varchar(128) NOT NULL,
   `meta_description` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
@@ -729,6 +731,7 @@ CREATE TABLE `lc_zones` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `country_code` (`country_code`)
+  KEY `code` (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE {DATABASE_COLLATION};
 -- --------------------------------------------------------
 CREATE TABLE `lc_zones_to_geo_zones` (

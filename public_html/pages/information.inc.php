@@ -1,8 +1,4 @@
 <?php
-// Information links
-  ob_start();
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php');
-  document::$snippets['column_left'] = ob_get_clean();
   
 // Information page
   $pages_query = database::query(
@@ -30,7 +26,7 @@
   document::$snippets['title'][] = !empty($page['head_title']) ? $page['head_title'] : $page['title'];
   document::$snippets['description'] = !empty($page['meta_description']) ? $page['meta_description'] : '';
   
-  breadcrumbs::add($page['title'], document::ilink('information', array('page_id' => $page['id']), false));
+  breadcrumbs::add($page['title']);
   
   $_page = new view();
   

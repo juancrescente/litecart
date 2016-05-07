@@ -3,15 +3,15 @@
     public $snippets = array();
     public $html = '';
     
-    public function stitch($view=null) {
+    public function stitch($view=null, $cleanup=false) {
       
-      if ($view !== null) {
+      if (!empty($view)) {
         $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . document::$template .'/'. $view .'.inc.php';
         if (!is_file($file)) $file = FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATES . 'default.catalog/'. $view .'.inc.php';
         $this->html = $this->_process_view($file, $this->snippets);
       }
       
-      if (empty($this->html)) return;
+      if (empty($this->html)) return null;
       
       if (!empty($this->snippets)) {
         
@@ -23,16 +23,23 @@
           $search_replace['{snippet:'.$key.'}'] = &$this->snippets[$key];
         }
         
-        $failsafe_count = 0;
-        while (!isset($count) || $count > 0) {
-          $this->html = str_replace(array_keys($search_replace), array_values($search_replace), $this->html, $count);
-          if (++$failsafe_count == 3) {
-            trigger_error('Failsafe activated due to possible endless loop while stitching content' . PHP_EOL . print_r($this->snippets, true), E_USER_NOTICE);
-            break;
-          }
+        foreach(array_keys($search_replace) as $key) {
+          $search_replace[$key] = str_replace(array_keys($search_replace), array_values($search_replace), $search_replace[$key]);
         }
+
+        $this->html = str_replace(array_keys($search_replace), array_values($search_replace), $this->html, $count);
       }
       
+    // Clean orphan snippets
+      if ($cleanup) {
+        $search = array(
+          '/\{snippet:[^\}]+\}/',
+          '/<!--snippet:[^-->]+-->/',
+        );
+
+        $this->html = preg_replace($search, '', $this->html);
+      }
+
       return $this->html;
     }
     

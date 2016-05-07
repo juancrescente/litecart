@@ -17,6 +17,35 @@
   if (!empty($_POST['save'])) {
     
     if (empty($_POST['code'])) notices::add('errors', language::translate('error_must_enter_code', 'You must enter a code'));
+
+    if (!empty($_POST['code']) && empty($language->data['id'])) {
+        $languages_query = database::query(
+          "select id from ". DB_TABLE_LANGUAGES ."
+          where code = '". database::input($_POST['code']) ."'
+          limit 1;"
+        );
+
+        if (database::num_rows($languages_query)) {
+          notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+        }
+    }
+
+    if (!empty($_POST['code']) && !empty($language->data['id']) && $language->data['code'] != $_POST['code']) {
+      if ($language->data['code'] == 'en') {
+        notices::add('errors', language::translate('error_cannot_rename_framework_language', 'You cannot not rename the framework language, but you can disable it'));
+      }
+
+      $languages_query = database::query(
+        "select id from ". DB_TABLE_LANGUAGES ."
+        where code = '". database::input($_POST['code']) ."'
+        limit 1;"
+      );
+
+      if (database::num_rows($languages_query)) {
+        notices::add('errors', language::translate('error_language_already_exists', 'The language already exists in the database'));
+      }
+    }
+
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
     
     if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
@@ -43,6 +72,15 @@
       notices::add('errors', language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
     }
     
+    if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
+      notices::add('errors', strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
+    }
+
+    if (!setlocale(LC_ALL,  explode(',', $_POST['locale']))) {
+      notices::add('errors', strtr(language::translate('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), array('%locale' => !empty($_POST['locale']) ? $_POST['locale'] : 'NULL')));
+    }
+    setlocale(LC_ALL, explode(',', language::$selected['locale']));
+
     if (empty(notices::$data['errors'])) {
       
       $_POST['code'] = strtolower($_POST['code']);
@@ -145,7 +183,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
-        <?php echo functions::form_draw_text_field('charset', !isset($_POST['charset']) ? 'UTF-8' : true, 'placeholder="UTF-8" data-size="small"'); ?>
+        <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8" data-size="small"'); ?>
     </div>
     
     <div class="form-group col-md-6">
@@ -261,6 +299,8 @@
     array(language::translate('char_comma', 'Comma'), ','),
     array(language::translate('char_dot', 'Dot'), '.'),
     array(language::translate('char_space', 'Space'), ' '),
+    array(language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '),
+    array(language::translate('char_single_quote', 'Single quote'), '\''),
   );
   echo functions::form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
 ?>
