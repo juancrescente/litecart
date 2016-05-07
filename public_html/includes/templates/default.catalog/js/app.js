@@ -2,10 +2,10 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   
 // Sidebar parallax effect
-  $('#sidebar').css('position', 'fixed').css('top', '70px');
+  $('.sidebar').css('position', 'fixed').css('top', '70px');
   $(window).bind('scroll',function(e){
       var scrolled = $(window).scrollTop();
-      $('#sidebar').css('top',(70-(scrolled*.25))+'px');
+      $('.sidebar').css('top',(70-(scrolled*.25))+'px');
   });
 });
 
