@@ -7,7 +7,7 @@
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'fa-'):
-        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />'; 
+        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'glyphicon-'):
@@ -15,7 +15,7 @@
 
       default:
         trigger_error('Unknown font icon ('. $class .')', E_USER_WARNING);
-        return; 
+        return;
     }
   }
 
@@ -179,7 +179,7 @@
         }
       }
 
-      if ($i > 5) {  
+      if ($i > 5) {
         if ($i > $_GET['page'] + 1 && $i < $pages) {
           $forward = round(($_GET['page']+1+$pages)/2);
           $pagination->snippets['items'][] = array(

@@ -27,7 +27,7 @@
       <div class="carousel-caption">
         <?php echo $slide['caption']; ?>
       </div>
-      <?php } ?>    
+      <?php } ?>
     </div>
     <?php } ?>
   </div>

@@ -163,7 +163,7 @@
             <?php echo settings::get('store_phone'); ?><br />
         </td>
         <?php } ?>
-        <td style="vertical-align: top;">     
+        <td style="vertical-align: top;">
           <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
             <?php echo settings::get('store_email'); ?>
         </td>

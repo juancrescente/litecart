@@ -51,7 +51,7 @@
 
     ######################################################################
 
-    public static function load() {    
+    public static function load() {
 
       self::$currencies = array();
 

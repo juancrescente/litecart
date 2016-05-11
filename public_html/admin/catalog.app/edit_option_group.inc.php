@@ -152,7 +152,7 @@
         <tr>
           <td colspan="3"><a class="add" href="#"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_value', 'Add Value'); ?></a></td>
         </tr>
-      </tfoot>      
+      </tfoot>
     </table>
     <script>
       var new_value_index = 1;

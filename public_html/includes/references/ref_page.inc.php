@@ -54,7 +54,7 @@
             if (empty($this->_data['title'][$language_code])) {
               if (!empty($this->_data['title'][settings::get('default_language_code')])) {
                 $this->_data['title'][$language_code] = $this->_data['title'][settings::get('default_language_code')];
-              } else { 
+              } else {
                 $this->_data['title'][$language_code] = '[untitled]';
               }
             }
@@ -62,7 +62,7 @@
               if (empty($this->_data[$key][$language_code])) {
                 if (!empty($this->_data[$key][settings::get('default_language_code')])) {
                   $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
-                } else { 
+                } else {
                   $this->_data[$key][$language_code] = '';
                 }
               }

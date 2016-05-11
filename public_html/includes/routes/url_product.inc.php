@@ -21,7 +21,7 @@
 
       if (!$product->id) return $parsed_link;
 
-      $parsed_link['path'] = '';      
+      $parsed_link['path'] = '';
 
       if (!empty($product->default_category_id)) {
         $parsed_link['query']['category_id'] = $product->default_category_id;

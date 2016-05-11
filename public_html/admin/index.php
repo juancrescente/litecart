@@ -24,7 +24,7 @@
       'menu' => array(),
     );
 
-    if (!empty($app['menu'])) {        
+    if (!empty($app['menu'])) {
       foreach ($app['menu'] as $item) {
 
         $params = !empty($item['params']) ? array_merge(array('app' => $app['code'], 'doc' => $item['doc']), $item['params']) : array('app' => $app['code'], 'doc' => $item['doc']);

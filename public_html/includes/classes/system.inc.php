@@ -1,6 +1,6 @@
 <?php
 
-// Set up the system object 
+// Set up the system object
   class system {
     private static $_loaded_modules = array();
     private static $_modules;

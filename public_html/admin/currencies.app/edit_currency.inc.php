@@ -143,7 +143,7 @@
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
@@ -155,7 +155,7 @@
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_value', 'Value'); ?></label>
       <?php echo functions::form_draw_decimal_field('value', true); ?>
@@ -167,7 +167,7 @@
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_prefix', 'Prefix'); ?></label>
       <?php echo functions::form_draw_text_field('prefix', true, 'data-size="tiny"'); ?>
@@ -179,7 +179,7 @@
     </div>
   </div>
 
-  <div class="row">  
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
       <?php echo functions::form_draw_number_field('priority', true); ?>

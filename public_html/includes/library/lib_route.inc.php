@@ -116,7 +116,7 @@
     }
 
     public static function before_capture() {
-    }    
+    }
 
     public static function after_capture() {
       cache::set(self::$_links_cache_id, 'file', self::$_links_cache);

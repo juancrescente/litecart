@@ -64,7 +64,7 @@
             if (empty($this->_data['name'][$language_code])) {
               if (!empty($this->_data['name'][settings::get('default_language_code')])) {
                 $this->_data['name'][$language_code] = $this->_data['name'][settings::get('default_language_code')];
-              } else { 
+              } else {
                 $this->_data['name'][$language_code] = '[untitled]';
               }
             }
@@ -72,7 +72,7 @@
               if (empty($this->_data[$key][$language_code])) {
                 if (!empty($this->_data[$key][settings::get('default_language_code')])) {
                   $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
-                } else { 
+                } else {
                   $this->_data[$key][$language_code] = '';
                 }
               }

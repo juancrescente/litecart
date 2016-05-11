@@ -89,7 +89,7 @@
             $zone['id'] = database::insert_id();
           }
           database::query(
-            "update ". DB_TABLE_ZONES ." 
+            "update ". DB_TABLE_ZONES ."
             set code = '". database::input($zone['code']) ."',
             name = '". database::input($zone['name']) ."',
             date_updated =  '". date('Y-m-d H:i:s') ."'

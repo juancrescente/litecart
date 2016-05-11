@@ -82,7 +82,7 @@
         console.log(task[0] + ' refreshed');
         $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
-      complete: function(html) {  
+      complete: function(html) {
         if (!updateQueue.length) $('body #loading').remove();
         queueRunLock = false;
         runQueue();

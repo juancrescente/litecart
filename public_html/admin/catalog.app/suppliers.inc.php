@@ -1,6 +1,6 @@
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('app' => $_GET['app'], 'doc' => 'edit_supplier')), language::translate('title_add_new_supplier', 'Add New Supplier'), '', 'add'); ?></li>
-</ul>  
+</ul>
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_suppliers', 'Suppliers'); ?></h1>
 

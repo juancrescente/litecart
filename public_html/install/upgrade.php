@@ -19,7 +19,7 @@
   preg_match('/define\(\'PLATFORM_NAME\', \'(.*)\'\);/', file_get_contents('../includes/app_header.inc.php'), $matches);
   define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
-// Set platform version  
+// Set platform version
   preg_match('/define\(\'PLATFORM_VERSION\', \'(.*)\'\);/', file_get_contents('../includes/app_header.inc.php'), $matches);
   define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 

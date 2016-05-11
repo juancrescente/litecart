@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_tax_id', 'Tax ID'); ?></label>
         <?php echo functions::form_draw_text_field('tax_id', true); ?>
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_firstname', 'First Name'); ?></label>
         <?php echo functions::form_draw_text_field('firstname', true, 'required="required"'); ?>
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_address1', 'Address 1'); ?></label>
         <?php echo functions::form_draw_text_field('address1', true, 'required="required"'); ?>
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_postcode', 'Postcode'); ?></label>
         <?php echo functions::form_draw_text_field('postcode', true); ?>
@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>
         <?php echo functions::form_draw_countries_list('country_code', true, false, 'required="required"'); ?>
@@ -77,7 +77,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
         <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. functions::reference_get_phone_country_code(isset($_POST['country_code']) ? $_POST['country_code'] : '') .'"'); ?>
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
       <div class="form-group col-md-6">
         <label><?php echo language::translate('title_new_password', 'New Password'); ?></label>
         <?php echo functions::form_draw_password_field('new_password', ''); ?>

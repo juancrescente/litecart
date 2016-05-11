@@ -23,7 +23,7 @@
         trigger_error('Unknown captcha set.', E_USER_ERROR);
     }
 
-    for ($i=0; $i<$length; $i++) { 
+    for ($i=0; $i<$length; $i++) {
       $code .= substr($possible, mt_rand(0, strlen($possible)-1), 1);
     }
 
@@ -56,7 +56,7 @@
   // Generate base64-encoded image data
     ob_start();
     imagejpeg($image);
-    $base64_image = base64_encode(ob_get_clean()); 
+    $base64_image = base64_encode(ob_get_clean());
 
   // Free memory
     imagedestroy($image);

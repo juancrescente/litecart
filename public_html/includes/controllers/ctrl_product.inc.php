@@ -411,7 +411,7 @@
           $this->data['options_stock'][$key]['combination'] = implode(',', $combinations);
 
           database::query(
-            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ." 
+            "update ". DB_TABLE_PRODUCTS_OPTIONS_STOCK ."
             set combination = '". database::input($this->data['options_stock'][$key]['combination']) ."',
             sku = '". database::input($this->data['options_stock'][$key]['sku']) ."',
             weight = '". database::input($this->data['options_stock'][$key]['weight']) ."',

@@ -1,4 +1,4 @@
-<?php  
+<?php
 
     $box_site_menu = new view();
 

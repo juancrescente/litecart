@@ -211,9 +211,9 @@
 <script>
   $("input[name='categories[]']").click(function() {
     if ($(this).is(':checked')) {
-      $("select[name='default_category_id']").append("<option value='"+ $(this).val() +"'>"+ $(this).data('name') +"</option>"); 
+      $("select[name='default_category_id']").append("<option value='"+ $(this).val() +"'>"+ $(this).data('name') +"</option>");
     } else {
-      $("select[name='default_category_id'] option[value='"+ $(this).val() +"']").remove();            
+      $("select[name='default_category_id'] option[value='"+ $(this).val() +"']").remove();
     }
     var default_category = $("select[name='default_category_id'] option:selected").val();
     $("select[name='default_category_id']").html($("select[name='default_category_id'] option").sort(function(a,b){
@@ -425,7 +425,7 @@ foreach (array_keys(language::$languages) as $language_code) {
 
       <div id="tab-data" class="tab-pane" style="max-width: 640px;">
 
-        <div class="row">  
+        <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
             <?php echo functions::form_draw_text_field('sku', true); ?>

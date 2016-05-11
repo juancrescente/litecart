@@ -27,7 +27,7 @@
               if (is_array($val)) $return[$key] = utf8_decode_recursive($val);
               else $return[$key] = utf8_decode($val);
             }
-            return $return;          
+            return $return;
           }
           $_POST = utf8_decode_recursive($_POST);
         }

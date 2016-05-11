@@ -3,7 +3,7 @@
   class ctrl_user {
     public $data = array();
 
-    public function __construct($user_id=null) {      
+    public function __construct($user_id=null) {
       if ($user_id !== null) {
         $this->load((int)$user_id);
       } else {

@@ -283,20 +283,20 @@
         function array_diff_assoc_recursive($array, $compare) {
 
           $output = array();
-          foreach ($array as $key => $value) { 
-            if (array_key_exists($key, $compare)) { 
-              if (is_array($value)) { 
-                $diff = array_diff_assoc_recursive($value, $compare[$key]); 
+          foreach ($array as $key => $value) {
+            if (array_key_exists($key, $compare)) {
+              if (is_array($value)) {
+                $diff = array_diff_assoc_recursive($value, $compare[$key]);
                 if (count($diff)) $output[$key] = $diff;
-              } else { 
-                if ($value != $compare[$key]) $output[$key] = $value; 
+              } else {
+                if ($value != $compare[$key]) $output[$key] = $value;
               }
-            } else { 
-              $output[$key] = $value; 
+            } else {
+              $output[$key] = $value;
             }
           }
 
-          return $output; 
+          return $output;
         }
       }
 

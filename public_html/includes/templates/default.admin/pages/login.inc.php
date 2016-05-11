@@ -62,7 +62,7 @@ body {
   padding: 30px;
 }
 
-#box-login {  
+#box-login {
   max-width: 360px;
   margin: auto;
 

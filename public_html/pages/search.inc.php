@@ -60,7 +60,7 @@
 
   $sql_price_column = "if(pp.`". database::input(currency::$selected['code']) ."`, pp.`". database::input(currency::$selected['code']) ."` / ". (float)currency::$selected['value'] .", pp.`". database::input(settings::get('store_currency_code')) ."`)";
 
-  $query = 
+  $query =
     "select p.*, pi.name, pi.short_description, m.name as manufacturer_name, ". $sql_price_column ." as price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, ". $sql_price_column .")) as final_price, " . $sql_select_occurrences ."
 
     from (
@@ -135,7 +135,7 @@
       $_page->snippets['products'][] = $listing_item;
 
       if (++$page_items == settings::get('items_per_page')) break;
-    } 
+    }
   }
 
   $_page->snippets['pagination'] = functions::draw_pagination(ceil(database::num_rows($products_query)/settings::get('items_per_page')));

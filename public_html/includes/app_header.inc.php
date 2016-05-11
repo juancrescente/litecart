@@ -80,7 +80,7 @@
 
   set_error_handler('error_handler');
 
-// Set up the system object 
+// Set up the system object
   system::init();
 
 // Load dependencies
@@ -93,5 +93,5 @@
   system::run('startup');
 
 // Run operations before capture
-  system::run('before_capture');  
+  system::run('before_capture');
 ?>

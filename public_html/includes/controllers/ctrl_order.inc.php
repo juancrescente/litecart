@@ -386,7 +386,7 @@
           }
 
           database::query(
-            "update ". DB_TABLE_ORDERS_ITEMS ." 
+            "update ". DB_TABLE_ORDERS_ITEMS ."
             set product_id = '". (int)$this->data['items'][$key]['product_id'] ."',
             option_stock_combination = '". database::input($this->data['items'][$key]['option_stock_combination']) ."',
             options = '".  (isset($this->data['items'][$key]['options']) ? database::input(serialize($this->data['items'][$key]['options'])) : '') ."',
@@ -424,7 +424,7 @@
             $this->data['order_total'][$key]['id'] = database::insert_id();
           }
           database::query(
-            "update ". DB_TABLE_ORDERS_TOTALS ." 
+            "update ". DB_TABLE_ORDERS_TOTALS ."
             set title = '". database::input($this->data['order_total'][$key]['title']) ."',
             module_id = '". database::input($this->data['order_total'][$key]['module_id']) ."',
             value = '". (float)$this->data['order_total'][$key]['value'] ."',
@@ -458,7 +458,7 @@
             $this->data['comments'][$key]['date_created'] = date('Y-m-d H:i:s');
           }
           database::query(
-            "update ". DB_TABLE_ORDERS_COMMENTS ." 
+            "update ". DB_TABLE_ORDERS_COMMENTS ."
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
               hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'

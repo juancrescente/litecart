@@ -158,12 +158,12 @@
         }
       }
 
-    // Set default zone 
+    // Set default zone
       if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('default_country_code')) {
         self::$data['zone_code'] = settings::get('default_zone_code');
       }
 
-    // Set store zone 
+    // Set store zone
       if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('store_country_code')) {
         self::$data['zone_code'] = settings::get('store_zone_code');
       }

@@ -73,7 +73,7 @@ ul.filter li {
     <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword') .'"'); ?>
   </li>
 
-  <li><?php echo language::translate('text_in', 'in'); ?> 
+  <li><?php echo language::translate('text_in', 'in'); ?>
 <?php
   $pages_query = database::query("select distinct pages from ". DB_TABLE_TRANSLATIONS .";");
   $pages = array();
@@ -131,7 +131,7 @@ ul.filter li {
       </tr>
     </thead>
     <tbody>
-<?php 
+<?php
   $translations_query = database::query(
     "select * from ". DB_TABLE_TRANSLATIONS ."
     where code != ''
@@ -159,7 +159,7 @@ ul.filter li {
         <?php foreach ($_GET['languages'] as $key => $language_code) echo '<td>'. functions::form_draw_hidden_field('translations['. $row['code'] .'][id]', $row['id']) . functions::form_draw_textarea('translations['. $row['code'] .'][text_'.$language_code.']', $row['text_'.$language_code], 'rows="2" tabindex="'. $key.str_pad($page_items+1, 2, '0', STR_PAD_LEFT) .'"') .'</td>'; ?>
         <td style="text-align: right;"><a href="javascript:delete_translation('<?php echo $row['id']; ?>');" onclick="if (!confirm('<?php echo language::translate('text_are_you_sure', 'Are you sure?'); ?>')) return false;" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
       </tr>
-<?php      
+<?php
         if (++$page_items == settings::get('data_table_rows_per_page')) break;
       }
     } else {

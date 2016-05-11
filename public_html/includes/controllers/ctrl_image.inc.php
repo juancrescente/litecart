@@ -1,6 +1,6 @@
 <?php
 
-  //! The original imagecopyresampled function is broken. This is a fixed version of it. 
+  //! The original imagecopyresampled function is broken. This is a fixed version of it.
   /*!
    *  \param dst_im Destination image
    *  \param src_im Source image
@@ -329,7 +329,7 @@
                 //ImageColorTransparent($_resized, ImageColorAllocate($_resized, $this->whitespace[0], $this->whitespace[1], $this->whitespace[2]));
 
               // Perform resample
-                ImageCopyResampled($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());         
+                ImageCopyResampled($_resized, $this->_image, ($width - $destination_width) / 2, ($height - $destination_height) / 2, 0, 0, $destination_width, $destination_height, $this->width(), $this->height());
 
               } else {
 

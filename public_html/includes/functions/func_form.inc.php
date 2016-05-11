@@ -717,7 +717,7 @@
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  } 
+  }
 
   function form_draw_google_taxonomy_categories_list($name, $input=true, $multiple=false, $parameters='') {
 
@@ -749,7 +749,7 @@
 
     return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
     */
-  } 
+  }
 
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
 

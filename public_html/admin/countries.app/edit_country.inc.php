@@ -113,7 +113,7 @@
             "<?php echo language::translate('title_syntax', 'Syntax'); ?>:\n\n" +
             "%company, %firstname, %lastname, \n" +
             "%address1, %address2\n" +
-            "%postcode %city\n" + 
+            "%postcode %city\n" +
             "%zone_code, %zone_name\n" +
             "%country_code_2, %country_code_3, %country_name\n"
           );

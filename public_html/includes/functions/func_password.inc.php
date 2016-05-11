@@ -11,12 +11,12 @@
       $length = $maxlength;
     }
 
-    $i = 0; 
-    while ($i < $length) { 
+    $i = 0;
+    while ($i < $length) {
 
       $char = substr($possible, mt_rand(0, $maxlength-1), 1);
 
-      if (!strstr($password, $char)) { 
+      if (!strstr($password, $char)) {
         $password .= $char;
         $i++;
       }
