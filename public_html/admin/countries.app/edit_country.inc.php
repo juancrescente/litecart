@@ -1,32 +1,32 @@
 <?php
-  
+
   if (!empty($_GET['country_code'])) {
     $country = new ctrl_country($_GET['country_code']);
   } else {
     $country = new ctrl_country();
   }
-  
+
   if (empty($_POST)) {
     foreach ($country->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'));
-  
+
   if (isset($_POST['save'])) {
 
     if (empty($_POST['iso_code_2'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
     if (empty($_POST['iso_code_3'])) notices::add('errors', language::translate('error_missing_code', 'You must enter a code'));
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    
+
     if (empty($_POST['zones'])) $_POST['zones'] = array();
-    
+
     if (empty(notices::$data['errors'])) {
-    
+
       $_POST['iso_code_2'] = strtoupper($_POST['iso_code_2']);
       $_POST['iso_code_3'] = strtoupper($_POST['iso_code_3']);
-      
+
       $fields = array(
         'status',
         'iso_code_2',
@@ -40,23 +40,23 @@
         'phone_code',
         'zones',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $country->data[$field] = $_POST[$field];
       }
-      
+
       $country->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $country->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'countries'), true, array('country_id')));
     exit;
@@ -66,43 +66,43 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? language::translate('title_edit_country', 'Edit Country') : language::translate('title_add_new_country', 'Add New Country'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('country_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
       <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
       <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_domestic_name', 'Domestic Name'); ?></label>
       <?php echo functions::form_draw_text_field('domestic_name', true); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('tax_id_format', true); ?>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
@@ -121,13 +121,13 @@
       </script>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-4">
       <label><?php echo language::translate('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('postcode_format', true); ?>
     </div>
-    
+
     <div class="form-group col-md-4">
       <label><?php echo language::translate('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
       <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
@@ -138,7 +138,7 @@
       <?php echo functions::form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
     </div>
   </div>
-    
+
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
   <table class="table table-striped data-table">
     <thead>
@@ -171,13 +171,13 @@
       </tr>
     </tfoot>
   </table>
-  
+
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
     <?php echo (isset($country->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
@@ -197,7 +197,7 @@
     output = output.replace(/new_zone_name/g, $('input[name="zone[name]"]').val());
     $(this).closest('table').find('tbody').append(output);
   });
-  
+
   $('form[name="country_form"]').on('click', '.remove', function(event) {
     event.preventDefault();
     $(this).closest('tr').remove();

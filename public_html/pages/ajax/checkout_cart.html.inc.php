@@ -4,9 +4,9 @@
        . '<p><a href="'. document::href_ilink('') .'">&lt;&lt; '. language::translate('title_back', 'Back') .'</a></p>';
     return;
   }
-  
+
   $box_checkout_cart = new view();
-  
+
   $box_checkout_cart->snippets['items'] = array();
   foreach (cart::$items as $key => $item) {
     $box_checkout_cart->snippets['items'][$key] = array(
@@ -28,6 +28,6 @@
       }
     }
   }
-  
+
   echo $box_checkout_cart->stitch('views/box_checkout_cart');
 ?>

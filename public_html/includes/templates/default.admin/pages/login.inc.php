@@ -19,7 +19,7 @@ body {
   left: 50%;
   margin-top: -44px;
   margin-left: -44px;
-  
+
   -webkit-animation-name: spin;
   -webkit-animation-duration: 4000ms;
   -webkit-animation-iteration-count: infinite;
@@ -65,9 +65,9 @@ body {
 #box-login {  
   max-width: 360px;
   margin: auto;
-  
+
   padding: 0px;
-  
+
   background: #ffffff;
   background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
   background: -moz-linear-gradient(top, #ffffff 0%, #f9f9f9 100%);
@@ -76,11 +76,11 @@ body {
   background: -o-linear-gradient(top, #ffffff 0%,#f9f9f9 100%);
   background: -ms-linear-gradient(top, #ffffff 0%,#f9f9f9 100%);
   background: linear-gradient(to bottom, #ffffff 0%,#f9f9f9 100%);
-  
+
   text-align: center;
-  
+
   border-radius: 0px 25px 0px 25px;
-  
+
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
 }
 
@@ -115,38 +115,38 @@ body {
 <div id="box-login-wrapper">
 
   <div id="box-login" class="">
-    
+
     <div class="header">
       <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" /></a>
     </div>
-    
+
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
-    
+
       <div class="content">
         <?php echo functions::form_draw_hidden_field('redirect_url', $action); ?>
-        
+
         <!--snippet:notices-->
-        
+
         <div class="form-group">
           <?php echo functions::form_draw_fonticon_field('username', true, 'text', 'fa-user', 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
         </div>
-        
+
         <div class="form-group">
           <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
         </div>
-        
+
         <div class="checkbox">
           <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
         </div>
       </div>
-      
+
       <div class="footer">
         <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?>
       </div>
-      
+
     <?php echo functions::form_draw_form_end(); ?>
   </div>
-  
+
 </div>
 
 <script>
@@ -155,7 +155,7 @@ body {
   } else {
     $("input[name='password']").focus();
   }
-  
+
   $("form[name='login_form']").submit(function(e) {
     $("#box-login-wrapper").fadeOut(100);
   });

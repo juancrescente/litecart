@@ -13,7 +13,7 @@
   <div class="content">
     {snippet:breadcrumbs}
 
-    <div id="category">
+    <div class="category">
       <div class="btn-group pull-right">
 <?php
   $separator = false;

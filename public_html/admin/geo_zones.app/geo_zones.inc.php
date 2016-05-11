@@ -8,7 +8,7 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_geo_zones', 'Geo Zones'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('geo_zones_form', 'post'); ?>
-  
+
   <table class="table table-striped data-table">
     <thead>
       <tr>
@@ -28,9 +28,9 @@
   );
 
   if (database::num_rows($geo_zones_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($geo_zones_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($geo_zone = database::fetch($geo_zones_query)) {
 ?>

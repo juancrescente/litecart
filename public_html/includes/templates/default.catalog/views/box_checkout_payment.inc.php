@@ -1,6 +1,6 @@
 <div id="checkout-payment">
   <h2><?php echo language::translate('title_payment', 'Payment'); ?></h2>
-  
+
   <div class="options btn-group-vertical btn-block">
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <?php echo functions::form_draw_radio_button('payment_option', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"'); ?>
@@ -18,7 +18,7 @@
           <div class="price"><?php echo ($option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
         </div>
       </div>
-      
+
       <?php if (!empty($option['description']) || !empty($option['fields'])) { ?>
       <div class="content">
         <hr />

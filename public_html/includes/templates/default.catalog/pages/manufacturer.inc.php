@@ -11,7 +11,7 @@
 
   <div class="content">
     {snippet:breadcrumbs}
-    <div id="box-manufacturer">
+    <div class="manufacturer">
       <div class="btn-group pull-right">
 <?php
   $separator = false;

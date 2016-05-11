@@ -10,7 +10,7 @@
             <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
           </ul>
         </div>
-        
+
         <?php if ($manufacturers) { ?>
         <div class="manufacturers col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
@@ -19,7 +19,7 @@
           </ul>
         </div>
         <?php } ?>
-        
+
         <div class="account col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
           <ul class="list-unstyled">
@@ -35,14 +35,14 @@
             <?php } ?>
           </ul>
         </div>
-        
+
         <div class="information col-xs-6 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_information', 'Information'); ?></h4>
           <ul class="list-unstyled">
             <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
           </ul>
         </div>
-        
+
         <div class="contact col-xs-12 col-sm-3 col-md-fifths">
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
@@ -51,7 +51,7 @@
         </div>
       </ul>
     </div>
-    
+
     <!-- LiteCart is provided free by End-User License Agreement (EULA). Removing the link back to LiteCart.net without written permission is a violation. -->
     <p class="text-center">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?> &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
   </div>

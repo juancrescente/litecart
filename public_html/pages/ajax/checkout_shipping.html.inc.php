@@ -1,10 +1,10 @@
 <?php
   if (empty(cart::$items)) return;
-  
+
   if (empty(customer::$data['country_code'])) return;
-  
+
   $shipping = new mod_shipping();
-  
+
   if (!empty($_POST['shipping_option'])) {
     list($module_id, $option_id) = explode(':', $_POST['shipping_option']);
     $result = $shipping->run('before_select', $module_id, $option_id, $_POST);
@@ -14,9 +14,9 @@
       $shipping->select($module_id, $option_id, $_POST);
     }
   }
-  
+
   $options = $shipping->options();
-  
+
   if (!empty($shipping->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $shipping->data['selected']['id']);
     if (!isset($options[$module_id]['options'][$option_id]) || !empty($options[$module_id]['options'][$option_id]['error'])) {
@@ -25,7 +25,7 @@
       $shipping->select($module_id, $option_id); // Refresh
     }
   }
-  
+
   if (empty($options)) return;
 
   if (empty($shipping->data['selected'])) {
@@ -34,7 +34,7 @@
     $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
   }
   }
-  
+
   /*
   if (count($options) == 1
   && count($options[key($options)]['options']) == 1
@@ -42,13 +42,13 @@
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['fields'])
   && $options[key($options)]['options'][key($options[key($options)]['options'])]['cost'] == 0) return;
   */
-  
+
   $box_checkout_shipping = new view();
-  
+
   $box_checkout_shipping->snippets = array(
     'selected' => !empty($shipping->data['selected']) ? $shipping->data['selected'] : array(),
     'options' => $options,
   );
-  
+
   echo $box_checkout_shipping->stitch('views/box_checkout_shipping');
 ?>

@@ -24,7 +24,7 @@
   );
 
   if (database::num_rows($tax_classses_query) > 0) {
-    
+
     while ($tax_class = database::fetch($tax_classses_query)) {
 ?>
       <tr>

@@ -2,7 +2,7 @@
 
   document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'chartist/chartist.min.css" />';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_EXT .'chartist/chartist.min.js"></script>';
-  
+
   $order_statuses = array();
   $orders_status_query = database::query(
     "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
@@ -10,7 +10,7 @@
   while ($order_status = database::fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];
   }
-  
+
 ?>
 <div class="row">
   <div class="widget col-md-5">
@@ -18,7 +18,7 @@
   $monthly_sales = array();
   $monthly_tax = array();
   for ($timestamp = strtotime('-11 months'); date('Y-m', $timestamp) <= date('Y-m'); $timestamp = strtotime('+1 month', $timestamp)) {
-    
+
     $orders_query = database::query(
       "select sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
@@ -26,10 +26,10 @@
       and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."';"
     );
     $orders = database::fetch($orders_query);
-    
+
     $monthly_sales[date('Y-m', $timestamp)] = (int)$orders['total_sales'];
     }
-  
+
 ?>
     <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
     <script>
@@ -58,7 +58,7 @@
       new Chartist.Line('#chart-sales-monthly', data, options, responsiveOptions);
     </script>
   </div>
-  
+
   <div class="widget col-md-5">
 <?php
     $daily_sales = array();
@@ -71,10 +71,10 @@
       and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp))) ."';"
     );
     $orders = database::fetch($orders_query);
-    
+
     $daily_sales[date('d', $timestamp)] = (int)$orders['total_sales'];
     }
-  
+
 ?>
     <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
     <script>
@@ -109,14 +109,14 @@
       where order_status_id in ('". implode("', '", $order_statuses) ."')
       group by weekday(date_created);"
     );
-    
+
     if (!function_exists('mb_ucfirst')) {
       function mb_ucfirst($str) {
         $fc = mb_strtoupper(mb_substr($str, 0, 1));
         return $fc.mb_substr($str, 1);
       }
     }
-    
+
     $weekday = array(
       '0' => ucfirst(language::strftime('%A', strtotime('Monday'))),
       '1' => ucfirst(language::strftime('%A', strtotime('Tuesday'))),
@@ -126,12 +126,12 @@
       '5' => ucfirst(language::strftime('%A', strtotime('Saturday'))),
       '6' => ucfirst(language::strftime('%A', strtotime('Sunday'))),
     );
-    
+
     $weekday_sales = array_combine(array_values($weekday), array(0,0,0,0,0,0,0));
     while($order = database::fetch($orders_query)) {
       $weekday_sales[$weekday[$order['weekday']]] = (float)$order['total_sales'];
     }
-  
+
 ?>
     <div id="chart-sales-weekday" style="height: 200px; margin: 25px 0;" title="<?php echo language::translate('title_sales_by_weekday', 'Sales by Weekday'); ?>"></div>
     <script>

@@ -1,24 +1,24 @@
 <?php
-  
+
   if (!empty($_GET['option_group_id'])) {
     $option_group = new ctrl_option_group($_GET['option_group_id']);
   } else {
     $option_group = new ctrl_option_group();
   }
-  
+
   if (empty($_POST)) {
     foreach ($option_group->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'));
-  
+
   if (!empty($_POST['save'])) {
-    
+
     if (empty($_POST['required'])) $_POST['required'] = 0;
     if (empty($_POST['values'])) $_POST['values'] = array();
-    
+
     if (empty($errors)) {
       $fields = array(
         'name',
@@ -28,28 +28,28 @@
         'sort',
         'values',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $option_group->data[$field] = $_POST[$field];
       }
-      
+
       $option_group->save();
- 
+
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
     }
   }
-  
+
   if (!empty($_POST['delete'])) {
-    
+
     if (empty($errors)) {
       $option_group->delete();
- 
+
       header('Location: '. document::link('', array('doc' => 'option_groups'), array('app')));
       exit;
     }
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($option_group->data['id']) ? language::translate('title_edit_option_group', 'Edit Option Group') : language::translate('title_create_new_option_group', 'Create New Option Group'); ?></h1>
 
@@ -61,14 +61,14 @@
       <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, ''); ?>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
       <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"'); ?>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_required', 'Required'); ?></label>
@@ -77,7 +77,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_sort', 'Sort'); ?></label>
@@ -92,14 +92,14 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_function', 'Function'); ?></label>
       <?php echo functions::form_draw_select_field('function', array(array('input'), array('checkbox'), array('radio'), array('select'), array('textarea')), true); ?>
     </div>
   </div>
-  
+
   <script>
     $("select[name='function']").change(function() {
       $("div[id^='option-values']").hide();
@@ -130,7 +130,7 @@
 
   <div id="option-values-multiset">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
-    
+
     <table class="table table-striped data-table">
       <thead>
         <tr>
@@ -173,7 +173,7 @@
         output = output.replace(/new_value_index/g, 'new_' + new_value_index);
         $(this).closest('table').find('tbody').append(output);
       });
-      
+
       $("#option-values-multiset").on("click", ".move-up, .move-down", function(event) {
         event.preventDefault();
         var row = $(this).closest("tr");
@@ -184,7 +184,7 @@
           $(row).insertAfter($(row).next());
         }
       });
-      
+
       $("#option-values-multiset").on("click", ".remove", function(event) {
         event.preventDefault();
         $(this).closest('tr').remove();
@@ -218,7 +218,7 @@
       </tr>
     </table>
   </div>
-  
+
   <div id="option-values-input">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
@@ -245,7 +245,7 @@
       </tr>
     </table>
   </div>
-  
+
   <div id="option-values-textarea">
     <h2><?php echo language::translate('title_values', 'Values'); ?></h2>
     <table class="table table-striped data-table">
@@ -272,7 +272,7 @@
       </tr>
     </table>
   </div>
-  
+
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>

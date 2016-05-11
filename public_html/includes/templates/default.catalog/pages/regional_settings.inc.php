@@ -1,8 +1,8 @@
-<div id="regional-settings" class="twelve-eighty">
+<div class="twelve-eighty">
   <h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
-  
+
   <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
-  
+
     <div class="row">
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_language', 'Language'); ?></label>
@@ -14,19 +14,19 @@
         <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>
         <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
       </div>
-      
+
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
         <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_display_prices', 'Display Prices'); ?></label>
@@ -38,9 +38,9 @@
         </div>
       </div>
     </div>
-    
+
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
-    
+
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 

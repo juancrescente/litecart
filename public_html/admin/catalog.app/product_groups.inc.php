@@ -5,7 +5,7 @@
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_product_groups', 'Product Groups'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('product_groups_form', 'post'); ?>
-  
+
   <table class="table table-striped data-table">
     <thead>
       <tr>

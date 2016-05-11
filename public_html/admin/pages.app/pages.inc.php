@@ -1,8 +1,8 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['pages'])) {
       foreach ($_POST['pages'] as $key => $value) {
         $currency = new ctrl_page($_POST['pages'][$key]);
@@ -10,7 +10,7 @@
         $currency->save();
       }
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -42,9 +42,9 @@
   );
 
   if (database::num_rows($pages_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($pages_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($page = database::fetch($pages_query)) {
 ?>
@@ -67,14 +67,14 @@
       </tr>
     </tfoot>
   </table>
-  
+
   <p class="btn-group">
     <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
     <?php echo functions::form_draw_button('disable', language::translate('title_disable', 'Disable'), 'submit', '', 'off'); ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>
-  
+
 <?php echo functions::draw_pagination(ceil(database::num_rows($pages_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>

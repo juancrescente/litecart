@@ -1,6 +1,6 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
-  
+
   <div id="box-search-results">
     <nav class="filter pull-right">
   <?php
@@ -16,15 +16,15 @@
       }
   ?>
     </nav>
-    
+
     <h1 class="title"><?php echo $title; ?></h1>
-    
+
     <?php if ($products) { ?>
     <div class="row products">
       <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
     </div>
     <?php } ?>
-    
+
     <?php echo $pagination; ?>
   </div>
 </div>

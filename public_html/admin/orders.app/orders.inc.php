@@ -1,29 +1,29 @@
 <?php
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   functions::draw_lightbox();
-  
+
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
-      $order_action = new mod_order_action();
+      $order_action = new mod_order();
 
-      $options = $order_action->options();
+      $actions = $order_action->actions();
 
-      if (!method_exists($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function'])) {
+      if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['options'][$option_id]['function'])) {
         notices::$data['errors'][] = language::translate('error_method_doesnt_exist', 'The method doesn\'t exist');
       return;
       }
 
-      echo call_user_func(array($order_action->modules[$module_id], $options[$module_id]['options'][$option_id]['function']), $_POST['orders']);
+      echo call_user_func(array($order_action->modules[$module_id], $actions[$module_id]['options'][$option_id]['function']), $_POST['orders']);
       return;
 
     } else {
       notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
     }
   }
-  
+
   $payment_options_query = database::query(
     "select distinct payment_option_name
     from ". DB_TABLE_ORDERS ." o
@@ -91,7 +91,7 @@
       "o.shipping_tracking_id like '%". database::input($_GET['query']) ."%'",
     );
   }
-  
+
   $orders_query = database::query(
     "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
     left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
@@ -104,19 +104,19 @@
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by o.date_created desc, o.id desc;"
   );
-  
+
   if (database::num_rows($orders_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($orders_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($order = database::fetch($orders_query)) {
-      
+
       if (empty($order['order_status_id'])) {
         $order['order_status_icon'] = 'fa-minus';
         $order['order_status_color'] = '#cccccc';
       }
-      
+
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
@@ -154,15 +154,13 @@
     <ul id="order-actions" class="list-inline">
 <?php
   $order_action = new mod_order_action();
-  
-  $order_action_options = $order_action->options();
-  
-  if (!empty($order_action_options)) {
-    foreach (array_keys($order_action_options) as $module_id) {
+
+  if ($actions = $order_action->actions()) {
+    foreach (array_keys($actions) as $module_id) {
       echo '<li><fieldset>' . PHP_EOL
-         . '  <legend>'. $order_action_options[$module_id]['name'] .'</legend>' . PHP_EOL;
-      foreach (array_keys($order_action_options[$module_id]['options']) as $option_id) {
-        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'" type="submit" formtarget="'. (!empty($order_action_options[$module_id]['options'][$option_id]['target']) ? $order_action_options[$module_id]['options'][$option_id]['target'] : '_self') .'">'. $order_action_options[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
+         . '  <legend>'. $actions[$module_id]['name'] .'</legend>' . PHP_EOL;
+      foreach (array_keys($actions[$module_id]['options']) as $option_id) {
+        echo '<button name="order_action" value="'. $module_id.':'.$option_id .'" type="submit" formtarget="'. (!empty($actions[$module_id]['options'][$option_id]['target']) ? $actions[$module_id]['options'][$option_id]['target'] : '_self') .'">'. $actions[$module_id]['options'][$option_id]['title'] .'</button>' . PHP_EOL;
       }
       echo '</fieldset></li>' . PHP_EOL;
     }

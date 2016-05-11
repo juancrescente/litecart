@@ -1,8 +1,8 @@
 <div class="twelve-eighty">
   <!--snippet:notices-->
-  
+
   <?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
-  
+
     <div id="checkout-cart-wrapper">
     {snippet:box_checkout_cart}
     </div>
@@ -13,12 +13,12 @@
          {snippet:box_checkout_customer}
         </div>
       </div>
-      
+
       <div class="col-md-6">
         <div id="checkout-shipping-wrapper">
           {snippet:box_checkout_shipping}
         </div>
-        
+
         <div id="checkout-payment-wrapper">
           {snippet:box_checkout_payment}
         </div>
@@ -28,7 +28,7 @@
     <div id="checkout-summary-wrapper">
       {snippet:box_checkout_summary}
     </div>
-    
+
   <?php echo functions::form_draw_form_end(); ?>
 </div>
 
@@ -38,34 +38,34 @@
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks[0] == component) ? false : true;
     });
-    
+
     updateQueue.push([component, data]);
-    
+
     runQueue();
   }
-  
+
   var queueRunLock = false;
   function runQueue() {
-    
+
     if (queueRunLock) return;
-    
+
     if (updateQueue.length == 0) return;
-    
+
     queueRunLock = true;
-    
+
     task = updateQueue.shift();
-    
+
     if (console) console.log('Refreshing ' + task[0] + '...');
-    
+
     if (!$('#loading').length) {
       var progress_bar = '<div id="loading" style="position: fixed; top: 50%; left: 10%; right: 10%; text-align: center; font-size: 256px; margin-top: -128px; opacity: 0.05; z-index: 999999;">'
                        + '  <i class="fa fa-spinner fa-spin"></i>'
                        + '</div>';
       $('body').append(progress_bar);
     }
-    
+
     $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
-    
+
     $.ajax({
       type: 'post',
       url: '?return='+task[0],
@@ -89,7 +89,7 @@
       }
     });
   }
-  
+
   /*
   $('body').on('change', '#checkout-cart-wrapper :input', function(e){
     var data = $('form[name="checkout_form"]').serialize();
@@ -99,7 +99,7 @@
     queueUpdateTask('summary', data);
   });
   */
-  
+
 // Customer form
   var customer_form_changed = false;
   var customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
@@ -112,7 +112,7 @@
       $('#checkout-customer-wrapper button[name="save_address"]').attr('disabled', 'disabled');
     }
   });
-  
+
   var timerSubmitCustomer;
   $("body").on('focusout', '#checkout-customer-wrapper', function() {
     timerSubmitCustomer = setTimeout(
@@ -132,11 +132,11 @@
       }, 50
     );
   });
-  
+
   $("body").on('focusin', '#checkout-customer-wrapper', function() {
     clearTimeout(timerSubmitCustomer);
   });
-  
+
   $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
     e.preventDefault();
     var data = $('form[name="checkout_form"]').serialize();
@@ -153,7 +153,7 @@
     queueUpdateTask('payment', data);
     queueUpdateTask('summary', data);
   });
-  
+
   $('body').on('change', '#checkout-payment-wrapper :input', function(e){
     var data = $('form[name="checkout_form"]').serialize();
     queueUpdateTask('summary', data);
@@ -165,7 +165,7 @@
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
-  
+
   $("body").on('submit', 'form[name="checkout_form"]', function(e) {
     $('#checkout-summary-wrapper button[name="confirm_order"]').prepend('<i class="fa fa-spinner fa-spin"></i> ');
   });

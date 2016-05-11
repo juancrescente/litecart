@@ -1,6 +1,6 @@
 {snippet:breadcrumbs}
 
-<div id="product">
+<div class="product">
   <div class="row">
     <div class="col-sm-4">
       <div class="image thumbnail">
@@ -8,7 +8,7 @@
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
         </a>
       </div>
-      
+
       <?php if ($extra_images) { ?>
       <div class="extra-images row">
         <?php foreach ($extra_images as $image) { ?>
@@ -23,17 +23,17 @@
       </div>
       <?php } ?>
     </div>
-    
+
     <div class="col-sm-8">
       <div class="row">
         <div class="col-md-6">
           <h1 class="page-title"><?php echo $name; ?></h1>
-          
+
           <?php if ($description) { ?>
           <p><?php echo $description; ?></p>
           <?php } ?>
         </div>
-        
+
         <div class="col-md-6">
           <div class="well">
             <h2 class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -43,7 +43,7 @@
               <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
               <?php } ?>
             </h2>
-            
+
             <div class="tax" style="margin: 0 0 1em 0;">
              <?php if ($tax_rates) { ?>
               <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?><br />
@@ -52,13 +52,13 @@
               <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
              <?php } ?>
             </div>
-            
+
             <?php if ($cheapest_shipping_fee !== null) { ?>
             <div class="cheapest-shipping" style="margin: 1em 0;">
               <?php echo functions::draw_fonticon('fa-truck'); ?> <?php echo strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), array('%price' => currency::format($cheapest_shipping_fee))); ?>
             </div>
             <?php } ?>
-            
+
             <div class="stock-status" style="margin: 1em 0;">
              <?php if ($quantity > 0) { ?>
               <div class="stock-available">
@@ -85,13 +85,13 @@
               <?php } ?>
              <?php } ?>
             </div>
-            
+
             <hr />
-            
+
             <div class="buy_now" style="margin: 1em 0;">
               <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
               <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
-              
+
               <?php if ($options) { ?>
                 <?php foreach ($options as $option) { ?>
                 <div class="form-group">
@@ -122,9 +122,9 @@
 
               <?php echo functions::form_draw_form_end(); ?>
             </div>
-            
+
             <hr />
-          
+
             <h4 class="social-bookmarks text-center" style="margin: 1em 0;">
             <?php echo language::translate('title_share', 'Share'); ?>:
               <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => $name .' - '. document::link())); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      
+
       <?php if ($attributes) { ?>
       <table class="table table-striped">
         <tbody>

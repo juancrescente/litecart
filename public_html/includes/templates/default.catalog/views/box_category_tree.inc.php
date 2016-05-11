@@ -13,7 +13,7 @@
         }
         echo '  </li>' . PHP_EOL;
       }
-      
+
     }
   }
   custom_draw_category_tree($categories);

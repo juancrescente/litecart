@@ -20,7 +20,7 @@
       "select id, name from ". DB_TABLE_SUPPLIERS ."
       order by name asc;"
     );
-    
+
     if (database::num_rows($suppliers_query) > 0) {
       while ($supplier = database::fetch($suppliers_query)) {
 ?>
@@ -40,7 +40,7 @@
       </tr>
     </tfoot>
   </table>
-  
+
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>

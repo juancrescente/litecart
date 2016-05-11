@@ -1,6 +1,6 @@
 <div id="checkout-shipping">
   <h2><?php echo language::translate('title_shipping', 'Shipping'); ?></h2>
-  
+
   <div class="options">
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
     <?php echo functions::form_draw_radio_button('shipping_option', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"'); ?>
@@ -19,7 +19,7 @@
           <div class="price"><?php echo ($option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
         </div>
       </div>
-      
+
       <div class="content">
         <hr />
         <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?></p>

@@ -43,7 +43,7 @@
           <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 2em;" />
         </a>
       </div>
-      
+
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
           <li>
@@ -60,9 +60,9 @@
       </div>
     </div>
   </nav>
-  
+
   <!--snippet:content-->
-  
+
 <!--snippet:foot_tags-->
 <!--snippet:javascript-->
 </body>

@@ -1,21 +1,21 @@
 <?php
-  
+
   if (!empty($_GET['language_code'])) {
     $language = new ctrl_language($_GET['language_code']);
   } else {
     $language = new ctrl_language();
   }
-  
+
   if (empty($_POST)) {
     foreach ($language->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($language->data['id']) ? language::translate('title_edit_language', 'Edit Language') : language::translate('title_add_new_language', 'Add New Language'));
 
   if (!empty($_POST['save'])) {
-    
+
     if (empty($_POST['code'])) notices::add('errors', language::translate('error_must_enter_code', 'You must enter a code'));
 
     if (!empty($_POST['code']) && empty($language->data['id'])) {
@@ -47,31 +47,31 @@
     }
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
-    
+
     if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
       notices::add('errors', language::translate('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
     }
-    
+
     if (empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
       notices::add('errors', language::translate('error_cannot_disable_store_language', 'You must change the store language before disabling it.'));
     }
-    
+
     if (empty($_POST['set_default']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code') && $language->data['code'] != $_POST['code']) {
       notices::add('errors', language::translate('error_cannot_rename_default_language', 'You must change the default language before renaming it.'));
     }
-    
+
     if (empty($_POST['set_store']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code') && $language->data['code'] != $_POST['code']) {
       notices::add('errors', language::translate('error_cannot_rename_store_language', 'You must change the store language before renaming it.'));
     }
-    
+
     if (!empty($_POST['set_default']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('default_language_code')) {
       notices::add('errors', language::translate('error_cannot_set_disabled_default_language', 'You cannot set a disabled language as default language.'));
     }
-    
+
     if (!empty($_POST['set_store']) && empty($_POST['status']) && isset($language->data['code']) && $language->data['code'] == settings::get('store_language_code')) {
       notices::add('errors', language::translate('error_cannot_set_disabled_store_language', 'You cannot set a disabled language as store language.'));
     }
-    
+
     if (!preg_grep('#'. preg_quote($_POST['charset'], '#') .'#i', mb_list_encodings())) {
       notices::add('errors', strtr(language::translate('error_not_a_supported_charset', '%charset is not a supported character set'), array('%charset' => !empty($_POST['charset']) ? $_POST['charset'] : 'NULL')));
     }
@@ -82,11 +82,11 @@
     setlocale(LC_ALL, explode(',', language::$selected['locale']));
 
     if (empty(notices::$data['errors'])) {
-      
+
       $_POST['code'] = strtolower($_POST['code']);
       $_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
       $_POST['format_datetime'] = $_POST['format_date'] .' '. $_POST['format_time'];
-      
+
       $fields = array(
         'status',
         'code',
@@ -105,29 +105,29 @@
         'currency_code',
         'priority',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $language->data[$field] = $_POST[$field];
       }
-      
+
       $language->save();
-      
+
       if (!empty($_POST['set_default'])) {
         database::query("update ". DB_TABLE_SETTINGS ." set `value` = '". database::input($_POST['code']) ."' where `key` = 'default_language_code' limit 1;");
       }
-      
+
       if (!empty($_POST['set_store'])) {
         database::query("update ". DB_TABLE_SETTINGS ." set `value` = '". database::input($_POST['code']) ."' where `key` = 'store_language_code' limit 1;");
       }
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
       header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
     }
   }
-  
+
   if (!empty($_POST['delete'])) {
-    
+
     if ($language->data['code'] == 'en') {
       notices::add('errors', language::translate('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));
     }
@@ -135,15 +135,15 @@
     if ($language->data['code'] == settings::get('default_language_code')) {
       notices::add('errors', language::translate('error_cannot_delete_default_language', 'You must change the default language before it can be deleted.'));
     }
-    
+
     if ($language->data['code'] == settings::get('store_language_code')) {
       notices::add('errors', language::translate('error_cannot_delete_store_language', 'You must change the store language before it can be deleted.'));
     }
-    
+
     if (empty(notices::$data['errors'])) {
-      
+
       $language->delete();
-    
+
       notices::add('success', language::translate('success_changes_saved', 'Changes were successfully saved.'));
       header('Location: '. document::link('', array('doc' => 'languages'), true, array('action', 'language_code')));
       exit;
@@ -160,38 +160,38 @@
       <label><?php echo language::translate('title_status', 'Status'); ?></label>
         <?php echo functions::form_draw_toggle('status', isset($_POST['status']) ? $_POST['status'] : '1', 'e/d'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
         <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
 
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 639-1) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
         <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[a-z]{2}"'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
         <?php echo functions::form_draw_text_field('code2', true, 'data-size="tiny" required="required" pattern="[a-z]{3}"'); ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_charset', 'Charset'); ?></label>
         <?php echo functions::form_draw_text_field('charset', (file_get_contents('php://input') == '') ? 'UTF-8' : true, 'required="required" placeholder="UTF-8" data-size="small"'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_system_locale', 'System Locale'); ?></label>
         <?php echo functions::form_draw_text_field('locale', true, 'placeholder="E.g. en_US.utf8,en-US.UTF-8,english" data-size="small"'); ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_date_format', 'Date Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
@@ -203,7 +203,7 @@
   echo functions::form_draw_select_field('format_date', $options, true, false, 'data-size="auto"');
 ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_time_format', 'Time Format'); ?> <a href="http://php.net/manual/en/function.strftime.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
@@ -225,7 +225,7 @@
 ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_raw_date_format', 'Raw Date Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
@@ -257,7 +257,7 @@
   echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false, 'data-size="auto"');
 ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_raw_time_format', 'Raw Time Format'); ?> <a href="http://php.net/manual/en/function.date.php" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
 <?php
@@ -279,7 +279,7 @@
 ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_decimal_point', 'Decimal Point'); ?></label>
@@ -291,7 +291,7 @@
   echo functions::form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
 ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_thousands_sep', 'Thousands Separator'); ?></label>
 <?php
@@ -306,19 +306,19 @@
 ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></label>
       <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
       <?php echo functions::form_draw_number_field('priority', true); ?>
     </div>
   </div>
-    
+
   <div class="row">
     <div class="form-group col-md-6">
       <div class="radio">
@@ -329,11 +329,11 @@
       </div>
     </div>
   </div>
-  
+
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
     <?php echo (isset($language->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>

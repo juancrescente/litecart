@@ -1,16 +1,16 @@
 <?php
   $widget_discussions_cache_id = cache::cache_id('widget_discussions');
   if (cache::capture($widget_discussions_cache_id, 'file', 21600, true)) {
-    
+
     $url = document::link('https://www.litecart.net/feeds/discussions.rss');
-    
+
     $response = @functions::http_fetch($url, null, false, false, true);
     $rss = @simplexml_load_string($response);
-    
+
     if (!empty($rss->channel->item)) {
-      
+
       $columns = array();
-      
+
       $col = 0;
       $count = 0;
       $total = 0;
@@ -43,7 +43,7 @@
   </div>
 </div>
 <?php
-        
+
       }
     cache::end_capture($widget_discussions_cache_id);
   }

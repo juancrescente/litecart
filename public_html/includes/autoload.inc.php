@@ -16,14 +16,11 @@
       case (substr($class, 0, 4) == 'mod_'):
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $class . '.inc.php');
         break;
-      case (substr($class, 0, 3) == 'oa_'):
-        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_action/' . $class . '.inc.php');
+      case (substr($class, 0, 3) == 'om_'):
+        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'ot_'):
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/' . $class . '.inc.php');
-        break;
-      case (substr($class, 0, 3) == 'os_'):
-        require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_success/' . $class . '.inc.php');
         break;
       case (substr($class, 0, 3) == 'pm_'):
         require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/' . $class . '.inc.php');

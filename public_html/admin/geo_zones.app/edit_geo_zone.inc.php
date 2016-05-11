@@ -1,50 +1,50 @@
 <?php
-  
+
   if (!empty($_GET['geo_zone_id'])) {
     $geo_zone = new ctrl_geo_zone($_GET['geo_zone_id']);
   } else {
     $geo_zone = new ctrl_geo_zone();
   }
-  
+
   if (empty($_POST)) {
     foreach ($geo_zone->data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
-  
+
   breadcrumbs::add(!empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'));
-  
+
   if (isset($_POST['save'])) {
-  
+
     if (empty(notices::$data['errors'])) {
-    
+
       $fields = array(
         'name',
         'description',
         'zones',
       );
-      
+
       foreach ($fields as $field) {
         if (isset($_POST[$field])) $geo_zone->data[$field] = $_POST[$field];
       }
-      
+
       $geo_zone->save();
-      
+
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
       exit;
     }
   }
-  
+
   if (isset($_POST['delete'])) {
 
     $geo_zone->delete();
-    
+
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. document::link('', array('doc' => 'geo_zones'), true, array('geo_zone_id')));
     exit;
   }
-  
+
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? language::translate('title_edit_geo_zone', 'Edit Geo Zone') : language::translate('title_new_geo_zone', 'Create New Geo Zone'); ?></h1>
 
@@ -55,7 +55,7 @@
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
       <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
-    
+
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
       <?php echo functions::form_draw_text_field('description', true, 'data-size="large"'); ?>
@@ -63,7 +63,7 @@
   </div>
 
   <h2><?php echo language::translate('title_zones', 'Zones'); ?></h2>
-  
+
   <table class="table table-striped data-table">
     <thead>
       <tr>
@@ -95,13 +95,13 @@
       </tr>
     </tfoot>
   </table>
-  
+
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
     <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
     <?php echo (!empty($geo_zone->data['id'])) ? functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
   </p>
-  
+
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
@@ -139,7 +139,7 @@
       }
     });
   });
-  
+
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="form_geo_zone"]').on("click", ".add", function(e) {
     e.preventDefault();
@@ -154,7 +154,7 @@
     output = output.replace(/new_zone_i/g, 'new_' + new_zone_i);
     $(this).closest('table').find('tbody').append(output);
   });
-  
+
   $('form[name="form_geo_zone"]').on("click", ".remove", function(e) {
     e.preventDefault();
     $(this).closest('tr').remove();

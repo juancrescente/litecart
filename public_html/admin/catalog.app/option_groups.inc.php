@@ -1,11 +1,11 @@
 <ul class="list-inline pull-right">
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc'=> 'edit_option_group'), array('app')), language::translate('title_create_new_group', 'Create New Group'), '', 'add'); ?></li>
 </ul>
-  
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_option_groups', 'Option Groups'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('option_groups_form', 'post'); ?>
-  
+
   <table class="table table-striped data-table">
     <thead>
       <tr>

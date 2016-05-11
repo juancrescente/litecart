@@ -31,7 +31,7 @@
     </div>
     <?php } ?>
   </div>
-  
+
   <a class="left carousel-control" href="#box-slider" role="button" data-slide="prev">
     <?php echo functions::draw_fonticon('fa-chevron-left fa-2x previous', 'aria-hidden="true"'); ?>
     <span class="sr-only"><?php language::translate('title_previous', 'Previous'); ?></span>

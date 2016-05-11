@@ -1,11 +1,11 @@
 <?php
-  
+
   $widget_addons_cache_id = cache::cache_id('widget_addons');
   //if (cache::capture($widget_addons_cache_id, 'file', 43200, true)) {
   if (cache::capture($widget_addons_cache_id, 'file', 0, true)) {
-    
+
     $url = document::link('https://www.litecart.net/feeds/addons', array('whoami' => document::ilink(''), 'version' => PLATFORM_VERSION));
-    
+
     $store_info = array(
       'platform' => PLATFORM_NAME,
       'version' => PLATFORM_VERSION,
@@ -15,14 +15,14 @@
       'country_code' => settings::get('store_country_code'),
       'url' => document::ilink(''),
     );
-    
+
     $response = @functions::http_fetch($url, $store_info, false, false, true);
     $rss = @simplexml_load_string($response);
-    
+
     if (!empty($rss->channel->item)) {
-      
+
       $columns = array();
-      
+
       $col = 0;
       $count = 0;
       $total = 0;
