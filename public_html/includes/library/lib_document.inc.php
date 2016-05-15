@@ -20,6 +20,7 @@
     //public static function startup() {
     //}
 
+
     public static function before_capture() {
 
     // Set template

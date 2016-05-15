@@ -1,9 +1,7 @@
 <?php
 
   $widget_addons_cache_id = cache::cache_id('widget_addons');
-  //if (cache::capture($widget_addons_cache_id, 'file', 43200, true)) {
-  if (cache::capture($widget_addons_cache_id, 'file', 0, true)) {
-
+  if (cache::capture($widget_addons_cache_id, 'file', 43200, true)) {
     $url = document::link('https://www.litecart.net/feeds/addons', array('whoami' => document::ilink(''), 'version' => PLATFORM_VERSION));
 
     $store_info = array(

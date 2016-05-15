@@ -148,7 +148,7 @@
         }
 
         if (isset($row['new_image'])) {
-          $category->save_image($row['new_imags']);
+          $category->save_image($row['new_image']);
         }
 
         $category->save();

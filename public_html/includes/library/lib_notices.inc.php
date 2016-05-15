@@ -42,16 +42,16 @@
           foreach (notices::$data[$type] as $notice) {
             switch ($type) {
               case 'errors':
-                 document::$snippets['notices'] .= '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">Ã—</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+                 document::$snippets['notices'] .= '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
                 break;
               case 'warnings':
-                 document::$snippets['notices'] .= '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">Ã—</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
+                 document::$snippets['notices'] .= '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
                 break;
               case 'notices':
-                 document::$snippets['notices'] .= '<div class="alert alert-info"><a href="#" class="close" data-dismiss="alert">Ã—</a>' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice .'</div>' . PHP_EOL;
+                 document::$snippets['notices'] .= '<div class="alert alert-info"><a href="#" class="close" data-dismiss="alert">×</a>' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice .'</div>' . PHP_EOL;
                 break;
               case 'success':
-                 document::$snippets['notices'] .= '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">Ã—</a>' .functions::draw_fonticon('fa-check-circle') . ' ' . $notice .'</div>' . PHP_EOL;
+                 document::$snippets['notices'] .= '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">×</a>' .functions::draw_fonticon('fa-check-circle') . ' ' . $notice .'</div>' . PHP_EOL;
                 break;
             }
           }

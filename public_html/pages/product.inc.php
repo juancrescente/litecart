@@ -54,7 +54,7 @@
 
   document::$snippets['title'][] = $product->head_title[language::$selected['code']] ? $product->head_title[language::$selected['code']] : $product->name[language::$selected['code']];
   document::$snippets['description'] = $product->meta_description[language::$selected['code']] ? $product->meta_description[language::$selected['code']] : $product->short_description[language::$selected['code']];
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => $_GET['product_id']), false) .'" />';
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', array('product_id' => (int)$product->id), false) .'" />';
   document::$snippets['head_tags']['animate_from_to'] = '<script src="'. WS_DIR_EXT .'jquery/jquery.animate_from_to-1.0.min.js"></script>';
 
   if (!empty($product->image)) {
@@ -115,7 +115,7 @@
     'extra_images' => array(),
     'manufacturer' => array(),
     'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
-    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : 0,
+    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : null,
     'regular_price_value' => tax::get_price($product->price, $product->tax_class_id),
     'campaign_price_value' => !empty($product->campaign['price']) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : 0,
     'tax_class_id' => $product->tax_class_id,
