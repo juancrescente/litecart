@@ -10,7 +10,7 @@
   breadcrumbs::add(language::translate('title_search_results', 'Search Results'), document::ilink('search'));
   breadcrumbs::add(!empty($_GET['query']) ? strip_tags($_GET['query']) : language::translate('title_all Products', 'All Products'));
 
-  $lightbox_id = functions::draw_lightbox();
+  if (settings::get('product_modal_window')) functions::draw_lightbox();
 
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 

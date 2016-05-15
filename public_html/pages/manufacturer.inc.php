@@ -11,7 +11,7 @@
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
 
-  functions::draw_lightbox();
+  if (settings::get('product_modal_window')) functions::draw_lightbox();
 
   $manufacturer = catalog::manufacturer($_GET['manufacturer_id']);
 
@@ -28,7 +28,6 @@
     header('Refresh: 0; url='. document::ilink('manufacturers'));
     exit;
   }
-
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => (int)$manufacturer->id), false) .'" />';
   document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;

@@ -1,7 +1,7 @@
 <?php if ($listing_type == 'column') { ?>
   <div class="product col-xxs-12 col-xs-6 col-sm-4 col-md-4 col-lg-3">
     <div class="thumbnail curved-shadow">
-      <a href="<?php echo htmlspecialchars($link) ?>" data-toggle="lightbox" data-gallery="listing" title="<?php echo htmlspecialchars($name); ?>">
+      <a href="<?php echo htmlspecialchars($link) ?>"<?php echo settings::get('product_modal_window') ? ' data-toggle="lightbox" data-gallery="listing"' : null; ?> title="<?php echo htmlspecialchars($name); ?>">
         <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
         <div class="caption">
           <h4 class="name no-padding"><?php echo $name; ?></h4>
@@ -21,7 +21,7 @@
 <?php } else if ($listing_type == 'row') { ?>
   <div class="product col-md-12">
     <div class="row thumbnail curved-shadow">
-      <a href="<?php echo htmlspecialchars($link) ?>" data-toggle="lightbox" data-gallery="listing" title="<?php echo htmlspecialchars($name); ?>">
+      <a href="<?php echo htmlspecialchars($link) ?>"<?php echo settings::get('product_modal_window') ? ' data-toggle="lightbox" data-gallery="listing"' : null; ?> title="<?php echo htmlspecialchars($name); ?>">
         <div class="col-md-3">
           <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
         </div>

@@ -1,6 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
-INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES 
+INSERT INTO `lc_countries` (`id`, `status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES
 (1, 1, 'Afghanistan', '', '004', 'AF', 'AFG', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'fa', 'AFN', '93', NOW(), NOW()),
 (2, 1, 'Albania', '', '008', 'AL', 'ALB', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '', 0, 'sq', 'ALL', '355', NOW(), NOW()),
 (3, 1, 'Algeria', '', '012', 'DZ', 'DZA', '', '%company\r\n%firstname %lastname\r\n%address1\r\n%address2\r\n%postcode %city\r\n%zone_name\r\n%country_name', '\\d{5}', 0, 'ar', 'DZD', '213', NOW(), NOW()),
@@ -313,6 +313,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Most Popular Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_most_popular_products_num_items', '8', 'int()', 18, NOW(), NOW()),
 ('listings', 'local', 'Campaign Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_campaign_products_num_items', '4', 'int()', 19, NOW(), NOW()),
 ('listings', 'local', 'Auto Decimals', 'Show only decimals if there are any to display.', 'auto_decimals', '1', 'toggle("e/d")', 20, NOW(), NOW()),
+('listings', 'local', 'Product Modal Window', 'Open products in a modal window', 'product_modal_window', '1', 'toggle()', 21, NOW(), NOW()),
 ('images', 'local', 'Category Images: Aspect Ratio', 'The aspect ratio of the category thumbnails', 'category_image_ratio', '16:9', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '10', NOW(), NOW()),
 ('images', 'local', 'Product Images: Aspect Ratio', 'The aspect ratio of the product thumbnails', 'product_image_ratio', '1:1', 'select("1:1","2:3","3:2","3:4","4:3","16:9")', '30', NOW(), NOW()),
 ('images', 'local', 'Product Images: Clipping Method', 'The clipping method used for scaled product thumbnails.', 'product_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '31', NOW(), NOW()),

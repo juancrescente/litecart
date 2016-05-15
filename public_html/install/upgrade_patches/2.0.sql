@@ -40,3 +40,6 @@ DELETE FROM `lc_settings` where `key` IN ('order_action_modules', 'order_success
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('', 'local', 'Installed Order Modules', '', 'order_modules', '', '', 0, NOW(), NOW());
+-- --------------------------------------------------------
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('listings', 'local', 'Product Modal Window', 'Open products in a modal window', 'product_modal_window', '1', 'toggle()', 21, NOW(), NOW());

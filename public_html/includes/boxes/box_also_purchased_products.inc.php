@@ -1,7 +1,7 @@
 <?php
   if (empty($_GET['product_id'])) return;
 
-  functions::draw_lightbox();
+  if (settings::get('product_modal_window')) functions::draw_lightbox();
 
   $box_also_purchased_products_cache_id = cache::cache_id('box_also_purchased_products', array('get', 'language', 'currency', 'prices'));
   if (cache::capture($box_also_purchased_products_cache_id, 'file')) {
