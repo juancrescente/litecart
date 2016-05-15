@@ -11,7 +11,7 @@
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => $_GET['manufacturer_id']), false) .'" />';
 
-  $lightbox_id = functions::draw_lightbox();
+  functions::draw_lightbox();
 
   $manufacturer = catalog::manufacturer($_GET['manufacturer_id']);
 
@@ -36,8 +36,6 @@
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
-
-  functions::draw_fancybox("a.fancybox[data-fancybox-group='product-listing']");
 
   include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
 
