@@ -1,6 +1,8 @@
 <div id="region">
-  <div class="language"><img src="<?php echo WS_DIR_IMAGES .'icons/languages/'. language::$selected['code'] .'.png'; ?>" alt="<?php echo language::$selected['name']; ?>" title="<?php echo language::$selected['name']; ?>" /></div>
-  <div class="currency" title="<?php echo currency::$selected['name']; ?>"><span><?php echo currency::$selected['code']; ?></span></div>
-  <div class="country" title="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>"><?php echo functions::reference_get_country_name(customer::$data['country_code']); ?></div>
-  <div class="change"><a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="modal" data-target="#<?php echo $modal_id; ?>"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+  <ul class="list-inline">
+    <li class="language"><?php echo language::$selected['name']; ?></li>
+    <li class="currency"><span title="<?php echo currency::$selected['name']; ?>"><?php echo currency::$selected['code']; ?></span></li>
+    <li class="country"><img src="<?php echo WS_DIR_IMAGES .'countries/'. strtolower(customer::$data['country_code']) .'.png'; ?>" alt="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>" title="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>" style="vertical-align: baseline;" /></li>
+    <li class="change"><a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a></li>
+  </ul>
 </div>

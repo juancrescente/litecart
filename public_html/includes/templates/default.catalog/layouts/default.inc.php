@@ -32,14 +32,30 @@
 </head>
 <body id="<?php echo preg_replace('#(_|/)#', '-', route::$route['page']); ?>">
 
-<?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+<div id="page" class="shadow">
 
-<!--snippet:content-->
+  <div id="top-menu">
+    <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
+  </div>
 
-<?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+  <header id="header">
+    <a class="hidden-xs" href="<?php echo document::ilink(''); ?>">
+      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 4em;" />
+    </a>
+
+    <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>
+  </header>
+
+  <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+
+  <!--snippet:content-->
+
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+</div>
 
 <script src="{snippet:template_path}js/app.js"></script>
 <script>
+// Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
     e.preventDefault();
     var form = $(this);
