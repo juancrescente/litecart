@@ -10,7 +10,7 @@
 }
 </style>
 
-<div id="slider" class="carousel slide curved-shadow" data-ride="carousel">
+<div id="slides" class="carousel slide curved-shadow" data-ride="carousel">
   <ol class="carousel-indicators">
     <?php foreach (array_values($slides) as $key => $slide) { ?>
     <li data-target="#box-slider" data-slide-to="<?php echo $key; ?>"<?php if ($key == 0) echo ' class="active"' ?>></li>

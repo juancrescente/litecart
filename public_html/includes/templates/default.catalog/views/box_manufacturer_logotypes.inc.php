@@ -1,4 +1,4 @@
-<ul id="manufacturer-logotypes" class="list-inline">
+<ul id="manufacturer-logotypes" class="list-inline text-center">
   <?php foreach ($logotypes as $logotype) { ?>
   <li>
     <a href="<?php echo htmlspecialchars($logotype['link']); ?>">

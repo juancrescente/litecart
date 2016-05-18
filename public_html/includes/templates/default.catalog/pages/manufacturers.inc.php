@@ -1,5 +1,3 @@
-<div class="twelve-eighty">
-  <!--snippet:notices-->
+<!--snippet:notices-->
 
-  {snippet:box_manufacturers}
-</div>
+{snippet:box_manufacturers}

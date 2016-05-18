@@ -99,20 +99,21 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
           }
         }
         if (this.options.type) {
-          if (this.options.type === 'image') {
-            return this.preloadImage(this.options.remote, true);
-          } else if (this.options.type === 'youtube' && (video_id = this.getYoutubeId(this.options.remote))) {
-            return this.showYoutubeVideo(video_id);
-          } else if (this.options.type === 'vimeo') {
-            return this.showVimeoVideo(this.options.remote);
-          } else if (this.options.type === 'instagram') {
-            return this.showInstagramVideo(this.options.remote);
-          } else if (this.options.type === 'url') {
-            return this.loadRemoteContent(this.options.remote);
-          } else if (this.options.type === 'video') {
-            return this.showVideoIframe(this.options.remote);
-          } else {
-            return this.error("Could not detect remote target type. Force the type using data-type=\"image|youtube|vimeo|instagram|url|video\"");
+          switch(this.options.type){
+            case 'image':
+              return this.preloadImage(this.options.remote, true);
+            case 'youtube':
+              return this.showYoutubeVideo(this.getYoutubeId(this.options.remote));
+            case 'vimeo':
+              return this.showVimeoVideo(this.options.remote);
+            case 'instagram':
+              return this.showInstagramVideo(this.options.remote);
+            case 'url':
+              return this.loadRemoteContent(this.options.remote);
+            case 'video':
+              return this.showVideoIframe(this.options.remote);
+            default:
+              return this.error("Could not detect remote target type. Force the type using data-type=\"image|youtube|vimeo|instagram|url|video\"");
           }
         } else {
           return this.detectRemoteType(this.options.remote);
@@ -457,7 +458,7 @@ $('*[data-toggle=lightbox]').on('click', function(){
 });
 
 $('.modal').on('hide.bs.modal', function(){
-  var $dialog = $(this);  
+  var $dialog = $(this);
   var previousDialog = $dialog.data('previous-dialog');
   if (previousDialog){
     previousDialog.removeClass('aside');

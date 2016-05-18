@@ -144,7 +144,7 @@
     if (strpos($attributes[$i], ':') !== false) {
       @list($key, $value) = explode(':', $attributes[$i]);
       echo '        <tr>' . PHP_EOL
-         . '          <td>'. trim($key) .':</td>' . PHP_EOL
+         . '          <td>'. trim($key) .'</td>' . PHP_EOL
          . '          <td>'. trim($value) .'</td>' . PHP_EOL
          . '        </tr>' . PHP_EOL;
     } else if (trim($attributes[$i] != '')) {

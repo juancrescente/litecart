@@ -1,23 +1,3 @@
-<?php
-// Cookie acceptance - By EU law
-  if (!empty(document::$settings['cookie_acceptance'])) {
-    if (empty($_COOKIE['cookies_accepted'])) {
-      if (!isset(document::$snippets['bottom'])) document::$snippets['bottom'] = '';
-      document::$snippets['bottom'] .= '<div id="cookies-acceptance-wrapper">' . PHP_EOL
-                                     . '  <div id="cookies-acceptance" class="twelve-eighty">' . PHP_EOL
-                                     . '    ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
-                                     . '  </div>' . PHP_EOL
-                                     . '</div>' . PHP_EOL
-                                     . '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>' . PHP_EOL
-                                     . '<script>' . PHP_EOL
-                                     . '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
-                                     . '    $("#cookies-acceptance-wrapper").fadeOut();' . PHP_EOL
-                                     . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
-                                     . '  });' . PHP_EOL
-                                     . '</script>';
-    }
-  }
-?>
 <!DOCTYPE html>
 <html lang="{snippet:language}">
 <head>
@@ -50,10 +30,31 @@
 
   <!--snippet:content-->
 
+  <!--snippet:bottom-->
+
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+
+<?php
+// Cookie acceptance - By EU law
+  if (!empty(document::$settings['cookie_acceptance'])) {
+    if (empty($_COOKIE['cookies_accepted'])) {
+      if (!isset(document::$snippets['bottom'])) document::$snippets['bottom'] = '';
+      echo '<div id="cookies-acceptance" class="text-center">' . PHP_EOL
+                                     . '  ' . language::translate('terms_cookies_acceptance', 'We rely on cookies to provide our services. By using our services, you agree to our use of cookies.') .' '. functions::form_draw_button('accept_cookies', language::translate('title_ok', 'OK'), 'button') . PHP_EOL
+                                     . '</div>' . PHP_EOL
+                                     . '<script src="'. WS_DIR_EXT .'jquery/jquery.cookie.min.js"></script>' . PHP_EOL
+                                     . '<script>' . PHP_EOL
+                                     . '  $("button[name=\'accept_cookies\']").click(function(){' . PHP_EOL
+                                     . '    $("#cookies-acceptance").fadeOut();' . PHP_EOL
+                                     . '    $.cookie("cookies_accepted", "1", {path: "'. WS_DIR_HTTP_HOME .'", expires: 365});' . PHP_EOL
+                                     . '  });' . PHP_EOL
+                                     . '</script>';
+    }
+  }
+?>
 </div>
 
-<script src="{snippet:template_path}js/app.js"></script>
+<script src="{snippet:template_path}js/app.min.js"></script>
 <script>
 // Add to cart animation
   $('body').on('submit', 'form[name="buy_now_form"]', function(e) {

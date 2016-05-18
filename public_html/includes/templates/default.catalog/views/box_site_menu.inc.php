@@ -1,13 +1,12 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-      <span class="sr-only">Toggle navigation</span>
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
     <a class="navbar-brand visible-xs" href="<?php echo document::ilink(''); ?>">
-      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 2em;" />
+      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="margin: -0.5em; max-height: 2em;" />
     </a>
   </div>
 
@@ -32,11 +31,11 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(user::$data['id']) ? (!empty(user::$data['alias']) ? user::$data['alias'] : language::translate('title_account', 'Account')) : language::translate('title_sign_in', 'Sign In'); ?>
+          <?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? (!empty(customer::$data['firstname']) ? customer::$data['firstname'] : language::translate('title_account', 'Account')) : language::translate('title_sign_in', 'Sign In'); ?>
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <?php if (empty(user::$data['id'])) { ?>
+          <?php if (empty(customer::$data['id'])) { ?>
           <li>
             <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('account/login', array('redirect_url' => document::ilink())), false, 'class="" style="min-width: 320px; margin: 0.5em;"'); ?>
               <div class="form-group">

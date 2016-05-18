@@ -199,6 +199,11 @@
   border: 1px solid transparent;
   border-radius: @border-radius-base;
 
+  &.navbar-left {
+    float: left;
+    margin-left: 15px;
+  }
+
   // We remove the `outline` here, but later compensate by attaching `:hover`
   // styles to `:focus`.
   &:focus {
@@ -519,6 +524,20 @@
         color: @navbar-default-link-disabled-color;
       }
     }
+  }
+}
+
+.navbar-toggle-default {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 10px;
+  border-color: @navbar-default-toggle-border-color;
+  &:hover,
+  &:focus {
+    background-color: @navbar-default-toggle-hover-bg;
+  }
+  .icon-bar {
+    background-color: @navbar-default-toggle-icon-bar-bg;
   }
 }
 

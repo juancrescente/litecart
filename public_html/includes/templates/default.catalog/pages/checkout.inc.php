@@ -1,36 +1,33 @@
-<div class="twelve-eighty">
-  <!--snippet:notices-->
+<!--snippet:notices-->
 
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
+<?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
 
-    <div id="checkout-cart-wrapper">
-    {snippet:box_checkout_cart}
-    </div>
+  <div id="checkout-cart-wrapper">
+  {snippet:box_checkout_cart}
+  </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div id="checkout-customer-wrapper">
-         {snippet:box_checkout_customer}
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div id="checkout-shipping-wrapper">
-          {snippet:box_checkout_shipping}
-        </div>
-
-        <div id="checkout-payment-wrapper">
-          {snippet:box_checkout_payment}
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div id="checkout-customer-wrapper">
+       {snippet:box_checkout_customer}
       </div>
     </div>
 
-    <div id="checkout-summary-wrapper">
-      {snippet:box_checkout_summary}
-    </div>
+    <div class="col-md-6">
+      <div id="checkout-shipping-wrapper">
+      </div>
 
-  <?php echo functions::form_draw_form_end(); ?>
-</div>
+      <div id="checkout-payment-wrapper">
+        {snippet:box_checkout_payment}
+      </div>
+    </div>
+  </div>
+
+  <div id="checkout-summary-wrapper">
+    {snippet:box_checkout_summary}
+  </div>
+
+<?php echo functions::form_draw_form_end(); ?>
 
 <script>
   var updateQueue = [];
@@ -169,4 +166,10 @@
   $("body").on('submit', 'form[name="checkout_form"]', function(e) {
     $('#checkout-summary-wrapper button[name="confirm_order"]').prepend('<i class="fa fa-spinner fa-spin"></i> ');
   });
+
+  queueUpdateTask('cart');
+  queueUpdateTask('customer');
+  queueUpdateTask('shipping');
+  queueUpdateTask('payment');
+  queueUpdateTask('summary');
 </script>

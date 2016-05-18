@@ -2,10 +2,13 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 
 // Sidebar parallax effect
-  var sidebar_offset_y = $('.sidebar').offset().top;
+  var sidebar_offset_y = $('.sidebar + .content').offset().top;
   $('.sidebar + .content').css('min-height', $('.sidebar').height());
   $('.sidebar').css('position', 'fixed').css('top', sidebar_offset_y+'px');
-  $(window).bind('scroll',function(e){
+  $(window).resize(function(e){
+    sidebar_offset_y = $('.sidebar + .content').offset().top;
+  });
+  $(window).scroll(function(e){
       var scrolled = $(window).scrollTop();
       $('.sidebar').css('top',(sidebar_offset_y-(scrolled*($('.sidebar').height()/$('.sidebar + .content').height())))+'px');
   });

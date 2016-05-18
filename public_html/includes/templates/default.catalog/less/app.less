@@ -23,14 +23,39 @@ body {
 
 #cart {
   position: absolute;
-  right: 0px;
-  top: 15px;
+  right: 0;
+  bottom: 0;
+  .btn {
+    height: 64px;
+    line-height: 48px;
+  }
+  .btn * {
+    vertical-align: middle;
+  }
 }
 
-// Overrides
+// Sidebar
 
-.navbar-brand {
-  padding: 5px 5px 0 0;
+#column-left form[name="search_form"] {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+#category-tree > ul {
+  margin-left: -15px;
+  margin-right: -15px;
+  li {
+    margin: 0;
+  }
+}
+#box-information-links .title {
+  margin-top: 0;
+}
+#box-information-links ul {
+  margin-left: -15px;
+  margin-right: -15px;
+  li {
+    margin: 0;
+  }
 }
 
 // Checkout
