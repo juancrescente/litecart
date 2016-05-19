@@ -113,7 +113,7 @@
                       <?php //echo ($quantity > 0 || $orderable) ? functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit') : functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); ?>
                     </td>
                     <td style="padding-left: 1em;">
-                      <?php echo '<button class="btn btn-default" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .' style="display: table-cell;">'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+                      <?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity <= 0 && !$orderable) ? ' disabled="disabled"' : '') .' style="display: table-cell;">'. language::translate('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
                     </td>
                   </tr>
                 </table>

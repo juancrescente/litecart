@@ -14,6 +14,17 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 15px;
+
+  -webkit-transition: filter 2.25s ease-out;
+  transition: filter 2.25s ease-out;
+}
+
+body.modal-open #page {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
 }
 
 #header {
@@ -35,7 +46,10 @@ body {
 }
 
 // Sidebar
-
+#sidebar {
+  padding-right: floor((@grid-gutter-width / 2));
+  padding-left:  floor((@grid-gutter-width / 2));
+}
 #column-left form[name="search_form"] {
   margin-left: -15px;
   margin-right: -15px;

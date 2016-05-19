@@ -72,5 +72,5 @@
   </div>
 
   <!-- LiteCart is provided free. Removing the link back to LiteCart.net without written permission is a violation. -->
-  <p class="text-center">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?> &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a></p>
+  <p class="text-center">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?> &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart<sup>®</sup></a></p>
 </footer>

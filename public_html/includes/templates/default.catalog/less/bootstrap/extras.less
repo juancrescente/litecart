@@ -11,8 +11,8 @@
 .twelve-eighty {
   max-width: 1280px;
   margin: 0 auto;
-  padding-left: 15px;
-  padding-right: 15px;  
+  padding-left: floor(@grid-gutter-width / 2);
+  padding-right: floor(@grid-gutter-width / 2);
   clear: both;
 }
 
@@ -102,10 +102,10 @@
 }
 
 .row.half-gutter {
-  margin-left: -7px;
-  margin-right: -7px;
+  margin-left: 0 - floor(@grid-gutter-width / 4);
+  margin-right: 0 - floor(@grid-gutter-width / 4);
   [class*="col-"] {
-    padding: 7px;
+    padding: floor(@grid-gutter-width / 4);
   }
 }
 
