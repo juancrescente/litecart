@@ -3,7 +3,7 @@
   <div class="btn-group">
     <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
       <?php //echo functions::draw_fonticon('fa-shopping-cart'); ?>
-      <img src="/litecart/includes/templates/default.catalog/images/cart_filled.png" height="32" alt="" class="" />
+      <img src="<?php echo WS_DIR_TEMPLATE; ?>images/cart.png" height="32" alt="" class="" />
       <span class="quantity"><?php echo cart::$total['items']; ?></span> <?php echo language::translate('title_items_s', 'Item(s)'); ?>
     </a>
     <?php //include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_cart.inc.php'); ?>

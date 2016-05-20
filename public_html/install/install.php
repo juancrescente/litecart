@@ -309,9 +309,9 @@
 
   if (defined('PLATFORM_VERSION')) {
 
-    $database->query(
+    database::query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
-      set `value` = '". $database->input($matches[1]) ."'
+      set `value` = '". database::input($matches[1]) ."'
       where `key` = 'platform_database_version'
       limit 1;"
     );
