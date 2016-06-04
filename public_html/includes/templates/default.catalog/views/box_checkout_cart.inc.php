@@ -12,6 +12,7 @@
         <th><?php echo language::translate('title_options', 'Options'); ?></th>
         <th><?php echo language::translate('title_price', 'Price'); ?></th>
         <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
+        <th><?php echo language::translate('title_sum', 'Sum'); ?></th>
         <th></th>
       </tr>
     </thead>
@@ -35,6 +36,7 @@
             <?php echo functions::form_draw_button('update_cart_item', array($key, functions::draw_fonticon('fa-refresh')), 'submit', 'title="'. htmlspecialchars(language::translate('title_update', 'Update')) .'" formnovalidate'); ?>
           </div>
         </td>
+        <td><?php echo currency::format(tax::get_price($item['price'] * $item['quantity'], $item['tax_class_id'])); ?></td>
         <td><?php echo functions::form_draw_button('remove_cart_item', array($key, functions::draw_fonticon('fa-trash')), 'submit', 'class="btn btn-danger" title="'. htmlspecialchars(language::translate('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
       </tr>
       <?php } ?>

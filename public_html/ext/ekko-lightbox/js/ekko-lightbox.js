@@ -102,18 +102,18 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
           switch(this.options.type){
             case 'image':
               return this.preloadImage(this.options.remote, true);
-            case 'youtube':
-              return this.showYoutubeVideo(this.getYoutubeId(this.options.remote));
-            case 'vimeo':
-              return this.showVimeoVideo(this.options.remote);
             case 'instagram':
               return this.showInstagramVideo(this.options.remote);
             case 'url':
               return this.loadRemoteContent(this.options.remote);
             case 'video':
               return this.showVideoIframe(this.options.remote);
+            case 'vimeo':
+              return this.showVimeoVideo(this.options.remote);
+            case 'youtube':
+              return this.showYoutubeVideo(this.getYoutubeId(this.options.remote));
             default:
-              return this.error("Could not detect remote target type. Force the type using data-type=\"image|youtube|vimeo|instagram|url|video\"");
+              return this.error("Could not detect remote target type. Force the type using data-type=\"image|instagram|url|video|vimeo|youtube\"");
           }
         } else {
           return this.detectRemoteType(this.options.remote);
@@ -214,18 +214,18 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
       if (type === 'image' || this.isImage(src)) {
         this.options.type = 'image';
         return this.preloadImage(src, true);
-      } else if (type === 'youtube' || (video_id = this.getYoutubeId(src))) {
-        this.options.type = 'youtube';
-        return this.showYoutubeVideo(video_id);
-      } else if (type === 'vimeo' || (video_id = this.getVimeoId(src))) {
-        this.options.type = 'vimeo';
-        return this.showVimeoVideo(video_id);
       } else if (type === 'instagram' || (video_id = this.getInstagramId(src))) {
         this.options.type = 'instagram';
         return this.showInstagramVideo(video_id);
       } else if (type === 'video') {
         this.options.type = 'video';
         return this.showVideoIframe(video_id);
+      } else if (type === 'vimeo' || (video_id = this.getVimeoId(src))) {
+        this.options.type = 'vimeo';
+        return this.showVimeoVideo(video_id);
+      } else if (type === 'youtube' || (video_id = this.getYoutubeId(src))) {
+        this.options.type = 'youtube';
+        return this.showYoutubeVideo(video_id);
       } else {
         this.options.type = 'url';
         return this.loadRemoteContent(src);
@@ -253,23 +253,6 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
       this.lightbox_body.html('<div class="modal-loading">' + this.options.loadingMessage + '</div>');
       return this;
     },
-    showYoutubeVideo: function(id) {
-      var height, rel, width;
-      if ((this.$element.attr('data-norelated') != null) || this.options.no_related) {
-        rel = "&rel=0";
-      } else {
-        rel = "";
-      }
-      width = this.checkDimensions(this.$element.data('width') || 560);
-      height = width / (560 / 315);
-      return this.showVideoIframe('//www.youtube.com/embed/' + id + '?badge=0&autoplay=1&html5=1' + rel, width, height);
-    },
-    showVimeoVideo: function(id) {
-      var height, width;
-      width = this.checkDimensions(this.$element.data('width') || 560);
-      height = width / (500 / 281);
-      return this.showVideoIframe(id + '?autoplay=1', width, height);
-    },
     showInstagramVideo: function(id) {
       var height, width;
       width = this.checkDimensions(this.$element.data('width') || 612);
@@ -281,6 +264,12 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         return this.modal_arrows.css('display', 'none');
       }
     },
+    showVimeoVideo: function(id) {
+      var height, width;
+      width = this.checkDimensions(this.$element.data('width') || 560);
+      height = width / (500 / 281);
+      return this.showVideoIframe(id + '?autoplay=1', width, height);
+    },
     showVideoIframe: function(url, width, height) {
       height = height || width;
       this.resize(width);
@@ -290,6 +279,17 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         this.modal_arrows.css('display', 'none');
       }
       return this;
+    },
+    showYoutubeVideo: function(id) {
+      var height, rel, width;
+      if ((this.$element.attr('data-norelated') != null) || this.options.no_related) {
+        rel = "&rel=0";
+      } else {
+        rel = "";
+      }
+      width = this.checkDimensions(this.$element.data('width') || 560);
+      height = width / (560 / 315);
+      return this.showVideoIframe('//www.youtube.com/embed/' + id + '?badge=0&autoplay=1&html5=1' + rel, width, height);
     },
     loadRemoteContent: function(url) {
       var disableExternalCheck, width;

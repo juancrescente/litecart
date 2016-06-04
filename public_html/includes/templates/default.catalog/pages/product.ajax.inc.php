@@ -1,11 +1,15 @@
+<?php
+  document::$snippets['javascript'][] = 'if (window.location.hash != \'\') $(\'a[href="\' + window.location.hash + \'"]\').click();';
+?>
 {snippet:breadcrumbs}
 
-<div class="product">
+<div id="product">
   <div class="row">
     <div class="col-sm-4">
       <div class="image thumbnail">
         <a href="<?php echo htmlspecialchars($image['original']); ?>" data-toggle="lightbox" data-gallery="product">
           <img class="img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="" title="<?php echo htmlspecialchars($name); ?>" />
+          <?php echo $sticker; ?>
         </a>
       </div>
 
@@ -137,25 +141,32 @@
       </div>
 
       <?php if ($attributes) { ?>
-      <table class="table table-striped">
-        <tbody>
+      <div class="attributes">
+        <table class="table table-striped">
 <?php
   for ($i=0; $i<count($attributes); $i++) {
     if (strpos($attributes[$i], ':') !== false) {
       @list($key, $value) = explode(':', $attributes[$i]);
-      echo '        <tr>' . PHP_EOL
-         . '          <td>'. trim($key) .'</td>' . PHP_EOL
-         . '          <td>'. trim($value) .'</td>' . PHP_EOL
-         . '        </tr>' . PHP_EOL;
-    } else if (trim($attributes[$i] != '')) {
-      echo '        <tr>' . PHP_EOL
-         . '          <th colspan="2" class="header">'. $attributes[$i] .'</th>' . PHP_EOL
-         . '        </tr>' . PHP_EOL;
+      echo '  <tr>' . PHP_EOL
+         . '    <td>'. trim($key) .':</td>' . PHP_EOL
+         . '    <td>'. trim($value) .'</td>' . PHP_EOL
+         . '  </tr>' . PHP_EOL;
+    } else if (trim($attributes[$i]) != '') {
+      echo '  <thead>' . PHP_EOL
+         . '    <tr>' . PHP_EOL
+         . '      <th colspan="2">'. $attributes[$i] .'</th>' . PHP_EOL
+         . '    </tr>' . PHP_EOL
+         . '  </thead>' . PHP_EOL
+         . '  <tbody>' . PHP_EOL;
+    } else {
+      echo ' </tbody>' . PHP_EOL
+         . '</table>' . PHP_EOL
+         . '<table class="table table-striped">' . PHP_EOL;
     }
   }
 ?>
-        </tbody>
-      </table>
+        </table>
+      </div>
       <?php } ?>
     </div>
   </div>

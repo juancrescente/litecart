@@ -3,7 +3,7 @@
   <div class="products row half-gutter">
     <?php foreach ($products as $product) { ?>
     <div class="product col-xs-6">
-      <a href="<?php echo htmlspecialchars($product['link']); ?>" class="thumbnail" data-toggle="lightbox">
+      <a href="<?php echo htmlspecialchars($product['link']); ?>" class="thumbnail" data-toggle="lightbox" data-gallery="recently-viewed">
         <img src="<?php echo htmlspecialchars($product['thumbnail']); ?>" alt="" />
         </a>
       </div>

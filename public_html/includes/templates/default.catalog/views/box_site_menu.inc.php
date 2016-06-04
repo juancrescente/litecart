@@ -12,6 +12,9 @@
 
   <div id="navbar" class="collapse navbar-collapse">
     <ul class="nav navbar-nav">
+      <li class="home">
+        <a href="<?php echo document::ilink(''); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a>
+      </li>
       <?php foreach ($items as $item) { ?>
       <li class="<?php echo $item['type'] .'-'. $item['id']; ?><?php echo !empty($item['subitems']) ? ' dropdown' : ''; ?>">
         <a href="<?php echo htmlspecialchars($item['link']); ?>"<?php echo !empty($item['subitems']) ? ' class="dropdown-toggle" data-toggle="dropdown"' : ''; ?>><?php echo $item['title']; ?><?php echo !empty($item['subitems']) ? ' <span class="caret"></span>' : ''; ?></a>

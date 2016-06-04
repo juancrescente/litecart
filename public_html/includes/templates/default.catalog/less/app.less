@@ -37,12 +37,11 @@ body.modal-open #page {
   right: 0;
   bottom: 0;
   .btn {
-    height: 64px;
-    line-height: 48px;
+    img {
+      height: 18px;
+    }
   }
-  .btn * {
-    vertical-align: middle;
-  }
+
 }
 
 // Sidebar
@@ -74,9 +73,27 @@ body.modal-open #page {
 
 // Checkout
 
-#checkout-shipping .option.btn, #checkout-payment .option.btn {
-  padding: 12px;
+body#checkout {
+  #header {
+    .customer-service {
+      .title {
+        margin: 0;
+      }
+    }
+  }
+  #checkout-cart {
+    tr td:first-child a {
+      display: inline-block;
+    }
+    tr td:last-child {
+      text-align: right;
+    }
+  }
+  #checkout-shipping .option.btn, #checkout-payment .option.btn {
+    padding: 12px;
+  }
 }
+
 
 // Data Tables
 
@@ -204,12 +221,14 @@ table.data-table {
       }
     }
   }
-  .extra-images.row {
-    margin-right: -7px;
-    margin-left: -7px;
-  }
-  .extra-images .extra-image {
-    padding: 7px;
+  .extra-images {
+    &.row {
+      margin-right: -7px;
+      margin-left: -7px;
+    }
+    .extra-image {
+      padding: 7px;
+    }
   }
   .stock-status {
     .stock-available .value {
@@ -230,6 +249,19 @@ table.data-table {
     .campaign-price {
       color: #ff0000;
       white-space: nowrap;
+    }
+  }
+  .attributes {
+    @media screen and (min-width: @screen-md-min) {
+      -webkit-columns: auto 2;
+      -moz-columns: auto 2;
+      columns: auto 2;
+      tr *:first-child {
+        width: 50%;
+      }
+    }
+    table {
+      break-inside: avoid;
     }
   }
 }

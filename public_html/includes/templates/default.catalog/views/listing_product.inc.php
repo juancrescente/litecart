@@ -22,10 +22,10 @@
   <div class="product col-md-12">
     <div class="row thumbnail curved-shadow">
       <a href="<?php echo htmlspecialchars($link) ?>"<?php echo settings::get('product_modal_window') ? ' data-toggle="lightbox" data-gallery="listing"' : null; ?> title="<?php echo htmlspecialchars($name); ?>">
-        <div class="col-md-3">
+        <div class="col-sm-4 col-md-3">
           <img src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
         </div>
-        <div class="col-md-9 caption">
+        <div class="col-sm-8 col-md-9 caption">
           <h4 class="name"><?php echo $name; ?></h4>
           <h5 class="manufacturer"><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></h5>
           <?php echo !empty($short_description) ? '<p>'.$short_description.'</p>' : ''; ?>
