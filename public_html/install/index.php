@@ -336,6 +336,7 @@
     'data/',
     'images/',
     'includes/config.inc.php',
+    'logs/',
     'vqmod/',
     'vqmod/xml/',
     'vqmod/vqcache/',

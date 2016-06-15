@@ -42,7 +42,7 @@
 
         $log = ob_get_clean();
 
-        file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_DATA . $module_id .'.log', $log);
+        file_put_contents(FS_DIR_HTTP_ROOT . WS_DIR_LOGS . $module_id .'.log', $log);
 
         echo $log;
       }
