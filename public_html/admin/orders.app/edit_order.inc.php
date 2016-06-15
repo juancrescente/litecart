@@ -1,9 +1,9 @@
 <?php
 
   if (!empty($_GET['order_id'])) {
-    $order = new ctrl_order('load', $_GET['order_id']);
+    $order = new ctrl_order($_GET['order_id']);
   } else {
-    $order = new ctrl_order('new');
+    $order = new ctrl_order();
   }
 
   if (empty($_POST)) {

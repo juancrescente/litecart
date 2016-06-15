@@ -3,25 +3,26 @@
   class ctrl_order {
     public $data;
 
-    public function __construct($action='new', $order_id='') {
+    public function __construct($order_id=null) {
 
-      if (!isset(session::$data['order'])) session::$data['order'] = array();
-      $this->data = &session::$data['order'];
+      if (!empty($order_id)) {
+        switch (true) {
+          case (is_numeric($order_id)):
+            $this->load($order_id);
+            break;
 
-      switch ($action) {
-        case 'load':
-          if (empty($order_id)) trigger_error('Unknown order id', E_USER_ERROR);
-          $this->load((int)$order_id);
-          break;
-        case 'new':
-          $this->reset();
-          break;
-        case 'import_session':
-          $this->import_session();
-          break;
-        case 'resume':
-        default:
-          break;
+          case ($order_id == 'session'):
+            if (empty(session::$data['order'])) {
+              $this->reset();
+              session::$data['order'] = $this->data;
+            }
+            $this->data = &session::$data['order'];
+            break;
+
+          default:
+            trigger_error('Invalid value for order ID', E_USER_ERROR);
+            break;
+        }
       }
     }
 
@@ -77,7 +78,7 @@
       );
     }
 
-    private function import_session() {
+    public function import_session() {
       global $shipping, $payment, $order_total;
 
       $this->reset();

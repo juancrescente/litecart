@@ -6,7 +6,7 @@
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
   breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
 
-  $order = new ctrl_order('resume');
+  $order = new ctrl_order('session');
 
   $payment = new mod_payment();
 

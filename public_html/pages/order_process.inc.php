@@ -6,7 +6,7 @@
 
   $payment = new mod_payment();
 
-  $order = new ctrl_order('resume');
+  $order = new ctrl_order('session');
 
   $order_process = new mod_order();
 
