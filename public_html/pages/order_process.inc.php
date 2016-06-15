@@ -1,12 +1,18 @@
 <?php
   header('X-Robots-Tag: noindex');
   document::$layout = 'checkout';
+  
+  if (empty(&session::$data['order'])) {
+    notices::add('errors', 'Missing order object');
+    header('Location: '. document::ilink('checkout'));
+    exit;
+  }
 
   $shipping = new mod_shipping();
 
   $payment = new mod_payment();
 
-  $order = new ctrl_order('session');
+  $order = &session::$data['order'];
 
   $order_process = new mod_order();
 

@@ -7,19 +7,19 @@
 
   $order_total = new mod_order_total();
 
-  $order = new ctrl_order('session');
-
-// Resume incompleted order in session
-  if (!empty($order->data) && $order->data['customer']['id'] == customer::$data['id'] && empty($order->data['order_status_id'])) {
-    $resume_id = $order->data['id'];
-    $order->import_session();
-    $order->data['id'] = $resume_id;
-  } else {
-    $order->import_session();
-  }
+  session::$data['order'] = new ctrl_order();
+  $order = &session::$data['order'];
+  
+  $resume_id = @$order->data['id'];
+  $order->import_session();
 
   $order->data['order_total'] = array();
   $order_total->process($order);
+  
+// Resume incomplete order in session
+  if (!empty($resume_id) && empty($order->data['order_status_id'])) {
+    $order->data['id'] = $resume_id;
+  }
 
   $box_checkout_summary = new view();
 

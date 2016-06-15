@@ -6,13 +6,13 @@
   breadcrumbs::add(language::translate('title_checkout', 'Checkout'), document::ilink('checkout'));
   breadcrumbs::add(language::translate('title_order_success', 'Order Success'));
 
-  $order = new ctrl_order('session');
+  if (empty(session::$data['order']->data['id'])) die('Error: Missing session order object');
+  
+  $order = &session::$data['order'];
 
   $payment = new mod_payment();
 
   $order_module = new mod_order();
-
-  if (empty($order->data['id'])) die('Error: Missing session order object');
 
   cart::reset();
 
