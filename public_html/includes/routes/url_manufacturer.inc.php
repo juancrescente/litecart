@@ -5,6 +5,12 @@
     function routes() {
       return array(
         array(
+          'pattern' => '#^manufacturers/([0-9]+)/.*$#',
+          'page' => 'manufacturer',
+          'params' => 'manufacturer_id=$1',
+          'redirect' => true,
+        ),
+        array(
           'pattern' => '#^.*-m-([0-9]+)/?$#',
           'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
@@ -17,15 +23,8 @@
 
       if (!isset($parsed_link['query']['manufacturer_id'])) return;
 
-      $manufacturer_query = database::query(
-        "select id, name from ". DB_TABLE_MANUFACTURERS ."
-        where id = '". (int)$parsed_link['query']['manufacturer_id'] ."'
-        limit 1;"
-      );
-      $manufacturer = database::fetch($manufacturer_query);
-      if (empty($manufacturer)) return;
-
-      $parsed_link['path'] = functions::general_path_friendly($manufacturer['name'], $language_code) .'-m-'. $manufacturer['id'] .'/';
+      $manufacturer = catalog::manufacturer($parsed_link['query']['manufacturer_id']);
+      $parsed_link['path'] = 'manufacturer/'. $parsed_link['query']['manufacturer_id'] .'/'. functions::general_path_friendly($manufacturer->name, $language_code);
 
       unset($parsed_link['query']['manufacturer_id']);
 
