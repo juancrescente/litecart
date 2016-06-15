@@ -5,7 +5,7 @@
     function routes() {
       return array(
         array(
-          'pattern' => '#^products/([0-9]+)/.*$#',
+          'pattern' => '#^product/([0-9]+)/.*$#',
           'page' => 'product',
           'params' => 'product_id=$1',
           'redirect' => true,

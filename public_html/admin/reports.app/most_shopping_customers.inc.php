@@ -15,12 +15,24 @@
   if (!isset($_GET['page'])) $_GET['page'] = 1;
 ?>
 
+<style>
+form[name="filter_form"] li {
+  vertical-align: middle;
+}
+</style>
+
 <?php echo functions::form_draw_form_begin('filter_form', 'get'); ?>
   <?php echo functions::form_draw_hidden_field('app'); ?>
   <?php echo functions::form_draw_hidden_field('doc'); ?>
   <ul class="list-inline pull-right">
     <li><?php echo language::translate('title_date_period', 'Date Period'); ?>:</li>
-    <li style="white-space: nowrap;"><?php echo functions::form_draw_date_field('date_from'); ?> - <?php echo functions::form_draw_date_field('date_to'); ?></li>
+    <li>
+      <div class="input-group" style="max-width: 350px;">
+        <?php echo functions::form_draw_date_field('date_from'); ?>
+        <span class="input-group-addon"> - </span>
+        <?php echo functions::form_draw_date_field('date_to'); ?>
+      </div>
+    </li>
     <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
   </ul>
 <?php echo functions::form_draw_form_end(); ?>

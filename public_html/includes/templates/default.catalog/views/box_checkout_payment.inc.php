@@ -51,10 +51,3 @@
   overflow-y: hidden;
 }
 </style>
-<script>
-$('body').on('click', '#checkout-payment .option:not(.active)', function(){
-  $('#checkout-payment .option').removeClass('active');
-  $(this).prev('input[name="payment_option"]').click();
-  $(this).addClass('active');
-});
-</script>

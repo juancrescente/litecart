@@ -7,7 +7,6 @@
         return '<i class="'. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'fa-'):
-        document::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
         return '<i class="fa '. $class .'"'. (!empty($params) ? ' ' . $params : null) .'></i>';
 
       case (substr($class, 0, 3) == 'glyphicon-'):
@@ -107,8 +106,8 @@
                                                        . '    event.preventDefault();' . PHP_EOL
                                                        . '    $(this).ekkoLightbox({' . PHP_EOL
                                                        . '      loadingMessage: \''. functions::draw_fonticon('fa-spinner fa-2x fa-spin') .'\',' . PHP_EOL
-                                                       . '      left_arrow_class: \'fa fa-chevron-left\',' . PHP_EOL
-                                                       . '      right_arrow_class: \'fa fa-chevron-right\',' . PHP_EOL
+                                                       . '      left_arrow: \''. functions::draw_fonticon('fa-chevron-left') .'\',' . PHP_EOL
+                                                       . '      right_arrow: \''. functions::draw_fonticon('fa-chevron-right') .'\',' . PHP_EOL
                                                        . '      max_width: \'1024px\',' . PHP_EOL
                                                        . '      effect_class: null' . PHP_EOL
                                                        . '    });' . PHP_EOL

@@ -15,7 +15,13 @@
 <div id="page" class="shadow">
 
   <div id="top-menu">
-    <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?>
+    <div id="customer-service">
+      <ul class="list-inline">
+        <li><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></li>
+        <li class="pull-right"><?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?></li>
+      </ul>
+    </div>
+
   </div>
 
   <header id="header">

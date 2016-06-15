@@ -40,17 +40,23 @@
 
       self::$snippets['title'] = array(settings::get('store_name'));
 
-      self::$snippets['head_tags']['X-UA-Compatible'] = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
-
       self::$snippets['head_tags']['favicon'] = '<link rel="shortcut icon" href="'. WS_DIR_HTTP_HOME .'favicon.ico">';
 
+    // Older browsers (mainly Internet IE)
+      self::$snippets['head_tags']['X-UA-Compatible'] = '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
       self::$snippets['head_tags']['html5shiv'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/html5shiv"></script><![endif]-->';
       self::$snippets['head_tags']['respond'] = '<!--[if lt IE 9]><script src="//cdn.jsdelivr.net/g/respond"></script><![endif]-->';
 
-      self::$snippets['head_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-2.1.4.min.js"></script>';
-      //self::$snippets['head_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.1.4,bootstrap@3.3.6"></script>';
+    // CDN content
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4"></script>';
+      self::$snippets['foot_tags']['bootstrap'] = '<script src="//cdn.jsdelivr.net/g/bootstrap@3.3.6"></script>';
+      //self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4,bootstrap@3.3.6"></script>';
 
-      self::$snippets['foot_tags']['bootstrap'] = '<script src="'. WS_DIR_EXT .'bootstrap/bootstrap.min.js"></script>';
+    // Local overrides (Uncomment below)
+      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
+      //self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-2.1.4.min.js"></script>';
+      //self::$snippets['foot_tags']['bootstrap'] = '<script src="'. WS_DIR_EXT .'bootstrap/bootstrap.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {
@@ -127,6 +133,9 @@
                                         . '</script>' . PHP_EOL;
         self::$snippets['javascript'] = null;
       }
+
+    // Get template settings
+      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
     }
 
     public static function before_output() {
@@ -135,9 +144,6 @@
       foreach (array_keys(self::$snippets) as $snippet) {
         if (is_array(self::$snippets[$snippet])) self::$snippets[$snippet] = implode(PHP_EOL, self::$snippets[$snippet]);
       }
-
-    // Get template settings
-      self::$settings = unserialize(settings::get('store_template_catalog_settings'));
     }
 
     //public static function shutdown() {

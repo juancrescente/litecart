@@ -35,7 +35,7 @@
         if ($total == 18) break;
       }
 ?>
-<div class="widget">
+<div class="widget panel panel-default panel-body">
   <strong><?php echo language::translate('title_latest_addons', 'Latest Add-ons'); ?></strong>
   <div class="row">
     <?php foreach (array_keys($columns) as $key) { ?>

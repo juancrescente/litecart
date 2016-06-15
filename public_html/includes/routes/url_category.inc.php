@@ -4,7 +4,7 @@
     function routes() {
       return array(
         array(
-          'pattern' => '#^categories/([0-9]+)/.*$#',
+          'pattern' => '#^category/([0-9]+)/.*$#',
           'page' => 'category',
           'params' => 'category_id=$1',
           'redirect' => true,

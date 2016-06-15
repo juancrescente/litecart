@@ -2,17 +2,19 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 
 // Sidebar parallax effect
+  if ($('.sidebar').height() < $('.sidebar + .content').height()) {
   var sidebar_offset_y = $('.sidebar + .content').scrollTop() + $('.sidebar + .content').offset().top;
   $('.sidebar + .content').css('min-height', $('.sidebar').height());
   $('.sidebar').css('position', 'fixed').css('top', sidebar_offset_y+'px');
   $(window).resize(function(e){
     sidebar_offset_y = $('.sidebar + .content').scrollTop() + $('.sidebar + .content').offset().top;
   });
-  $(window).scroll(function(e){
+    $(window).bind('resize scroll', function(e){
       var scrolled = $(window).scrollTop();
-      //$('.sidebar').css('top', (sidebar_offset_y - (scrolled * ($('.sidebar').height()/$('.sidebar + .content').height()))) +'px');
+        //$('.sidebar').css('top', (sidebar_offset_y - (scrolled * ($('.sidebar').height()/($('.sidebar + .content').height()+$('.sidebar').offset().top)))) +'px');
       $('.sidebar').css('top', (sidebar_offset_y - (scrolled * 0.65)) +'px');
   });
+  }
 
   /*
    * jQuery Animate From To plugin 1.0

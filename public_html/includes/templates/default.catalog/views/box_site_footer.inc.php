@@ -1,6 +1,6 @@
 <hr style="clear: both;" />
 
-<footer>
+<footer id="footer">
   <div class="panel panel-default panel-body">
     <div class="row">
 <!--
@@ -43,24 +43,18 @@
         </ul>
       </div>
 
-      <div class="contact col-xs-12 col-sm-3 col-md-4">
+      <div class="row col-xs-12 col-sm-6 col-md-8">
+        <div class="contact col-xs-12 col-sm-6 col-md-8">
       Lorem ipsum dolor sit amet, populo propriae mei no. Vix tale nonumy id, quis eruditi alienum has at, eu quo utinam possit. Omnis blandit rationibus mel ut, at sit homero ornatus, his choro affert accusam an. Eum ad dolore ignota tractatos. Probo nobis vix at, nam no audiam imperdiet, ius facete singulis accommodare id. No quis meliore disputationi has, in exerci ocurreret mel, mea purto congue id.
       </div>
 
-      <div class="contact col-xs-12 col-sm-3 col-md-2">
+        <div class="contact col-xs-12 col-sm-6 col-md-4">
         <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
         <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
         <p><?php echo settings::get('store_phone'); ?><br />
           <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('<a href=\"mailto:". $account ."' + '@' + '". $domain ."\">". $account ."' + '@' + '". $domain ."</a>');</script>"; ?></p>
       </div>
-
-
-
-
-
-
-
-
+      </div>
     </div>
 
     <h4 class="social-bookmarks text-center" style="margin: 1em 0;">
@@ -72,5 +66,5 @@
   </div>
 
   <!-- LiteCart is provided free. Removing the link back to LiteCart.net without written permission is a violation. -->
-  <p class="text-center">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?> &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart<sup>®</sup></a></p>
+  <p class="text-center">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?> &middot; Powered by <a href="http://www.litecart.net" target="_blank">LiteCart</a><sup>®</sup></p>
 </footer>

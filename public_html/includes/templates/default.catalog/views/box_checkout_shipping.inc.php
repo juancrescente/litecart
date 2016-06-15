@@ -28,32 +28,3 @@
     <?php } ?>
   </div>
 </div>
-
-<style>
-#checkout-shipping .option .content {
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
-  transition: all 0.25s ease;
-  max-height: 200px;
-  overflow-y: auto;
-}
-#checkout-shipping .option:not(.active) {
-  opacity: 0.75;
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
-  transition: all 0.25s ease;
-}
-#checkout-shipping .option:not(.active) .content {
-  max-height: 0;
-  overflow-y: hidden;
-}
-</style>
-<script>
-$('#checkout-shipping').on('click', '.option:not(.active)', function(){
-  $('#checkout-shipping .option').removeClass('active');
-  $(this).prev('input[name="shipping_option"]').click();
-  $(this).addClass('active');
-});
-</script>

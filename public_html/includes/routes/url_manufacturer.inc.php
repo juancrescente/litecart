@@ -5,7 +5,7 @@
     function routes() {
       return array(
         array(
-          'pattern' => '#^manufacturers/([0-9]+)/.*$#',
+          'pattern' => '#^manufacturer/([0-9]+)/.*$#',
           'page' => 'manufacturer',
           'params' => 'manufacturer_id=$1',
           'redirect' => true,

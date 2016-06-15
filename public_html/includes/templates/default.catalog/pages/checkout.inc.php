@@ -30,8 +30,9 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
+// Queue Handler
   var updateQueue = [];
-  function queueUpdateTask(component, data) {
+  function queueUpdateTask(component, data=null) {
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks[0] == component) ? false : true;
     });
@@ -52,7 +53,7 @@
 
     task = updateQueue.shift();
 
-    if (console) console.log('Refreshing ' + task[0] + '...');
+    if (console) console.log('Refreshing #checkout-' + task[0] + '-wrapper...');
 
     if (!$('#loading').length) {
       var progress_bar = '<div id="loading" style="position: fixed; top: 50%; left: 10%; right: 10%; text-align: center; font-size: 256px; margin-top: -128px; opacity: 0.05; z-index: 999999;">'
@@ -66,7 +67,7 @@
     $.ajax({
       type: 'post',
       url: '?return='+task[0],
-      data: $('form[name="checkout_form"]').serialize(),
+      data: task[1],
       dataType: 'html',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
@@ -76,7 +77,7 @@
         $('#checkout-'+ task[0] +'-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
-        console.log(task[0] + ' refreshed');
+        console.log('#checkout-' + task[0] + '-wrapper refreshed');
         $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
       complete: function(html) {
@@ -86,6 +87,12 @@
       }
     });
   }
+
+  queueUpdateTask('cart');
+  queueUpdateTask('customer');
+  queueUpdateTask('shipping');
+  queueUpdateTask('payment');
+  queueUpdateTask('summary');
 
   /*
   $('body').on('change', '#checkout-cart-wrapper :input', function(e){
@@ -97,11 +104,12 @@
   });
   */
 
-// Customer form
+// Customer
+
   var customer_form_changed = false;
-  var customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+  var customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
   $("body").on('change keyup', '#checkout-customer-wrapper', function(e) {
-    if ($('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize() != customer_form_checksum) {
+    if ($('#checkout-customer-wrapper :input').serialize() != customer_form_checksum) {
       customer_form_changed = true;
       $('#checkout-customer-wrapper button[name="save_address"]').removeAttr('disabled');
     } else {
@@ -117,12 +125,12 @@
         if (!$(this).is(':focus')) {
           if (customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = $('form[name="checkout_form"]').serialize();
-            queueUpdateTask('cart', data);
+            var data = $('#checkout-customer-wrapper :input').serialize();
             queueUpdateTask('customer', data);
-            queueUpdateTask('payment', data);
-            queueUpdateTask('summary', data);
-            customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+            queueUpdateTask('cart');
+            queueUpdateTask('payment');
+            queueUpdateTask('summary');
+            customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
             customer_form_changed = false;
           }
         }
@@ -136,25 +144,41 @@
 
   $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
     e.preventDefault();
-    var data = $('form[name="checkout_form"]').serialize();
-    queueUpdateTask('cart', data);
+    var data = $('#checkout-customer-wrapper :input').serialize();
     queueUpdateTask('customer', data);
-    queueUpdateTask('payment', data);
-    queueUpdateTask('summary', data);
-    customer_form_checksum = $('form[name="checkout_form"]').find('#checkout-customer-wrapper :input').serialize();
+    queueUpdateTask('cart');
+    queueUpdateTask('payment');
+    queueUpdateTask('summary');
+    customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
     customer_form_changed = false;
   });
 
-  $('body').on('change', '#checkout-shipping-wrapper :input', function(e){
-    var data = $('form[name="checkout_form"]').serialize();
-    queueUpdateTask('payment', data);
-    queueUpdateTask('summary', data);
+// Shipping
+
+  $('#checkout-shipping-wrapper').on('click', '.option:not(.active)', function(){
+    $('#checkout-shipping .option').removeClass('active');
+    $(this).prev('input[name="shipping_option"]').click();
+    $(this).addClass('active');
+
+    var data = $('#checkout-shipping-wrapper :input').serialize();
+    //queueUpdateTask('shipping', data);
+    queueUpdateTask('payment');
+    queueUpdateTask('summary');
   });
 
-  $('body').on('change', '#checkout-payment-wrapper :input', function(e){
-    var data = $('form[name="checkout_form"]').serialize();
-    queueUpdateTask('summary', data);
+// Payment
+
+  $('#checkout-payment-wrapper').on('click', ' .option:not(.active)', function(){
+    $('#checkout-payment .option').removeClass('active');
+    $(this).prev('input[name="payment_option"]').click();
+    $(this).addClass('active');
+
+    var data = $('#checkout-payment-wrapper :input').serialize();
+    //queueUpdateTask('payment', data);
+    queueUpdateTask('summary');
   });
+
+// Summary
 
   $("body").on('click', '#checkout-summary-wrapper button[name="confirm_order"]', function(e) {
     if (customer_form_changed) {
@@ -164,12 +188,6 @@
   });
 
   $("body").on('submit', 'form[name="checkout_form"]', function(e) {
-    $('#checkout-summary-wrapper button[name="confirm_order"]').prepend('<i class="fa fa-spinner fa-spin"></i> ');
+    $('#checkout-summary-wrapper button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo htmlspecialchars(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
   });
-
-  queueUpdateTask('cart');
-  queueUpdateTask('customer');
-  queueUpdateTask('shipping');
-  queueUpdateTask('payment');
-  queueUpdateTask('summary');
 </script>

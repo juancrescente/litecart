@@ -22,8 +22,8 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     this.$element = $(element);
     content = '';
     this.modal_id = this.options.modal_id ? this.options.modal_id : 'ekkoLightbox-' + Math.floor((Math.random() * 1000) + 1);
-    header = '<div class="modal-header"' + (this.options.title || this.options.always_show_close ? '' : ' style="display:none"') + '><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + (this.options.title || "&nbsp;") + '</h4></div>';
-    footer = '<div class="modal-footer"' + (this.options.footer ? '' : ' style="display:none"') + '>' + this.options.footer + '</div>';
+    header = (this.options.title || this.options.always_show_close) ? '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + (this.options.title || "&nbsp;") + '</h4></div>' : '';
+    footer = this.options.footer ? '<div class="modal-footer">' + this.options.footer + '</div>' : '';
     $(document.body).append('<div id="' + this.modal_id + '" class="ekko-lightbox modal'+ (this.options.effect_class ? ' ' + this.options.effect_class : '') +'" data-modal-index="'+ Date.now() +'" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' + header + '<div class="modal-body"><div class="ekko-lightbox-container"><div></div></div></div>' + footer + '</div></div></div>');
     this.modal = $('#' + this.modal_id);
     this.modal_dialog = this.modal.find('.modal-dialog').first();
@@ -82,15 +82,15 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
           this.gallery_index = this.gallery_items.index(this.$element);
           $(document).on('keydown.ekkoLightbox', this.navigate.bind(this));
           if (this.options.directional_arrows && this.gallery_items.length > 1) {
-            this.lightbox_container.append('<div class="ekko-lightbox-nav-overlay"><a href="#" class="' + this.strip_stops(this.options.left_arrow_class) + ' arrow-left"></a><a href="#" class="' + this.strip_stops(this.options.right_arrow_class) + ' arrow-right"></a></div>');
-            this.modal_arrows = this.lightbox_container.find('div.ekko-lightbox-nav-overlay').first();
-            this.lightbox_container.find('a' + this.strip_spaces(this.options.left_arrow_class)).on('click', (function(_this) {
+            this.modal_arrows = '<a href="#" class="modal-control arrow-left">' + this.options.left_arrow + '</a><a href="#" class="modal-control arrow-right">' + this.options.right_arrow + '</a>';
+            this.lightbox_container.append(this.modal_arrows);
+            this.lightbox_container.find('a.arrow-left').on('click', (function(_this) {
               return function(event) {
                 event.preventDefault();
                 return _this.navigate_left();
               };
             })(this));
-            this.lightbox_container.find('a' + this.strip_spaces(this.options.right_arrow_class)).on('click', (function(_this) {
+            this.lightbox_container.find('a.arrow-right').on('click', (function(_this) {
               return function(event) {
                 event.preventDefault();
                 return _this.navigate_right();
@@ -261,7 +261,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
       this.lightbox_body.html('<iframe width="' + width + '" height="' + height + '" src="' + this.addTrailingSlash(id) + 'embed/" frameborder="0" allowfullscreen></iframe>');
       this.options.onContentLoaded.call(this);
       if (this.modal_arrows) {
-        return this.modal_arrows.css('display', 'none');
+        return this.lightbox_container.find('.modal-control').css('display', 'none');
       }
     },
     showVimeoVideo: function(id) {
@@ -276,7 +276,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
       this.lightbox_body.html('<div class="embed-responsive embed-responsive-16by9"><iframe width="' + width + '" height="' + height + '" src="' + url + '" frameborder="0" allowfullscreen class="embed-responsive-item"></iframe></div>');
       this.options.onContentLoaded.call(this);
       if (this.modal_arrows) {
-        this.modal_arrows.css('display', 'none');
+        this.lightbox_container.find('.modal-control').css('display', 'none');
       }
       return this;
     },
@@ -307,7 +307,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         this.options.onContentLoaded.call(this);
       }
       if (this.modal_arrows) {
-        this.modal_arrows.css('display', 'none');
+        this.lightbox_container.find('.modal-control').css('display', 'none');
       }
       return this;
     },
@@ -341,7 +341,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
             image.addClass('img-responsive');
             _this.lightbox_body.html(image);
             if (_this.modal_arrows) {
-              _this.modal_arrows.css('display', 'block');
+              _this.lightbox_container.find('.modal-control').css('display', 'block');
             }
             return image.load(function() {
               if (_this.options.scale_height) {
@@ -381,7 +381,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     },
     resize: function(width) {
       var width_total;
-      if (this.options.left_arrow_class) {
+      if (this.options.left_arrow) {
         width_total = this.options.max_width;
       } else {
         width_total = width + this.border.left + this.padding.left + this.padding.right + this.border.right;
@@ -425,8 +425,8 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
 
   $.fn.ekkoLightbox.defaults = {
     gallery_parent_selector: 'document.body',
-    left_arrow_class: '.glyphicon .glyphicon-chevron-left',
-    right_arrow_class: '.glyphicon .glyphicon-chevron-right',
+    left_arrow: '<span class="glyphicon glyphicon-chevron-left"></span>',
+    right_arrow: '<span class="glyphicon glyphicon-chevron-right"></span>',
     effect_class: 'fade',
     directional_arrows: true,
     type: null,
@@ -441,7 +441,6 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     onNavigate: function() {},
     onContentLoaded: function() {}
   };
-
 }).call(this);
 
 // Scroll fix

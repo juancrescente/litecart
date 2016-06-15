@@ -5,9 +5,9 @@ Iconic Fonts
 ------------
 * Fontawesome - MIT License - http://www.fontawesome.io/
 
-Language Icons
+Country Icons
 --------------
-* Open Web Graphics - Creative Commons Attribution 3.0 Unported - http://www.openwebgraphics.com/
+* Fam Fam Fam - Free use for any purpose with no requirement for attribution - http://www.famfamfam.com/
 
 Other Graphics
 --------------
@@ -22,15 +22,15 @@ JavaScript
 ----------
 * Bootstrap by Twitter, Inc - MIT License - http://www.getbootstrap.com/
 * Lightbox for Bootstrap 3 by Ashley White - MIT License - http://ashleydw.github.io/lightbox/
-* jqPlot by Chris Leonello - MIT and GPL version 2 - http://www.jqplot.com/
+* Chartist by Gion Kunz - MIT License - https://gionkunz.github.io/chartist-js/
 * jQuery by jQuery Foundation - MIT License - http://www.jquery.com/
-* jQuery Animate From To by Emil Stenström - MIT and GPL - http://friendlybit.com/
+* jQuery Animate From To by Emil Stenström - MIT License - http://friendlybit.com/
 * jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie/
 * Summernote by Summernote Team - MIT License - http://summernote.org/
 
 PHP
 ---
-vQmod by Qphoria - Special permitted use - https://www.vqmod.com/
+vQmod by Qphoria - Special permitted use - http://www.vqmod.com/
 
 Inspired By
 -----------

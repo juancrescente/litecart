@@ -45,6 +45,7 @@ body.modal-open #page {
 }
 
 // Sidebar
+
 #sidebar {
   padding-right: floor((@grid-gutter-width / 2));
   padding-left:  floor((@grid-gutter-width / 2));
@@ -58,6 +59,16 @@ body.modal-open #page {
   margin-right: -15px;
   li {
     margin: 0;
+    a {
+      color: inherit;
+    }
+    &.active > a {
+      color: #fff;
+    }
+    i.fa {
+      font-size: 0.75em;
+      vertical-align: middle;
+    }
   }
 }
 #box-information-links .title {
@@ -71,6 +82,24 @@ body.modal-open #page {
   }
 }
 
+// Footer
+
+#footer {
+  li{
+    padding: 2px 0px;
+    /*
+    &:before {
+      content: "·";
+      position: absolute;
+      margin-left: -10px;
+    }
+    */
+  }
+  a {
+    color: inherit;
+  }
+}
+
 // Checkout
 
 body#checkout {
@@ -81,6 +110,7 @@ body#checkout {
       }
     }
   }
+
   #checkout-cart {
     tr td:first-child a {
       display: inline-block;
@@ -89,11 +119,41 @@ body#checkout {
       text-align: right;
     }
   }
-  #checkout-shipping .option.btn, #checkout-payment .option.btn {
+
+  #checkout-shipping, #checkout-payment {
+    .option {
+      &.btn {
     padding: 12px;
   }
-}
+      &:not(.active) {
+        opacity: 0.75;
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
+        .content {
+          max-height: 0;
+          overflow-y: hidden;
+        }
+      }
+      .content {
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    }
+  }
 
+  #checkout-customer {
+    button:not([disabled]) {
+      font-weight: bold;
+      color: #f00;
+    }
+  }
+}
 
 // Data Tables
 
@@ -109,10 +169,11 @@ table.data-table {
 // Listing
 
 .products .product {
-  .thumbnail {
     position: relative;
+  .thumbnail {
     margin: 0;
     overflow: hidden;
+
     .sticker {
       position: absolute;
       top: 1.5em;
@@ -134,21 +195,26 @@ table.data-table {
         background: @sticker-sale-background;
       }
     }
+    img {
+      padding: @grid-gutter-width/2;
+    }
   }
   &:hover .thumbnail {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
   }
   a {
+    color: inherit;
     text-decoration: none;
   }
+  .caption {
   .manufacturer {
     opacity: 0.75;
+  }
   }
   .price-wrapper {
     margin-top: 0.5em;
     font-size: 1.5em;
     font-weight: bold;
-    text-align: center;
     .price {
       white-space: nowrap;
     }
@@ -159,6 +225,17 @@ table.data-table {
     .campaign-price {
       color: #ff0000;
       white-space: nowrap;
+    }
+  }
+  &.product-column {
+    text-align: center;
+    .caption {
+      height: 4em;
+    }
+  }
+  &.product-row {
+    .short-description {
+      height: 3.5em;
     }
   }
 }

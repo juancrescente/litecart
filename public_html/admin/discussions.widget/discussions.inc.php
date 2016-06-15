@@ -25,7 +25,7 @@
         if ($total == 16) break;
       }
 ?>
-<div class="widget">
+<div class="widget panel panel-default panel-body">
   <strong><?php echo language::translate('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?></strong>
   <div class="row">
     <?php foreach (array_keys($columns) as $key) { ?>

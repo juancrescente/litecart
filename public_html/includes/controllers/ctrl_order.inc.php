@@ -6,23 +6,7 @@
     public function __construct($order_id=null) {
 
       if (!empty($order_id)) {
-        switch (true) {
-          case (is_numeric($order_id)):
-            $this->load($order_id);
-            break;
-
-          case ($order_id == 'session'):
-            if (empty(session::$data['order'])) {
-              $this->reset();
-              session::$data['order'] = $this->data;
-            }
-            $this->data = &session::$data['order'];
-            break;
-
-          default:
-            trigger_error('Invalid value for order ID', E_USER_ERROR);
-            break;
-        }
+        $this->load($order_id);
       }
     }
 
