@@ -36,7 +36,7 @@
       return $result;
     }
     
-    foreach (scandir($target) as $file) {
+    foreach (scandir(rtrim($target, '/')) as $file) {
       if ($file == '.' || $file == '..') continue;
       if (!file_delete($target .'/'. $file)) return false;
     }

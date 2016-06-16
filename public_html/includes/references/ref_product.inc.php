@@ -400,6 +400,7 @@
         case 'dim_y':
         case 'dim_z':
         case 'dim_class':
+        case 'sku':
         case 'stock':
         
           $this->_data['sku'] = null;
@@ -412,11 +413,10 @@
         
           $products_stock_query = database::query(
             "select * from ". DB_TABLE_PRODUCTS_STOCK ."
-            where product_id = '". (int)$this->_data['id'] ."';"
+            where product_id = '". (int)$this->_id ."';"
           );
+          
           while($stock = database::fetch($products_stock_query)) {
-            $this->_data['stock'][$stock['id']] = $stock;
-            
             if (empty($stock['combination'])) {
               $this->_data['sku'] = $stock['sku'];
               $this->_data['weight'] = $stock['weight'];
@@ -426,6 +426,34 @@
               $this->_data['dim_z'] = $stock['dim_z'];
               $this->_data['dim_class'] = $stock['dim_class'];
             }
+            
+            $stock['name'] = array();
+            foreach (array_keys(language::$languages) as $language_code) {
+              $stock['name'][$language_code] = empty($stock['combination']) ? language::translate('title_main_item', 'Main Item') : '';
+            }
+            
+            if (!empty($stock['combination'])) {
+              foreach (explode(',', $stock['combination']) as $combination) {
+                list($group_id, $value_id) = explode('-', $combination);
+                
+                $options_values_query = database::query(
+                  "select distinct ovi.value_id, ovi.name, ovi.language_code from ". DB_TABLE_OPTION_VALUES_INFO ." ovi
+                  where ovi.value_id = '". (int)$value_id ."'
+                  and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
+                );
+                
+                while($option_value = database::fetch($options_values_query)) {
+                
+                  if (!empty($stock['name'][$option_value['language_code']])) {
+                    $stock['name'][$option_value['language_code']] .= ', ';
+                  }
+
+                  $stock['name'][$option_value['language_code']] .= $option_value['name'];
+                }
+              }
+            }
+            
+            $this->_data['stock'][$stock['id']] = $stock;
           }
           
           break;
@@ -521,13 +549,21 @@
           } else {
             $row['category_ids'] = array();
           }
-          unset($row['categories']);
           
           if (!empty($row['product_groups'])) {
             $row['product_group_ids'] = explode(',', $row['product_groups']);
           } else {
             $row['product_group_ids'] = array();
           }
+          
+          unset($row['weight']);
+          unset($row['weight_class']);
+          unset($row['dim_x']);
+          unset($row['dim_y']);
+          unset($row['dim_z']);
+          unset($row['dim_class']);
+          unset($row['sku']);
+          unset($row['categories']);
           unset($row['product_groups']);
           
           foreach ($row as $key => $value) $this->_data[$key] = $value;

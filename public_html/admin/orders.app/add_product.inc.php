@@ -128,9 +128,9 @@
     
     <hr />
     
-    <?php if (!empty($product->stock) && count($product->stock) > 1) {?>
+    <?php if (!empty($product->stock)) {?>
     <div style="float: right; display: inline-block; border: 1px dashed #ccc; padding: 10px;">
-      <h3 style="margin-top: 0px;"><?php echo language::translate('title_options_stock', 'Options Stock'); ?></h3>
+      <h3 style="margin-top: 0px;"><?php echo language::translate('title_stock', 'Stock'); ?></h3>
       <table>
         <?php foreach ($product->stock as $stock_option) { ?>
         <tr>
