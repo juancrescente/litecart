@@ -75,7 +75,7 @@
         <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
         <td><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
         <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
-        <td class="text-center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
+        <td class="text-center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
         <?php } else { ?>
         <td class="text-center"></td>
         <?php } ?>

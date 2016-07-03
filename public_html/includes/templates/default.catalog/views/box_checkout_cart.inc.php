@@ -20,7 +20,7 @@
       <?php foreach ($items as $key => $item) { ?>
       <tr class="item">
         <td><a href="<?php echo htmlspecialchars($item['link']); ?>" class="image-wrapper shadow"><img src="<?php echo htmlspecialchars($item['thumbnail']); ?>" height="48" /></a></td>
-        <td><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><strong><?php echo $item['name']; ?></strong></a><br /><?php echo catalog::product($item['product_id'])->code; ?></td>
+        <td><a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: inherit;"><strong><?php echo $item['name']; ?></strong></a><br /><?php echo reference::product($item['product_id'])->code; ?></td>
         <td><?php if (!empty($item['options'])) echo '<p>'. implode('<br />', $item['options']) .'</p>'; ?></td>
         <td><?php echo currency::format(tax::get_price($item['price'], $item['tax_class_id'])); ?></td>
         <td>

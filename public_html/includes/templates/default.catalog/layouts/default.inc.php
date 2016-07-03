@@ -14,14 +14,16 @@
 
 <div id="page" class="shadow">
 
-  <div id="top-menu">
-    <div id="customer-service">
+  <div id="top-menu" class="row">
+    <div class="customer-service hidden-xs hidden-sm col-md-4"><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></div>
+    <div class="region col-md-8 text-right">
       <ul class="list-inline">
-        <li><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></li>
-        <li class="pull-right"><?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_region.inc.php'); ?></li>
+        <li class="language"><?php echo language::$selected['name']; ?></li>
+        <li class="currency"><span title="<?php echo currency::$selected['name']; ?>"><?php echo currency::$selected['code']; ?></span></li>
+        <li class="country"><img src="<?php echo WS_DIR_IMAGES .'countries/'. strtolower(customer::$data['country_code']) .'.png'; ?>" alt="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>" title="<?php echo functions::reference_get_country_name(customer::$data['country_code']); ?>" style="vertical-align: baseline;" /></li>
+        <li class="change"><a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a></li>
       </ul>
     </div>
-
   </div>
 
   <header id="header">

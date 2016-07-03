@@ -38,11 +38,18 @@
 
     breadcrumbs::add($page['title']);
 
-    $_page->snippets = array(
+    $_page->snippets += array(
       'title' => $page['title'],
       'content' => $page['content'],
     );
+
+  } else {
+
+    ob_start();
+    include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_contact_us.inc.php');
+    $_page->snippets['content'] = ob_get_clean();
   }
+
 
   echo $_page->stitch('pages/customer_service');
 

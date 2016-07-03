@@ -68,7 +68,7 @@
     }
 
     if (ini_get('log_errors')) {
-      error_log('['. gethostbyaddr($_SERVER['REMOTE_ADDR']) .'] '. strip_tags($output) . (!empty($_SERVER['REQUEST_URI']) ? ' ' . $_SERVER['REQUEST_URI'] : ''));
+      error_log('['. gethostbyaddr($_SERVER['REMOTE_ADDR']) .']  '. strip_tags($output) . (!empty($_SERVER['REQUEST_URI']) ? ' ' . $_SERVER['REQUEST_URI'] : ''));
     }
 
     if (in_array($errno, array(E_ERROR, E_USER_ERROR))) exit;

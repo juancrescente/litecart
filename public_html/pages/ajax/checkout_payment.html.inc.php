@@ -36,6 +36,7 @@
   }
 
 /*
+// Hide
   if (count($options) == 1
   && count($options[key($options)]['options']) == 1
   && empty($options[key($options)]['options'][key($options[key($options)]['options'])]['error'])
@@ -51,5 +52,4 @@
   );
 
   echo $box_checkout_payment->stitch('views/box_checkout_payment');
-
 ?>

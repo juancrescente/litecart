@@ -15,8 +15,8 @@ body {
   margin: 0 auto;
   padding: 15px;
 
-  -webkit-transition: filter 2.25s ease-out;
-  transition: filter 2.25s ease-out;
+  /*-webkit-transition: filter 0.25s ease-out;*/
+  /*transition: filter 0.25s ease-out;*/
 }
 
 body.modal-open #page {
@@ -47,8 +47,14 @@ body.modal-open #page {
 // Sidebar
 
 #sidebar {
+  clear: both;
   padding-right: floor((@grid-gutter-width / 2));
   padding-left:  floor((@grid-gutter-width / 2));
+}
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: static !important;
+  }
 }
 #column-left form[name="search_form"] {
   margin-left: -15px;
