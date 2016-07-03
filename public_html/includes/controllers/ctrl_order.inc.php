@@ -13,7 +13,7 @@
     public function reset() {
 
       $this->data = array(
-        'id' => '',
+        'id' => null,
         'uid' => uniqid(),
         'items' => array(),
         'weight_total' => 0,

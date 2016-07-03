@@ -3,6 +3,9 @@
   document::$snippets['head_tags']['chartist'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'chartist/chartist.min.css" />';
   document::$snippets['foot_tags']['chartist'] = '<script src="'. WS_DIR_EXT .'chartist/chartist.min.js"></script>';
 
+  $widget_sales_cache_id = cache::cache_id('widget_sales');
+  if (cache::capture($widget_sales_cache_id, 'file', 300)) {
+
   $order_statuses = array();
   $orders_status_query = database::query(
     "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
@@ -10,7 +13,6 @@
   while ($order_status = database::fetch($orders_status_query)) {
     $order_statuses[] = (int)$order_status['id'];
   }
-
 ?>
 <div class="row">
   <div class="widget col-md-5">
@@ -29,7 +31,6 @@
 
     $monthly_sales[date('Y-m', $timestamp)] = (int)$orders['total_sales'];
     }
-
 ?>
     <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
     <script>
@@ -74,7 +75,6 @@
 
     $daily_sales[date('d', $timestamp)] = (int)$orders['total_sales'];
     }
-
 ?>
     <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
     <script>
@@ -167,3 +167,7 @@
     </script>
   </div>
 </div>
+<?php
+    cache::end_capture($widget_sales_cache_id);
+  }
+?>

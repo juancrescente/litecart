@@ -20,7 +20,7 @@
 
     if (empty(notices::$data['errors'])) {
 
-      if (empty($_POST['stable'])) $_POST['stable'] = 0;
+      if (empty($_POST['status'])) $_POST['status'] = 0;
 
       $fields = array(
         'status',
@@ -59,7 +59,7 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($slide->data['id']) ? language::translate('title_edit_slide', 'Edit Slide') : language::translate('title_add_new_slide', 'Add New Slide'); ?></h1>
 
-<?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" /></p>'; ?>
+<?php if (!empty($slide->data['image'])) echo '<p><img src="'. WS_DIR_IMAGES . $slide->data['image'] .'" alt="" /></p>'; ?>
 
 <?php echo functions::form_draw_form_begin('slide_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 

@@ -35,7 +35,7 @@
 <?php echo functions::form_draw_form_begin('logotype_form', 'post', false, true); ?>
 
   <div class="thumbnail" style="padding: 1em; display: inline-block;  margin-top: 1em;">
-    <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 500, 'FIT_ONLY_BIGGER'); ?>" />
+    <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', 500, 500, 'FIT_ONLY_BIGGER'); ?>" alt="" />
   </div>
 
   <div class="row">

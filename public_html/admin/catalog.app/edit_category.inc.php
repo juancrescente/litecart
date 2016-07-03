@@ -49,6 +49,8 @@
 
       $category->save();
 
+      if (!empty($_POST['delete_image'])) $category->delete_image();
+
       if (is_uploaded_file($_FILES['image']['tmp_name'])) {
         $category->save_image($_FILES['image']['tmp_name']);
       }
@@ -73,7 +75,7 @@
 
 <?php
   if (!empty($category->data['image'])) {
-    echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" /></p>';
+    echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" alt="" /></p>';
   }
 ?>
 <?php echo functions::form_draw_form_begin('category_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
@@ -149,7 +151,12 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
-            <?php echo functions::form_draw_file_field('image', ''); ?><?php if (isset($category->data['image']) && $category->data['image'] != '') echo '</label>' . PHP_EOL . $category->data['image']; ?>
+            <?php echo functions::form_draw_file_field('image', ''); ?>
+            <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150); ?>" alt="" /><br />
+            <?php if (!empty($category->data['image'])) { ?><br />
+            <?php echo $category->data['image']; ?><br />
+            <?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?>
+            <?php } ?>
           </div>
         </div>
 

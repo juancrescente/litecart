@@ -15,7 +15,7 @@
 
   <div id="logotype">
     <a href="<?php echo document::href_link(WS_DIR_ADMIN); ?>">
-      <img class="center-block img-responsive" src="<?php echo functions::image_process(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', array('width' => 220, 'height' => 70, 'clipping' => 'FIT_ONLY_BIGGER')); ?>" title="<?php echo settings::get('store_name'); ?>" />
+      <img class="center-block img-responsive" src="<?php echo functions::image_process(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'logotype.png', array('width' => 220, 'height' => 70, 'clipping' => 'FIT_ONLY_BIGGER')); ?>" alt="<?php echo settings::get('store_name'); ?>" />
     </a>
   </div>
 

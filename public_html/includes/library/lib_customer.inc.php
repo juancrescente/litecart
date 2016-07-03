@@ -379,6 +379,7 @@
     }
 
     public static function logout($redirect_url='') {
+
       self::reset();
 
       cart::reset();
