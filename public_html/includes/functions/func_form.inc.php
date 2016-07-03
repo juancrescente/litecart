@@ -419,7 +419,7 @@
     }
 
     return '<div>' . PHP_EOL
-         . '  <div class="btn-group" data-toggle="buttons">'. PHP_EOL
+         . '  <div class="btn-group btn-group-justified" data-toggle="buttons">'. PHP_EOL
          . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
          . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
          . '  </div>' . PHP_EOL
@@ -436,6 +436,15 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="url" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="url"'. (($parameters) ? ' '.$parameters : false) .' />';
+  }
+
+  function form_draw_username_field($name, $value=true, $parameters='') {
+    if ($value === true) $value = form_reinsert_value($name);
+
+    return '<div class="input-group">' . PHP_EOL
+         . '  <span class="input-group-addon">'. functions::draw_fonticon('fa-user') .'</span>' . PHP_EOL
+         . '  <input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'" value="'. htmlspecialchars($value) .'" data-type="text"'. (($parameters) ? ' '.$parameters : false) .' />'
+         . '</div>';
   }
 
   function form_draw_wysiwyg_field($name, $value=true, $parameters='') {

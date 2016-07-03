@@ -128,7 +128,7 @@ body {
         <!--snippet:notices-->
 
         <div class="form-group">
-          <?php echo functions::form_draw_fonticon_field('username', true, 'text', 'fa-user', 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
+          <?php echo functions::form_draw_username_field('username', true, 'placeholder="'. language::translate('title_username', 'Username') .'"'); ?>
         </div>
 
         <div class="form-group">
