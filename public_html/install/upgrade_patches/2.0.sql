@@ -43,3 +43,5 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('listings', 'local', 'Product Modal Window', 'Open products in a modal window', 'product_modal_window', '1', 'toggle()', 21, NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
