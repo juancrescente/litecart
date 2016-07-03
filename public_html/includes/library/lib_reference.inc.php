@@ -50,14 +50,14 @@
 
       switch(true) {
         case ($component == 'ref'):
-        case (!$component && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'ref_'.basename($resource).'.inc.php')):
+        case (!$component && is_file(FS_DIR_HTTP_ROOT . WS_DIR_REFERENCES . 'ref_'.basename($resource).'.inc.php')):
 
           $class_name = 'ref_'.$resource;
           self::$_cache[$resource][$arguments[0]] = new $class_name($arguments[0]);
           return self::$_cache[$resource][$arguments[0]];
 
         case ($resource_type == 'ctrl'):
-        case (!$component && file_exists(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_'.basename($resource).'.inc.php')):
+        case (!$component && is_file(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_'.basename($resource).'.inc.php')):
 
           $class_name = 'ctrl_'.$resource;
           $object = new $class_name($arguments[0]);
