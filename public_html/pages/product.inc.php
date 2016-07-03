@@ -5,7 +5,7 @@
   }
 
   if (!empty($_GET['product_id'])) {
-    $product = catalog::product($_GET['product_id']);
+    $product = reference::product($_GET['product_id']);
   }
 
   if (empty($_GET['category_id']) && empty($product->manufacturer)) {
@@ -114,19 +114,17 @@
     'sticker' => '',
     'extra_images' => array(),
     'manufacturer' => array(),
-    'regular_price' => currency::format(tax::get_price($product->price, $product->tax_class_id)),
-    'campaign_price' => !empty($product->campaign['price']) ? currency::format(tax::get_price($product->campaign['price'], $product->tax_class_id)) : null,
-    'regular_price_value' => tax::get_price($product->price, $product->tax_class_id),
-    'campaign_price_value' => !empty($product->campaign['price']) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : 0,
+    'regular_price' => tax::get_price($product->price, $product->tax_class_id),
+    'campaign_price' => !empty($product->campaign['price']) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'tax_rates' => array(),
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit_name' => $product->quantity_unit['name'][language::$selected['code']],
     'quantity_unit_decimals' => $product->quantity_unit['decimals'],
-    'stock_status_value' => (settings::get('display_stock_count')) ? round($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'][language::$selected['code']] : language::translate('title_in_stock', 'In Stock'),
-    'delivery_status_value' => !empty($product->delivery_status['name'][language::$selected['code']]) ? $product->delivery_status['name'][language::$selected['code']] : '',
-    'sold_out_status_value' => !empty($product->sold_out_status['name'][language::$selected['code']]) ? $product->sold_out_status['name'][language::$selected['code']] : '',
+    'stock_status' => (settings::get('display_stock_count')) ? round($product->quantity, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'][language::$selected['code']] : language::translate('title_in_stock', 'In Stock'),
+    'delivery_status' => !empty($product->delivery_status['name'][language::$selected['code']]) ? $product->delivery_status['name'][language::$selected['code']] : '',
+    'sold_out_status' => !empty($product->sold_out_status['name'][language::$selected['code']]) ? $product->sold_out_status['name'][language::$selected['code']] : '',
     'orderable' => $product->sold_out_status['orderable'],
     'cheapest_shipping_fee' => null,
     'catalog_only_mode' => settings::get('catalog_only_mode'),

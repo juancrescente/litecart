@@ -6,7 +6,7 @@
     exit;
   }
 
-  $category = catalog::category($_GET['category_id']);
+  $category = reference::category($_GET['category_id']);
 
   if (empty($category->id)) {
     notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));

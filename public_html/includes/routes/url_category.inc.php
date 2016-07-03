@@ -22,7 +22,7 @@
 
       if (!isset($parsed_link['query']['category_id'])) return;
 
-      $category = catalog::category($parsed_link['query']['category_id']);
+      $category = reference::category($parsed_link['query']['category_id']);
       $parsed_link['path'] = 'category/'. $parsed_link['query']['category_id'] .'/'. functions::general_path_friendly($category->name[$language_code], $language_code);
 
       unset($parsed_link['query']['category_id']);

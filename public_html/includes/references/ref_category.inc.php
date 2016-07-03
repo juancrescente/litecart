@@ -92,7 +92,7 @@
           );
 
           while ($row = database::fetch($query)) {
-            $this->_data['products'][$row['id']] = catalog::product($row);
+            $this->_data['products'][$row['id']] = reference::product($row);
           }
 
           break;

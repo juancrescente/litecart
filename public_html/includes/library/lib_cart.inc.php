@@ -140,7 +140,7 @@
         return;
       }
 
-      $product = catalog::product($product_id);
+      $product = reference::product($product_id);
 
       if ($product->status == 0) {
         if (!$silent) notices::add('errors', language::translate('text_product_not_available_for_purchase', 'The product is not available for purchase'));
@@ -350,7 +350,7 @@
       }
 
       if (!empty(self::$items[$item_key]['product_id'])) {
-        $product = catalog::product(self::$items[$item_key]['product_id']);
+        $product = reference::product(self::$items[$item_key]['product_id']);
 
       // Stock
         if (empty($product->sold_out_status['orderable'])) {

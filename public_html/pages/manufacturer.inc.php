@@ -13,7 +13,7 @@
 
   if (settings::get('product_modal_window')) functions::draw_lightbox();
 
-  $manufacturer = catalog::manufacturer($_GET['manufacturer_id']);
+  $manufacturer = reference::manufacturer($_GET['manufacturer_id']);
 
   if (empty($manufacturer->id)) {
     notices::add('errors', language::translate('error_410_gone', 'The requested file is no longer available'));

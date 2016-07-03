@@ -23,7 +23,7 @@
       
       if (empty($parsed_link['query']['page_id'])) return false;
       
-      $page = catalog::page($parsed_link['query']['page_id']);
+      $page = reference::page($parsed_link['query']['page_id']);
       $parsed_link['path'] = 'information/'. $parsed_link['query']['page_id'] .'/'. functions::general_path_friendly($page->title[$language_code], $language_code);
       
       unset($parsed_link['query']['page_id']);
