@@ -600,8 +600,15 @@
         }
       }
 
-      $customer = new mod_customer();
-      $result = $customer->validate($this->data['customer']);
+      $mod_customer = new mod_customer();
+      $result = $mod_customer->validate($this->data['customer']);
+
+      if (!empty($result['error'])) {
+        return $result['error'];
+      }
+
+      $mod_order = new mod_order();
+      $result = $mod_order->validate($this);
 
       if (!empty($result['error'])) {
         return $result['error'];

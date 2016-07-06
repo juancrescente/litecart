@@ -34,6 +34,17 @@
       return $this->data['actions'];
     }
 
+    public function validate($order) {
+
+      if (empty($this->modules)) return;
+
+      foreach ($this->modules as $module_id => $module) {
+        if (method_exists($this->modules[$module_id], $method_name)) {
+          if ($result = $module->validate($order)) return $result;
+        }
+      }
+    }
+
     public function before_process($order) {
 
       if (empty($this->modules)) return;
