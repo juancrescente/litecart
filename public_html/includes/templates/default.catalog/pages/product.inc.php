@@ -38,9 +38,9 @@
           <div class="pull-right">
             <h2 class="price-wrapper text-right" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
               <?php if ($campaign_price) { ?>
-              <del class="regular-price"><?php echo $regular_price; ?></del> <strong class="campaign-price" itemprop="price"><?php echo $campaign_price; ?></strong>
+              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price" itemprop="price"><?php echo currency::format($campaign_price); ?></strong>
               <?php } else { ?>
-              <span class="price" itemprop="price"><?php echo $regular_price; ?></span>
+              <span class="price" itemprop="price"><?php echo currency::format($regular_price); ?></span>
               <?php } ?>
             </h2>
 
@@ -58,13 +58,13 @@
 
         <div class="stock-status">
         <?php if ($quantity > 0) { ?>
-          <div class="stock-available"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $stock_status_value; ?></span></div>
-          <?php if ($delivery_status_value) { ?>
-          <div class="stock-delivery"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status_value;?></span></div>
+          <div class="stock-available"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $stock_status; ?></span></div>
+          <?php if ($delivery_status) { ?>
+          <div class="stock-delivery"><?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status;?></span></div>
           <?php } ?>
         <?php } else { ?>
-          <?php if ($sold_out_status_value) { ?>
-            <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status_value; ?></span></div>
+          <?php if ($sold_out_status) { ?>
+            <div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status; ?></span></div>
           <?php } else { ?>
             <div class="stock-unavailable"><?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo language::translate('title_sold_out', 'Sold Out'); ?></span></div>
           <?php } ?>

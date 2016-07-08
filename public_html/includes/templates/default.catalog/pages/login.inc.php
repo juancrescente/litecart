@@ -1,6 +1,6 @@
 <!--snippet:notices-->
 
-<?php echo functions::form_draw_form_begin('login_form', 'post'); ?>
+<?php echo functions::form_draw_form_begin('login_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
 
   <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 

@@ -2,20 +2,11 @@
   document::$layout = 'checkout';
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    require_once(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_header.inc.php');
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
   }
 
-  header('X-Robots-Tag: noindex');
-  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
-  document::$snippets['title'][] = language::translate('checkout:head_title', 'Checkout');
-
   if (settings::get('catalog_only_mode')) return;
-
-  breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
-
-  $_page = new view();
 
   if (!empty($_GET['return'])) {
 
@@ -42,5 +33,12 @@
     }
   }
 
+  header('X-Robots-Tag: noindex');
+  document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex" />';
+  document::$snippets['title'][] = language::translate('checkout:head_title', 'Checkout');
+
+  breadcrumbs::add(language::translate('title_checkout', 'Checkout'));
+
+  $_page = new view();
   echo $_page->stitch('pages/checkout');
 ?>

@@ -40,7 +40,7 @@
         <ul class="dropdown-menu">
           <?php if (empty(customer::$data['id'])) { ?>
           <li>
-            <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('account/login', array('redirect_url' => document::ilink())), false, 'class="" style="min-width: 320px; margin: 0.5em;"'); ?>
+            <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login', array('redirect_url' => document::ilink())), false, 'style="width: 320px; margin: 0.5em;"'); ?>
               <div class="form-group">
                 <?php echo functions::form_draw_email_field('email', true, 'placeholder="'. htmlspecialchars(language::translate('title_email_address', 'E-mail Address')) .'"'); ?>
               </div>
@@ -49,7 +49,7 @@
                 <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. htmlspecialchars(language::translate('title_password', 'Password')) .'"'); ?>
               </div>
 
-              <button name="login" type="submit" class="btn btn-default form-control"><?php echo language::translate('title_sign_in', 'Sign In'); ?></button>
+              <button name="login" type="submit" class="btn btn-default btn-block"><?php echo language::translate('title_sign_in', 'Sign In'); ?></button>
             <?php echo functions::form_draw_form_end(); ?>
           </li>
           <li role="separator" class="divider"></li>
@@ -58,7 +58,7 @@
           <li><a href="<?php echo document::ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
           <li><a href="<?php echo document::ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="<?php echo document::ilink('account/logout'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
+          <li><a class="btn btn-default btn-block" href="<?php echo document::ilink('logout'); ?>"><?php echo language::translate('title_sign_out', 'Sign Out'); ?></a></li>
           <?php } ?>
         </ul>
       </li>

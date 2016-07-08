@@ -31,7 +31,14 @@
 
 <script>
 // Queue Handler
-  var updateQueue = [];
+  var updateQueue = [
+    ['cart', null],
+    ['customer', null],
+    ['shipping', null],
+    ['payment', null],
+    ['summary', null]
+  ];
+
   function queueUpdateTask(component, data=null) {
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks[0] == component) ? false : true;
@@ -88,11 +95,9 @@
     });
   }
 
-  queueUpdateTask('cart');
-  queueUpdateTask('customer');
-  queueUpdateTask('shipping');
-  queueUpdateTask('payment');
-  queueUpdateTask('summary');
+  runQueue();
+
+// Cart
 
   /*
   $('body').on('change', '#checkout-cart-wrapper :input', function(e){
@@ -125,13 +130,7 @@
         if (!$(this).is(':focus')) {
           if (customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = $('#checkout-customer-wrapper :input').serialize();
-            queueUpdateTask('customer', data);
-            queueUpdateTask('cart');
-            queueUpdateTask('payment');
-            queueUpdateTask('summary');
-            customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
-            customer_form_changed = false;
+            $('#checkout-customer-wrapper button[name="save_address"]').trigger('click');
           }
         }
       }, 50
@@ -145,17 +144,17 @@
   $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
     e.preventDefault();
     var data = $('#checkout-customer-wrapper :input').serialize();
-    queueUpdateTask('customer', data);
     queueUpdateTask('cart');
     queueUpdateTask('payment');
     queueUpdateTask('summary');
     customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
-    customer_form_changed = false;
+    $('#checkout-customer-wrapper :input:first-child').trigger('change');
   });
 
 // Shipping
 
   $('#checkout-shipping-wrapper').on('click', '.option:not(.active)', function(){
+    if ($(this).find('input[name="shipping_option"][disabled]')) return false;
     $('#checkout-shipping .option').removeClass('active');
     $(this).prev('input[name="shipping_option"]').click();
     $(this).addClass('active');
@@ -168,7 +167,7 @@
 
 // Payment
 
-  $('#checkout-payment-wrapper').on('click', ' .option:not(.active)', function(){
+  $('#checkout-payment-wrapper').on('click', '.option:not(.active):not([disabled])', function(){
     $('#checkout-payment .option').removeClass('active');
     $(this).prev('input[name="payment_option"]').click();
     $(this).addClass('active');

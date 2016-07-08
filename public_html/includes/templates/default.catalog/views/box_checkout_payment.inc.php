@@ -1,11 +1,11 @@
 <div id="checkout-payment">
   <h2><?php echo language::translate('title_payment', 'Payment'); ?></h2>
 
+  <?php echo functions::form_draw_form_begin('shipping_form', 'post'); ?>
   <div class="options btn-group-vertical btn-block">
     <?php foreach ($options as $module) foreach ($module['options'] as $option) { ?>
-    <?php echo functions::form_draw_radio_button('payment_option', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"'); ?>
-    <div class="option btn btn-default <?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? 'active' : ''; ?>">
-    <?php echo functions::form_draw_form_begin('payment_form', 'post') . functions::form_draw_hidden_field('selected_payment', $module['id'].':'.$option['id'], $selected['id']); ?>
+      <label class="option btn btn-default<?php echo ($module['id'].':'.$option['id'] == $selected['id']) ? ' active' : ''; ?><?php echo !empty($option['error']) ? ' disabled' : ''; ?>">
+        <?php echo functions::form_draw_radio_button('payment_option', $module['id'].':'.$option['id'], $selected['id'], 'style="display: none;"' . (!empty($option['error']) ? ' disabled="disabled"' : '')); ?>
       <div class="header row" style="margin: 0;">
         <div class="col-md-3 thumbnail" style="margin: 0;">
           <img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $option['icon'], 125, 50, 'FIT_ONLY_BIGGER_USE_WHITESPACING'); ?>" />
@@ -15,7 +15,7 @@
           <div class="name"><?php echo $option['name']; ?></div>
         </div>
         <div class="col-md-4 text-right">
-          <div class="price"><?php echo ($option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : ''; ?></div>
+            <div class="price"><?php echo (empty($option['error']) && $option['cost'] != 0) ? '+ ' . currency::format(tax::get_price($option['cost'], $option['tax_class_id'])) : language::translate('text_no_fee', 'No fee'); ?></div>
         </div>
       </div>
 
@@ -25,29 +25,8 @@
         <p class="description text-left"><?php echo $option['fields'] . $option['description']; ?></p>
       </div>
       <?php } ?>
-    </div>
+      </label>
     <?php } ?>
   </div>
+  <?php functions::form_draw_form_end(); ?>
 </div>
-
-<style>
-#checkout-payment .option .content {
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
-  transition: all 0.25s ease;
-  max-height: 200px;
-  overflow-y: auto;
-}
-#checkout-payment .option:not(.active) {
-  opacity: 0.75;
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -o-transition: all 0.25s ease;
-  transition: all 0.25s ease;
-}
-#checkout-payment .option:not(.active) .content {
-  max-height: 0;
-  overflow-y: hidden;
-}
-</style>

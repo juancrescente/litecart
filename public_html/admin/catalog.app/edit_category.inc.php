@@ -78,9 +78,8 @@
     echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150) .'" alt="" /></p>';
   }
 ?>
-<?php echo functions::form_draw_form_begin('category_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
 
-  <div class="">
+<?php echo functions::form_draw_form_begin('category_form', 'post', false, true, 'style="max-width: 640px;"'); ?>
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#tab-general"><?php echo language::translate('title_general', 'General'); ?></a></li>
@@ -219,7 +218,6 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
             <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
-          </div>
         </div>
       </div>
     </div>

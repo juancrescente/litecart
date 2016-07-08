@@ -16,6 +16,11 @@
           </div>
       </a>
       <?php echo $sticker; ?>
+      <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
+        <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+        <?php //echo functions::form_draw_button('add_cart_item', array('true', language::translate('title_add_to_cart', 'Add To Cart')), 'submit'); ?>
+        <button class="btn btn-block btn-primary btn-sm" type="submit" name="add_cart_product" value="true">Add To Cart</button>
+      <?php echo functions::form_draw_form_end(); ?>
     </div>
   </div>
 <?php } else if ($listing_type == 'row') { ?>
@@ -40,6 +45,11 @@
         <?php echo $sticker; ?>
         <div class="clearfix"></div>
       </a>
+      <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
+        <?php echo functions::form_draw_hidden_field('product_id', $product_id); ?>
+        <?php //echo functions::form_draw_button('add_cart_item', array('true', language::translate('title_add_to_cart', 'Add To Cart')), 'submit'); ?>
+        <button class="btn btn-block btn-primary btn-sm" type="submit" name="add_cart_product" value="true">Add To Cart</button>
+      <?php echo functions::form_draw_form_end(); ?>
     </div>
   </div>
 <?php } else trigger_error('Unknown product listing type definition ('. $listing_type .')', E_USER_WARNING); ?>

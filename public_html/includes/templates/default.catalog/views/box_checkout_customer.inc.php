@@ -205,12 +205,12 @@
       </div>
     </div>
 
-    <p><button class="form-control btn btn-default" name="save_address" type="submit" disabled="disabled"><?php echo language::translate('title_save', 'Save'); ?></button></p>
+    <p><button class="btn btn-block btn-default" name="save_address" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button></p>
   </div>
 </div>
 
 <script>
-  $("#box-checkout-customer .billing-address input, #box-checkout-customer .billing-address select").change(function() {
+  $(".billing-address input, .billing-address select").change(function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address ["'+ $(this).attr('name') +']');
     $.ajax({
@@ -229,8 +229,8 @@
         }
         $.each(data, function(key, value) {
           if (console) console.log('  ' + key +": "+ value);
-          if ($("#box-checkout-customer .billing-address *[name='"+key+"']").length && $("#box-checkout-customer .billing-address *[name='"+key+"']").val() == '') {
-            $("#box-checkout-customer .billing-address *[name='"+key+"']").val(value);
+          if ($(".billing-address *[name='"+key+"']").length && $(".billing-address *[name='"+key+"']").val() == '') {
+            $(".billing-address *[name='"+key+"']").val(value);
           }
         });
       },

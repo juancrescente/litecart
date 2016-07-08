@@ -450,14 +450,27 @@
 
     if ($value === true) $value = form_reinsert_value($name);
 
-    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'summernote/summernote.min.css" rel="stylesheet" />';
-    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'summernote/summernote.min.js"></script>';
+    document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
+                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
 
-    return '<textarea '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL;
+
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
          . '<script>' . PHP_EOL
-         . '  $("textarea[name=\''. $name .'\']").summernote({' . PHP_EOL
-         . '    height: $(\'textarea[name="'. $name .'"]\').height()' . PHP_EOL
-         //. '    toolbar: [ ["style", ["style"]], ["font", ["bold", "italic", "underline", "clear"]], ["fontname", ["fontname"]], ["color", ["color"]], ["para", ["ul", "ol", "paragraph"]], ["height", ["height"]], ["table", ["table"]], ["insert", ["link", "picture", "hr"]], ["view", ["fullscreen", "codeview"]], ["help", ["help"]]]' . PHP_EOL
+         . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
+         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
+         . '    btnsDef: {' . PHP_EOL
+         . '      image: {' . PHP_EOL
+         . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
+         . '       ico: "insertImage"' . PHP_EOL
+         . '      }' . PHP_EOL
+         . '    },' . PHP_EOL
+         . '    semantic: false,' . PHP_EOL
+         . '    removeformatPasted: true,' . PHP_EOL
+         . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
          . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
   }

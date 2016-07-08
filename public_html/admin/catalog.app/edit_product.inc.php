@@ -265,8 +265,8 @@
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
             <div class="input-group">
-                    <?php echo functions::form_draw_decimal_field('quantity', true); ?>
-              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true); ?>
+              <?php echo functions::form_draw_decimal_field('quantity', true, 4, null, null, 'style="width: 50%;"'); ?>
+              <?php echo functions::form_draw_quantity_units_list('quantity_unit_id', true, false, 'style="width: 50%;"'); ?>
             </div>
           </div>
         </div>
