@@ -1,7 +1,7 @@
 <?php
   if (!isset($_GET['order_status_id'])) $_GET['order_status_id'] = '';
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   functions::draw_fancybox('a.fancybox', array(
     'type'          => 'iframe',
     'padding'       => '40',
@@ -14,7 +14,7 @@
     'speedOut'      => 200,
     'overlayShow'   => true
   ));
-  
+
   if (!empty($_POST['order_action'])) {
     if (!empty($_POST['orders'])) {
       list($module_id, $option_id) = explode(':', $_POST['order_action']);
@@ -34,7 +34,19 @@
       notices::$data['errors'][] = language::translate('error_must_select_orders', 'You must select orders to perform the operation');
     }
   }
-  
+
+  $payment_options_query = database::query(
+    "select distinct payment_option_name
+    from ". DB_TABLE_ORDERS ." o
+    where payment_option_name != ''
+    order by payment_option_name asc"
+  );
+
+  $payment_options = array(array('-- '. language::translate('title_payment_method', 'Payment Method') .' --', ''));
+  while ($payment_option = database::fetch($payment_options_query)) {
+    $payment_options[] = array($payment_option['payment_option_name'], $payment_option['payment_option_name']);
+  }
+
 ?>
 <style>
 #order-actions li {
@@ -52,14 +64,13 @@
   <?php echo functions::form_draw_hidden_field('app'); ?>
   <?php echo functions::form_draw_hidden_field('doc'); ?>
   <ul class="list-horizontal" style="float: right;">
-    <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-    <li>
-      <?php echo language::translate('title_date_period', 'Date Period'); ?>:
+    <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 200px;"'); ?></li>
+    <li><?php echo strtr(functions::form_draw_order_status_list('order_status_id', true, false, 'onchange="$(this).closest(\'form\').submit();"'), array('-- '. language::translate('title_select', 'Select') .' --' => '-- '. language::translate('title_order_status', 'Order Status') .' --')); ?></li>
+    <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?></li>
+    <li style="padding-left: 1em;">
       <?php echo functions::form_draw_date_field('date_from', true, 'style="width: 130px;"'); ?> - <?php echo functions::form_draw_date_field('date_to', true, 'style="width: 130px;"'); ?>
     </li>
-    <li><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></li>
-    <li><?php echo functions::form_draw_button('filter', language::translate('title_filter_now', 'Filter')); ?></li>
-    <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
+    <li style="padding-left: 1em;"><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
   </ul>
 <?php echo functions::form_draw_form_end(); ?>
 
@@ -82,42 +93,43 @@
   </tr>
 <?php
   if (!empty($_GET['query'])) {
-    $sql_find = array(
+    $sql_where_query = array(
       "o.id = '". database::input($_GET['query']) ."'",
       "o.uid = '". database::input($_GET['query']) ."'",
       "o.customer_email like '%". database::input($_GET['query']) ."%'",
       "o.customer_tax_id like '%". database::input($_GET['query']) ."%'",
       "o.customer_company like '%". database::input($_GET['query']) ."%'",
       "concat(o.customer_firstname, ' ', o.customer_lastname) like '%". database::input($_GET['query']) ."%'",
-      "o.payment_transaction_id like '%". database::input($_GET['query']) ."%'",
-      "o.shipping_tracking_id like '%". database::input($_GET['query']) ."%'",
+      "o.payment_transaction_id like '". database::input($_GET['query']) ."'",
+      "o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
     );
   }
-  
+
   $orders_query = database::query(
     "select o.*, os.color as order_status_color, os.icon as order_status_icon, osi.name as order_status_name from ". DB_TABLE_ORDERS ." o
     left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.id
-    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "") ."
+    ". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
+    ". (!empty($_GET['order_status_id']) ? "and o.order_status_id = '". (int)$_GET['order_status_id'] ."'" : "and (os.is_archived is null or os.is_archived = 0)") ."
+    ". (!empty($_GET['payment_option_name']) ? "and o.payment_option_name = '". database::input($_GET['payment_option_name']) ."'" : '') ."
     ". (!empty($_GET['date_from']) ? "and o.date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', strtotime($_GET['date_from'])), date('d', strtotime($_GET['date_from'])), date('Y', strtotime($_GET['date_from'])))) ."'" : '') ."
     ". (!empty($_GET['date_to']) ? "and o.date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', strtotime($_GET['date_to'])), date('d', strtotime($_GET['date_to'])), date('Y', strtotime($_GET['date_to'])))) ."'" : '') ."
-    ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
     order by o.date_created desc, o.id desc;"
   );
-  
+
   if (database::num_rows($orders_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($orders_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($order = database::fetch($orders_query)) {
-      
+
       if (empty($order['order_status_id'])) {
         $order['order_status_icon'] = 'fa-minus';
         $order['order_status_color'] = '#cccccc';
       }
-      
+
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>
@@ -152,9 +164,9 @@
   <ul id="order-actions" class="list-horizontal">
 <?php
   $order_action = new mod_order_action();
-  
+
   $order_action_options = $order_action->options();
-  
+
   if (!empty($order_action_options)) {
     foreach (array_keys($order_action_options) as $module_id) {
       echo '<li><fieldset>' . PHP_EOL
@@ -196,6 +208,6 @@
 </script>
 <?php
   echo functions::form_draw_form_end();
-  
+
   echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page')));
 ?>

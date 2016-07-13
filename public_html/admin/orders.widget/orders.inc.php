@@ -29,14 +29,15 @@
     left join ". DB_TABLE_ORDER_STATUSES ." os on (os.id = o.order_status_id)
     left join ". DB_TABLE_ORDER_STATUSES_INFO ." osi on (osi.order_status_id = o.order_status_id and osi.language_code = '". language::$selected['code'] ."')
     where o.order_status_id
+    and os.is_archived = 0
     order by o.date_created desc
     limit 10;"
   );
-  
+
   if (database::num_rows($orders_query) > 0) {
-    
+
     while ($order = database::fetch($orders_query)) {
-      
+
       if (empty($order['order_status_icon'])) $order['order_status_icon'] = 'fa-circle-thin';
       if (empty($order['order_status_color'])) $order['order_status_color'] = '#cccccc';
 ?>

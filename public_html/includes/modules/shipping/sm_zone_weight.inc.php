@@ -7,55 +7,55 @@
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
     public $website = 'http://www.litecart.net';
-    
+
     public function __construct() {
       $this->name = language::translate(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
     }
-    
+
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
-      
+
       if (empty($this->settings['status'])) return;
-      
+
     // Calculate cart weight
-      $weight = 0;
+      $total_weight = 0;
       foreach ($items as $item) {
-        $weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
+        $total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_class'], $this->settings['weight_class']);
       }
-      
+
       $options = array();
-      
+
       for ($i=1; $i <= 3; $i++) {
         if (empty($this->settings['geo_zone_id_'.$i])) continue;
-        
+
         $name = language::translate(__CLASS__.':title_option_name_zone_'.$i);
-        
+
         if (!functions::reference_in_geo_zone($this->settings['geo_zone_id_'.$i], $customer['shipping_address']['country_code'], $customer['shipping_address']['zone_code'])) continue;
-        
-        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $weight);
-        
+
+        $cost = self::calculate_cost($this->settings['weight_rate_table_'.$i], $total_weight);
+
         $options[] = array(
           'id' => 'zone_'.$i,
           'icon' => $this->settings['icon'],
-          'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
-          'description' => weight::format($weight, $this->settings['weight_class']),
+          'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['shipping_address']['country_code']),
+          'description' => weight::format($total_weight, $this->settings['weight_class']),
           'fields' => '',
           'cost' => $cost,
           'tax_class_id' => $this->settings['tax_class_id'],
           'exclude_cheapest' => false,
         );
       }
-      
+
       $name = language::translate(__CLASS__.':title_option_name_zone_x');
-      
+
       if (empty($options)) {
         if (!empty($this->settings['weight_rate_table_x'])) {
-          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $weight);
-          
+          $cost = self::calculate_cost($this->settings['weight_rate_table_x'], $total_weight);
+
           $options[] = array(
             'id' => 'zone_x',
             'icon' => $this->settings['icon'],
-            'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['country_code']),
-            'description' => weight::format($weight, $this->settings['weight_class']),
+            'name' => !empty($name) ? $name : functions::reference_get_country_name($customer['shipping_address']['country_code']),
+            'description' => weight::format($total_weight, $this->settings['weight_class']),
             'fields' => '',
             'cost' => $cost + $this->settings['handling_fee'],
             'tax_class_id' => $this->settings['tax_class_id'],
@@ -64,34 +64,42 @@
           return;
         }
       }
-      
+
       $options = array(
         'title' => $this->name,
         'options' => $options,
       );
-      
+
       return $options;
     }
-    
+
     private function calculate_cost($rate_table, $shipping_weight) {
-      
+
       if (empty($rate_table)) return 0;
-      
-      $rate_table = preg_split("(;|\|)" , $rate_table);
-      foreach ($rate_table as $rate) {
-        list($rate_weight, $rate_cost) = explode(':', $rate);
-        if (!isset($cost) || $shipping_weight >= $rate_weight) {
-          $cost = $rate_cost;
+      if ($this->settings['method'] == '>=') {
+        foreach (preg_split('#(\||;)#', $rate_table) as $rate) {
+          list($rate_weight, $rate_cost) = explode(':', $rate);
+          if (!isset($cost) || $shipping_weight >= $rate_weight) {
+            $cost = $rate_cost;
+          }
+        }
+
+      } else if ($this->settings['method'] == '<') {
+        foreach (array_reverse(preg_split('#(\||;)#', $rate_table)) as $rate) {
+          list($rate_weight, $rate_cost) = explode(':', $rate);
+          if (!isset($cost) || $shipping_weight < $rate_weight) {
+            $cost = $rate_cost;
+          }
         }
       }
-      
+
       return $cost;
     }
-    
+
     public function select() {}
-    
+
     public function after_process() {}
-    
+
     public function settings() {
       return array(
         array(
@@ -165,6 +173,13 @@
           'function' => 'input()',
         ),
         array(
+          'key' => 'method',
+          'default_value' => '>=',
+          'title' => language::translate(__CLASS__.':title_method', 'Method'),
+          'description' => language::translate(__CLASS__.':description_method', 'The calculation method that should to be used for the rate tables where a condition is met for shipping weight.'),
+          'function' => 'select("<",">=")',
+        ),
+        array(
           'key' => 'handling_fee',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_handling_fee', 'Handling Fee'),
@@ -187,10 +202,10 @@
         ),
       );
     }
-    
+
     public function install() {}
-    
+
     public function uninstall() {}
   }
-  
+
 ?>

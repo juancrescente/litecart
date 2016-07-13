@@ -114,7 +114,7 @@
   if (isset($product->data['id'])) {
     if (!empty($product->data['images'])) {
       $image = current($product->data['images']);
-      echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], 150, 150) .'" /></p>';
+      echo '<p><img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], 150, 150) .'" alt="" /></p>';
       reset($product->data['images']);
     }
   }
@@ -292,7 +292,7 @@ foreach (array_keys(language::$languages) as $language_code) {
   if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) {
 ?>
     <tr>
-      <td><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], 100, 75); ?>" align="left" style="margin: 5px;" /></td>
+      <td><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], 100, 75); ?>" alt="" style="float: left; margin: 5px;" /></td>
       <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename'], 'data-size="large"'); ?></td>
       <td><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
     </tr>
@@ -500,11 +500,11 @@ foreach (array_keys(language::$languages) as $language_code) {
         <table>
           <tr>
             <th style="text-align: left;"><?php echo language::translate('title_price', 'Price'); ?></th>
-            <th style="text-align: left;"><?php echo language::translate('title_net_price', 'Net Price'); ?> (<a id="net-price-tooltip" href="#">?</a>)</th>
+            <th style="text-align: left;"><?php echo language::translate('title_price_incl_tax', 'Price Incl. Tax'); ?> (<a id="price-incl-tax-tooltip" href="#">?</a>)</th>
           </tr>
           <tr>
             <td><?php echo functions::form_draw_currency_field(settings::get('store_currency_code'), 'prices['. settings::get('store_currency_code') .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-            <td><?php echo functions::form_draw_decimal_field('net_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
+            <td><?php echo functions::form_draw_decimal_field('gross_prices['. settings::get('store_currency_code') .']', '', currency::$currencies[settings::get('store_currency_code')]['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
 <?php
 foreach (currency::$currencies as $currency) {
@@ -512,7 +512,7 @@ foreach (currency::$currencies as $currency) {
 ?>
           <tr>
             <td><?php echo functions::form_draw_currency_field($currency['code'], 'prices['. $currency['code'] .']', true, 'data-currency-price="" placeholder=""'); ?></td>
-            <td><?php echo functions::form_draw_decimal_field('net_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
+            <td><?php echo functions::form_draw_decimal_field('gross_prices['. $currency['code'] .']', '', $currency['decimals'], 0, null, 'placeholder=""'); ?></td>
           </tr>
 <?php
 }
@@ -566,16 +566,16 @@ foreach (currency::$currencies as $currency) {
 
           // Update net price
             if (net_price == 0) {
-              $("input[name='net_prices["+ currency_code +"]']").val("");
+              $("input[name='gross_prices["+ currency_code +"]']").val("");
             } else {
-              $("input[name='net_prices["+ currency_code +"]']").val(net_price.toFixed(get_currency_decimals(currency_code)));
+              $("input[name='gross_prices["+ currency_code +"]']").val(net_price.toFixed(get_currency_decimals(currency_code)));
             }
 
             if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
 
           // Update system currency price
             var currency_price = price * get_currency_value(currency_code);
-            var currency_net_price = net_price * get_currency_value(currency_code);
+            var currency_gross_price = net_price * get_currency_value(currency_code);
 
             if (currency_price == 0) {
               $("input[name='prices["+ currency_code +"]']").attr("placeholder", "")
@@ -590,23 +590,23 @@ foreach (currency::$currencies as $currency) {
               if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
 
                 var currency_price = price * get_currency_value(currency_code);
-                var currency_net_price = net_price * get_currency_value(currency_code);
+                var currency_gross_price = net_price * get_currency_value(currency_code);
 
                 if (currency_price == 0) {
                   $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
                 } else {
                   $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_net_price.toFixed(get_currency_decimals(currency_code)));
+                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_gross_price.toFixed(get_currency_decimals(currency_code)));
                 };
 
               }
             });
           });
 
-          $("input[name^='net_prices']").bind("change keyup", function() {
+          $("input[name^='gross_prices']").bind("change keyup", function() {
 
-            var currency_code = $(this).attr('name').replace(/^net_prices\[(.*)\]$/, "$1");
+            var currency_code = $(this).attr('name').replace(/^gross_prices\[(.*)\]$/, "$1");
             var price = Number($(this).val()) / (1+(get_tax_rate()/100));
             var net_price = Number($(this).val());
 
@@ -621,14 +621,14 @@ foreach (currency::$currencies as $currency) {
 
           // Update system currency price
             var currency_price = price * get_currency_value(currency_code);
-            var currency_net_price = net_price * get_currency_value(currency_code);
+            var currency_gross_price = net_price * get_currency_value(currency_code);
 
             if (currency_price == 0) {
               $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-              $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+              $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
             } else {
               $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-              $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_net_price.toFixed(get_currency_decimals(currency_code)));
+              $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_gross_price.toFixed(get_currency_decimals(currency_code)));
             };
 
           // Update currency prices
@@ -638,14 +638,14 @@ foreach (currency::$currencies as $currency) {
               if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
 
                 var currency_price = price * get_currency_value(currency_code);
-                var currency_net_price = net_price * get_currency_value(currency_code);
+                var currency_gross_price = net_price * get_currency_value(currency_code);
 
                 if (currency_price == 0) {
                   $("input[name='prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
-                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
+                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", Number(0).toFixed(get_currency_decimals(currency_code)))
                 } else {
                   $("input[name='prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
-                  $("input[name='net_prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
+                  $("input[name='gross_prices["+ currency_code +"]']").attr("placeholder", currency_price.toFixed(get_currency_decimals(currency_code)));
                 };
 
               }
@@ -654,11 +654,11 @@ foreach (currency::$currencies as $currency) {
 
         // Initiate
           $("input[name^='prices']").trigger("change");
-          $("input[name^='net_prices']").trigger("change");
+          $("input[name^='gross_prices']").trigger("change");
 
-          $("body").on('click', "#net-price-tooltip", function(e) {
+          $("body").on('click', "#price-incl-tax-tooltip", function(e) {
             e.preventDefault;
-            alert("<?php echo str_replace(array("\r", "\n", "\""), array('', '', "\\\""), language::translate('text_net_price_tooltip', 'The net price field helps you calculate gross price based on the store country tax. But all prices input to database are always excluding tax.')); ?>");
+            alert("<?php echo str_replace(array("\r", "\n", "\""), array('', '', "\\\""), language::translate('tooltip_price_incl_tax', 'This field helps you calculate net price based on the store region tax. All prices input to database are always excluding tax.')); ?>");
           });
         </script>
 

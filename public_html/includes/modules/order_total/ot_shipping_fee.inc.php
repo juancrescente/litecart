@@ -8,35 +8,35 @@
     public $version = '1.0';
     public $website = 'http://www.litecart.net';
     public $priority = 0;
-    
+
     public function __construct() {
       $this->name = language::translate(__CLASS__.':title_shipping_fee', 'Shipping Fee');
     }
-    
+
     public function process($order) {
-      
+
       if (empty($this->settings['status'])) return;
-      
+
       if (empty($GLOBALS['shipping']->data['selected']['cost'])) return;
-      
+
       $output = array();
-      
+
       $output[] = array(
         'title' => $GLOBALS['shipping']->data['selected']['title'] .' ('. $GLOBALS['shipping']->data['selected']['name'] .')',
         'value' => $GLOBALS['shipping']->data['selected']['cost'],
         'tax' => tax::get_tax($GLOBALS['shipping']->data['selected']['cost'], $GLOBALS['shipping']->data['selected']['tax_class_id'], $order->data['customer']),
         'calculate' => true,
       );
-      
+
       if (!empty($this->settings['free_shipping_amount']) && $this->settings['free_shipping_amount'] > 0) {
-        if (empty($this->settings['countries']) || in_array($order->data['customer']['shipping_address']['country_code'], explode(', ', $this->settings['countries']))) {
-      
+        if (empty($this->settings['free_shipping_geo_zone_id']) || functions::reference_in_geo_zone($this->settings['free_shipping_geo_zone_id'], $order->data['customer']['shipping_address']['country_code'], $order->data['customer']['shipping_address']['zone_code'])) {
+
         // Calculate cart total
           $subtotal = 0;
           foreach ($order->data['items'] as $item) {
             $subtotal += $item['quantity'] * $item['price'];
           }
-          
+
         // If below minimum amount
           if ($subtotal >= $this->settings['free_shipping_amount']) {
             $output[] = array(
@@ -49,10 +49,10 @@
           }
         }
       }
-      
+
       return $output;
     }
-    
+
     function settings() {
       return array(
         array(
@@ -70,11 +70,11 @@
           'function' => 'decimal()',
         ),
         array(
-          'key' => 'countries',
+          'key' => 'free_shipping_geo_zone_id',
           'default_value' => '',
-          'title' => language::translate(__CLASS__.':title_countries', 'Countries'),
-          'description' => language::translate(__CLASS__.':description_countries', 'A coma separated list of countries to recceive free shipping e.g. SE,DK or leave blank for all.'),
-          'function' => 'input()',
+          'title' => language::translate('title_free_shipping_geo_zone', 'Free Shipping Geo Zone'),
+          'description' => language::translate('modules:description_free_shipping_geo_zone', 'Limit free shipping to the selected geo zone. Otherwise leave blank.'),
+          'function' => 'geo_zones()',
         ),
         array(
           'key' => 'priority',
@@ -85,10 +85,10 @@
         ),
       );
     }
-    
+
     public function install() {}
-    
+
     public function uninstall() {}
   }
-  
+
 ?>

@@ -23,13 +23,13 @@
     "select tr.*, gz.name as geo_zone, tc.name as tax_class from ". DB_TABLE_TAX_RATES ." tr
     left join ". DB_TABLE_GEO_ZONES ." gz on (gz.id = tr.geo_zone_id)
     left join ". DB_TABLE_TAX_CLASSES ." tc on (tc.id = tr.tax_class_id)
-    order by tr.name, gz.name;"
+    order by tc.name, gz.name, tr.name;"
   );
 
   if (database::num_rows($tax_rates_query) > 0) {
-    
+
     if ($_GET['page'] > 1) database::seek($tax_rates_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-    
+
     $page_items = 0;
     while ($tax_rate = database::fetch($tax_rates_query)) {
 ?>
@@ -72,7 +72,7 @@
 
 <?php
   echo functions::form_draw_form_end();
-  
+
 // Display page links
   echo functions::draw_pagination(ceil(database::num_rows($tax_rates_query)/settings::get('data_table_rows_per_page')));
 ?>

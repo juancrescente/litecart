@@ -1,8 +1,8 @@
 <?php
   if (!isset($_GET['page'])) $_GET['page'] = 1;
-  
+
   if (!empty($_POST['enable']) || !empty($_POST['disable'])) {
-  
+
     if (!empty($_POST['customers'])) {
       foreach ($_POST['customers'] as $key => $value) {
         $customer = new ctrl_customer($_POST['customers'][$key]);
@@ -10,7 +10,7 @@
         $customer->save();
       }
     }
-    
+
     header('Location: '. document::link());
     exit;
   }
@@ -25,6 +25,7 @@
       <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle'); ?></th>
       <th></th>
       <th><?php echo language::translate('title_id', 'ID'); ?></th>
+      <th><?php echo language::translate('title_code', 'Code'); ?></th>
       <th><?php echo language::translate('title_name', 'Name'); ?></th>
       <th width="100%"><?php echo language::translate('title_company', 'Company'); ?></th>
       <th style="text-align: center;"><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
@@ -40,18 +41,18 @@
       "concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'",
     );
   }
-  
+
   $customers_query = database::query(
     "select * from ". DB_TABLE_CUSTOMERS ."
     ". ((!empty($sql_find)) ? "where (". implode(" or ", $sql_find) .")" : "") ."
     order by firstname, lastname;"
   );
-  
+
   if (database::num_rows($customers_query) > 0) {
-  
-    
+
+
     if ($_GET['page'] > 1) database::seek($customers_query, (settings::get('data_table_rows_per_page') * ($_GET['page']-1)));
-  
+
     $page_items = 0;
     while ($customer = database::fetch($customers_query)) {
 ?>
@@ -59,6 +60,7 @@
       <td><?php echo functions::form_draw_checkbox('customers['.$customer['id'].']', $customer['id']); ?></td>
       <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($customer['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
       <td><?php echo $customer['id']; ?></td>
+      <td><?php echo $customer['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_customer', 'customer_id' => $customer['id']), true); ?>"><?php echo $customer['firstname'] .' '. $customer['lastname']; ?></a></td>
       <td><?php echo $customer['company']; ?></td>
       <td style="text-align: right;"><?php echo language::strftime(language::$selected['format_datetime'], strtotime($customer['date_created'])); ?></td>
@@ -70,7 +72,7 @@
   }
 ?>
     <tr class="footer">
-      <td colspan="7"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
+      <td colspan="8"><?php echo language::translate('title_customers', 'Customers'); ?>: <?php echo database::num_rows($customers_query); ?></td>
     </tr>
   </table>
 

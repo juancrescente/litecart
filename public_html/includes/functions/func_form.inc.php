@@ -115,8 +115,7 @@
                                                                         . '    });' . PHP_EOL
                                                                         . '  });';
     
-    //return '<span class="input-wrapper">'. currency::$currencies[$currency_code]['prefix'] .'<input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' />'. currency::$currencies[$currency_code]['suffix'] .'</span>';
-    return '<span class="input-wrapper"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals'], '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
+    return '<span class="input-wrapper"><input type="text" name="'. htmlspecialchars($name) .'" value="'. (!empty($value) ? number_format((float)$value, (int)currency::$currencies[$currency_code]['decimals']+2, '.', '') : '') .'" data-type="currency"'. (($parameters) ? ' '. $parameters : false) .' /><strong style="opacity: 0.5;">'. $currency_code .'</strong></span>';
   }
   
   function form_draw_date_field($name, $value=true, $parameters='') {
@@ -277,15 +276,15 @@
   }
   
   function form_draw_regional_input_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: middle;" /> '. form_draw_text_field($name, $value, $parameters) .'</span>';
   }
   
   function form_draw_regional_textarea($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_textarea($name, $value, $parameters) .'</span>';
   }
   
   function form_draw_regional_wysiwyg_field($language_code, $name, $value=true, $parameters='') {
-    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" width="16" alt="'. $language_code .'" style="vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
+    return '<span class="input-wrapper" style="white-space: normal;"><img src="'. WS_DIR_IMAGES .'icons/languages/'. $language_code .'.png" alt="'. $language_code .'" style="width: 16px; vertical-align: top;" /> '. form_draw_wysiwyg_field($name, $value, $parameters) .'</span>';
   }
   
   function form_draw_search_field($name, $value=true, $parameters='') {
@@ -486,7 +485,7 @@
     if (!empty($parameters)) $parameters = preg_replace('/(data-size="[^"]*")/', '', $parameters);
     
     document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
-                                                 . '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL
+                                                  . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL
                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
@@ -502,9 +501,9 @@
          . '       ico: "insertImage"' . PHP_EOL
          . '      }' . PHP_EOL
          . '    },' . PHP_EOL
-         . '    semantic: true,' . PHP_EOL
+         . '    semantic: false,' . PHP_EOL
          . '    removeformatPasted: true,' . PHP_EOL
-         . '    btns: ["viewHTML", "|", "formatting", "|", "btnGrp-design", "|", "link", "|", "image", "|", "btnGrp-justify", "|", "btnGrp-lists", "|", "foreColor", "backColor", "|", "horizontalRule"],' . PHP_EOL
+         . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
          . '  });' . PHP_EOL
          . '</script>' . PHP_EOL;
   }
@@ -691,17 +690,11 @@
   
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {
     
-    $currencies_query = database::query(
-      "select * from ". DB_TABLE_CURRENCIES ."
-      where status
-      order by name asc;"
-    );
-    
     $options = array();
     
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
-    while ($currency = database::fetch($currencies_query)) {
+    foreach (currency::$currencies as $currency) {
       $options[] = array($currency['name'], $currency['code'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. htmlspecialchars($currency['prefix']) .'" data-suffix="'. htmlspecialchars($currency['suffix']) .'"');
     }
     
@@ -811,17 +804,11 @@
   
   function form_draw_languages_list($name, $input=true, $multiple=false, $parameters='') {
     
-    $languages_query = database::query(
-      "select * from ". DB_TABLE_LANGUAGES ."
-      where status
-      order by name asc;"
-    );
-    
     $options = array();
     
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
     
-    while ($language = database::fetch($languages_query)) {
+    foreach (language::$languages as $language) {
       $options[] = array($language['name'], $language['code']);
     }
     

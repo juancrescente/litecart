@@ -125,9 +125,9 @@
     <?php echo functions::form_draw_products_list('product_id', true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?>
     
     <?php if (!empty($product)) { ?>
-    
+
     <hr />
-    
+
     <?php if (!empty($product->stock)) {?>
     <div style="float: right; display: inline-block; border: 1px dashed #ccc; padding: 10px;">
       <h3 style="margin-top: 0px;"><?php echo language::translate('title_stock', 'Stock'); ?></h3>
@@ -142,9 +142,9 @@
       </table>
     </div>
     <?php } ?>
-    
+
     <h2><?php echo functions::form_draw_hidden_field('name', $product->name[$_GET['language_code']]); ?><?php echo $product->name[$_GET['language_code']]; ?></h2>
-    
+
     <table>
       <tr>
         <td><strong><?php echo language::translate('title_in_stock', 'In Stock'); ?></strong></td>
@@ -284,7 +284,7 @@
         <td><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', 2); ?></td>
       </tr>
     </table>
-    
+
     <p><?php echo functions::form_draw_button('add', language::translate('title_add', 'Add'), 'submit', '', 'add'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="parent.$.fancybox.close();"', 'cancel'); ?></p>
 
 <?php } ?>
