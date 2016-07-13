@@ -20,7 +20,7 @@
   require_once FS_DIR_HTTP_ROOT . WS_DIR_CLASSES . 'vmod.inc.php';
 
 // Autoloader
-  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'autoload.inc.php');
+  require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'autoloader.inc.php');
 
 // Set error handler
   function error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
