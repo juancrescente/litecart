@@ -40,11 +40,11 @@
 
         <div class="col-md-6">
           <div class="well">
-            <h2 class="price-wrapper" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-              <?php if ($campaign_price) { ?>
-              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price" itemprop="price"><?php echo currency::format($campaign_price); ?></strong>
+            <h2 class="price-wrapper">
+              <?php if ($campaign['price']) { ?>
+              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign['price']); ?></strong>
               <?php } else { ?>
-              <span class="price" itemprop="price"><?php echo currency::format($regular_price); ?></span>
+              <span class="price"><?php echo currency::format($regular_price); ?></span>
               <?php } ?>
             </h2>
 
