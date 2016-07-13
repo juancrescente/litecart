@@ -5,7 +5,7 @@
    * @description Main Object used
    */
   abstract class VQMod {
-    public static $_vqversion = '2.5.2';        // Current version number
+  public static $_vqversion = '2.6.1';            // Current version number
 
     private static $_modFileList = array();     // Array of xml files
     private static $_mods = array();            // Array of modifications to apply
@@ -84,8 +84,8 @@
         return $sourceFile;
       }
 
-      $stripped_filename = preg_replace('~^' . preg_quote(self::getCwd(), '~i') . '~', '', $sourcePath);
-      $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('~[/\\\\]+~', '_', $stripped_filename);
+      $stripped_filename = preg_replace('#^' . preg_quote(self::getCwd(), '#') . '#i', '', $sourcePath);
+      $cacheFile = self::$_cachePathFull . 'vq2-' . preg_replace('#[/\\\\]+#', '_', $stripped_filename);
       $file_last_modified = filemtime($sourcePath);
 
       if (file_exists($cacheFile) && filemtime($cacheFile) >= self::$_lastModifiedTime && filemtime($cacheFile) >= $file_last_modified) {
@@ -100,8 +100,8 @@
       $fileHash = sha1_file($sourcePath);
       $fileData = file_get_contents($sourcePath);
 
-      foreach(self::$_mods as $modObject) {
-        foreach($modObject->mods as $path => $mods) {
+      foreach (self::$_mods as $modObject) {
+        foreach ($modObject->mods as $path => $mods) {
           if (self::_checkMatch($path, $modificationsPath)) {
             $modObject->applyMod($mods, $fileData, $modObject);
           }
@@ -175,7 +175,7 @@
       self::$_modFileList = glob(self::path('vqmod/xml/', true) . '*.xml');
 
       if (!empty(self::$_modFileList)) {
-        foreach(self::$_modFileList as $file) {
+        foreach (self::$_modFileList as $file) {
           if (file_exists($file)) {
             $lastMod = filemtime($file);
             if ($lastMod > self::$_lastModifiedTime){
@@ -221,7 +221,7 @@
       set_error_handler(array('VQMod', 'handleXMLError'));
 
       $dom = new DOMDocument('1.0', 'UTF-8');
-      foreach(self::$_modFileList as $modFileKey => $modFile) {
+      foreach (self::$_modFileList as $modFileKey => $modFile) {
         if (file_exists($modFile)) {
           try {
             $dom->load($modFile);
@@ -272,7 +272,7 @@
         $paths = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!empty($paths)) {
 
-          foreach($paths as $path) {
+          foreach ($paths as $path) {
             $fullPath = self::path($path);
             if ($fullPath && !in_array($fullPath, self::$_doNotMod)) {
               self::$_doNotMod[] = $fullPath;
@@ -295,7 +295,7 @@
       if ($file && is_file($file)) {
         $paths = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if (!empty($paths)) {
-          foreach($paths as $path) {
+          foreach ($paths as $path) {
             $fullPath = self::path($path, true);
             if ($fullPath) {
               self::$_doNotMod[] = $fullPath;
@@ -313,10 +313,13 @@
      * @description Returns real path of any path, adding directory slashes if necessary
      */
     private static function _realpath($file) {
+    if (is_executable($file)) {
+    if (!file_exists($path)) return false;
 
-      if (!file_exists($file)) return false;
+        $path = str_replace("\\", '/', realpath($file));
+    if (!$path) return false;
 
-      $path = str_replace("\\", '/', realpath($file));
+
 
       if (is_dir($path)) {
         $path = rtrim($path, '/') . '/';
@@ -356,13 +359,13 @@
 
           $toCheck = array_diff_assoc($modParts, $checkParts);
 
-          foreach($toCheck as $k => $part) {
+          foreach ($toCheck as $k => $part) {
             if ($part === '*') {
               continue;
             } elseif (strpos($part, '*') !== false) {
-              $part = preg_replace_callback('~([^*]+)~', array('self', '_quotePath'), $part);
+              $part = preg_replace_callback('#([^*]+)#', array('self', '_quotePath'), $part);
               $part = str_replace('*', '[^/]*', $part);
-              $part = (bool) preg_match('~^' . $part . '$~', $checkParts[$k]);
+              $part = (bool) preg_match('#^' . $part . '$#', $checkParts[$k]);
 
               if ($part) {
                 continue;
@@ -392,7 +395,7 @@
      * @description apply's preg_quote to string from callback
      */
     private static function _quotePath($matches) {
-      return preg_quote($matches[1], '~');
+      return preg_quote($matches[1], '#');
     }
   }
 
@@ -420,7 +423,7 @@
      */
     public function __construct(DOMNode $node, $modFile) {
       if ($node->hasChildNodes()) {
-        foreach($node->childNodes as $child) {
+        foreach ($node->childNodes as $child) {
           $name = (string) $child->nodeName;
           if (isset($this->$name)) {
             $this->$name = (string) $child->nodeValue;
@@ -454,7 +457,7 @@
       if ($this->_skip) return;
       $tmp = $data;
 
-      foreach($mods as $mod) {
+      foreach ($mods as $mod) {
         VQMod::$fileModding = $mod['fileToMod'] . '(' . $mod['opIndex'] . ')';
         if (!empty($mod['ignoreif'])) {
           if ($mod['ignoreif']->regex == 'true') {
@@ -473,6 +476,15 @@
         $tmp = preg_split('#\R#', $tmp);
         $lineMax = count($tmp) - 1;
 
+      // <add> tag attributes - Override <search> attributes if set
+      foreach (array_keys((array)$mod['search']) as $key) {
+        if ($key == "\x0VQNode\x0_content") { continue; }
+        if ($key == "trim") { continue; }
+        if (isset($mod['add']->$key) && $mod['add']->$key) {
+          $mod['search']->$key = $mod['add']->$key;
+        }
+      }
+
         switch($mod['search']->position) {
           case 'top':
             $tmp[$mod['search']->offset] =  $mod['add']->getContent() . $tmp[$mod['search']->offset];
@@ -489,7 +501,7 @@
 
           default:
             $changed = false;
-            foreach($tmp as $lineNum => $line) {
+            foreach ($tmp as $lineNum => $line) {
               if (strlen($mod['search']->getContent()) == 0) {
                 if ($mod['error'] == 'log' || $mod['error'] == 'abort') {
                   trigger_error(__METHOD__.' - Empty search content in "'. $modObject->id  .'": '. VQMod::$fileModding .' '. $skip, E_USER_WARNING);
@@ -602,15 +614,15 @@
     private function _parseMods(DOMNode $node){
       $files = $node->getElementsByTagName('file');
 
-      foreach($files as $file) {
+      foreach ($files as $file) {
         $path = $file->getAttribute('path') ? $file->getAttribute('path') : '';
         $filesToMod = explode(',', $file->getAttribute('name'));
 
-        foreach($filesToMod as $filename) {
+        foreach ($filesToMod as $filename) {
 
           $fileToMod = $path . $filename;
           if (!empty(VQMod::$replaces)) {
-            foreach(VQMod::$replaces as $search => $replace) {
+            foreach (VQMod::$replaces as $search => $replace) {
               $fileToMod = preg_replace($search, $replace, $fileToMod);
             }
           }
@@ -637,7 +649,7 @@
 
           $operations = $file->getElementsByTagName('operation');
 
-          foreach($operations as $opIndex => $operation) {
+          foreach ($operations as $opIndex => $operation) {
             VQMod::$fileModding = $fileToMod . '(' . $opIndex . ')';
             $skipOperation = false;
 
@@ -645,7 +657,7 @@
             $ignoreif = $operation->getElementsByTagName('ignoreif')->item(0);
 
             if ($ignoreif) {
-              $ignoreif = new VQSearchNode($ignoreif);
+            $ignoreif = new VQNode($ignoreif);
             } else {
               $ignoreif = false;
             }
@@ -686,8 +698,8 @@
    * @description Basic node object blueprint
    */
   class VQNode {
+  public $regex = 'false';
     public $trim = 'false';
-
     private $_content = '';
 
     /**
@@ -701,7 +713,7 @@
       $this->_content = $node->nodeValue;
 
       if ($node->hasAttributes()) {
-        foreach($node->attributes as $attr) {
+        foreach ($node->attributes as $attr) {
           $name = $attr->nodeName;
           if (isset($this->$name)) {
             $this->$name = $attr->nodeValue;
@@ -744,7 +756,7 @@
         return false;
       }
       $tmp = explode(',', $this->index);
-      foreach($tmp as $k => $v) {
+      foreach ($tmp as $k => $v) {
         if (!is_int($v)) {
           unset($k);
         }
@@ -759,4 +771,9 @@
    * @description Object for the <add> xml tags
    */
   class VQAddNode extends VQNode {
+    public $position = false;
+    public $offset = false;
+    public $index = false;
+    public $regex = false;
+    public $trim = 'false';
   }
