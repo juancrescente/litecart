@@ -313,13 +313,9 @@
      * @description Returns real path of any path, adding directory slashes if necessary
      */
     private static function _realpath($file) {
-    if (is_executable($file)) {
-    if (!file_exists($path)) return false;
 
-        $path = str_replace("\\", '/', realpath($file));
-    if (!$path) return false;
-
-
+      $path = str_replace("\\", '/', realpath($file));
+      if (!$path) return false;
 
       if (is_dir($path)) {
         $path = rtrim($path, '/') . '/';
