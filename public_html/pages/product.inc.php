@@ -90,6 +90,23 @@
 
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
+  $schema_json = array(
+    '@context' => 'http://schema.org/',
+    '@type': 'Product',
+    'name': $product->name[language::$selected['code']],
+    'image': !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
+    'description': !empty($product->short_description[language::$selected['code']]) ? $product->short_description[language::$selected['code']] : '',
+    'brand': array(),
+    'offers': array(
+      '@type': 'Offer',
+      'priceCurrency': currency::$selected['code'],
+      'price': (isset($product->campaign['price'] && $product->campaign['price'] > 0)) ? tax::get_price($product->campaign, $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
+      'priceValidUntil': (isset($product->campaign['price'] && strtotime($product->campaign['date_valid_to']) > time())) ? $product->campaign['price'] : $product->campaign['price'],
+      //'itemCondition': 'http://schema.org/UsedCondition',
+      //'availability': 'http://schema.org/InStock',
+    ),
+  );
+
   $_page->snippets = array(
     'product_id' => $product->id,
     'code' => $product->code,
@@ -115,9 +132,10 @@
     'extra_images' => array(),
     'manufacturer' => array(),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
-    'campaign_price' => !empty($product->campaign['price']) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
+    'campaign' => (isset($product->campaign['price'] && $product->campaign['price'] > 0)) ? tax::get_price($product->campaign, $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
+    'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price),
     'tax_rates' => array(),
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit_name' => $product->quantity_unit['name'][language::$selected['code']],
@@ -162,6 +180,7 @@
 
 // Manufacturer
   if (!empty($product->manufacturer['id'])) {
+    $schema_json['brand']['name'] = $product->manufacturer['name'];
     $_page->snippets['manufacturer'] = array(
       'id' => $product->manufacturer['id'],
       'name' => $product->manufacturer['name'],
@@ -315,6 +334,8 @@
       );
     }
   }
+
+  document::$snippets['foot_tags']['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json) .'</script>';
 
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     echo $_page->stitch('pages/product.ajax');

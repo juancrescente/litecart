@@ -36,11 +36,11 @@
         <div class="caption-full">
 
           <div class="pull-right">
-            <h2 class="price-wrapper text-right" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <h2 class="price-wrapper text-right">
               <?php if ($campaign_price) { ?>
-              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price" itemprop="price"><?php echo currency::format($campaign_price); ?></strong>
+              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
               <?php } else { ?>
-              <span class="price" itemprop="price"><?php echo currency::format($regular_price); ?></span>
+              <span class="price"><?php echo currency::format($regular_price); ?></span>
               <?php } ?>
             </h2>
 
@@ -151,3 +151,20 @@ for ($i=0; $i<count($attributes); $i++) {
 
   <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_also_purchased_products.inc.php');?>
 </div>
+
+<script>
+  Number.prototype.toMoney = function() {
+    var number = this;
+    var decimals = <?php echo currency::$selected['decimals']; ?>;
+    var decimal_point = '<?php echo language::$selected['decimal_point']; ?>';
+    var thousands_sep = '<?php echo language::$selected['thousands_sep']; ?>';
+    var prefix = '<?php echo currency::$selected['prefix']; ?>';
+    var suffix = '<?php echo currency::$selected['suffix']; ?>';
+    var sign = (number < 0) ? '-' : '';
+
+    var i = parseInt(number = Math.abs(number).toFixed(decimals)) + '';
+    var j = ((j = i.length) > 3) ? j % 3 : 0;
+
+    return sign + prefix + (j ? i.substr(0, j) + thousands_sep : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep) + (decimals ? decimal_point + Math.abs(number - i).toFixed(decimals).slice(2) : '') + suffix;
+  }
+</script>
