@@ -41,7 +41,7 @@
         <div class="col-md-6">
           <div class="well">
             <h2 class="price-wrapper">
-              <?php if ($campaign['price']) { ?>
+              <?php if ($campaign) { ?>
               <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign['price']); ?></strong>
               <?php } else { ?>
               <span class="price"><?php echo currency::format($regular_price); ?></span>
@@ -50,8 +50,7 @@
 
             <div class="tax" style="margin: 0 0 1em 0;">
              <?php if ($tax_rates) { ?>
-              <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?><br />
-              <?php echo implode('<br />', $tax_rates); ?>
+              <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
              <?php } else { ?>
               <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
              <?php } ?>

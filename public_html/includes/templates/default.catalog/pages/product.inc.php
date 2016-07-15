@@ -37,8 +37,8 @@
 
           <div class="pull-right">
             <h2 class="price-wrapper text-right">
-              <?php if ($campaign_price) { ?>
-              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+              <?php if ($campaign) { ?>
+              <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign['price']); ?></strong>
               <?php } else { ?>
               <span class="price"><?php echo currency::format($regular_price); ?></span>
               <?php } ?>
@@ -46,7 +46,7 @@
 
             <div class="tax text-right">
             <?php if ($tax_rates) { ?>
-              <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <?php echo implode('<br />', $tax_rates); ?>
+              <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
             <?php } else { ?>
               <?php echo language::translate('title_excluding_tax', 'Excluding Tax'); ?>
             <?php } ?>

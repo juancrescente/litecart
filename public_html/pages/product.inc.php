@@ -92,18 +92,18 @@
 
   $schema_json = array(
     '@context' => 'http://schema.org/',
-    '@type': 'Product',
-    'name': $product->name[language::$selected['code']],
-    'image': !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
-    'description': !empty($product->short_description[language::$selected['code']]) ? $product->short_description[language::$selected['code']] : '',
-    'brand': array(),
-    'offers': array(
-      '@type': 'Offer',
-      'priceCurrency': currency::$selected['code'],
-      'price': (isset($product->campaign['price'] && $product->campaign['price'] > 0)) ? tax::get_price($product->campaign, $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
-      'priceValidUntil': (isset($product->campaign['price'] && strtotime($product->campaign['date_valid_to']) > time())) ? $product->campaign['price'] : $product->campaign['price'],
-      //'itemCondition': 'http://schema.org/UsedCondition',
-      //'availability': 'http://schema.org/InStock',
+    '@type' => 'Product',
+    'name' => $product->name[language::$selected['code']],
+    'image' => !empty($product->images) ? WS_DIR_IMAGES . @array_shift(array_values($product->images)) : WS_DIR_IMAGES . 'no_image.png',
+    'description' => !empty($product->short_description[language::$selected['code']]) ? $product->short_description[language::$selected['code']] : '',
+    'brand' => array(),
+    'offers' => array(
+      '@type' => 'Offer',
+      'priceCurrency' => currency::$selected['code'],
+      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign, $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
+      'priceValidUntil' => (isset($product->campaign['price']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
+      //'itemCondition' => 'http://schema.org/UsedCondition',
+      //'availability' => 'http://schema.org/InStock',
     ),
   );
 
@@ -132,10 +132,10 @@
     'extra_images' => array(),
     'manufacturer' => array(),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
-    'campaign' => (isset($product->campaign['price'] && $product->campaign['price'] > 0)) ? tax::get_price($product->campaign, $product->tax_class_id) : null,
+    'campaign' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign, $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
-    'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price),
+    'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
     'tax_rates' => array(),
     'quantity' => @round($product->quantity, $product->quantity_unit['decimals']),
     'quantity_unit_name' => $product->quantity_unit['name'][language::$selected['code']],

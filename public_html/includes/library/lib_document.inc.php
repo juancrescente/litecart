@@ -91,7 +91,7 @@
       }
 
     // Extract in content javascript
-      if (preg_match_all(' #<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(.*?)</script>#i‌​s', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
+      if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
           document::$snippets['javascript'][] = $match[1];
           $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
