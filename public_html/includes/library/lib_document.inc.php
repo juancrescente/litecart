@@ -49,9 +49,9 @@
 
     // CDN content
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
-      self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4"></script>';
-      self::$snippets['foot_tags']['bootstrap'] = '<script src="//cdn.jsdelivr.net/g/bootstrap@3.3.6"></script>';
-      //self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4,bootstrap@3.3.6"></script>';
+      //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4"></script>';
+      //self::$snippets['foot_tags']['bootstrap'] = '<script src="//cdn.jsdelivr.net/g/bootstrap@3.3.6"></script>';
+      self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4,bootstrap@3.3.6"></script>';
 
     // Local overrides (Uncomment below)
       //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';

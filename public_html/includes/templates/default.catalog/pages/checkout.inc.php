@@ -31,6 +31,7 @@
 
 <script>
 // Queue Handler
+
   var updateQueue = [
     ['cart', null],
     ['customer', null],
@@ -144,7 +145,9 @@
   $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
     e.preventDefault();
     var data = $('#checkout-customer-wrapper :input').serialize();
+    //queueUpdateTask('customer', data);
     queueUpdateTask('cart');
+    queueUpdateTask('shipping');
     queueUpdateTask('payment');
     queueUpdateTask('summary');
     customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();

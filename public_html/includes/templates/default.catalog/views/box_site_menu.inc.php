@@ -12,7 +12,7 @@
 
   <div id="navbar" class="collapse navbar-collapse">
     <ul class="nav navbar-nav">
-      <li class="home">
+      <li class="home hidden-xs">
         <a href="<?php echo document::ilink(''); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a>
       </li>
       <?php foreach ($items as $item) { ?>
