@@ -55,7 +55,7 @@
 
   document::$snippets['box_apps_menu'] = $box_apps_menu->stitch('views/box_apps_menu');
 
-// Start page
+  // Start page
   if (empty($_GET['app'])) {
 
   // Throw some warnings
@@ -83,7 +83,7 @@
 
     echo $box_widgets->stitch('views/box_widgets');
 
-// App content
+  // App content
   } else {
 
     require vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php');
@@ -124,7 +124,12 @@
     }
     $_page->snippets['doc'] = ob_get_clean();
 
-    echo $_page->stitch('pages/doc');
+
+    if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+      echo $_page->stitch('pages/doc');
+    } else {
+      echo $_page->snippets['doc'];
+    }
   }
 
   require_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'app_footer.inc.php');

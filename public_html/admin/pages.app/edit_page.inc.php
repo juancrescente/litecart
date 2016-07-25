@@ -78,12 +78,12 @@
 
   <div class="form-group">
     <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true, 'data-size="large"'); ?>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
   </div>
 
   <div class="form-group">
     <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
   </div>
 
   <div class="row">

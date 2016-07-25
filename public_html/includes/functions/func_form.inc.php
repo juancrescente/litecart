@@ -357,6 +357,7 @@
 
   function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null) {
     trigger_error('form_draw_select2_field() is deprecated. Use instead form_draw_select_field', E_USER_DEPRECATED);
+    return form_draw_selectize_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_tags_field($name, $options=array(), $input=true, $delimiter=',', $parameters='') {
@@ -453,7 +454,7 @@
     document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
                                                   . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
 
-    document::$snippets['head_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
+    document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL;
@@ -687,7 +688,7 @@
       }
     }
 
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters . ' style="width: 184px;"', document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters, document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
   }
 
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {
@@ -932,7 +933,7 @@
       $options[] = array($product['name'] .' ['. (float)$product['quantity'] .'] '. currency::format($product['final_price']), $product['id']);
     }
 
-    return functions::form_draw_select2_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_selectize_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_quantity_units_list($name, $input=true, $multiple=false, $parameters='') {

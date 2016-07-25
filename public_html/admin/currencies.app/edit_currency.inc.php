@@ -170,12 +170,12 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_prefix', 'Prefix'); ?></label>
-      <?php echo functions::form_draw_text_field('prefix', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_text_field('prefix', true); ?>
     </div>
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_suffix', 'Suffix'); ?></label>
-      <?php echo functions::form_draw_text_field('suffix', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_text_field('suffix', true); ?>
     </div>
   </div>
 

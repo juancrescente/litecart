@@ -102,31 +102,11 @@
           </div>
         </div>
       </div>
-
-      <?php if (empty(customer::$data['id']) && settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
-      <?php if (empty($_POST['email']) || !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) { ?>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-            <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
-          </div>
-        </div>
-
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-            <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?>
-          </div>
-        </div>
-      </div>
-      <?php } ?>
-      <?php } ?>
     </div>
 
     <div class="shipping-address">
 
-      <h3><label><?php echo functions::form_draw_checkbox('different_shipping_address', '1', empty($_POST['different_shipping_address']) ? '' : '1', 'style="margin: 0px;" onclick="if (this.checked == true) $(\'#shipping-address-container\').slideDown(); else $(\'#shipping-address-container\').slideUp();"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
+      <h3><label><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
 
       <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
 
@@ -205,11 +185,55 @@
       </div>
     </div>
 
-    <p><button class="btn btn-block btn-default" name="save_address" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button></p>
+    <div class="account">
+
+      <h3><label><?php echo functions::form_draw_checkbox('create_account', '1', !empty($_POST['create_account']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></label></h3>
+
+      <div id="account-container"<?php echo (empty($_POST['create_account'])) ? ' style="display: none;"' : false; ?>>
+
+        <?php //if (empty(customer::$data['id']) && settings::get('register_guests') && settings::get('fields_customer_password')) { ?>
+        <?php //if (empty($_POST['email']) || !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) { ?>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
+              <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
+              <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?>
+            </div>
+          </div>
+        </div>
+        <?php //} ?>
+        <?php //} ?>
+      </div>
+    </div>
+
+    <p><button class="btn btn-block btn-default" name="save_customer_details" type="submit" disabled="disabled"><?php echo language::translate('title_save_changes', 'Save Changes'); ?></button></p>
   </div>
 </div>
 
 <script>
+  $('input[name="different_shipping_address"]').click(function(){
+    if (this.checked == true) {
+      $('#shipping-address-container').slideDown();
+    } else {
+      $('#shipping-address-container').slideUp();
+    }
+  });
+
+  $('input[name="create_account"]').click(function(){
+    if (this.checked == true) {
+      $('#account-container').slideDown();
+    } else {
+      $('#account-container').slideUp();
+    }
+  });
+
   $(".billing-address input, .billing-address select").change(function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address ["'+ $(this).attr('name') +']');

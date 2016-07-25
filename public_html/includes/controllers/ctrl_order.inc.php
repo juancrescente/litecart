@@ -6,7 +6,9 @@
     public function __construct($order_id=null) {
 
       if (!empty($order_id)) {
-        $this->load($order_id);
+        $this->load((int)$order_id);
+      } else {
+        $this->reset();
       }
     }
 

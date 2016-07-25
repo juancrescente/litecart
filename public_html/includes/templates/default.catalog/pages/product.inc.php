@@ -92,7 +92,7 @@
             <div class="form-group col-xs-12 col-sm-6 col-lg-4">
               <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
               <div class="input-group">
-                <?php echo (!empty($quantity_unit_decimals)) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
+                <?php echo (!empty($quantity_unit_decimals)) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null) : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
                 <?php echo $quantity_unit_name ? '<div class="input-group-addon">'. $quantity_unit_name .'</div>' : ''; ?>
               </div>
             </div>
@@ -167,4 +167,25 @@ for ($i=0; $i<count($attributes); $i++) {
 
     return sign + prefix + (j ? i.substr(0, j) + thousands_sep : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep) + (decimals ? decimal_point + Math.abs(number - i).toFixed(decimals).slice(2) : '') + suffix;
   }
+
+  $('body').on('change input keyup', 'form[name=buy_now_form]', function(e) {
+    var price = <?php echo currency::format_raw($regular_price); ?>;
+    var tax = <?php echo currency::format_raw($total_tax); ?>;
+    $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+    $(this).find('select option:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+    $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val() != '') {
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      }
+    });
+    $('.price').text(price.toMoney());
+    $('.total-tax').text(tax.toMoney());
+  });
 </script>

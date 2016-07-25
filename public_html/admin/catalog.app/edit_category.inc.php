@@ -143,7 +143,7 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-              <?php echo functions::form_draw_text_field('keywords', true, 'data-size="large"'); ?>
+              <?php echo functions::form_draw_tags_field('keywords', true); ?>
           </div>
         </div>
 
@@ -196,7 +196,7 @@
         <div class="row">
           <div class="form-group col-md-12">
             <label><?php echo language::translate('title_short_description', 'Short Description'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true, 'data-size="large"'); ?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'short_description['. $language_code .']', true); ?>
           </div>
         </div>
 
@@ -217,7 +217,7 @@
 
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true, 'data-size="large"'); ?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
         </div>
       </div>
     </div>

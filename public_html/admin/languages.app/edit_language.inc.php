@@ -200,7 +200,7 @@
     array(language::strftime('%e %b %Y'), '%e %b %Y'),
     array(language::strftime('%b %e %Y'), '%b %e %Y'),
   );
-  echo functions::form_draw_select_field('format_date', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('format_date', $options, true, false);
 ?>
     </div>
 
@@ -221,7 +221,7 @@
       ),
     ),
   );
-  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('format_time', $options, true, false);
 ?>
     </div>
   </div>
@@ -254,7 +254,7 @@
       ),
     ),
   );
-  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_date', $options, true, false);
 ?>
     </div>
 
@@ -275,7 +275,7 @@
       )
     ),
   );
-  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_optgroup_field('raw_time', $options, true, false);
 ?>
     </div>
   </div>
@@ -288,7 +288,7 @@
     array(language::translate('char_dot', 'Dot'), '.'),
     array(language::translate('char_comma', 'Comma'), ','),
   );
-  echo functions::form_draw_select_field('decimal_point', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('decimal_point', $options, true, false);
 ?>
     </div>
 
@@ -302,7 +302,7 @@
     array(language::translate('char_nonbreaking_space', 'Non-Breaking Space'), ' '),
     array(language::translate('char_single_quote', 'Single quote'), '\''),
   );
-  echo functions::form_draw_select_field('thousands_sep', $options, true, false, 'data-size="auto"');
+  echo functions::form_draw_select_field('thousands_sep', $options, true, false);
 ?>
     </div>
   </div>
@@ -310,7 +310,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_force_currency_code', 'Force Currency Code'); ?></label>
-      <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_text_field('currency_code', true); ?>
     </div>
 
     <div class="form-group col-md-6">

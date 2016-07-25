@@ -126,12 +126,11 @@
 
     // Prepare javascript
       if (!empty(self::$snippets['javascript'])) {
-        self::$snippets['foot_tags'][] = '<script>' . PHP_EOL
+        self::$snippets['javascript'] = '<script>' . PHP_EOL
                                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                                         . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
                                         . '/*]]>*/-->' . PHP_EOL
                                         . '</script>' . PHP_EOL;
-        self::$snippets['javascript'] = null;
       }
 
     // Get template settings

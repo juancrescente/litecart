@@ -59,21 +59,21 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true, 'data-size="tiny"'); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'name['. $language_code .']', true); ?>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"'); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true); ?>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_decimals', 'Decimals'); ?></label>
-      <?php echo functions::form_draw_number_field('decimals', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_number_field('decimals', true); ?>
     </div>
   </div>
 
@@ -88,7 +88,7 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
-      <?php echo functions::form_draw_number_field('priority', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_number_field('priority', true); ?>
     </div>
   </div>
 

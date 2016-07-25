@@ -111,7 +111,7 @@
                 <table>
                   <tr>
                     <td class="input-group">
-                      <?php echo (!empty($quantity_unit_decimals)) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null, 'data-size="small"') : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
+                      <?php echo (!empty($quantity_unit_decimals)) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit_decimals, 1, null) : (functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : 1, 1)); ?>
                       <?php echo $quantity_unit_name ? '<div class="input-group-addon">'. $quantity_unit_name .'</div>' : ''; ?>
                       <?php //echo ($quantity > 0 || $orderable) ? functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit') : functions::form_draw_button('add_cart_product', language::translate('title_add_to_cart', 'Add To Cart'), 'submit', 'disabled="disabled"'); ?>
                     </td>
@@ -170,3 +170,41 @@
     </div>
   </div>
 </div>
+
+<script>
+  Number.prototype.toMoney = function() {
+    var number = this;
+    var decimals = <?php echo currency::$selected['decimals']; ?>;
+    var decimal_point = '<?php echo language::$selected['decimal_point']; ?>';
+    var thousands_sep = '<?php echo language::$selected['thousands_sep']; ?>';
+    var prefix = '<?php echo currency::$selected['prefix']; ?>';
+    var suffix = '<?php echo currency::$selected['suffix']; ?>';
+    var sign = (number < 0) ? '-' : '';
+
+    var i = parseInt(number = Math.abs(number).toFixed(decimals)) + '';
+    var j = ((j = i.length) > 3) ? j % 3 : 0;
+
+    return sign + prefix + (j ? i.substr(0, j) + thousands_sep : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep) + (decimals ? decimal_point + Math.abs(number - i).toFixed(decimals).slice(2) : '') + suffix;
+  }
+
+  $('body').on('change input keyup', 'form[name=buy_now_form]', function(e) {
+    var price = <?php echo currency::format_raw($regular_price); ?>;
+    var tax = <?php echo currency::format_raw($total_tax); ?>;
+    $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+    $(this).find('select option:checked').each(function(){
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+    });
+    $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
+      if ($(this).val() != '') {
+      if ($(this).data('price-adjust')) price += $(this).data('price-adjust');
+      if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+      }
+    });
+    $('.price').text(price.toMoney());
+    $('.total-tax').text(tax.toMoney());
+  });
+</script>

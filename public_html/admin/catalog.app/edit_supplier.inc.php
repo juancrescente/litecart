@@ -69,7 +69,7 @@
     <div class="form-group col-md-12">
       <label>
         <?php echo language::translate('title_description', 'description'); ?></label>
-        <?php echo functions::form_draw_textarea('description', true, 'data-size="large"'); ?>
+        <?php echo functions::form_draw_textarea('description', true); ?>
     </div>
   </div>
 

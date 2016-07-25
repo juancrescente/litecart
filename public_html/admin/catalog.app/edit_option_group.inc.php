@@ -65,7 +65,7 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true, 'data-size="large"'); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'description['. $language_code .']', true); ?>
     </div>
   </div>
 
@@ -213,7 +213,7 @@
 ?>
       <tr>
         <td><?php echo isset($_POST['values'][$key]['id']) ? $_POST['values'][$key]['id'] : ''; ?><?php echo functions::form_draw_hidden_field('values['. $key .'][id]', true); ?></td>
-        <td><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true, 'data-size="medium"'); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
+        <td><?php echo language::translate('title_range', 'Range'); ?>: <?php echo functions::form_draw_text_field('values['. $key .'][value]', true); ?> (<?php echo language::translate('title_example', 'Example'); ?>: 100-400)</td>
         <td></td>
       </tr>
     </table>

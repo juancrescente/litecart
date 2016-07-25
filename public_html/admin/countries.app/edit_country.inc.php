@@ -130,12 +130,12 @@
 
     <div class="form-group col-md-4">
       <label><?php echo language::translate('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('currency_code', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_text_field('currency_code', true); ?>
     </div>
 
     <div class="form-group col-md-4">
       <label><?php echo language::translate('title_phone_country_code', 'Phone Country Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('phone_code', true, 'data-size="tiny"'); ?>
+      <?php echo functions::form_draw_text_field('phone_code', true); ?>
     </div>
   </div>
 

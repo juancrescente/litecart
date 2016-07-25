@@ -153,7 +153,7 @@
   <p>
     <ul id="order-actions" class="list-inline">
 <?php
-  $order_action = new mod_order_action();
+  $order_action = new mod_order();
 
   if ($actions = $order_action->actions()) {
     foreach (array_keys($actions) as $module_id) {
@@ -174,26 +174,25 @@
 <?php echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
-  $(".data-table input[name^='orders[']").change(function() {
-    if ($(".data-table input[name^='orders[']:checked").length > 0) {
-      $("#order-actions button").removeAttr('disabled');
+  $('.data-table input[name^="orders["]').change(function() {
+    if ($('.data-table input[name^="orders["]:checked').length > 0) {
+      $('#order-actions button').removeAttr('disabled');
     } else {
-      $("#order-actions button").attr('disabled', 'disabled');
+      $('#order-actions button').attr('disabled', 'disabled');
     }
-  });
-  $(".data-table input[name^='orders[']").trigger('change');
+  }).trigger('change');
 
-  $(".data-table input[name='checkbox_toggle']").click(function() {
-    $(this).closest("form").find(":checkbox").each(function() {
-      $(this).attr('checked', !$(this).attr('checked'));
+  $('.data-table input[name="checkbox_toggle"]').click(function() {
+    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
+      $(this).attr('checked', !$(this).attr('checked')).trigger('change');
     });
-    $(".data-table input[name='checkbox_toggle']").attr("checked", true);
+    return false;
   });
 
-  $('.data-table tr').click(function(event) {
-    if ($(event.target).is('input:checkbox')) return;
-    if ($(event.target).is('a, a *')) return;
-    if ($(event.target).is('th')) return;
+  $('.data-table tr').click(function(e) {
+    if ($(e.target).is('input:checkbox')) return;
+    if ($(e.target).is('a, a *')) return;
+    if ($(e.target).is('th')) return;
     $(this).find('input:checkbox').trigger('click');
   });
 </script>
