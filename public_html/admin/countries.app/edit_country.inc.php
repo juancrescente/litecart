@@ -75,14 +75,14 @@
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('iso_code_2', true, 'data-size="tiny" required="required" pattern="[A-Z]{2}"'); ?>
+      <?php echo functions::form_draw_text_field('iso_code_2', true, 'required="required" pattern="[A-Z]{2}"'); ?>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('iso_code_3', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
+      <?php echo functions::form_draw_text_field('iso_code_3', true, 'required="required" pattern="[A-Z]{3}"'); ?>
     </div>
 
     <div class="form-group col-md-6">
@@ -106,7 +106,7 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="http://www.addressdoctor.com/en/countries-data/address-formats.html" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_textarea('address_format', true, 'data-size="medium" style="height: 150px;"'); ?>
+      <?php echo functions::form_draw_textarea('address_format', true, 'style="height: 150px;"'); ?>
       <script>
         $("#address-format-hint").click(function() {
           alert(

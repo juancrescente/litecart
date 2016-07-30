@@ -64,7 +64,7 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 60px;"'); ?>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 60px;"'); ?>
     </div>
   </div>
 

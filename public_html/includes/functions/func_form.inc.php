@@ -650,7 +650,7 @@
       $options[] = array($country['name'], $country['iso_code_2'], 'data-tax-id-format="'. $country['tax_id_format'] .'" data-postcode-format="'. $country['postcode_format'] .'" data-phone-code="'. $country['phone_code'] .'"');
     }
 
-    return functions::form_draw_selectize_field($name, $options, $input, $multiple, $parameters);
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_currencies_list($name, $input=true, $multiple=false, $parameters='') {

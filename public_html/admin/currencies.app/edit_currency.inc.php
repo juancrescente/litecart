@@ -146,12 +146,12 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_code', 'Code'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('code', true, 'data-size="tiny" required="required" pattern="[A-Z]{3}"'); ?>
+      <?php echo functions::form_draw_text_field('code', true, 'required="required" pattern="[A-Z]{3}"'); ?>
     </div>
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_number', 'Number'); ?> (ISO 4217) <a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></label>
-      <?php echo functions::form_draw_text_field('number', true, 'data-size="tiny" pattern="[0-9]{3}"'); ?>
+      <?php echo functions::form_draw_text_field('number', true, 'pattern="[0-9]{3}"'); ?>
     </div>
   </div>
 

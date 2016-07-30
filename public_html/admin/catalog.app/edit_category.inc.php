@@ -16,7 +16,6 @@
 
   breadcrumbs::add(!empty($category->data['id']) ? language::translate('title_edit_category', 'Edit Category') : language::translate('title_add_new_category', 'Add New Category'));
 
-  // Save data to database
   if (isset($_POST['save'])) {
 
     if (empty($_POST['name'])) notices::add('errors', language::translate('error_must_enter_name', 'You must enter a name'));
@@ -61,7 +60,6 @@
     }
   }
 
-  // Delete from database
   if (isset($_POST['delete']) && $category) {
 
     $category->delete();
@@ -204,7 +202,7 @@
 
           <div class="form-group col-md-12">
             <label><?php echo language::translate('title_description', 'Description'); ?></label>
-            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'data-size="large" style="height: 240px;"'); ?>
+            <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'description['. $language_code .']', true, 'style="height: 240px;"'); ?>
           </div>
         </div>
 

@@ -53,7 +53,7 @@
     }
   }
 
-  echo functions::form_draw_select_field('tables[]', $options, true, true, 'data-size="large" style="height: 200px;"');
+  echo functions::form_draw_select_field('tables[]', $options, true, true, 'style="height: 200px;"');
 ?>
 
     </div>
