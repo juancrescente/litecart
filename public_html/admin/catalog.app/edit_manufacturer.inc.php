@@ -172,7 +172,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 
   <p class="btn-group">
     <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>

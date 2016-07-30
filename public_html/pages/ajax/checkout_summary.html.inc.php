@@ -14,13 +14,13 @@
 
   session::$data['order'] = new ctrl_order();
   $order = &session::$data['order'];
-  
+
   $resume_id = @$order->data['id'];
   $order->import_session();
 
   $order->data['order_total'] = array();
   $order_total->process($order);
-  
+
 // Resume incomplete order in session
   if (!empty($resume_id) && empty($order->data['order_status_id'])) {
     $order->data['id'] = $resume_id;

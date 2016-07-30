@@ -14,7 +14,7 @@
 
   if (file_get_contents('php://input')) {
 
-      if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
+    if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
 
     if (!empty($_POST['save_customer_details'])) {
 

@@ -78,14 +78,7 @@
     </tr>
     <tr>
       <td><strong><?php echo language::translate('title_description', 'Description'); ?></strong><br />
-<?php
-  $use_br = false;
-  foreach (array_keys(language::$languages) as $language_code) {
-    if ($use_br) echo '<br />';
-    echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 30px;"');
-    $use_br = true;
-  }
-?>
+        <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_textarea($language_code, 'description['. $language_code .']', true, 'style="height: 30px;"'); ?>
       </td>
     </tr>
     <tr>

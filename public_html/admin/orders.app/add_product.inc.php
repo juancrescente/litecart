@@ -13,16 +13,16 @@
 
     <div class="row">
       <div class="form-group col-md-4">
-  <?php echo functions::form_draw_products_list('product_id', true, false); ?>
+        <?php echo functions::form_draw_products_list('product_id', true, false); ?>
 
-  <?php if (!empty($product)) { ?>
+        <?php if (!empty($product)) { ?>
         <div class="thumbnail">
 <?php
   list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
   echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->image, $width, $height, settings::get('product_image_clipping')) .'" />';
 ?>
-    </div>
-    </div>
+        </div>
+      </div>
 
       <div class="col-md-8">
         <?php echo functions::form_draw_hidden_field('name', $product->name[$_GET['language_code']]); ?>
@@ -118,7 +118,7 @@
             $value_ids = array_keys($group['values']);
             $value_id = array_shift($value_ids);
 
-              $price_adjust_text = '';
+            $price_adjust_text = '';
             $price_adjust = currency::format_raw($value['price_adjust']);
             $tax_adjust = currency::format(tax::get_price($value['price_adjust'], $product->tax_class_id));
 
@@ -164,22 +164,22 @@
 
         <div class="row">
           <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
+            <label><?php echo language::translate('title_sku', 'SKU'); ?></label>
             <div><?php echo functions::form_draw_hidden_field('sku', $product->sku); ?><?php echo $product->sku ? $product->sku : '-'; ?></div>
-    </div>
+          </div>
 
           <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
+            <label><?php echo language::translate('title_weight', 'Weight'); ?></label>
             <div><?php echo functions::form_draw_hidden_field('weight', $product->weight) . functions::form_draw_hidden_field('weight_class', $product->weight_class); ?><?php echo weight::format($product->weight, $product->weight_class); ?></div>
           </div>
-    </div>
+        </div>
 
         <div class="row">
           <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
+            <label><?php echo language::translate('title_quantity', 'Quantity'); ?></label>
             <div><?php echo functions::form_draw_decimal_field('quantity', !empty($_POST['quantity']) ? true : '1', 2); ?></div>
           </div>
-    </div>
+        </div>
 
         <?php if (!empty($product->options_stock)) {?>
         <div class="row">

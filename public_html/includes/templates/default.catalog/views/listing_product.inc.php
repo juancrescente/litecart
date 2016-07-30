@@ -7,13 +7,13 @@
           <h4 class="name no-padding"><?php echo $name; ?></h4>
           <div class="manufacturer"><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></div>
         </div>
-          <div class="price-wrapper">
-            <?php if ($campaign_price) { ?>
-            <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
-            <?php } else { ?>
-            <span class="price"><?php echo $price; ?></span>
-            <?php } ?>
-          </div>
+        <div class="price-wrapper">
+          <?php if ($campaign_price) { ?>
+          <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
+          <?php } else { ?>
+          <span class="price"><?php echo $price; ?></span>
+          <?php } ?>
+        </div>
       </a>
       <?php echo $sticker; ?>
       <?php echo functions::form_draw_form_begin('buy_now_form', 'post'); ?>
@@ -35,13 +35,13 @@
           <h5 class="manufacturer"><?php echo !empty($manufacturer['id']) ? $manufacturer['name'] : '&nbsp;'; ?></h5>
           <p class="short-description"><?php echo $short_description; ?></p>
         </div>
-          <div class="price-wrapper">
-            <?php if ($campaign_price) { ?>
-            <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
-            <?php } else { ?>
-            <span class="price"><?php echo $price; ?></span>
-            <?php } ?>
-          </div>
+        <div class="price-wrapper">
+          <?php if ($campaign_price) { ?>
+          <del class="regular-price"><?php echo $price; ?></del> <strong class="campaign-price"><?php echo $campaign_price; ?></strong>
+          <?php } else { ?>
+          <span class="price"><?php echo $price; ?></span>
+          <?php } ?>
+        </div>
         <?php echo $sticker; ?>
         <div class="clearfix"></div>
       </a>

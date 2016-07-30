@@ -520,7 +520,7 @@
       if (!empty($_POST['items'][$key]['options'])) {
         foreach (array_keys($_POST['items'][$key]['options']) as $field) {
           echo '<div class="form-inline">' . PHP_EOL
-             . '    <label>'. $field .'</label>' . PHP_EOL;
+             . '  <label>'. $field .'</label>' . PHP_EOL;
           if (is_array($_POST['items'][$key]['options'][$field])) {
             foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
               echo '  ' . functions::form_draw_text_field('items['.$key.'][options]['.$field.']['.$k.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
@@ -548,12 +548,12 @@
   }
 ?>
             <tfoot>
-            <tr>
-              <td colspan="7">
+              <tr>
+                <td colspan="7">
                   <a class="btn btn-default add-product" data-toggle="lightbox" data-title="<?php echo language::translate('title_add_product', 'Add Product'); ?>" href="<?php echo document::link('', array('doc' => 'add_product'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_product', 'Add Product'); ?></a>
                   <a class="btn btn-default add-custom-item" data-toggle="lightbox" data-title="<?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?>" href="<?php echo document::link('', array('doc' => 'add_custom_item'), array('app')); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_add_custom_item', 'Add Custom Item'); ?></a>
-              </td>
-            </tr>
+                </td>
+              </tr>
             </tfoot>
           </table>
         </div>

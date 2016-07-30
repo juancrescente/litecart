@@ -93,14 +93,14 @@ form[name="filter_form"] li {
 
     $orders = database::fetch($orders_query);
 ?>
-  <tr>
-    <td><?php echo ucfirst(language::strftime('%B, %Y', $timestamp)); ?></td>
+      <tr>
+        <td><?php echo ucfirst(language::strftime('%B, %Y', $timestamp)); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><?php echo currency::format($orders['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
         <td class="border-left text-right"><strong><?php echo currency::format($orders['total_sales'], false, false, settings::get('store_currency_code')); ?></strong></td>
-    <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-  </tr>
+        <td style="text-align: right;"><?php echo currency::format($orders['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
+      </tr>
 <?php
     if (!isset($total)) $total = array();
     foreach (array_keys($orders) as $key) {
@@ -115,13 +115,13 @@ form[name="filter_form"] li {
 ?>
   <tfoot>
     <tr>
-    <td style="text-align: right;"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
+      <td style="text-align: right;"><?php echo strtoupper(language::translate('title_total', 'Total')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_subtotal'], false, false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_shipping_fees'], false, false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><?php echo currency::format($total['total_payment_fees'], false, false, settings::get('store_currency_code')); ?></td>
       <td class="border-left text-right"><strong><?php echo currency::format($total['total_sales'], false, false, settings::get('store_currency_code')); ?></strong></td>
-    <td style="text-align: right;"><?php echo currency::format($total['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
-  </tr>
+      <td style="text-align: right;"><?php echo currency::format($total['total_tax'], false, false, settings::get('store_currency_code')); ?></td>
+    </tr>
   </tfoot>
 <?php
   }

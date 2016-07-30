@@ -10,7 +10,7 @@
   $manufacturers_cache_id = cache::cache_id('manufacturers', array('basename', 'get', 'language', 'currency', 'account', 'prices'));
   if (cache::capture($manufacturers_cache_id, 'file')) {
 
-  $_page = new view();
+    $_page = new view();
 
     $manufacturers_query = database::query(
       "select m.id, m.name, m.image, mi.short_description, mi.link
@@ -35,7 +35,7 @@
       );
     }
 
-  echo $_page->stitch('pages/manufacturers');
+    echo $_page->stitch('pages/manufacturers');
 
     cache::end_capture($manufacturers_cache_id);
   }
