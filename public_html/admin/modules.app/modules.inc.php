@@ -14,19 +14,19 @@
       $modules = new mod_jobs();
       $edit_doc = 'edit_job';
       break;
+    case 'order':
+      $title = language::translate('title_order_modules', 'Order Modules');
+      $installed_modules = explode(';', settings::get('order_modules'));
+      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order/*.inc.php');
+      $modules = new mod_order();
+      $edit_doc = 'edit_order';
+      break;
     case 'order_total':
       $title = language::translate('title_order_total_modules', 'Order Total Modules');
       $installed_modules = explode(';', settings::get('order_total_modules'));
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/*.inc.php');
       $modules = new mod_order_total();
       $edit_doc = 'edit_order_total';
-      break;
-    case 'order':
-      $title = language::translate('title_order_modules', 'Order Modules');
-      $installed_modules = explode(';', settings::get('order_modules'));
-      $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order/*.inc.php');
-      $modules = new mod_order_success();
-      $edit_doc = 'edit_order';
       break;
     case 'payment':
       $title = language::translate('title_payment_modules', 'Payment Modules');
@@ -45,7 +45,6 @@
     default:
       trigger_error('Unknown module type ('. @$_GET['doc'] .')', E_USER_ERROR);
   }
-
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo $title; ?></h1>
 <?php echo functions::form_draw_form_begin('modules_form', 'post'); ?>

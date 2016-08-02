@@ -519,14 +519,17 @@
 <?php
       if (!empty($_POST['items'][$key]['options'])) {
         foreach (array_keys($_POST['items'][$key]['options']) as $field) {
-          echo '<div class="form-inline">' . PHP_EOL
-             . '  <label>'. $field .'</label>' . PHP_EOL;
+          echo '<div>' . PHP_EOL
+             . ' - '. $field .': ' . PHP_EOL;
           if (is_array($_POST['items'][$key]['options'][$field])) {
+            $use_coma = false;
             foreach (array_keys($_POST['items'][$key]['options'][$field]) as $k) {
-              echo '  ' . functions::form_draw_text_field('items['.$key.'][options]['.$field.']['.$k.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
+              echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']['.$k.']', true) . $_POST['items'][$key]['options'][$field][$k];
+              if ($use_coma) echo ', ';
+              $use_coma = true;
             }
           } else {
-            echo '  ' . functions::form_draw_text_field('items['.$key.'][options]['.$field.']', true, !empty($_POST['items'][$key]['option_stock_combination']) ? 'readonly="readonly"' : '');
+            echo '  ' . functions::form_draw_hidden_field('items['.$key.'][options]['.$field.']', true) . $_POST['items'][$key]['options'][$field];
           }
           echo '</div>' . PHP_EOL;
         }
@@ -536,7 +539,7 @@
 ?>
                 </td>
                 <td><?php echo functions::form_draw_hidden_field('items['. $key .'][sku]', true); ?><?php echo $_POST['items'][$key]['sku']; ?></td>
-                <td class="text-center"><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, null, 0, null, 'style="width: 50%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 50%"'); ?></div></td>
+                <td class="text-center"><div class="input-group"><?php echo functions::form_draw_decimal_field('items['. $key .'][weight]', true, 2, 0, null, 'style="width: 60%"'); ?> <?php echo functions::form_draw_weight_classes_list('items['. $key .'][weight_class]', true, false, 'style="width: 40%"'); ?></div></td>
                 <td class="text-center"><?php echo functions::form_draw_decimal_field('items['. $key .'][quantity]', true, 2); ?></td>
                 <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][price]', true); ?></td>
                 <td class="text-right"><?php echo functions::form_draw_currency_field($_POST['currency_code'], 'items['. $key .'][tax]', true); ?></td>
@@ -575,7 +578,7 @@
                 <th style="width: 30px;">&nbsp;</th>
                 <th><?php echo language::translate('title_module_id', 'Module ID'); ?></th>
                 <th class="text-right"><?php echo language::translate('title_title', 'Title'); ?></th>
-                <th style="width: 175px;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                <th style="width: 210px;"><?php echo language::translate('title_value', 'Value'); ?></th>
                 <th style="width: 175px;"><?php echo language::translate('title_tax', 'Tax'); ?></th>
                 <th style="width: 30px;">&nbsp;</th>
               </tr>
@@ -647,18 +650,18 @@
   </div>
 
   <div class="row">
-    <div class="form-group col-md-offset-3 col-md-3">
+    <div class="form-group form-inline col-md-12 text-right">
       <label><?php echo language::translate('title_order_status', 'Order Status'); ?></label>
       <?php echo functions::form_draw_order_status_list('order_status_id', true); ?>
     </div>
 
-    <div class="form-group col-md-3 text-right">
-      <div class="checkbox"
+    <div class="form-group col-md-12 text-right">
+      <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('email_order_copy', true); ?> <?php echo language::translate('title_send_order_copy_email', 'Send order copy email'); ?></label>
       </div>
     </div>
 
-    <div class="col-md-3 text-right">
+    <div class="col-md-12 text-right">
       <div class="btn-group">
         <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
         <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
@@ -685,8 +688,8 @@
       url: '<?php echo document::link('', array('doc' => 'get_address.json'), array('app')); ?>',
       type: 'post',
       data: 'customer_id=' + $('*[name="customer[id]"]').val() + '&token=<?php echo form::session_post_token(); ?>',
-      cache: false,
-      async: true,
+      cache: true,
+      async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
         if (console) console.warn(errorThrown.message);
@@ -797,13 +800,10 @@
 
 // Order items
 
-  $('#order-items .add-product').click(function(){
-    $(this).attr('href', '<?php echo document::link(null, array('doc' => 'add_product'), array('app')); ?>' + '&language_code=' + $('select[name="language_code"]').val() + '&currency_code=' + $('select[name="currency_code"]').val() + '&currency_value=' + $('input[name="currency_value"]').val() + '&customer%5Bcountry_code%5D=' + $('select[name="customer[country_code]"]').val() + '&customer%5Bzone_code%5D=' + ($('select[name="customer[zone_code]"]').val() ? $('select[name="customer[zone_code]"]').val() : "") + '&customer%5Bcompany%5D=' + $('input[name="customer[company]"]').val());
-  });
-
-  $('#order-items .add-custom-item').click(function(){
-    $(this).attr('href', '<?php echo document::link(null, array('doc' => 'add_custom_item'), array('app')); ?>' + '&language_code=' + $('select[name="language_code"]').val() + '&currency_code=' + $('select[name="currency_code"]').val() + '&currency_value=' + $('input[name="currency_value"]').val() + '&customer%5Bcountry_code%5D=' + $('select[name="customer[country_code]"]').val() + '&customer%5Bzone_code%5D=' + $('select[name="customer[zone_code]"]').val() + '&customer%5Bcompany%5D=' + $('input[name="customer[company]"]').val());
-  });
+  $('select[name="language_code"], select[name="currency_code"], input[name="currency_value"], input[name="customer[company]"], select[name="customer[country_code]"], select[name="customer[zone_code]"]').bind('click change input', function(e){
+    $('#order-items .add-product').attr('href', '<?php echo document::link(null, array('doc' => 'add_product'), array('app')); ?>' + '&language_code=' + $('select[name="language_code"]').val() + '&currency_code=' + $('select[name="currency_code"]').val() + '&currency_value=' + $('input[name="currency_value"]').val() + '&customer%5Bcountry_code%5D=' + $('select[name="customer[country_code]"]').val() + '&customer%5Bzone_code%5D=' + ($('select[name="customer[zone_code]"]').val() ? $('select[name="customer[zone_code]"]').val() : "") + '&customer%5Bcompany%5D=' + $('input[name="customer[company]"]').val());
+    $('#order-items .add-custom-item').attr('href', '<?php echo document::link(null, array('doc' => 'add_custom_item'), array('app')); ?>' + '&language_code=' + $('select[name="language_code"]').val() + '&currency_code=' + $('select[name="currency_code"]').val() + '&currency_value=' + $('input[name="currency_value"]').val() + '&customer%5Bcountry_code%5D=' + $('select[name="customer[country_code]"]').val() + '&customer%5Bzone_code%5D=' + $('select[name="customer[zone_code]"]').val() + '&customer%5Bcompany%5D=' + $('input[name="customer[company]"]').val());
+  }).trigger('change');
 
   var new_item_index = 0;
   function addItem(item) {
@@ -818,7 +818,7 @@
                + '      <?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][name]', '')); ?>'
                + '    </td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('items[new_item_index][sku]', '')); ?>'+ item.sku +'</td>'
-               + '    <td><div class="input-group"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '', null, 0, null, 'style="width: 50%"')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '', false, 'style="width: 50%"')); ?></div></td>'
+               + '    <td><div class="input-group"><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][weight]', '', 2, 0, null, 'style="width: 60%"')); ?> <?php echo str_replace(PHP_EOL, '', functions::form_draw_weight_classes_list('items[new_item_index][weight_class]', '', false, 'style="width: 40%"')); ?></div></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_decimal_field('items[new_item_index][quantity]', '', 2)); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][price]', '')); ?></td>'
                + '    <td><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'items[new_item_index][tax]', '')); ?></td>'
@@ -842,14 +842,15 @@
     if (item.options) {
       var product_options = '';
       $.each(item.options, function(group, value) {
-        product_options += '<div class="form-inline">'
-                         + '  <label>'+ group +'</label>';
+        product_options += '<div>'
+                         + '  - '+ group +': ';
         if ($.isArray(value)) {
           $.each(value, function(i, array_value) {
-            product_options += '  <input class="form-control" type="text" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'" />';
+            product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ escape(array_value) +'" />' + array_value +', ';
           });
+          product_options = product_options.substring(0, product_options.length - 2);
         } else {
-          product_options += '  <input class="form-control" type="text" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ value +'" />';
+          product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +']" value="'+ escape(value) +'" />' + value;
         }
         product_options += '</div>';
       });
@@ -876,7 +877,7 @@
                + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_text_field('order_total[new_ot_row_index][title]', '', 'style="text-align: right;"')); ?></td>'
                + '    <td class="text-right">'
                + '      <div class="input-group">'
-               + '        <span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', '', language::translate('title_calculate', 'Calculate'))); ?></span>'
+               + '        <span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
                + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true), 'style="text-align: right;"')); ?>'
                + '      </div>'
                + '    </td>'

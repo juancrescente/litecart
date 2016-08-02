@@ -8,6 +8,7 @@
 
   if (settings::get('catalog_only_mode')) return;
 
+  /*
   if (!empty($_GET['return'])) {
 
     switch($_GET['return']) {
@@ -31,6 +32,13 @@
         include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_PAGES . 'ajax/checkout_summary.html.inc.php');
         return;
     }
+  }
+  */
+
+  if (file_get_contents('php://input')) {
+
+  // Customer
+
   }
 
   header('X-Robots-Tag: noindex');

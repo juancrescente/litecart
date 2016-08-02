@@ -10,6 +10,7 @@
       <i class="fa fa-caret-down"></i>
     </div>
     <ul class="items dropdown-menu pull-right">
+      <?php if (!empty(cart::$items)) { ?>
       <?php foreach(cart::$items as $item) { ?>
       <li>
         <a href="<?php echo document::href_link('product', array('product_id' => $item['product_id'])); ?>">
@@ -18,6 +19,7 @@
       </li>
       <?php } ?>
       <li class="divider"></li>
+      <?php } ?>
       <li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_total', 'Total'); ?>: <span class="formatted-value"><?php echo currency::format(cart::$total['value']); ?></a></li>
     </ul>
   </div>

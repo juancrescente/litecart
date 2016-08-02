@@ -5,7 +5,7 @@
 
   <div class="panel-body">
 
-    <div class="billing-address">
+    <div class="address billing-address">
 
       <div class="row">
         <div class="col-sm-6">
@@ -104,9 +104,9 @@
       </div>
     </div>
 
-    <div class="shipping-address">
+    <div class="address shipping-address">
 
-      <h3><label><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></label></h3>
+      <h3><?php echo functions::form_draw_checkbox('different_shipping_address', '1', !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_different_shipping_address', 'Different Shipping Address'); ?></h3>
 
       <div id="shipping-address-container"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;"' : false; ?>>
 
@@ -187,7 +187,7 @@
 
     <div class="account">
 
-      <h3><label><?php echo functions::form_draw_checkbox('create_account', '1', !empty($_POST['create_account']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></label></h3>
+      <h3><?php echo functions::form_draw_checkbox('create_account', '1', !empty($_POST['create_account']) ? '1' : '', 'style="margin: 0px;"'); ?> <?php echo language::translate('title_create_account', 'Create Account'); ?></h3>
 
       <div id="account-container"<?php echo (empty($_POST['create_account'])) ? ' style="display: none;"' : false; ?>>
 
@@ -218,41 +218,44 @@
 </div>
 
 <script>
-  $('input[name="different_shipping_address"]').click(function(){
+
+// Toggles
+
+  $('#checkout-customer').on('click', 'input[name="different_shipping_address"]', function(e){
     if (this.checked == true) {
-      $('#shipping-address-container').slideDown();
+      $('#shipping-address-container').slideDown('fast');
     } else {
-      $('#shipping-address-container').slideUp();
+      $('#shipping-address-container').slideUp('fast');
     }
   });
 
-  $('input[name="create_account"]').click(function(){
+  $('#checkout-customer').on('click', 'input[name="create_account"]', function(){
     if (this.checked == true) {
-      $('#account-container').slideDown();
+      $('#account-container').slideDown('fast');
     } else {
-      $('#account-container').slideUp();
+      $('#account-container').slideUp('fast');
     }
   });
 
-  $(".billing-address input, .billing-address select").change(function() {
+// Get Address
+
+  $(".billing-address :input").change(function() {
     if ($(this).val() == '') return;
-    if (console) console.log('Retrieving address ["'+ $(this).attr('name') +']');
+    if (console) console.log('Retrieving address (Trigger: "'+ $(this).attr('name') +')');
     $.ajax({
       url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
       type: 'post',
-      data: $(this).closest('form').serialize(),
+      data: $('.billing-address :input').serialize(),
       cache: false,
       async: false,
       dataType: 'json',
       error: function(jqXHR, textStatus, errorThrown) {
-        if (console) console.warn(errorThrown.message);
+        if (console) console.warn(errorThrown.message + "\n" + jqXHR.responseText);
       },
       success: function(data) {
-        if (data['alert']) {
-          alert(data['alert']);
-        }
+        if (data['alert']) alert(data['alert']);
+        if (console) console.log(data);
         $.each(data, function(key, value) {
-          if (console) console.log('  ' + key +": "+ value);
           if ($(".billing-address *[name='"+key+"']").length && $(".billing-address *[name='"+key+"']").val() == '') {
             $(".billing-address *[name='"+key+"']").val(value);
           }
@@ -260,6 +263,8 @@
       },
     });
   });
+
+// Chained Select
 
   $("select[name='country_code']").change(function(){
     if ($(this).find('option:selected').data('tax-id-format') != '') {
@@ -353,6 +358,40 @@
       }
     });
   });
+
+// Checksum
+
+  var customer_form_changed = false;
+  var customer_form_checksum = $('#checkout-customer :input').serialize();
+  $('body').on('change keyup', '#checkout-customer', function(e) {
+    if ($('#checkout-customer :input').serialize() != customer_form_checksum) {
+      customer_form_changed = true;
+      $('#checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
+    } else {
+      customer_form_changed = false;
+      $('#checkout-customer button[name="save_customer_details"]').attr('disabled', 'disabled');
+    }
+  });
+
+  var timerSubmitCustomer;
+  $('body').on('focusout', '#checkout-customer', function() {
+    timerSubmitCustomer = setTimeout(
+      function() {
+        if (!$(this).is(':focus')) {
+          if (customer_form_changed) {
+            if (console) console.log('Autosaving customer details');
+            $('#checkout-customer button[name="save_customer_details"]').trigger('click');
+          }
+        }
+      }, 50
+    );
+  });
+
+  $('body').on('focusin', '#checkout-customer', function() {
+    clearTimeout(timerSubmitCustomer);
+  });
+
+// Initiate
 
   if ($("select[name='country_code']").find('option:selected').data('tax-id-format') != '') {
     $("select[name='country_code']").closest('table').find("input[name='tax_id']").attr('pattern', $("select[name='country_code']").find('option:selected').data('tax-id-format'));

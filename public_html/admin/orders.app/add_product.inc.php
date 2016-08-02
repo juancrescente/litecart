@@ -9,10 +9,10 @@
   }
 ?>
 <div class="container-fluid">
-  <?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, 'style="width: 960px;"'); ?>
+  <?php echo functions::form_draw_form_begin('form_add_product', 'post', null, false, !empty($_GET['product_id']) ? 'style="width: 960px;"' : 'style="width: 320px;"'); ?>
 
     <div class="row">
-      <div class="form-group col-md-4">
+      <div class="form-group <?php echo !empty($_GET['product_id']) ? 'col-md-4' : 'col-md-12'; ?>">
         <?php echo functions::form_draw_products_list('product_id', true, false); ?>
 
         <?php if (!empty($product)) { ?>
@@ -234,6 +234,8 @@
   $('button[name="add"]').unbind('click').click(function(e){
     e.preventDefault();
 
+    var error = false;
+
     var item = {
       id: '',
       product_id: $('select[name="product_id"]').val(),
@@ -241,39 +243,73 @@
       options: {},
       name: $('input[name="name"]').val(),
       sku: $('input[name="sku"]').val(),
-      weight: $('input[name="weight"]').val(),
+      weight: Number($('input[name="weight"]').val()),
       weight_class: $('input[name="weight_class"]').val(),
-      quantity: $('input[name="quantity"]').val(),
+      quantity: Number($('input[name="quantity"]').val()),
       price: Number($('input[name="price"]').val()),
       tax: Number($('input[name="tax"]').val())
     };
 
     var selected_option_combinations = [];
     $('#options input[type="checkbox"]:checked').each(function(){
-      if (!item.options[key]) item.options[key] = [];
-      item.price += Number($(this).data('price-adjust'));
-      item.tax += Number($(this).data('tax-adjust'));
-      item.options[$(this).data('group')].push($(this).val());
-      if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      if ($(this).val()) {
+        if (!item.options[$(this).data('group')]) item.options[$(this).data('group')] = [];
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')].push($(this).val());
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
     });
     $('#options input[type="radio"]:checked').each(function(){
-      item.price += Number($(this).data('price-adjust'));
-      item.tax += Number($(this).data('tax-adjust'));
-      item.options[$(this).data('group')] = $(this).val();
-      if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
     });
     $('#options select option:checked').each(function(){
-      item.price += Number($(this).data('price-adjust'));
-      item.tax += Number($(this).data('tax-adjust'));
-      item.options[$(this).parent().data('group')] = $(this).val();
-      if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).parent().data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).parent().attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
     });
     $('#options input[type!="radio"][type!="checkbox"]').each(function(){
-      item.price += Number($(this).data('price-adjust'));
-      item.tax += Number($(this).data('tax-adjust'));
-      item.options[$(this).data('group')] = $(this).val();
-      if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      if ($(this).val()) {
+        item.price += Number($(this).data('price-adjust'));
+        item.tax += Number($(this).data('tax-adjust'));
+        item.options[$(this).data('group')] = $(this).val();
+        if ($(this).data('combination')) selected_option_combinations.push($(this).data('combination'));
+      } else {
+        if ($(this).attr('required')) {
+          $(this).focus();
+          error = true;
+        }
+      }
     });
+
+    if (error) {
+      alert("<?php echo htmlspecialchars(language::translate('error_missing_required_options', 'Missing required options')); ?>");
+      return false;
+    }
+
     selected_option_combinations.sort();
     var available_stock_options = <?php echo !empty($product) ? json_encode($product->options_stock) : '[]'; ?>;
 

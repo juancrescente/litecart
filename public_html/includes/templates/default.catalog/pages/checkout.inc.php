@@ -1,10 +1,10 @@
 <!--snippet:notices-->
 
-<?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
-
-  <div id="checkout-cart-wrapper">
+<div id="checkout-cart-wrapper">
   {snippet:box_checkout_cart}
-  </div>
+</div>
+
+<?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
 
   <div class="row">
     <div class="col-md-6">
@@ -72,9 +72,31 @@
 
     $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
 
+    var url = '';
+    switch(task[0]) {
+      case 'cart':
+        url = '<?php echo document::ilink('ajax/checkout_cart.html'); ?>';
+        break;
+      case 'customer':
+        url = '<?php echo document::ilink('ajax/checkout_customer.html'); ?>';
+        break;
+      case 'shipping':
+        url = '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>';
+        break;
+      case 'payment':
+        url = '<?php echo document::ilink('ajax/checkout_payment.html'); ?>';
+        break;
+      case 'summary':
+        url = '<?php echo document::ilink('ajax/checkout_summary.html'); ?>';
+        break;
+      default:
+        alert('Error: Invalid component ' + task[0]);
+        break;
+    }
+
     $.ajax({
       type: 'post',
-      url: '?return='+task[0],
+      url: url,
       data: task[1],
       dataType: 'html',
       beforeSend: function(jqXHR) {
@@ -85,7 +107,6 @@
         $('#checkout-'+ task[0] +'-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
-        console.log('#checkout-' + task[0] + '-wrapper refreshed');
         $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
       complete: function(html) {
@@ -112,40 +133,10 @@
 
 // Customer
 
-  var customer_form_changed = false;
-  var customer_form_checksum = $('#checkout-customer-wrapper :input').serialize();
-  $("body").on('change keyup', '#checkout-customer-wrapper', function(e) {
-    if ($('#checkout-customer-wrapper :input').serialize() != customer_form_checksum) {
-      customer_form_changed = true;
-      $('#checkout-customer-wrapper button[name="save_address"]').removeAttr('disabled');
-    } else {
-      customer_form_changed = false;
-      $('#checkout-customer-wrapper button[name="save_address"]').attr('disabled', 'disabled');
-    }
-  });
-
-  var timerSubmitCustomer;
-  $("body").on('focusout', '#checkout-customer-wrapper', function() {
-    timerSubmitCustomer = setTimeout(
-      function() {
-        if (!$(this).is(':focus')) {
-          if (customer_form_changed) {
-            if (console) console.log('Autosaving customer details');
-            $('#checkout-customer-wrapper button[name="save_address"]').trigger('click');
-          }
-        }
-      }, 50
-    );
-  });
-
-  $("body").on('focusin', '#checkout-customer-wrapper', function() {
-    clearTimeout(timerSubmitCustomer);
-  });
-
-  $('body').on('click', '#checkout-customer-wrapper button[name="save_address"]', function(e){
+  $('body').on('click', '#checkout-customer-wrapper button[name="save_customer_details"]', function(e){
     e.preventDefault();
     var data = $('#checkout-customer-wrapper :input').serialize();
-    //queueUpdateTask('customer', data);
+    queueUpdateTask('customer', data);
     queueUpdateTask('cart');
     queueUpdateTask('shipping');
     queueUpdateTask('payment');

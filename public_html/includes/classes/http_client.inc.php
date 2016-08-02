@@ -8,11 +8,11 @@
     public function __construct($config=array()) {
 
       $this->_config = array(
-        'asynchronous' => isset($config['asynchronous']) ? $config['asynchronous'] : false,
-        'follow_redirects' => isset($config['follow_redirects']) ? $config['follow_redirects'] : true,
+        'asynchronous' => false,
+        'follow_redirects' => true,
       );
 
-      foreach ($this->config as $key => $value) {
+      foreach ($this->_config as $key => $value) {
         if (isset($config[$key])) $this->_config[$key] = $config[$key];
       }
 
@@ -71,10 +71,10 @@
           continue;
         }
         if ($found_body) {
-          if ($asynchronous) break;
+          if ($this->_config['asynchronous']) break;
           $response_body .= $row;
         } else {
-          if ($follow_redirects && stristr($row, "location:") != false) {
+          if ($this->_config['follow_redirects'] && stristr($row, "location:") != false) {
             $redirect_url = preg_replace("/location:/i", "", trim($row));
             if (empty($redirect_url)) $redirect_url = $url;
             $redirect_url = trim($url);
@@ -94,7 +94,7 @@
 
       $this->last_response['status_code'] = $matches[2];
 
-      if ($asynchronous) return true;
+      if ($this->_config['asynchronous']) return true;
 
     // Decode chunked data
       if (preg_match('/Transfer-Encoding: chunked/i', $response_header)) {

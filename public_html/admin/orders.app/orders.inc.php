@@ -49,12 +49,14 @@
 }
 </style>
 
+<?php echo functions::form_draw_form_begin('search_form', 'get') . functions::form_draw_hidden_field('app', true) . functions::form_draw_hidden_field('doc', true); ?>
 <ul class="list-inline pull-right">
-  <li><?php echo functions::form_draw_form_begin('search_form', 'get', '', false, 'onsubmit="return false;"') . functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::link('', array(), true, array('page', 'query')) .'&query=\' + this.value)"') . functions::form_draw_form_end(); ?></li>
-  <li><?php echo functions::form_draw_order_status_list('order_status_id', true, false, 'onchange="location=(\''. document::link('', array(), true, array('page', 'order_status_id')) .'&order_status_id=\' + this.options[this.selectedIndex].value)"'); ?></li>
-  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true, false, 'onchange="$(this).closest(\'form\').submit();"'); ?></li>
+  <li><?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></li>
+  <li><?php echo functions::form_draw_order_status_list('order_status_id', true); ?></li>
+  <li><?php echo functions::form_draw_select_field('payment_option_name', $payment_options, true); ?></li>
   <li><?php echo functions::form_draw_link_button(document::link('', array('doc' => 'edit_order', 'redirect' => $_SERVER['REQUEST_URI']), true), language::translate('title_create_new_order', 'Create New Order'), '', 'add'); ?></li>
 </ul>
+<?php echo functions::form_draw_form_end(); ?>
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_orders', 'Orders'); ?></h1>
 
@@ -174,6 +176,10 @@
 <?php echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
+  $('form[name="search_form"] select').change(function(){
+    $(this).closest('form').submit();
+  });
+
   $('.data-table input[name^="orders["]').change(function() {
     if ($('.data-table input[name^="orders["]:checked').length > 0) {
       $('#order-actions button').removeAttr('disabled');

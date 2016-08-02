@@ -86,6 +86,7 @@
     </tfoot>
   </table>
 
+  <?php if (count($vqmods)) { ?>
   <p>
     <span class="btn-group">
       <?php echo functions::form_draw_button('enable', language::translate('title_enable', 'Enable'), 'submit', '', 'on'); ?>
@@ -93,6 +94,7 @@
     </span>
     <?php echo functions::form_draw_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'onclick="'. htmlspecialchars('if(!confirm("'. language::translate('text_are_you_sure', 'Are you sure?') .'")) return false;') .'"', 'delete'); ?>
   </p>
+  <?php } ?>
 
 <?php echo functions::form_draw_form_end(); ?>
 

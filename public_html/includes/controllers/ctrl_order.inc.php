@@ -570,12 +570,12 @@
       if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
 
       $required_fields = array(
-        'email',
         'firstname',
         'lastname',
         'address1',
         'city',
         'country_code',
+        'email',
         'phone',
       );
 

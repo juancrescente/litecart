@@ -66,14 +66,16 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label><?php echo language::translate('title_title', 'Title'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_title', 'Title'); ?></label>
+      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
+    </div>
   </div>
 
   <div class="form-group">
     <label><?php echo language::translate('title_content', 'Content'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="width: 720px; height: 400px;"'); ?>
+    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="height: 400px;"'); ?>
   </div>
 
   <div class="form-group">

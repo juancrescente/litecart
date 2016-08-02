@@ -102,15 +102,17 @@
 
     document::$snippets['head_tags']['ekko-lightbox'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'ekko-lightbox/css/ekko-lightbox.min.css">';
     document::$snippets['foot_tags']['ekko-lightbox'] = '<script src="'. WS_DIR_EXT .'ekko-lightbox/js/ekko-lightbox.min.js"></script>';
-    document::$snippets['javascript']['ekko-lightbox'] = '  $(document).delegate(\'*[data-toggle="lightbox"]\', \'click\', function(event) {' . PHP_EOL
-                                                       . '    event.preventDefault();' . PHP_EOL
-                                                       . '    $(this).ekkoLightbox({' . PHP_EOL
-                                                       . '      loadingMessage: \''. functions::draw_fonticon('fa-spinner fa-2x fa-spin') .'\',' . PHP_EOL
-                                                       . '      left_arrow: \''. functions::draw_fonticon('fa-chevron-left') .'\',' . PHP_EOL
-                                                       . '      right_arrow: \''. functions::draw_fonticon('fa-chevron-right') .'\',' . PHP_EOL
-                                                       . '      max_width: \'1024px\',' . PHP_EOL
-                                                       . '      effect_class: null' . PHP_EOL
-                                                       . '    });' . PHP_EOL
+    document::$snippets['javascript']['ekko-lightbox'] = '  $(\'*[data-toggle="lightbox"]\').off(\'click\').click(function(e){' . PHP_EOL
+                                                       . '    if (!e.shiftKey && !e.ctrlKey) {' . PHP_EOL
+                                                       . '      e.preventDefault();' . PHP_EOL
+                                                       . '      $(this).ekkoLightbox({' . PHP_EOL
+                                                       . '        loadingMessage: \''. functions::draw_fonticon('fa-spinner fa-2x fa-spin') .'\',' . PHP_EOL
+                                                       . '        left_arrow: \''. functions::draw_fonticon('fa-chevron-left') .'\',' . PHP_EOL
+                                                       . '        right_arrow: \''. functions::draw_fonticon('fa-chevron-right') .'\',' . PHP_EOL
+                                                       . '        max_width: \'1024px\',' . PHP_EOL
+                                                       . '        effect_class: null' . PHP_EOL
+                                                       . '      });' . PHP_EOL
+                                                       . '    }' . PHP_EOL
                                                        . '  });';
   }
 
@@ -123,15 +125,15 @@
     );
 
     document::$snippets['foot_tags'][$_modal->snippets['id']] = '<script>' . PHP_EOL
-                                                     . '  $("body").on("hidden.bs.modal", ".modal", function(e){' . PHP_EOL
-                                                     . '    e.preventDefault();' . PHP_EOL
-                                                     . '    var link = $(e.relatedTarget);' . PHP_EOL
-                                                     . '    $(this).find(".modal-body").load(link.attr("href"));' . PHP_EOL
-                                                     . '  });' . PHP_EOL
-                                                     . '  $("body").on("hidden.bs.modal", ".modal", function(){' . PHP_EOL
-                                                     . '    $(this).removeData("bs.modal").find(".modal-body").html("");' . PHP_EOL
-                                                     . '  });' . PHP_EOL
-                                                     . '</script>';
+                                                              . '  $(\'body\').on(\'hidden.bs.modal\', \'.modal\', function(e){' . PHP_EOL
+                                                              . '    e.preventDefault();' . PHP_EOL
+                                                              . '    var link = $(e.relatedTarget);' . PHP_EOL
+                                                              . '    $(this).find(\'.modal-body\').load(link.attr(\'href\'));' . PHP_EOL
+                                                              . '  });' . PHP_EOL
+                                                              . '  $(\'body\').on(\'hidden.bs.modal\', \'.modal\', function(){' . PHP_EOL
+                                                              . '    $(this).removeData(\'bs.modal\').find(\'.modal-body\').html(\'\');' . PHP_EOL
+                                                              . '  });' . PHP_EOL
+                                                              . '</script>';
 
     document::$snippets['foot_tags'][$_modal->snippets['id']] .= $_modal->stitch('views/modal');
 
