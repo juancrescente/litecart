@@ -10,13 +10,39 @@
 
   if (!isset($payment)) $payment = new mod_payment();
 
-  $order_total = new mod_order_total();
-
   session::$data['order'] = new ctrl_order();
   $order = &session::$data['order'];
 
   $resume_id = @$order->data['id'];
-  $order->import_session();
+
+// Build Order
+  $order->reset();
+
+  $order->data['weight_class'] = settings::get('store_weight_class');
+  $order->data['currency_code'] = currency::$selected['code'];
+  $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
+  $order->data['language_code'] = language::$selected['code'];
+
+  $order->data['customer'] = customer::$data;
+
+  if (!empty($shipping->data['selected'])) {
+    $order->data['shipping']['option_id'] = $shipping->data['selected']['id'];
+    $order->data['shipping']['option_name'] = $shipping->data['selected']['name'];
+  }
+
+  if (!empty($payment->data['selected'])) {
+    $order->data['payment']['option_id'] = $payment->data['selected']['id'];
+    $order->data['payment']['option_name'] = $payment->data['selected']['name'];
+  }
+
+  foreach (cart::$items as $item) {
+    $order->add_item($item);
+  }
+
+  $order_total = new mod_order_total();
+  foreach ($order_total->rows as $row) {
+    $order->add_ot_row($row);
+  }
 
   $order->data['order_total'] = array();
   $order_total->process($order);

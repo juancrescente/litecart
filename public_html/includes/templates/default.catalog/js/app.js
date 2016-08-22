@@ -1,20 +1,32 @@
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 
+// Form required
+  $(':input[required="required"]').closest('.form-group').addClass('required');
+
 // Sidebar parallax effect
-  if ($('.sidebar').height() < $('.sidebar + .content').height()) {
-  var sidebar_offset_y = $('.sidebar + .content').scrollTop() + $('.sidebar + .content').offset().top;
-  $('.sidebar + .content').css('min-height', $('.sidebar').height());
-  $('.sidebar').css('position', 'fixed').css('top', sidebar_offset_y+'px');
-  $(window).resize(function(e){
-    sidebar_offset_y = $('.sidebar + .content').scrollTop() + $('.sidebar + .content').offset().top;
-  });
-    $(window).bind('resize scroll', function(e){
-      var scrolled = $(window).scrollTop();
-        //$('.sidebar').css('top', (sidebar_offset_y - (scrolled * ($('.sidebar').height()/($('.sidebar + .content').height()+$('.sidebar').offset().top)))) +'px');
-      $('.sidebar').css('top', (sidebar_offset_y - (scrolled * 0.65)) +'px');
-  });
-  }
+  $(window).bind('resize scroll', function(e){
+    var sidebar = $('.sidebar');
+    var content = $('.sidebar + .content');
+    var parallax_rate = 0.45;
+
+    $(content).css('min-height', $(sidebar).height());
+
+    if ($('.sidebar').height() < $('.sidebar + .content').height()) {
+
+      var min_sidebar_offset = $(content).scrollTop() + $(content).offset().top;
+      var max_sidebar_margin = $(content).height() - $(sidebar).height();
+      var offset = $(this).scrollTop() * parallax_rate;
+
+      if (offset > max_sidebar_margin) offset = max_sidebar_margin;
+
+
+      $(sidebar).css('position', 'absolute').css('margin-top', offset + 'px');
+
+    } else {
+      $(sidebar).css('position', 'static').css('margin', 0);
+    }
+  }).trigger('resize');
 
   /*
    * jQuery Animate From To plugin 1.0

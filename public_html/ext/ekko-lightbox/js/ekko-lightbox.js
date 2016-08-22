@@ -22,7 +22,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     this.$element = $(element);
     content = '';
     this.modal_id = this.options.modal_id ? this.options.modal_id : 'ekkoLightbox-' + Math.floor((Math.random() * 1000) + 1);
-    header = (this.options.title || this.options.always_show_close) ? '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + (this.options.title || "&nbsp;") + '</h4></div>' : '';
+    header = (this.options.title || this.options.always_show_close) ? '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3 class="modal-title">' + (this.options.title || "&nbsp;") + '</h3></div>' : '';
     footer = this.options.footer ? '<div class="modal-footer">' + this.options.footer + '</div>' : '';
     $(document.body).append('<div id="' + this.modal_id + '" class="ekko-lightbox modal'+ (this.options.effect_class ? ' ' + this.options.effect_class : '') +'" data-modal-index="'+ Date.now() +'" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' + header + '<div class="modal-body"><div class="ekko-lightbox-container"><div></div></div></div>' + footer + '</div></div></div>');
     this.modal = $('#' + this.modal_id);
@@ -157,11 +157,11 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     },
     navigate: function(event) {
       event = event || window.event;
-      if (event.keyCode === 39 || event.keyCode === 37) {
-        if (event.keyCode === 39) {
-          return this.navigate_right();
-        } else if (event.keyCode === 37) {
+      if (event.keyCode === 37 || event.keyCode === 39) {
+        if (event.keyCode === 37) {
           return this.navigate_left();
+        } else if (event.keyCode === 39) {
+          return this.navigate_right();
         }
       }
     },
@@ -219,7 +219,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         return this.showInstagramVideo(video_id);
       } else if (type === 'video') {
         this.options.type = 'video';
-        return this.showVideoIframe(video_id);
+        return this.showVideoIframe(src);
       } else if (type === 'vimeo' || (video_id = this.getVimeoId(src))) {
         this.options.type = 'vimeo';
         return this.showVimeoVideo(video_id);

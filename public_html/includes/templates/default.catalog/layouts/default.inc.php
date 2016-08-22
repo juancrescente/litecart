@@ -106,7 +106,7 @@
     $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
       pixels_per_second: 2000,
       initial_css: {
-        'border': '2px rgba(0,136,204,1) solid',
+        'border': '1px rgba(0,136,204,1) solid',
         'background-color': 'rgba(0,136,204,0.5)',
         'z-index': '999999',
         'border-radius': '3px',

@@ -6,11 +6,11 @@
 
   if (empty(cart::$items)) return;
 
-  if (empty(customer::$data['country_code'])) return;
+  if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
 
   $payment = new mod_payment();
 
-  if (!empty($_POST['payment_option'])) {
+  if (file_get_contents('php://input')) {
     list($module_id, $option_id) = explode(':', $_POST['payment_option']);
     $result = $payment->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
@@ -37,7 +37,7 @@
     if ($cheapest_payment = $payment->cheapest()) {
       $cheapest_payment = explode(':', $cheapest_payment);
       $payment->select($cheapest_payment[0], $cheapest_payment[1]);
-  }
+    }
   }
 
 /*

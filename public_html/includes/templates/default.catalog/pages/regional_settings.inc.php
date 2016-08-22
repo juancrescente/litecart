@@ -1,45 +1,54 @@
 <!--snippet:notices-->
 
-<h1<?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
+<div id="regional-settings">
+  <h1 class="title"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
+  <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
 
-  <div class="row half-gutter">
-    <div class="form-group col-sm-6">
-      <label><?php echo language::translate('title_language', 'Language'); ?></label>
-      <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?>
+    <div class="row half-gutter">
+      <div class="form-group col-sm-6">
+        <label><?php echo language::translate('title_language', 'Language'); ?></label>
+        <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
+        <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
     </div>
 
-    <div class="form-group col-sm-6">
-      <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
-      <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
-  </div>
-
-    <div class="form-group col-sm-6">
-      <label><?php echo language::translate('title_country', 'Country'); ?></label>
-      <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
-  </div>
-  
-    <div class="form-group col-sm-6">
-      <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
-      <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?>
+      <div class="form-group col-sm-6">
+        <label><?php echo language::translate('title_country', 'Country'); ?></label>
+        <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
     </div>
 
-    <div class="form-group col-sm-6">
-      <label><?php echo language::translate('title_display_prices', 'Display Prices'); ?></label>
-      <div class="btn-group btn-group-justify" data-toggle="buttons">
-        <label class="btn btn-default"><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
-        <label class="btn btn-default"><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
-        <script>$('.btn-group input:checked').parent().addClass('active');</script>
+      <div class="form-group col-sm-6">
+        <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
+        <?php echo functions::form_draw_zones_list(customer::$data['country_code'], 'zone_code', customer::$data['zone_code']); ?>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label><?php echo language::translate('title_display_prices', 'Display Prices'); ?></label>
+        <div class="btn-group btn-group-justify" data-toggle="buttons">
+          <label class="btn btn-default"><?php echo functions::form_draw_radio_button('display_prices_including_tax', 0, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_excl_tax', 'Excl. Tax'); ?></label>
+          <label class="btn btn-default"><?php echo functions::form_draw_radio_button('display_prices_including_tax', 1, isset(customer::$data['display_prices_including_tax']) ? (int)customer::$data['display_prices_including_tax'] : (int)settings::get('default_display_prices_including_tax')); ?> <?php echo language::translate('title_incl_tax', 'Incl. Tax'); ?></label>
+          <script>$('.btn-group input:checked').parent().addClass('active');</script>
+        </div>
       </div>
     </div>
-  </div>
 
-  <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
+    <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save')); ?>
 
-<?php echo functions::form_draw_form_end(); ?>
+  <?php echo functions::form_draw_form_end(); ?>
+</div>
 
 <script>
+  if ($('#regional-settings .title').parents('.modal')) {
+    $('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text());
+    $('#regional-settings .title').remove();
+  }
+
+  <?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>
+
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');
     $.ajax({

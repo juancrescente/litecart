@@ -36,20 +36,21 @@ body.modal-open #page {
       background: #f00;
     }
   }
-  .region {
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    ul {
-      display: inline;
-    }
-  }
 }
 
 #header {
   position: relative;
   margin-bottom: 15px;
+  .region {
+    a {
+      color: inherit;
+      text-decoration: none;
+
+    }
+    ul {
+      display: inline;
+    }
+  }
 }
 
 
@@ -125,60 +126,7 @@ body.modal-open #page {
   }
 }
 
-// Checkout
 
-body#checkout {
-  #header {
-    .customer-service {
-      .title {
-        margin: 0;
-      }
-    }
-  }
-
-  #checkout-cart {
-    tr td:first-child a {
-      display: inline-block;
-    }
-    tr td:last-child {
-      text-align: right;
-    }
-  }
-
-  #checkout-shipping, #checkout-payment {
-    .option {
-      &.btn {
-    padding: 12px;
-  }
-      &:not(.active) {
-        opacity: 0.75;
-        -webkit-transition: all 0.25s ease;
-        -moz-transition: all 0.25s ease;
-        -o-transition: all 0.25s ease;
-        transition: all 0.25s ease;
-        .content {
-          max-height: 0;
-          overflow-y: hidden;
-        }
-      }
-      .content {
-        -webkit-transition: all 0.25s ease;
-        -moz-transition: all 0.25s ease;
-        -o-transition: all 0.25s ease;
-        transition: all 0.25s ease;
-        max-height: 200px;
-        overflow-y: auto;
-      }
-    }
-  }
-
-  #checkout-customer {
-    button:not([disabled]) {
-      font-weight: bold;
-      color: #f00;
-    }
-  }
-}
 
 // Data Tables
 
@@ -194,8 +142,9 @@ table.data-table {
 // Listing
 
 .products .product {
-    position: relative;
+
   .thumbnail {
+    position: relative;
     margin: 0;
     overflow: hidden;
 
@@ -221,7 +170,7 @@ table.data-table {
       }
     }
     img {
-      padding: @grid-gutter-width/2;
+      /*padding: @grid-gutter-width/2;*/
     }
   }
   &:hover .thumbnail {
@@ -232,9 +181,9 @@ table.data-table {
     text-decoration: none;
   }
   .caption {
-  .manufacturer {
-    opacity: 0.75;
-  }
+    .manufacturer {
+      opacity: 0.75;
+    }
   }
   .price-wrapper {
     margin-top: 0.5em;
@@ -374,4 +323,65 @@ table.data-table {
       break-inside: avoid;
     }
   }
+}
+
+// Checkout
+
+body#checkout {
+  #header {
+    .customer-service {
+      .title {
+        margin: 0;
+      }
+    }
+  }
+
+  #checkout-cart {
+    tr td:first-child a {
+      display: inline-block;
+    }
+    tr td:last-child {
+      text-align: right;
+    }
+  }
+
+  #checkout-shipping, #checkout-payment {
+    .option {
+      &.btn {
+        padding: 12px;
+      }
+      &:not(.active) {
+        opacity: 0.75;
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
+        .content {
+          max-height: 0;
+          overflow-y: hidden;
+        }
+      }
+      .content {
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    }
+  }
+
+  #checkout-customer {
+    button:not([disabled]) {
+      font-weight: bold;
+      color: rgba(255,0,0,1);
+      animation: flasher 1s linear infinite;
+    }
+  }
+}
+
+@keyframes flasher {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: 0 0 10px rgba(255,0,0,1); }
 }

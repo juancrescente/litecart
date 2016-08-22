@@ -17,7 +17,7 @@
   </div>
 
   <p class="btn-grup">
-    <?php echo functions::form_draw_button('login', language::translate('title_login', 'Login')); ?>
+    <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>

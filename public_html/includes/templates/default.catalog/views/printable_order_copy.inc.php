@@ -32,15 +32,15 @@
       </tr>
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></strong><br />
-        <?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></td>
+        <?php echo !empty($order['shipping']['option_name']) ? $order['shipping']['option_name'] : '-'; ?></td>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_payment_option', 'Payment Option'); ?></strong><br />
-        <?php echo !empty($order['payment_option']['name']) ? $order['payment_option']['name'] : '-'; ?></td>
+        <?php echo !empty($order['payment']['option']['name']) ? $order['payment']['option']['name'] : '-'; ?></td>
       </tr>
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></strong><br />
-          <?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></td>
+          <?php echo !empty($order['shipping']['tracking_id']) ? $order['shipping']['tracking_id'] : '-'; ?></td>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_transaction_number', 'Transaction Number'); ?></strong><br />
-          <?php echo !empty($order['payment_transaction_id']) ? $order['payment_transaction_id'] : '-'; ?></td>
+          <?php echo !empty($order['payment']['transaction_id']) ? $order['payment']['transaction_id'] : '-'; ?></td>
       </tr>
       <tr>
         <td style="padding: 5px 10px;"><strong><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></strong><br />

@@ -45,7 +45,15 @@
 
       <div class="row col-xs-12 col-sm-6 col-md-8">
         <div class="contact hidden-xs col-sm-6 col-md-8">
-        Lorem ipsum dolor sit amet, populo propriae mei no. Vix tale nonumy id, quis eruditi alienum has at, eu quo utinam possit. Omnis blandit rationibus mel ut, at sit homero ornatus, his choro affert accusam an. Eum ad dolore ignota tractatos. Probo nobis vix at, nam no audiam imperdiet, ius facete singulis accommodare id. No quis meliore disputationi has, in exerci ocurreret mel, mea purto congue id.
+          <h4><?php echo language::translate('title_about_us', 'About Us'); ?></h4>
+          <p>Lorem ipsum dolor sit amet, populo propriae mei no. Vix tale nonumy id, quis eruditi alienum has at, eu quo utinam possit. Omnis blandit rationibus mel ut, at sit homero ornatus, his choro affert accusam an. Eum ad dolore ignota tractatos. Probo nobis vix at, nam no audiam imperdiet, ius facete singulis accommodare id. No quis meliore disputationi has, in exerci ocurreret mel, mea purto congue id.</p>
+
+          <div class="social-bookmarks" style="margin: 1em 0;">
+            <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-2x', 'style="color: #55acee;"'); ?></a>
+            <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-2x', 'style="color: #3b5998;"'); ?></a>
+            <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', array('url' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square fa-2x', 'style="color: #dd4b39;"'); ?></a>
+            <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', array('url' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-2x', 'style="color: #bd081c;"'); ?></a>
+          </div>
         </div>
 
         <div class="contact col-xs-12 col-sm-6 col-md-4">
@@ -56,13 +64,6 @@
         </div>
       </div>
     </div>
-
-    <h4 class="social-bookmarks text-center" style="margin: 1em 0;">
-      <a class="twitter" href="<?php echo document::href_link('http://twitter.com/home/', array('status' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Twitter'); ?>"><?php echo functions::draw_fonticon('fa-twitter-square fa-lg', 'style="color: #55acee;"'); ?></a>
-      <a class="facebook" href="<?php echo document::href_link('http://www.facebook.com/sharer.php', array('u' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Facebook'); ?>"><?php echo functions::draw_fonticon('fa-facebook-square fa-lg', 'style="color: #3b5998;"'); ?></a>
-      <a class="googleplus" href="<?php echo document::href_link('https://plus.google.com/share', array('url' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Google+'); ?>"><?php echo functions::draw_fonticon('fa-google-plus-square fa-lg', 'style="color: #dd4b39;"'); ?></a>
-      <a class="pinterest" href="<?php echo document::href_link('http://pinterest.com/pin/create/button/', array('url' => document::link(''))); ?>" target="_blank" title="<?php echo sprintf(language::translate('text_share_on_s', 'Share on %s'), 'Pinterest'); ?>"><?php echo functions::draw_fonticon('fa-pinterest-square fa-lg', 'style="color: #bd081c;"'); ?></a>
-    </h4>
   </div>
 
   <!-- LiteCart is licensed under CC BY-ND 4.0. Removing the link back to LiteCart.net without written permission is a violation. -->

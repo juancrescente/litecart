@@ -12,8 +12,6 @@
 
   if (settings::get('product_modal_window')) functions::draw_lightbox();
 
-  include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_INCLUDES . 'column_left.inc.php');
-
   $_page = new view();
   $_page->snippets = array(
     'title' => sprintf(language::translate('title_search_results_for_s', 'Search Results for &quot;%s&quot;'), htmlspecialchars($_GET['query'])),

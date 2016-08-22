@@ -58,8 +58,6 @@
         'order_status_id',
         'payment_option',
         'payment_transaction_id',
-        'shipping_option',
-        'shipping_tracking_id',
         'comments',
       );
 
@@ -82,11 +80,49 @@
         'mobile',
         'country_code',
         'zone_code',
-        'shipping_address',
       );
 
       foreach ($fields as $field) {
         if (isset($_POST['customer'][$field])) $order->data['customer'][$field] = $_POST['customer'][$field];
+      }
+
+      $fields = array(
+        'company',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'postcode',
+        'city',
+        'country_code',
+        'zone_code',
+        'option_id',
+        'option_name',
+        'tracking_id',
+      );
+
+      foreach ($fields as $field) {
+        if (isset($_POST['customer']['shipping_address'][$field])) $order->data['customer']['shipping_address'][$field] = $_POST['customer']['shipping_address'][$field];
+      }
+
+      $fields = array(
+        'option_id',
+        'option_name',
+        'tracking_id',
+      );
+
+      foreach ($fields as $field) {
+        if (isset($_POST['shipping'][$field])) $order->data['shipping'][$field] = $_POST['shipping'][$field];
+      }
+
+      $fields = array(
+        'option_id',
+        'option_name',
+        'tracking_id',
+      );
+
+      foreach ($fields as $field) {
+        if (isset($_POST['payment'][$field])) $order->data['payment'][$field] = $_POST['payment'][$field];
       }
 
       $order->save();
@@ -416,17 +452,17 @@
               <div class="row container-fluid">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
-                  <?php echo functions::form_draw_text_field('payment_option[id]', true); ?>
+                  <?php echo functions::form_draw_text_field('payment][option_id]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                  <?php echo functions::form_draw_text_field('payment_option[name]', true); ?>
+                  <?php echo functions::form_draw_text_field('payment][option_name]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_transaction_id', 'Transaction ID'); ?></label>
-                  <?php echo functions::form_draw_text_field('payment_transaction_id', true); ?>
+                  <?php echo functions::form_draw_text_field('payment][transaction_id]', true); ?>
                 </div>
               </div>
             </div>
@@ -443,17 +479,17 @@
               <div class="row container-fluid">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_option_id', 'Option ID'); ?></label>
-                  <?php echo functions::form_draw_text_field('shipping_option[id]', true); ?>
+                  <?php echo functions::form_draw_text_field('shipping[option_id]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_name', 'Name'); ?></label>
-                  <?php echo functions::form_draw_text_field('shipping_option[name]', true); ?>
+                  <?php echo functions::form_draw_text_field('shipping[option_name]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_tracking_id', 'Tracking ID'); ?></label>
-                  <?php echo functions::form_draw_text_field('shipping_tracking_id', true); ?>
+                  <?php echo functions::form_draw_text_field('shipping[tracking_id]', true); ?>
                 </div>
 
                 <div class="form-group col-md-6">

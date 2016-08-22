@@ -1,15 +1,3 @@
-<style>
-.carousel {
-  max-height: 100%;
-  margin-bottom: 2em;
-}
-.carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
-    width: 100%;
-    margin: auto;
-}
-</style>
-
 <div id="slides" class="carousel slide curved-shadow" data-ride="carousel">
   <ol class="carousel-indicators">
     <?php foreach (array_values($slides) as $key => $slide) { ?>

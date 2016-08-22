@@ -12,7 +12,6 @@ Country Icons
 Other Graphics
 --------------
 * (no-image/camera) Design modo - Creative Commons Attribution 3.0 Unported - http://designmodo.com/
-* (magnify cursor) Peter Cowburn - Free - http://cowburn.info/
 
 TrueType Fonts
 --------------
@@ -26,7 +25,7 @@ JavaScript
 * jQuery by jQuery Foundation - MIT License - http://www.jquery.com/
 * jQuery Animate From To by Emil Stenström - MIT License - http://friendlybit.com/
 * jQuery Cookie Plugin by Klaus Hartl - MIT License - https://github.com/carhartl/jquery-cookie/
-* Summernote by Summernote Team - MIT License - http://summernote.org/
+* Trumbowyg by Alexandre Demode - MIT License - https://alex-d.github.io/Trumbowyg/
 
 PHP
 ---

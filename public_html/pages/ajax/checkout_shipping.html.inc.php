@@ -10,7 +10,7 @@
 
   $shipping = new mod_shipping();
 
-  if (!empty($_POST['shipping_option'])) {
+  if (file_get_contents('php://input')) {
     list($module_id, $option_id) = explode(':', $_POST['shipping_option']);
     $result = $shipping->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
@@ -36,8 +36,8 @@
   if (empty($shipping->data['selected'])) {
     if ($cheapest_shipping = $shipping->cheapest()) {
       $cheapest_shipping = explode(':', $cheapest_shipping);
-    $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
-  }
+      $shipping->select($cheapest_shipping[0], $cheapest_shipping[1]);
+    }
   }
 
 /*

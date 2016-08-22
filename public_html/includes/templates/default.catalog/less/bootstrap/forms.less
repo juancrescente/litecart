@@ -212,6 +212,10 @@ input[type="search"] {
 
 .form-group {
   margin-bottom: @form-group-margin-bottom;
+  &.required label::after {
+    content: ' *';
+    color: #f00;
+  }
 }
 
 
