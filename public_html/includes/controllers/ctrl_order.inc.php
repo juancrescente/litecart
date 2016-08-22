@@ -13,17 +13,17 @@
     }
 
     public function reset() {
-      
+
       $this->data = array();
 
       $fields_query = database::query(
         "show fields from ". DB_TABLE_ORDERS .";"
       );
-      
+
       while ($field = database::fetch($fields_query)) {
-        
+
         if (preg_match('#^(customer|shipping|payment)_#', $field['Field'], $matches)) {
-          
+
           switch ($field['Field']) {
             case 'shipping_tracking_id':
             case 'shipping_company':
@@ -38,27 +38,28 @@
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
               $this->data['customer']['shipping_address'][$field] = null;
               break;
-              
+
             default:
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
               $this->data[$matches[1]][$field] = null;
               break;
           }
-          
+
         } else {
           $this->data[$field['Field']] = null;
         }
       }
-      
-      $this->data['uid'] = uniqid();
-      'weight_class' => settings::get('store_weight_class');
-      'currency_code' => currency::$selected['code'];
-      'currency_value' => currency::$selected['value'];
-      'language_code' => language::$selected['code'];
-      
-      $this->data['items'] = array();
-      $this->data['order_total'] = array();
-      $this->data['comments'] = array();
+
+      $this->data = array_merge($this->data, array(
+        'uid' => uniqid(),
+        'weight_class' => settings::get('store_weight_class'),
+        'currency_code' => currency::$selected['code'],
+        'currency_value' => currency::$selected['value'],
+        'language_code' => language::$selected['code'],
+        'items' => array(),
+        'order_total' => array(),
+        'comments' => array(),
+      ));
     }
 
     private function load($order_id) {
@@ -71,12 +72,12 @@
         limit 1;"
       );
       $order = database::fetch($order_query);
-      
+
       if (empty($order)) trigger_error('Could not find order in database (ID: '. (int)$order_id .')', E_USER_ERROR);
 
       foreach($order as $field => $value) {
         if (preg_match('#^(customer|shipping|payment)_#', $field, $matches)) {
-          
+
           switch ($field) {
             case 'shipping_tracking_id':
             case 'shipping_company':
@@ -91,13 +92,13 @@
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
               $this->data['customer']['shipping_address'][$field] = $value;
               break;
-              
+
             default:
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
               $this->data[$matches[1]][$field] = $value;
               break;
           }
-          
+
         } else {
           $this->data[$field['Field']] = $value;
         }
