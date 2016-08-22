@@ -25,7 +25,6 @@
         if (preg_match('#^(customer|shipping|payment)_#', $field['Field'], $matches)) {
 
           switch ($field['Field']) {
-            case 'shipping_tracking_id':
             case 'shipping_company':
             case 'shipping_firstname':
             case 'shipping_lastname':
@@ -37,6 +36,10 @@
             case 'shipping_zone_code':
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field['Field']);
               $this->data['customer']['shipping_address'][$field] = null;
+              break;
+
+            case 'payment_due':
+              $this->data['payment_due'] = null;
               break;
 
             default:
@@ -79,7 +82,6 @@
         if (preg_match('#^(customer|shipping|payment)_#', $field, $matches)) {
 
           switch ($field) {
-            case 'shipping_tracking_id':
             case 'shipping_company':
             case 'shipping_firstname':
             case 'shipping_lastname':
@@ -93,6 +95,10 @@
               $this->data['customer']['shipping_address'][$field] = $value;
               break;
 
+            case 'payment_due':
+              $this->data['payment_due'] = $value;
+              break;
+
             default:
               $field = preg_replace('#^('. preg_quote($matches[1], '#') .'_)#', '', $field);
               $this->data[$matches[1]][$field] = $value;
@@ -100,7 +106,7 @@
           }
 
         } else {
-          $this->data[$field['Field']] = $value;
+          $this->data[$field] = $value;
         }
       }
 
