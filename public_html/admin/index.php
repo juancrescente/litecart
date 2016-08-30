@@ -92,13 +92,6 @@
 
       breadcrumbs::add($app_config['name'], $app_config['default']);
 
-      document::$snippets['javascript'][] = '  $(document).ready(function() {' . PHP_EOL
-                                          . '    if ($("h1")) {' . PHP_EOL
-                                          . '      if (document.title.substring(0, $("h1:first").text().length) == $("h1:first").text()) return;' . PHP_EOL
-                                          . '      document.title = $("h1:first").text() +" | "+ document.title;' . PHP_EOL
-                                          . '    }' . PHP_EOL
-                                          . '  });';
-
       $_page = new view();
       $_page->snippets = array(
         'app' => $_GET['app'],

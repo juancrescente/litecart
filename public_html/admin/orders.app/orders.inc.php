@@ -65,7 +65,7 @@
   <table class="table table-striped data-table">
     <thead>
       <tr>
-        <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', ''); ?></th>
+        <th><?php echo functions::form_draw_checkbox('checkbox_toggle', '', '', 'data-toggle="checkbox-toggle"'); ?></th>
         <th>&nbsp;</th>
         <th><?php echo language::translate('title_id', 'ID'); ?></th>
         <th class="main"><?php echo language::translate('title_customer_name', 'Customer Name'); ?></th>
@@ -187,18 +187,4 @@
       $('#order-actions button').attr('disabled', 'disabled');
     }
   }).trigger('change');
-
-  $('.data-table input[name="checkbox_toggle"]').click(function() {
-    $(this).closest('.data-table').find('tbody :checkbox').each(function() {
-      $(this).attr('checked', !$(this).attr('checked')).trigger('change');
-    });
-    return false;
-  });
-
-  $('.data-table tr').click(function(e) {
-    if ($(e.target).is('input:checkbox')) return;
-    if ($(e.target).is('a, a *')) return;
-    if ($(e.target).is('th')) return;
-    $(this).find('input:checkbox').trigger('click');
-  });
 </script>
