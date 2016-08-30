@@ -120,6 +120,8 @@ ul.filter li {
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
+<p><button type="button" class="btn btn-default translator-tool" data-toggle="modal" data-target="#translator-tool"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button></p>
+
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
   <table class="table table-striped data-table">
@@ -181,7 +183,99 @@ ul.filter li {
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
 
+<!-- Modal -->
+<div class="modal fade" id="translator-tool" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 100%; max-width: 980px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
+              <?php echo functions::form_draw_languages_list('from_language_code', $_GET['languages'][0]); ?>
+            </div>
+            <div class="form-group">
+              <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
+              <?php echo functions::form_draw_languages_list('to_language_code'); ?>
+            </div>
+            <div class="form-group">
+              <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
+              <textarea class="form-control" name="source" style="height: 320px;" readonly="readonly"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label><?php echo language::translate('text_paste_your_translated_result_below', 'Paste your translated result below'); ?></label>
+              <textarea class="form-control" name="result" style="height: 455px;"></textarea>
+            </div>
+          </div>
+        </div>
+        <ul class="list-unstyled">
+          <li><a href="https://translate.google.com" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Google Translate</a></li>
+          <li><a href="https://www.bing.com/translator" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?> Bing Translate</a></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" name="prefill_fields"><?php echo language::translate('title_prefill_fields', 'Prefill Fields'); ?></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo language::translate('title_cancel', 'Cancel'); ?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+  var delimiter = "\r\n----------\r\n";
+  
+  $('#translator-tool select[name="from_language_code"]').change(function(e){
+    
+    var selected_language_code = $(this).val();
+    var translations = [];
+
+    if ($('#translator-tool select[name="to_language_code"]').val() == '') return;
+
+    $.each($('textarea[name$="[text_'+ $(this).val() +']"]'), function(i){
+      var target = $(this).closest('tr').find('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]');
+      if ($(this).val() != '' && $(target).val() == '') {
+        translations.push('{{'+ i +'}} = ' + $(this).val());
+      }
+    });
+
+    translations = translations.join(delimiter);
+
+    $('#translator-tool textarea[name="source"]').val(translations);
+  }).trigger('change');
+
+  $('#translator-tool textarea[name="source"]').focus(function(e){
+    $(this).select();
+  });
+
+  $('#translator-tool select[name="to_language_code"]').change(function(e){
+    $('#translator-tool select[name="from_language_code"]').trigger('change');
+  });
+
+  $('#translator-tool button[name="prefill_fields"]').click(function(){
+    
+    var translated = $('#translator-tool textarea[name="result"]').val();
+    translated = translated.split(delimiter.trim());
+
+    if ($('#translator-tool select[name="to_language_code"]').val() == '') {
+      alert('You must specify which language you are translating');
+      return false;
+    }
+
+    $.each(translated, function(i){
+      var matches = translated[i].trim().match(/^\{\{([0-9]+)\}\} = (.*)$/);
+      var index = matches[1];
+      var translation = matches[2].trim();
+
+      $('textarea[name$="[text_'+ $('#translator-tool select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+    });
+  });
+
   $('.delete').click(function(e){
     e.preventDefault();
 
