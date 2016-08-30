@@ -5,10 +5,7 @@
     public $rows = array();
 
     public function __construct() {
-
-      parent::set_type('order_total');
-
-      $this->load();
+      $this->load('order_total');
     }
 
     public function process($order) {

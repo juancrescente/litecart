@@ -40,9 +40,11 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
+  $type = $_GET['doc'];
+
   $installed_modules_query = database::query(
     "select * from ". DB_TABLE_MODULES ."
-    where type = '". database::input($modules->type) ."';"
+    where type = '". database::input($type) ."';"
   );
 
   $installed_modules = array();
@@ -75,7 +77,7 @@
       <tr class="<?php echo empty($module->status) ? 'semi-transparent' : null; ?>">
         <td><?php echo functions::form_draw_checkbox('modules['. $module->id .']', $module->id); ?></td>
         <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. (!empty($module->status) ? '#99cc66' : '#ff6666') .';"'); ?></td>
-        <td><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$modules->type, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
+        <td><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$type, 'module_id' => $module->id), true); ?>"><?php echo $module->name; ?></a></td>
         <?php if ($_GET['doc'] == 'jobs' && !empty($module->status)) { ?>
         <td class="text-center"><a href="<?php echo document::href_link('', array('doc' => 'run_job', 'module_id' => $module->id), array('app')); ?>" target="_blank"><strong><?php echo language::translate('title_run_now', 'Run Now'); ?></strong></a></td>
         <?php } else { ?>
@@ -85,7 +87,7 @@
         <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
         <td><?php echo $module->id; ?></td>
         <td class="text-center"><?php echo $module->priority; ?></td>
-        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$modules->type, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$type, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       $total_rows++;
@@ -106,7 +108,7 @@
         <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
         <td><?php echo $module->id; ?></td>
         <td style="text-align: center;">-</td>
-        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$modules->type, 'module_id' => $module->id), true); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
+        <td style="text-align: right;"><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$type, 'module_id' => $module->id), true); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_install', 'Install'); ?></a></td>
       </tr>
 <?php
       $total_rows++;

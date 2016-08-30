@@ -76,26 +76,6 @@
           if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
         }
       }
-
-/*
-      $this->name = $this->_module->name;
-      $this->description = $this->_module->description;
-      $this->author = $this->_module->author;
-      $this->website = $this->_module->website;
-      $this->settings = array();
-
-    // Set settings to module
-      foreach ($this->_module->settings() as $setting) {
-        $this->settings[$setting['key']] = array(
-          'key' => $setting['key'],
-          'value' => isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'],
-          'default_value' => $setting['default_value'],
-          'title' => $setting['title'],
-          'description' => $setting['description'],
-          'function' => $setting['function'],
-        );
-      }
-      */
     }
 
     public function save() {

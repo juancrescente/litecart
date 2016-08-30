@@ -26,18 +26,29 @@
       trigger_error('Unknown module type', E_USER_ERROR);
   }
 
-  $object = new $module_id;
-
   $modules_query = database::query(
     "select * from ". DB_TABLE_MODULES ."
     where type = '". database::input($type) ."'
-    and module_id = '". database::input($module_id) ."';"
+    and module_id = '". database::input($module_id) ."'
+    limit 1;"
   );
   $module = database::fetch($modules_query);
 
+  $is_installed = $module ? true : false;
+
+  $object = new $module_id;
+
   if (empty($_POST)) {
-    foreach (json_decode($module['settings'], true) as $field => $value) {
-      $_POST[$field] = $value;
+    if ($is_installed) {
+      if ($settings = json_decode($module['settings'], true)) {
+        foreach ($settings as $key => $value) {
+          $_POST[$key] = $value;
+        }
+      }
+    } else {
+      foreach ($object->settings() as $setting) {
+        $_POST[$setting['key']] = $setting['default_value'];
+      }
     }
   }
 
@@ -68,7 +79,7 @@
     exit;
   }
 
-  $is_installed = $module ? true : false;
+
 
   breadcrumbs::add($is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
@@ -84,17 +95,17 @@
 
 <?php echo !empty($object->description) ? '<p style="max-width: 400px;">'. $object->description .'</p>' : ''; ?>
 
-<?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
+<?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 
   <table class="table table-striped">
     <tbody>
       <?php foreach ($object->settings() as $setting) { ?>
       <tr>
-        <td class="col-md-4">
+        <td class="col-md-6">
           <label><?php echo $setting['title']; ?></label>
           <?php echo !empty($setting['description']) ? '<p>'. $setting['description'] .'</p>' : ''; ?>
         </td>
-        <td class="col-md-8">
+        <td class="col-md-6">
           <?php echo functions::form_draw_function($setting['function'], $setting['key'], true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>

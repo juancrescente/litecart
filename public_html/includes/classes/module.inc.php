@@ -1,26 +1,28 @@
 <?php
 
   class module {
-    public $type;
     public $modules;
 
-    public function set_type($type) {
-      $this->type = $type;
+    public function reset() {
+      $this->modules = array();
     }
 
-    public function load($module_id='') {
+    public function load($type, $filter=null) {
+
+      $this->reset();
+
+      if (!empty($filter) && !is_array($filter)) $filter = array($filter);
 
       $modules_query = database::query(
         "select * from ". DB_TABLE_MODULES ."
-        where type = '". database::input($this->type) ."'
-        ". (!empty($module_id) ? "and module_id = '". database::input($module_id) ."'" : "") .";"
+        where type = '". database::input($type) ."'
+        ". (!empty($module_id) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
       );
 
-      $modules = array();
       while($module = database::fetch($modules_query)){
 
       // Uninstall orphan modules
-        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type . '/' . $module['module_id'] .'.inc.php')) {
+        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/' . $module['module_id'] .'.inc.php')) {
           /*
           database::query(
             "delete from ". DB_TABLE_MODULES ."
@@ -31,21 +33,21 @@
           continue;
         }
 
-      // Decode settings
-        $settings = json_decode($module['settings'], true);
-
       // Create object
         $object = new $module['module_id'];
+
+      // Decode settings
+        $settings = json_decode($module['settings'], true);
 
       // Set settings to object
         $object->settings = array();
         foreach ($object->settings() as $setting) {
           $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
-
         $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) ? 1 : 0;
         $object->priority = isset($object->settings[$setting['key']]) ? (int)$object->settings[$setting['key']] : 0;
 
+      // Add module to list
         $this->modules[$object->id] = $object;
       }
 

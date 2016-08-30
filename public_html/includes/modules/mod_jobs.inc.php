@@ -7,10 +7,7 @@
     public $destination = array();
 
     public function __construct() {
-
-      parent::set_type('jobs');
-
-      $this->load();
+      $this->load('jobs');
     }
 
     public function process($modules=null, $force=false) {

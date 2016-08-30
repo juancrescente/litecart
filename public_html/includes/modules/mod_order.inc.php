@@ -4,10 +4,7 @@
     public $actions = array();
 
     public function __construct() {
-
-      parent::set_type('order_success');
-
-      $this->load();
+      $this->load('order_success');
     }
 
     public function actions() {
