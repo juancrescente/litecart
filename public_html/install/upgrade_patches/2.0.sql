@@ -45,3 +45,19 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('listings', 'local', 'Product Modal Window', 'Open products in a modal window', 'product_modal_window', '1', 'toggle()', 21, NOW(), NOW());
 -- --------------------------------------------------------
 ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lc_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module_id` varchar(32) NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `priority` tinyint(4) NOT NULL,
+  `settings` text NOT NULL,
+  `date_updated` varchar(32) NOT NULL,
+  `date_created` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `module_id` (`module_id`),
+  KEY `type` (`type`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT;
+

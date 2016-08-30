@@ -10,59 +10,46 @@
 
     public function load($module_id='') {
 
-      if (empty($module_id)) {
-        $load_modules = explode(';', settings::get($this->type.'_modules'));
-        if (empty($load_modules)) return;
-      } else {
-        $load_modules = array($module_id);
-      }
+      $modules_query = database::query(
+        "select * from ". DB_TABLE_MODULES ."
+        where type = '". database::input($this->type) ."'
+        ". (!empty($module_id) ? "and module_id = '". database::input($module_id) ."'" : "") .";"
+      );
 
-      foreach ($load_modules as $module_id) {
+      $modules = array();
+      while($module = database::fetch($modules_query)){
 
       // Uninstall orphan modules
-        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type . '/' . $module_id .'.inc.php')) {
-
-          $installed_modules = explode(';', settings::get($this->type.'_modules'));
-
-          $key = array_search($module_id, $installed_modules);
-          if ($key !== false) unset($installed_modules[$key]);
-
+        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $this->type . '/' . $module['module_id'] .'.inc.php')) {
+          /*
           database::query(
-            "update ". DB_TABLE_SETTINGS ."
-            set value = '". database::input(implode(';', $installed_modules)) ."'
-            where `key` = '". $this->type ."_modules'
+            "delete from ". DB_TABLE_MODULES ."
+            where module_id = '". database::input($module['id']) ."'
             limit 1;"
           );
-
-          database::query(
-            "delete from ". DB_TABLE_SETTINGS ."
-            where `key` = '". database::input($this->type.'_module_'. $module_id) ."';"
-          );
-
+          */
           continue;
         }
 
-        $module = new $module_id;
+      // Decode settings
+        $settings = json_decode($module['settings'], true);
 
-      // Get settings from database
-        $settings = array();
-        if (settings::get($module_id)) {
-          $settings = unserialize(settings::get($module_id));
+      // Create object
+        $object = new $module['module_id'];
+
+      // Set settings to object
+        $object->settings = array();
+        foreach ($object->settings() as $setting) {
+          $object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
         }
 
-      // Set settings to module
-        $module->settings = array();
-        foreach ($module->settings() as $setting) {
-          $module->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
-        }
+        $object->status = (isset($object->settings['status']) && in_array(strtolower($object->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes'))) ? 1 : 0;
+        $object->priority = isset($object->settings[$setting['key']]) ? (int)$object->settings[$setting['key']] : 0;
 
-        $module->status = isset($module->settings['status']) && in_array(strtolower($module->settings['status']), array('1', 'active', 'enabled', 'on', 'true', 'yes')) ? 1 : 0;
-        $module->priority = isset($module->settings[$setting['key']]) ? (int)$module->settings[$setting['key']] : 0;
-
-        $this->modules[$module->id] = $module;
+        $this->modules[$object->id] = $object;
       }
 
-    // Sort
+    // Sort modules by priority
       if (!empty($this->modules)) {
         uasort($this->modules, function($a, $b) {
           if ((int)$a->priority == (int)$b->priority) {

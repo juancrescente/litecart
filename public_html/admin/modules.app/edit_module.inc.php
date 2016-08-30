@@ -23,51 +23,79 @@
       $type = 'shipping';
       break;
     default:
-      trigger_error('Unknown module type ('. @$_GET['doc'] .')', E_USER_ERROR);
+      trigger_error('Unknown module type', E_USER_ERROR);
   }
 
-  $installed = in_array($module_id, explode(';', settings::get($type.'_modules'))) ? true : false;
+  $object = new $module_id;
 
-  $module = new ctrl_module(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/' . $module_id .'.inc.php');
+  $modules_query = database::query(
+    "select * from ". DB_TABLE_MODULES ."
+    where type = '". database::input($type) ."'
+    and module_id = '". database::input($module_id) ."';"
+  );
+  $module = database::fetch($modules_query);
+
+  if (empty($_POST)) {
+    foreach (json_decode($module['settings'], true) as $field => $value) {
+      $_POST[$field] = $value;
+    }
+  }
 
   if (isset($_POST['save'])) {
-    $module->save($_POST);
+
+    $ctrl_module = new ctrl_module($module_id);
+
+    $fields = array_column($object->settings(), 'key');
+
+    foreach ($fields as $field) {
+      if (in_array($field, array('id', 'date_updated', 'date_created'))) continue;
+      if (isset($_POST[$field])) $ctrl_module->data['settings'][$field] = $_POST[$field];
+    }
+
+    $ctrl_module->save();
+
     header('Location: '. document::link('', array('doc' => $type), array('app')));
     exit;
   }
 
   if (isset($_POST['uninstall'])) {
-    $module->uninstall();
+
+    $ctrl_module = new ctrl_module($module_id);
+
+    $ctrl_module->delete();
+
     header('Location: '. document::link('', array('doc' => $type), array('app')));
     exit;
   }
 
-  breadcrumbs::add($installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+  $is_installed = $module ? true : false;
 
-  if (empty($_POST)) {
-    if (!$installed) notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
+  breadcrumbs::add($is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
+
+  if (empty($_POST) && !$is_installed) {
+    notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
   }
 ?>
-<h1 style="margin-top: 0;"><?php echo $app_icon; ?> <?php echo $installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
+<h1 style="margin-top: 0;"><?php echo $app_icon; ?> <?php echo $is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
-<h2 style="margin-top: 0;"><?php echo $module->name; ?></h2>
+<h2 style="margin-top: 0;"><?php echo $object->name; ?></h2>
 
-<?php echo !empty($module->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $module->website .'" target="_blank">'. $module->author .'</a></p>' : false; ?>
+<?php echo !empty($object->author) ? '<p style="font-style: italic;"><strong>'. language::translate('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
 
-<?php echo !empty($module->description) ? '<p style="max-width: 400px;">'. $module->description .'</p>' : ''; ?>
+<?php echo !empty($object->description) ? '<p style="max-width: 400px;">'. $object->description .'</p>' : ''; ?>
 
 <?php echo functions::form_draw_form_begin('module_form', 'post', false, false, 'style="max-width: 640px;"'); ?>
 
   <table class="table table-striped">
     <tbody>
-      <?php foreach ($module->settings as $setting) { ?>
+      <?php foreach ($object->settings() as $setting) { ?>
       <tr>
         <td class="col-md-4">
           <label><?php echo $setting['title']; ?></label>
-          <?php echo !empty($setting['description']) ? '<p>'.$setting['description'].'</p>' : ''; ?>
+          <?php echo !empty($setting['description']) ? '<p>'. $setting['description'] .'</p>' : ''; ?>
         </td>
         <td class="col-md-8">
-          <?php echo functions::form_draw_hidden_field('key', $setting['key']) . functions::form_draw_function($setting['function'], $setting['key'], $setting['value'], !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
+          <?php echo functions::form_draw_function($setting['function'], $setting['key'], true, !empty($setting['description']) ? ' data-toggle="tooltip" title="'.htmlspecialchars($setting['description']).'"' : ''); ?>
         </td>
       </tr>
       <?php } ?>
@@ -76,7 +104,7 @@
           <label><?php echo language::translate('title_translations', 'Translations'); ?></label>
         </td>
         <td>
-          <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $module_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
+          <a href="<?php echo document::href_link('', array('app' => 'translations', 'doc' => 'search', 'query' => $object_id . ':', 'modules' => 'true')); ?>"><?php echo language::translate('title_edit_translations', 'Edit Translations'); ?></a>
         </td>
       </tr>
     </tbody>
