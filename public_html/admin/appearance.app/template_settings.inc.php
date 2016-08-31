@@ -36,14 +36,14 @@
 ?>
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_template_settings', 'Template Settings'); ?></h1>
 
-<?php echo functions::form_draw_form_begin('template_settings_form', 'post'); ?>
+<?php echo functions::form_draw_form_begin('template_settings_form', 'post', null, false, 'style="max-width: 960px;"'); ?>
 
   <table class="table table-striped data-table">
     <thead>
       <tr>
-        <th style="width: 250px;"><?php echo language::translate('title_key', 'Key'); ?></th>
-        <th><?php echo language::translate('title_value', 'Value'); ?></th>
-        <th>&nbsp;</th>
+        <th class="col-md-5" style="width: 250px;"><?php echo language::translate('title_key', 'Key'); ?></th>
+        <th class="col-md-4"><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th class="col-md-3">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
@@ -55,9 +55,14 @@
       if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
 ?>
       <tr>
-        <td><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
-        <td><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
-        <td class="text-right"><?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?> <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?></td>
+        <td class="col-md-5" style="white-space: normal;"><u><?php echo $setting['title']; ?></u><br /><?php echo $setting['description']; ?></td>
+        <td class="col-md-4"><?php echo functions::form_draw_function($setting['function'], $setting['key'], $setting['value']); ?></td>
+        <td class="col-md-3 text-right">
+          <div class="btn-group">
+            <?php echo functions::form_draw_button('save', language::translate('title_save', 'Save'), 'submit', '', 'save'); ?>
+            <?php echo functions::form_draw_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+          </div>
+        </td>
       </tr>
 <?php
     } else {

@@ -1,7 +1,9 @@
 $(document).ready(function(){
+
+// Enable tooltips
   $('[data-toggle="tooltip"]').tooltip();
 
-// Form required
+// Form required asterix
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
 // Sidebar parallax effect

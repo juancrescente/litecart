@@ -493,7 +493,7 @@
     }
 
     return '<div>' . PHP_EOL
-         . '  <div class="btn-group btn-group-justified" data-toggle="buttons">'. PHP_EOL
+         . '  <div class="btn-group btn-group-inline" data-toggle="buttons">'. PHP_EOL
          . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '1') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="1" data-type="toggle" '. (($input == '1') ? 'checked="checked"' : '') .' /> '. $true_text .'</label>'. PHP_EOL
          . '    <label '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default'. (($input == '0') ? ' active' : '') .'"' : '') .'><input type="radio" name="'. htmlspecialchars($name) .'" value="0" data-type="toggle" '. (($input == '0') ? 'checked="checked"' : '') .' /> '. $false_text .'</label>' . PHP_EOL
          . '  </div>' . PHP_EOL
@@ -627,7 +627,9 @@
         return functions::form_draw_pages_list($name, $input);
       case 'radio':
         $output = '';
-        for ($i=0; $i<count($options); $i++) $output .= ' <label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label>';
+        for ($i=0; $i<count($options); $i++) {
+          $output .= '<div class="radio"><label>'. form_draw_radio_button($name, $options[$i], $input) .' '. $options[$i] .'</label></div>';
+        }
         return $output;
       case 'select':
         for ($i=0; $i<count($options); $i++) $options[$i] = array($options[$i]);
