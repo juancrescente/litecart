@@ -8,7 +8,7 @@
       $type = 'customer';
       break;
     case 'edit_job':
-      $type = 'jobs';
+      $type = 'job';
       break;
     case 'edit_order':
       $type = 'order';

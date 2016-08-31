@@ -13,6 +13,15 @@
 
       if (!empty($filter) && !is_array($filter)) $filter = array($filter);
 
+      switch($type) {
+        case 'job'
+          $directory = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/';
+          break;
+        default:
+          $directory = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/';
+          break;
+      }
+
       $modules_query = database::query(
         "select * from ". DB_TABLE_MODULES ."
         where type = '". database::input($type) ."'
@@ -22,7 +31,7 @@
       while($module = database::fetch($modules_query)){
 
       // Uninstall orphan modules
-        if (!is_file(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . $type . '/' . $module['module_id'] .'.inc.php')) {
+        if (!is_file($directory . $module['module_id'] .'.inc.php')) {
           /*
           database::query(
             "delete from ". DB_TABLE_MODULES ."

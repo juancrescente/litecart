@@ -224,7 +224,7 @@ CREATE TABLE `lc_manufacturers_info` (
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` varchar(32) NOT NULL,
+  `module_id` varchar(64) NOT NULL,
   `type` varchar(16) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `priority` tinyint(4) NOT NULL,
