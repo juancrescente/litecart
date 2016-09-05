@@ -30,8 +30,8 @@
   }
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('manufacturer', array('manufacturer_id' => (int)$manufacturer->id), false) .'" />';
-  document::$snippets['title'][] = $manufacturer->head_title[language::$selected['code']] ? $manufacturer->head_title[language::$selected['code']] : $manufacturer->name;
-  document::$snippets['description'] = $manufacturer->meta_description[language::$selected['code']] ? $manufacturer->meta_description[language::$selected['code']] : strip_tags($manufacturer->short_description[language::$selected['code']]);
+  document::$snippets['title'][] = $manufacturer->head_title ? $manufacturer->head_title : $manufacturer->name;
+  document::$snippets['description'] = $manufacturer->meta_description ? $manufacturer->meta_description : strip_tags($manufacturer->short_description);
 
   breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
   breadcrumbs::add($manufacturer->name);
@@ -43,10 +43,10 @@
 
     $_page->snippets = array(
       'id' => $manufacturer->id,
-      'title' => $manufacturer->h1_title[language::$selected['code']] ? $manufacturer->h1_title[language::$selected['code']] : $manufacturer->name,
+      'title' => $manufacturer->h1_title ? $manufacturer->h1_title : $manufacturer->name,
       'name' => $manufacturer->name,
-      'description' => $manufacturer->description[language::$selected['code']],
-      'link' => $manufacturer->link[language::$selected['code']],
+      'description' => $manufacturer->description,
+      'link' => $manufacturer->link,
       'image' => array(
         'original' => WS_DIR_IMAGES . $manufacturer->image,
         'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $manufacturer->image, 200, 0, 'FIT_ONLY_BIGGER'),

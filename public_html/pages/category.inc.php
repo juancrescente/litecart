@@ -23,14 +23,14 @@
   }
 
   document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', array('category_id' => $category->id), false) .'" />';
-  document::$snippets['title'][] = $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']];
-  document::$snippets['description'] = $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : strip_tags($category->short_description[language::$selected['code']]);
+  document::$snippets['title'][] = $category->head_title ? $category->head_title : $category->name;
+  document::$snippets['description'] = $category->meta_description ? $category->meta_description : strip_tags($category->short_description);
 
   breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
   foreach (array_slice(functions::catalog_category_trail($category->id), 0, -1, true) as $category_id => $category_name) {
     breadcrumbs::add($category_name, document::ilink('category', array('category_id' => $category_id)));
   }
-  breadcrumbs::add($category->name[language::$selected['code']]);
+  breadcrumbs::add($category->name);
 
   if (settings::get('product_modal_window')) functions::draw_lightbox();
 
@@ -41,12 +41,12 @@
 
     $_page->snippets = array(
       'id' => $category->id,
-      'name' => $category->name[language::$selected['code']],
-      'short_description' => $category->short_description[language::$selected['code']],
-      'description' => $category->description[language::$selected['code']],
-      'h1_title' => $category->h1_title[language::$selected['code']] ? $category->h1_title[language::$selected['code']] : $category->name[language::$selected['code']],
-      'head_title' => $category->head_title[language::$selected['code']] ? $category->head_title[language::$selected['code']] : $category->name[language::$selected['code']],
-      'meta_description' => $category->meta_description[language::$selected['code']] ? $category->meta_description[language::$selected['code']] : $category->short_description[language::$selected['code']],
+      'name' => $category->name,
+      'short_description' => $category->short_description,
+      'description' => $category->description,
+      'h1_title' => $category->h1_title ? $category->h1_title : $category->name,
+      'head_title' => $category->head_title ? $category->head_title : $category->name,
+      'meta_description' => $category->meta_description ? $category->meta_description : $category->short_description,
       'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->image, 1024, 0, 'FIT_ONLY_BIGGER'),
       'subcategories' => array(),
       'products' => array(),

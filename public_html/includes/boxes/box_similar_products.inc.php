@@ -11,7 +11,7 @@
   if (cache::capture($box_similar_products_cache_id, 'file')) {
 
     $products_query = functions::catalog_products_query(array(
-      'product_name' => $product->name[language::$selected['code']],
+      'product_name' => $product->name,
       'categories' => isset($_GET['category_id']) ? array($_GET['category_id']) : array_keys($product->categories),
       'manufacturers' => array($product->manufacturer_id),
       'product_groups' => $product->product_group_ids,

@@ -4,12 +4,18 @@
 
     private $_id;
     private $_cache_id;
+    private $_language_codes;
     private $_data = array();
 
-    function __construct($manufacturer_id) {
+    function __construct($manufacturer_id, $language_code=null) {
 
       $this->_id = (int)$manufacturer_id;
-      $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id);
+      $this->_cache_id = cache::cache_id('manufacturer_'.(int)$manufacturer_id, array('language'));
+      $this->_language_codes = array_unique(array(
+        !empty($language_code) ? $language_code : language::$selected['code'],
+        settings::get('default_language_code'),
+        settings::get('store_language_code'),
+      ));
 
       if ($cache = cache::get($this->_cache_id, 'file')) {
         $this->_data = $cache;
@@ -52,26 +58,14 @@
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS_INFO ."
             where manufacturer_id = '". (int)$this->_id ."'
-            and language_code in ('". implode("', '", array_keys(language::$languages)) ."');"
-          );
-
-          $fields = array(
-            'description',
-            'short_description',
-            'head_title',
-            'meta_description',
-            'h1_title',
-            'link',
+            and language_code in ('". implode("', '", database::input($this->_language_codes)) ."')
+            order by field(language_code, '". implode("', '", database::input($this->_language_codes)) ."');"
           );
 
           while ($row = database::fetch($query)) {
-            foreach ($fields as $key) $this->_data[$key][$row['language_code']] = $row[$key];
-          }
-
-        // Fix missing translations
-          foreach ($fields as $key) {
-            foreach (array_keys(language::$languages) as $language_code) {
-              if (empty($this->_data[$key][$language_code])) $this->_data[$key][$language_code] = $this->_data[$key][settings::get('default_language_code')];
+            foreach ($row as $key => $value) {
+              if (in_array($key, array('id', 'manufacturer_id', 'language_code'))) continue;
+              $this->_data[$key] = $value;
             }
           }
 

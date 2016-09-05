@@ -25,7 +25,7 @@
       </div>
 
       <div class="col-md-8">
-        <?php echo functions::form_draw_hidden_field('name', $product->name[$_GET['language_code']]); ?>
+        <?php echo functions::form_draw_hidden_field('name', $product->name); ?>
 
 <?php
     if (count($product->options) > 0) {
@@ -34,7 +34,7 @@
       foreach ($product->options as $group) {
 
         echo '  <div class="form-group col-md-6">'
-           . '    <label>'. $group['name'][$_GET['language_code']] .'</label>';
+           . '    <label>'. $group['name'] .'</label>';
 
         switch ($group['function']) {
 
@@ -52,7 +52,7 @@
               }
 
               echo '<div class="checkbox">' . PHP_EOL
-                 . '  <label>' . functions::form_draw_checkbox('options['.$group['name'][$_GET['language_code']].'][]', $value['name'][language::$selected['code']], true, 'data-group="'. $group['name'][$_GET['language_code']] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL
+                 . '  <label>' . functions::form_draw_checkbox('options['.$group['name'] .'][]', $value['name'], true, 'data-group="'. $group['name'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                  . '</div>';
             }
             break;
@@ -71,7 +71,7 @@
               if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
             }
 
-            echo functions::form_draw_text_field('options['.$group['name'][$_GET['language_code']].']', isset($_POST['options'][$group['name'][$_GET['language_code']]]) ? true : $value['value'], 'data-group="'. $group['name'][$_GET['language_code']] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
+            echo functions::form_draw_text_field('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text . PHP_EOL;
             break;
 
           case 'radio':
@@ -88,7 +88,7 @@
               }
 
               echo '<div class="radio">' . PHP_EOL
-                 . '  <label>'. functions::form_draw_radio_button('options['.$group['name'][$_GET['language_code']].']', $value['name'][language::$selected['code']], true, 'data-group="'. $group['name'][$_GET['language_code']] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'][language::$selected['code']] . $price_adjust_text . '</label>' . PHP_EOL
+                 . '  <label>'. functions::form_draw_radio_button('options['.$group['name'].']', $value['name'], true, 'data-group="'. $group['name'] .'" data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? 'required="required"' : '')) .' '. $value['name'] . $price_adjust_text . '</label>' . PHP_EOL
                  . '</div>';
             }
             break;
@@ -107,10 +107,10 @@
                 if ($value['price_adjust'] > 0) $price_adjust_text = ' +'.$price_adjust_text;
               }
 
-              $options[] = array($value['name'][language::$selected['code']] . $price_adjust_text, $value['name'][language::$selected['code']], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
+              $options[] = array($value['name'] . $price_adjust_text, $value['name'], 'data-price-adjust="'. (float)$price_adjust .'" data-tax-adjust="'. (float)$tax_adjust .'"');
             }
 
-            echo functions::form_draw_select_field('options['.$group['name'][$_GET['language_code']].']', $options, true, false, 'data-group="'. $group['name'][$_GET['language_code']] .'"' . (!empty($group['required']) ? ' required="required"' : ''));
+            echo functions::form_draw_select_field('options['.$group['name'].']', $options, true, false, 'data-group="'. $group['name'] .'"' . (!empty($group['required']) ? ' required="required"' : ''));
             break;
 
           case 'textarea':
@@ -129,7 +129,7 @@
               }
             }
 
-            echo functions::form_draw_textarea('options['.$group['name'][$_GET['language_code']].']', isset($_POST['options'][$group['name'][$_GET['language_code']]]) ? true : $value['value'], 'data-group="'. $group['name'][$_GET['language_code']] .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
+            echo functions::form_draw_textarea('options['.$group['name'].']', isset($_POST['options'][$group['name']]) ? true : $value['value'], 'data-group="'. $group['name'] .'"' . (!empty($group['required']) ? 'required="required"' : '')) . $price_adjust_text. PHP_EOL;
             break;
         }
 
@@ -194,7 +194,7 @@
               </tr>
               <?php foreach ($product->options_stock as $stock_option) { ?>
               <tr>
-                <td><?php echo $stock_option['name'][$_GET['language_code']]; ?></td>
+                <td><?php echo $stock_option['name']; ?></td>
                 <td><?php echo $stock_option['sku']; ?></td>
                 <td><?php echo ($stock_option['weight'] > 0) ? weight::format($stock_option['weight'], $stock_option['weight_class']) : weight::format($product->weight, $product->weight_class); ?></td>
                 <td class="text-right"><?php echo (float)$stock_option['quantity']; ?></td>
