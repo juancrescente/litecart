@@ -51,12 +51,12 @@
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/latest/css/font-awesome.min.css" />';
       //self::$snippets['foot_tags']['jquery'] = '<script src="//cdn.jsdelivr.net/g/jquery@2.2.4"></script>';
       //self::$snippets['foot_tags']['bootstrap'] = '<script src="//cdn.jsdelivr.net/g/bootstrap@3.3.7"></script>';
-      self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@3.1.0,bootstrap@3.3.7"></script>';
+      //self::$snippets['foot_tags']['jquery+bootstrap'] = '<script src="//cdn.jsdelivr.net/g/jquery@3.1.0,bootstrap@3.3.7"></script>';
 
-    // Local overrides (Uncomment below)
-      //self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
-      //self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-2.1.4.min.js"></script>';
-      //self::$snippets['foot_tags']['bootstrap'] = '<script src="'. WS_DIR_EXT .'bootstrap/bootstrap.min.js"></script>';
+    // Local content
+      self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'fontawesome/css/font-awesome.min.css" />';
+      self::$snippets['foot_tags']['jquery'] = '<script src="'. WS_DIR_EXT .'jquery/jquery-3.1.0.min.js"></script>';
+      self::$snippets['foot_tags']['bootstrap'] = '<script src="'. WS_DIR_EXT .'bootstrap/bootstrap-3.3.7.min.js"></script>';
 
     // Hreflang
       if (!empty(route::$route['page']) && settings::get('seo_links_language_prefix')) {

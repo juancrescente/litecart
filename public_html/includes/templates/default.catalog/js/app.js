@@ -14,7 +14,7 @@ $(document).ready(function(){
 
     $(content).css('min-height', $(sidebar).height());
 
-    if ($('.sidebar').height() < $('.sidebar + .content').height()) {
+    if ($(window).width() >= 768 && ($('.sidebar').height() < $('.sidebar + .content').height())) {
 
       var min_sidebar_offset = $(content).scrollTop() + $(content).offset().top;
       var max_sidebar_margin = $(content).height() - $(sidebar).height();

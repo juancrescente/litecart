@@ -48,7 +48,7 @@ ALTER TABLE `lc_customers` ADD `notes` TEXT NOT NULL AFTER `newsletter`;
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lc_modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` varchar(32) NOT NULL,
+  `module_id` varchar(64) NOT NULL,
   `type` varchar(16) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `priority` tinyint(4) NOT NULL,
@@ -60,4 +60,6 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   KEY `type` (`type`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM DEFAULT;
-
+-- --------------------------------------------------------
+INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', 20, NOW(), NOW());

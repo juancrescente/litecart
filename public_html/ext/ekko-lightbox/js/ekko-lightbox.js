@@ -100,6 +100,8 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
         }
         if (this.options.type) {
           switch(this.options.type){
+            case 'iframe':
+              return this.showIframeContent(this.options.remote);
             case 'image':
               return this.preloadImage(this.options.remote, true);
             case 'instagram':
@@ -113,7 +115,7 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
             case 'youtube':
               return this.showYoutubeVideo(this.getYoutubeId(this.options.remote));
             default:
-              return this.error("Could not detect remote target type. Force the type using data-type=\"image|instagram|url|video|vimeo|youtube\"");
+              return this.error("Could not detect remote target type. Force the type using data-type=\"iframe|image|instagram|url|video|vimeo|youtube\"");
           }
         } else {
           return this.detectRemoteType(this.options.remote);
@@ -211,7 +213,10 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     detectRemoteType: function(src, type) {
       var video_id;
       type = type || false;
-      if (type === 'image' || this.isImage(src)) {
+      if (type === 'iframe') {
+        this.options.type = 'iframe';
+        return this.showIframeContent(src);
+      } else if (type === 'image' || this.isImage(src)) {
         this.options.type = 'image';
         return this.preloadImage(src, true);
       } else if (type === 'instagram' || (video_id = this.getInstagramId(src))) {
@@ -251,6 +256,15 @@ License: https://github.com/ashleydw/lightbox/blob/master/LICENSE
     },
     showLoading: function() {
       this.lightbox_body.html('<div class="modal-loading">' + this.options.loadingMessage + '</div>');
+      return this;
+    },
+    showIframeContent: function(url) {
+      var height, width;
+      width = this.checkDimensions(this.$element.data('width') || 612);
+      this.resize(width);
+      height = width + 80;
+      this.lightbox_body.html('<iframe width="' + width + '" height="' + height + '" src="' + url + '" frameborder="0"></iframe>');
+      this.options.onContentLoaded.call(this);
       return this;
     },
     showInstagramVideo: function(id) {
