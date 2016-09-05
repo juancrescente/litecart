@@ -27,10 +27,8 @@
     <a href="<?php echo document::href_link(WS_DIR_ADMIN . 'logout.php'); ?>" title="<?php echo language::translate('text_logout', 'Logout'); ?>"><?php echo functions::draw_fonticon('fa-sign-out fa-lg'); ?></a>
   </div>
 
-  <div id="search" class="row">
-    <div class="form-group col-md-12">
-      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword')) .'"'); ?>
-    </div>
+  <div id="search" class="container-fluid">
+    <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword')) .'"'); ?>
     <div class="results"></div>
   </div>
 

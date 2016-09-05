@@ -18,7 +18,7 @@ $(document).ready(function(){
 
     if ($(this).val() != '') {
       $('#box-apps-menu').fadeOut('fast');
-      $('#search .results').html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>');
+      $('#search .results').html('<div class="loading text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
       var query = $(this).val();
 
       clearTimeout(timer_ajax_search);
@@ -26,6 +26,7 @@ $(document).ready(function(){
         $.ajax({
           type: 'get',
           async: true,
+          cache: false,
           url: 'search_results.json.php?query=' + query,
           dataType: 'json',
           beforeSend: function(jqXHR) {
@@ -35,22 +36,28 @@ $(document).ready(function(){
             $('#search results').text(textStatus + ': ' + errorThrown);
           },
           success: function(json) {
-            $('#search .results').html('Done');
+            $('#search .results').html('');
             $.each(json, function(i, group){
-              $('#search .results').append('<h4>'+ group.name +'</h4>');
-              if (group.results.length == 0) {
-                $('#search .results').append('<p>0</p>');
-              } else {
-                $('#search .results').append('<ul data-group="'+ group.name +'"></ul>');
-                $.each(group.results, function(i, result) {
-                  $('#search .results ul[data-group="'+ group.name +'"]').append('<li><a href="'+ result.url +'">'+ result.title +'</a></li>');
+              if (group.results.length) {
+                $('#search .results').append(
+                  '<h4>'+ group.name +'</h4>' +
+                  '<ul class="list-group" data-group="'+ group.name +'"></ul>'
+                );
+                $.each(group.results, function(i, result){
+                  $('#search .results ul[data-group="'+ group.name +'"]').append(
+                    '<li class="list-group-item">' +
+                    '  <div class="title"><a href="'+ result.url +'">'+ result.title +'</a></div>' +
+                    '  <div class="description"><small>'+ result.description +'</small></div>' +
+                    '</li>'
+                  );
                 });
               }
-
             });
+            if ($('#search .results').html() == '') {
+              $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>')
+            }
           }
         });
-
       }, 500);
 
     } else {
