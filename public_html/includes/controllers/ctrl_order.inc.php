@@ -376,7 +376,7 @@
             "update ". DB_TABLE_ORDERS_COMMENTS ."
             set author = '". (!empty($this->data['comments'][$key]['author']) ? database::input($this->data['comments'][$key]['author']) : 'system') ."',
               text = '". database::input($this->data['comments'][$key]['text']) ."',
-              hidden = '". (empty($this->data['comments'][$key]['hidden']) ? 0 : 1) ."'
+              hidden = '". (!empty($this->data['comments'][$key]['hidden']) ? 1 : 0) ."'
             where order_id = '". (int)$this->data['id'] ."'
             and id = '". (int)$this->data['comments'][$key]['id'] ."'
             limit 1;"
@@ -493,10 +493,12 @@
       $this->data['tax_total'] += $tax * $quantity;
     }
 
-    public function checkout_forbidden() {
+    public function validate() {
 
-      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'Your order does not contain any items');
+    // Validate items
+      if (empty($this->data['items'])) return language::translate('error_order_missing_items', 'The order does not contain any items');
 
+    // Validate customer details
       $required_fields = array(
         'firstname',
         'lastname',
@@ -511,9 +513,10 @@
       if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
 
       foreach ($required_fields as $field) {
-        if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ['.$field.']';
+        if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
       }
 
+    // Validate customer shipping details
       if ($this->data['customer']['different_shipping_address']) {
         $required_fields = array(
           'firstname',
@@ -526,17 +529,36 @@
         if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
 
         foreach ($required_fields as $field) {
-          if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' [shipping_address['.$field.']]';
+          if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
         }
       }
 
+    // Additional customer validation
       $mod_customer = new mod_customer();
       $result = $mod_customer->validate($this->data['customer']);
 
       if (!empty($result['error'])) {
         return $result['error'];
       }
+/*
+    // Validate shipping option
+      $mod_shipping = new mod_shipping('local');
 
+      if (!empty($mod_shipping->modules) && count($mod_shipping->options($this->data['items'], null, null, $this->data['currency_code'], $this->data['customer'])) > 0) {
+        if (empty($this->data['shipping']['option_id'])) return array('error', language::translate('error_no_shipping_method_selected', 'No shipping method selected'));
+      }
+*/
+
+/*
+    // Validate payment option
+      $mod_payment = new mod_payment('local');
+      $mod_payment->items = $this->data['items'];
+
+      if (!empty($mod_payment->modules) && count($mod_payment->options($this->data['items'], null, null, $this->data['currency_code'], $this->data['customer'])) > 0) {
+        if (empty($this->data['payment']['option_id'])) return array('error', language::translate('error_no_shipping_method_selected', 'No shipping method selected'));
+      }
+*/
+    // Additional order validation
       $mod_order = new mod_order();
       $result = $mod_order->validate($this);
 

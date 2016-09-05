@@ -33,19 +33,19 @@
 // Queue Handler
 
   var updateQueue = [
-    ['cart', null],
-    ['customer', null],
-    ['shipping', null],
-    ['payment', null],
-    ['summary', null]
+    ['cart', null, true],
+    ['customer', null, true],
+    ['shipping', null, true],
+    ['payment', null, true],
+    ['summary', null, true]
   ];
 
-  function queueUpdateTask(component, data=null) {
+  function queueUpdateTask(component, data=null, refresh=true) {
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks[0] == component) ? false : true;
     });
 
-    updateQueue.push([component, data]);
+    updateQueue.push([component, data, refresh]);
 
     runQueue();
   }
@@ -61,7 +61,7 @@
 
     task = updateQueue.shift();
 
-    if (console) console.log('Refreshing #checkout-' + task[0] + '-wrapper...');
+    if (console) console.log('Processing #checkout-' + task[0] + '-wrapper...');
 
     if (!$('#loading').length) {
       var progress_bar = '<div id="loading" style="position: fixed; top: 50%; left: 10%; right: 10%; text-align: center; font-size: 256px; margin-top: -128px; opacity: 0.05; z-index: 999999;">'
@@ -70,7 +70,7 @@
       $('body').append(progress_bar);
     }
 
-    $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
+    if (task[2]) $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
 
     var url = '';
     switch(task[0]) {
@@ -107,7 +107,7 @@
         $('#checkout-'+ task[0] +'-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
-        $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
+        if (task[2]) $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
       complete: function(html) {
         if (!updateQueue.length) $('body #loading').remove();
@@ -135,7 +135,7 @@
 
   $('body').on('click', '#checkout-customer-wrapper button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = $('#checkout-customer-wrapper :input').serialize();
+    var data = $('#checkout-customer-wrapper :input').serialize() + "save_customer_details=true";
     queueUpdateTask('customer', data);
     queueUpdateTask('cart');
     queueUpdateTask('shipping');
@@ -147,27 +147,26 @@
 
 // Shipping
 
-  $('#checkout-shipping-wrapper').on('click', '.option:not(.active)', function(){
-    if ($(this).find('input[name="shipping_option"][disabled]')) return false;
+  $('#checkout-shipping-wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#checkout-shipping .option').removeClass('active');
-    $(this).prev('input[name="shipping_option"]').click();
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    var data = $('#checkout-shipping-wrapper :input').serialize();
-    //queueUpdateTask('shipping', data);
+    var data = $('#checkout-shipping-wrapper .option.active :input').serialize();
+    queueUpdateTask('shipping', data, false);
     queueUpdateTask('payment');
     queueUpdateTask('summary');
   });
 
 // Payment
 
-  $('#checkout-payment-wrapper').on('click', '.option:not(.active):not([disabled])', function(){
+  $('#checkout-payment-wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#checkout-payment .option').removeClass('active');
-    $(this).prev('input[name="payment_option"]').click();
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    var data = $('#checkout-payment-wrapper :input').serialize();
-    //queueUpdateTask('payment', data);
+    var data = $('#checkout-payment-wrapper .option.active :input').serialize();
+    queueUpdateTask('payment', data, false);
     queueUpdateTask('summary');
   });
 

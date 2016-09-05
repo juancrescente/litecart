@@ -9,9 +9,10 @@
   if (empty(customer::$data['country_code'])) customer::$data['country_code'] = settings::get('default_country_code');
 
   $payment = new mod_payment();
+  $options = $payment->options();
 
-  if (file_get_contents('php://input')) {
-    list($module_id, $option_id) = explode(':', $_POST['payment_option']);
+  if (file_get_contents('php://input') != '') {
+    list($module_id, $option_id) = explode(':', $_POST['payment']['option_id']);
     $result = $payment->run('before_select', $module_id, $option_id, $_POST);
     if (!empty($result) && (is_string($result) || !empty($result['error']))) {
       notices::add('errors', is_string($result) ? $result : $result['error']);
@@ -19,8 +20,6 @@
       $payment->select($module_id, $option_id, $_POST);
     }
   }
-
-  $options = $payment->options();
 
   if (!empty($payment->data['selected']['id'])) {
     list($module_id, $option_id) = explode(':', $payment->data['selected']['id']);

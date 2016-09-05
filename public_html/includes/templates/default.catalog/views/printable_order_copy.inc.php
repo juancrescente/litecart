@@ -154,23 +154,26 @@
     <table cellspacing="0" cellpadding="0" style="width: 100%; border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
       <tr>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />
-          <?php echo nl2br(settings::get('store_postal_address')); ?>
+          <p><strong><?php echo language::translate('title_address', 'Address'); ?></strong><br />
+          <?php echo nl2br(settings::get('store_postal_address')); ?></p>
         </td>
         <?php if (settings::get('store_phone')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
-            <?php echo settings::get('store_phone'); ?><br />
+          <p><strong><?php echo language::translate('title_phone', 'Phone'); ?></strong><br />
+            <?php echo settings::get('store_phone'); ?></p>
         </td>
         <?php } ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
-            <?php echo settings::get('store_email'); ?>
+          <p><strong><?php echo language::translate('title_email', 'Email'); ?></strong><br />
+            <?php echo settings::get('store_email'); ?></p>
+
+          <p><strong><?php echo language::translate('title_website', 'Website'); ?></strong><br />
+            <?php echo htmlspecialchars(document::ilink('')); ?></p>
         </td>
           <?php if (settings::get('store_tax_id')) { ?>
         <td style="vertical-align: top;">
-          <strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></strong><br />
-          <?php echo settings::get('store_tax_id'); ?>
+          <p><strong><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></strong><br />
+            <?php echo settings::get('store_tax_id'); ?></p>
         </td>
         <?php } ?>
       </tr>

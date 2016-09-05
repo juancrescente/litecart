@@ -1,4 +1,4 @@
-<?php var_dump($_POST);
+<?php
   if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     header('Content-type: text/html; charset='. language::$selected['charset']);
     document::$layout = 'ajax';
@@ -6,13 +6,13 @@
 
   if (empty(cart::$items)) return;
 
-  if (!file_get_contents('php://input')) {
+  if (file_get_contents('php://input') == '') {
     foreach (customer::$data as $key => $value) {
       $_POST[$key] = $value;
     }
   }
 
-  if (file_get_contents('php://input')) {
+  if (file_get_contents('php://input') != '') {
 
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;

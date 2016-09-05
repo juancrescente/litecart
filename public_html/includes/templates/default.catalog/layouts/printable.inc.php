@@ -3,17 +3,14 @@
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/bootstrap.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/bootstrap/theme.min.css" />
-<link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+<link rel="stylesheet" href="{snippet:template_path}css/printable.min.css" />
 <!--snippet:head_tags-->
-<!--snippet:javascript-->
-<?php if (isset($_GET['media']) && $_GET['media'] == 'print') { ?><script>window.onload=function(){window.print();}</script><?php } ?>
 </head>
-<body>
+<body<?php echo (isset($_GET['media']) && $_GET['media'] == 'print') ? ' onload="window.print();"' : ''; ?>>
 
 <!--snippet:content-->
 
 <!--snippet:foot_tags-->
+<!--snippet:javascript-->
 </body>
 </html>

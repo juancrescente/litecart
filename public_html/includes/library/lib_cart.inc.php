@@ -172,7 +172,7 @@
         'options' => $options,
         'option_stock_combination' => '',
         'image' => $product->image,
-        'name' => $product->name[language::$selected['code']],
+        'name' => $product->name,
         'code' => $product->code,
         'sku' =>  $product->sku,
         'gtin' =>  $product->gtin,
@@ -183,7 +183,7 @@
         'tax_class_id' => $product->tax_class_id,
         'quantity' => round($quantity, $product->quantity_unit['decimals'], PHP_ROUND_HALF_UP),
         'quantity_unit' => array(
-          'name' => $product->quantity_unit['name'][language::$selected['code']],
+          'name' => $product->quantity_unit['name'],
           'decimals' => $product->quantity_unit['decimals'],
           'separate' => $product->quantity_unit['separate'],
         ),
@@ -211,26 +211,26 @@
         foreach (array_keys($product->options) as $key) {
 
           if ($product->options[$key]['required'] != 0) {
-            if (empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
-              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
+            if (empty($options[$product->options[$key]['name']])) {
+              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'] .')');
               return;
             }
           }
 
-          if (!empty($options[$product->options[$key]['name'][language::$selected['code']]])) {
+          if (!empty($options[$product->options[$key]['name']])) {
             switch ($product->options[$key]['function']) {
 
               case 'checkbox':
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][language::$selected['code']];
-                  if (in_array($value['name'][language::$selected['code']], explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]))) {
+                  $valid_values[] = $value['name'];
+                  if (in_array($value['name'], explode(', ', $options[$product->options[$key]['name']]))) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['extras'] += $value['price_adjust'];
                   }
                 }
 
-                foreach (explode(', ', $options[$product->options[$key]['name'][language::$selected['code']]]) as $current_value) {
+                foreach (explode(', ', $options[$product->options[$key]['name']]) as $current_value) {
                   if (!in_array($current_value, $valid_values)) {
                     if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                     return;
@@ -251,14 +251,14 @@
 
                 $valid_values = array();
                 foreach ($product->options[$key]['values'] as $value) {
-                  $valid_values[] = $value['name'][language::$selected['code']];
-                  if ($value['name'][language::$selected['code']] == $options[$product->options[$key]['name'][language::$selected['code']]]) {
+                  $valid_values[] = $value['name'];
+                  if ($value['name'] == $options[$product->options[$key]['name']]) {
                     $selected_options[] = $product->options[$key]['id'].'-'.$value['id'];
                     $item['extras'] += $value['price_adjust'];
                   }
                 }
 
-                if (!in_array($options[$product->options[$key]['name'][language::$selected['code']]], $valid_values)) {
+                if (!in_array($options[$product->options[$key]['name']], $valid_values)) {
                   if (!$silent) notices::add('errors', language::translate('error_product_options_contains_errors', 'The product options contains errors'));
                   return;
                 }

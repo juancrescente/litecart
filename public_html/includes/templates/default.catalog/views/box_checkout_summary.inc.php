@@ -35,7 +35,7 @@
 
     <div class="confirm row">
       <div class="col-md-9">
-        <?php if ($error) echo '<div class="alert alert-danger">'. $error .'</div>' . PHP_EOL; ?>
+        <?php if ($error) echo '<div class="alert alert-danger">'. $error[0] .'</div>' . PHP_EOL; ?>
       </div>
 
       <div class="col-md-3">

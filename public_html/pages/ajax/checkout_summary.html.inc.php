@@ -26,13 +26,17 @@
   $order->data['customer'] = customer::$data;
 
   if (!empty($shipping->data['selected'])) {
-    $order->data['shipping']['option_id'] = $shipping->data['selected']['id'];
-    $order->data['shipping']['option_name'] = $shipping->data['selected']['name'];
+    $order->data['shipping_option'] = array(
+      'id' => $shipping->data['selected']['id'],
+      'name' => $shipping->data['selected']['title'] .' ('. $shipping->data['selected']['name'] .')',
+    );
   }
 
   if (!empty($payment->data['selected'])) {
-    $order->data['payment']['option_id'] = $payment->data['selected']['id'];
-    $order->data['payment']['option_name'] = $payment->data['selected']['name'];
+    $order->data['payment_option'] = array(
+      'id' => $payment->data['selected']['id'],
+      'name' => $payment->data['selected']['title'] .' ('. $payment->data['selected']['name'] .')',
+    );
   }
 
   foreach (cart::$items as $item) {
@@ -60,7 +64,7 @@
     'tax_total' => !empty($order->data['tax_total']) ? currency::format($order->data['tax_total'], false) : '',
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => currency::format($order->data['payment_due'], false),
-    'error' => $order->checkout_forbidden(),
+    'error' => $order->validate(),
     'selected_payment' => null,
     'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   );

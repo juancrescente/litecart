@@ -5,6 +5,13 @@
 
   <div class="panel-body">
 
+    <?php if (empty(customer::$data['id'])) { ?>
+    <ul class="nav nav-tabs" style="margin-bottom: 1em;">
+      <li class="active"><a href="#tab-guests"><?php echo language::translate('title_guests', 'Guests'); ?></a></li>
+      <li><a href="<?php echo document::ilink('login') ?>" data-toggle="lightbox"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a></li>
+    </ul>
+    <?php } ?>
+
     <div class="address billing-address">
 
       <div class="row">
@@ -197,14 +204,14 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label><?php echo language::translate('title_desired_password', 'Desired Password'); ?></label>
-              <?php echo functions::form_draw_password_field('password', '', 'required="required"'); ?>
+              <?php echo functions::form_draw_password_field('password', ''); ?>
             </div>
           </div>
 
           <div class="col-sm-6">
             <div class="form-group">
               <label><?php echo language::translate('title_confirm_password', 'Confirm Password'); ?></label>
-              <?php echo functions::form_draw_password_field('confirmed_password', '', 'required="required"'); ?>
+              <?php echo functions::form_draw_password_field('confirmed_password', ''); ?>
             </div>
           </div>
         </div>
