@@ -14,7 +14,7 @@
       if (!empty($filter) && !is_array($filter)) $filter = array($filter);
 
       switch($type) {
-        case 'job'
+        case 'job':
           $directory = FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/';
           break;
         default:

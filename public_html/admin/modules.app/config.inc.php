@@ -9,28 +9,28 @@
     ),
     'menu' => array(
       array(
-        'title' => language::translate('title_background_jobs', 'Background Jobs'),
-        'doc' => 'jobs',
-      ),
-      array(
-        'title' => language::translate('title_customer', 'Customer'),
+        'title' => language::translate('title_customer_modules', 'Customer Modules'),
         'doc' => 'customer',
       ),
       array(
-        'title' => language::translate('title_shipping', 'Shipping'),
+        'title' => language::translate('title_shipping_modules', 'Shipping Modules'),
         'doc' => 'shipping',
       ),
       array(
-        'title' => language::translate('title_payment', 'Payment'),
+        'title' => language::translate('title_payment_modules', 'Payment Modules'),
         'doc' => 'payment',
       ),
       array(
-        'title' => language::translate('title_order', 'Order'),
+        'title' => language::translate('title_order_modules', 'Order Modules'),
         'doc' => 'order',
       ),
       array(
-        'title' => language::translate('title_order_total', 'Order Total'),
+        'title' => language::translate('title_order_total_modules', 'Order Total Modules'),
         'doc' => 'order_total',
+      ),
+      array(
+        'title' => language::translate('title_job_modules', 'Job Modules'),
+        'doc' => 'jobs',
       ),
     ),
     'docs' => array(

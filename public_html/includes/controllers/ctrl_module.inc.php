@@ -5,11 +5,35 @@
     public $data;
 
     public function __construct($module_id) {
-      if (!empty($module_id)) {
-        $this->load($module_id);
-      } else {
-        trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
+
+      if (empty($module_id))  trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
+
+      preg_match('#^([^_]+)#', $module_id, $matches);
+
+      switch ($matches[1]) {
+        case 'cm':
+          $type = 'customer';
+          break;
+        case 'sm':
+          $type = 'shipping';
+          break;
+        case 'pm':
+          $type = 'payment';
+          break;
+        case 'om':
+          $type = 'order';
+          break;
+        case 'ot':
+          $type = 'order_total';
+          break;
+        case 'job':
+          $type = 'job';
+          break;
+        default:
+          trigger_error('Unknown module type for module '. $module_id, E_USER_ERROR);
       }
+
+      $this->load($module_id);
     }
 
     public function reset() {
@@ -24,57 +48,28 @@
       }
     }
 
-    public function load($module_id) {
+    public function load($module_id, $type) {
 
       $this->reset();
 
-      preg_match('#^([^_]+)#', $module_id, $matches);
-
-      switch ($matches[1]) {
-        case 'cm':
-          $this->_type = 'customer';
-          break;
-        case 'sm':
-          $this->_type = 'shipping';
-          break;
-        case 'pm':
-          $this->_type = 'payment';
-          break;
-        case 'om':
-          $this->_type = 'order';
-          break;
-        case 'ot':
-          $this->_type = 'order_total';
-          break;
-        case 'job':
-          $this->_type = 'job';
-          break;
-        default:
-          trigger_error('Unknown module type for module '. $module_id, E_USER_ERROR);
-      }
-
       $modules_query = database::query(
         "select * from ". DB_TABLE_MODULES ."
-        where type = '". database::input($this->_type) ."'
+        where type = '". database::input($type) ."'
         and module_id = '". database::input($module_id) ."'
         limit 1;"
       );
-      $module = database::fetch($modules_query);
 
-      $this->data = array_replace($this->data, $module);
+      if ($module = database::fetch($modules_query)) {
+        $this->data = array_replace($this->data, $module);
+      }
 
+      $this->data['module_id'] = $module_id;
+      $this->data['type'] = $type;
       $this->data['settings'] = $this->_decode_settings($this->data['settings']);
 
-    // Module is installed
-      if (!empty($module)) {
-        $this->_module = new $module_id;
-
-      // Decode settings
-        $this->data['settings'] = json_decode($module['settings'], true);
-
-        foreach ($this->_module->settings() as $structure) {
-          if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
-        }
+      $this->_module = new $module_id;
+      foreach ($this->_module->settings() as $structure) {
+        if (!isset($this->data['settings'][$structure['key']])) $this->data['settings'][$structure['key']] = $structure['default_value'];
       }
     }
 
@@ -84,8 +79,8 @@
 
         database::query(
           "insert into ". DB_TABLE_MODULES ."
-          (module_id, date_created)
-          values ('". database::input($this->data['module_id']) ."', '". date('Y-m-d H:i:s') ."');"
+          (module_id, type, date_created)
+          values ('". database::input($this->data['module_id']) ."', '". database::input($type) ."', '". date('Y-m-d H:i:s') ."');"
         );
 
         $this->data['id'] = database::insert_id();
