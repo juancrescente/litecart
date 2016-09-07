@@ -81,12 +81,12 @@
   <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
-      <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. functions::reference_get_phone_country_code(isset($_POST['country_code']) ? $_POST['country_code'] : '') .'"'); ?>
+      <?php echo functions::form_draw_phone_field('phone', true, 'required="required" placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
     </div>
 
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_mobile_phone', 'Mobile Phone'); ?></label>
-      <?php echo functions::form_draw_phone_field('mobile', true, 'placeholder="'. functions::reference_get_phone_country_code(isset($_POST['country_code']) ? $_POST['country_code'] : '') .'"'); ?>
+      <?php echo functions::form_draw_phone_field('mobile', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
     </div>
   </div>
 

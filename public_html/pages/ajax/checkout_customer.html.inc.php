@@ -26,7 +26,7 @@
       if (empty($_POST['city'])) notices::add('errors', language::translate('error_missing_city', 'You must enter a city.'));
       if (empty($_POST['postcode'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
       if (empty($_POST['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['zone_code']) && functions::reference_country_num_zones($_POST['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
+      if (empty($_POST['zone_code']) && reference::country($_POST['country_code'])->zones) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
 
       if (!empty($_POST['different_shipping_address'])) {
         if (empty($_POST['shipping_address']['firstname'])) notices::add('errors', language::translate('error_missing_firstname', 'You must enter a first name.'));
@@ -35,7 +35,7 @@
         if (empty($_POST['shipping_address']['city'])) notices::add('errors', language::translate('error_missing_city', 'You must enter a city.'));
         if (empty($_POST['shipping_address']['postcode'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
         if (empty($_POST['shipping_address']['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
-        if (empty($_POST['shipping_address']['zone_code']) && functions::reference_country_num_zones($_POST['shipping_address']['country_code'])) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
+        if (empty($_POST['shipping_address']['zone_code']) && reference::country($_POST['shipping_address']['country_code'])->zones) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
       }
 
       if (empty($_POST['email'])) notices::add('errors', language::translate('error_missing_email', 'You must enter your email address.'));

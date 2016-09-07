@@ -67,7 +67,7 @@
     }
   } else if (!empty($product->manufacturer)) {
     breadcrumbs::add(language::translate('title_manufacturers', 'Manufacturers'), document::ilink('manufacturers'));
-    breadcrumbs::add(functions::reference_get_manufacturer_name($product->manufacturer['id']), document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
+    breadcrumbs::add($product->manufacturer['name'], document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])));
   }
   breadcrumbs::add($product->name);
 

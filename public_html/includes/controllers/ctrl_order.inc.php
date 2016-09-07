@@ -509,8 +509,8 @@
         'phone',
       );
 
-      if (functions::reference_get_postcode_required($this->data['customer']['country_code'])) $required_fields[] = 'postcode';
-      if (functions::reference_country_num_zones($this->data['customer']['country_code'])) $required_fields[] = 'zone_code';
+      if (reference::country($this->data['customer']['country_code'])->postcode_format) $required_fields[] = 'postcode';
+      if (reference::country($this->data['customer']['country_code'])->zones) $required_fields[] = 'zone_code';
 
       foreach ($required_fields as $field) {
         if (empty($this->data['customer'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' ('.$field.')';
@@ -525,8 +525,8 @@
           'city',
           'country_code',
         );
-        if (functions::reference_get_postcode_required($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'postcode';
-        if (functions::reference_country_num_zones($this->data['customer']['shipping_address']['country_code'])) $required_fields[] = 'zone_code';
+        if (reference::country($this->data['customer']['shipping_address']['country_code'])->postcode_format) $required_fields[] = 'postcode';
+        if (reference::country($this->data['customer']['shipping_address']['country_code'])->zones) $required_fields[] = 'zone_code';
 
         foreach ($required_fields as $field) {
           if (empty($this->data['customer']['shipping_address'][$field])) return language::translate('error_insufficient_customer_information', 'Insufficient customer information, please fill out all necessary fields.') . ' (shipping_address['.$field.'])';
