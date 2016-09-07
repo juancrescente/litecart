@@ -157,7 +157,7 @@
             <div>
               <?php echo functions::form_draw_hidden_field('tax', $tax = tax::get_tax($price, $product->tax_class_id, $_GET['customer'])); ?>
               <?php echo !empty($product->campaign['price']) ? '<del>'. currency::format($tax, true, false, $_GET['currency_code'], $_GET['currency_value']) .'</del>' : null; ?>
-              <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, false, $_GET['currency_code'], $_GET['currency_value']); ?>
+              <?php echo currency::format(tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id, $_GET['customer']), true, $_GET['currency_code'], $_GET['currency_value']); ?>
             </div>
           </div>
         </div>

@@ -59,7 +59,7 @@
 
             while ($row = database::fetch($query)) {
               $product_id = preg_replace('#^[0-9]+(:.*)?$#', '', $row['product_id']);
-              $this->_data['also_purchased_products'][$product_id] = reference::product($product_id);
+              $this->_data['also_purchased_products'][$row['product_id']] = reference::product($row['product_id']);
             }
 
           break;

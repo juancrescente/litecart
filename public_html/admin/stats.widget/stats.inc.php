@@ -68,19 +68,19 @@
     <tbody>
       <tr>
         <td><?php echo language::translate('title_total_sales', 'Total Sales'); ?>:</td>
-        <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, false, settings::get('store_currency_code')); ?></td>
+        <td style="text-align: right;"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
       </tr>
       <tr>
         <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
-        <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, false, settings::get('store_currency_code')); ?></td>
+        <td style="text-align: right;"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
       </tr>
       <tr>
         <td><?php echo language::translate('title_total_sales', 'Total Sales') .' '. strftime('%B'); ?>:</td>
-        <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, false, settings::get('store_currency_code')); ?></td>
+        <td style="text-align: right;"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
       </tr>
       <tr>
         <td><?php echo language::translate('title_average_order_amount', 'Average Order Amount'); ?>:</td>
-        <td style="text-align: right;"><?php echo currency::format($stats['average_order_amount'], false, false, settings::get('store_currency_code')); ?></td>
+        <td style="text-align: right;"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
       </tr>
       <tr>
         <td><?php echo language::translate('title_number_of_customers', 'Number of Customers'); ?>:</td>

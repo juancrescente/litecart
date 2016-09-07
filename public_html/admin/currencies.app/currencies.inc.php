@@ -77,6 +77,7 @@
         <th><?php echo language::translate('title_code', 'Code'); ?></th>
         <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
         <th><?php echo language::translate('title_value', 'Value'); ?></th>
+        <th><?php echo language::translate('title_decimals', 'Decimals'); ?></th>
         <th><?php echo language::translate('title_prefix', 'Prefix'); ?></th>
         <th><?php echo language::translate('title_suffix', 'Suffix'); ?></th>
         <th><?php echo language::translate('title_default_currency', 'Default Currency'); ?></th>
@@ -103,6 +104,7 @@
       <td><?php echo $currency['code']; ?></td>
       <td><a href="<?php echo document::href_link('', array('doc' => 'edit_currency', 'currency_code' => $currency['code']), true); ?>"><?php echo $currency['name']; ?></a></td>
       <td class="text-right"><?php echo $currency['value']; ?></td>
+      <td class="text-center"><?php echo $currency['decimals']; ?></td>
       <td class="text-center"><?php echo $currency['prefix']; ?></td>
       <td class="text-center"><?php echo $currency['suffix']; ?></td>
       <td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
@@ -117,7 +119,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="12"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo database::num_rows($currencies_query); ?></td>
+        <td colspan="13"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo database::num_rows($currencies_query); ?></td>
       </tr>
     </tfoot>
   </table>

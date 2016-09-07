@@ -161,17 +161,13 @@
 
     public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
 
-      if ($raw) return self::format_raw($value, $currency_code, $currency_value);
+      if ($currency_code === null) $currency_code = self::$selected['code'];
 
-      if (empty($currency_code)) $currency_code = self::$selected['code'];
+      if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
-      if (empty($currency_value) && isset(self::$currencies[$currency_code])) $currency_value = (float)self::$currencies[$currency_code]['value'];
-
-      if (!isset(currency::$currencies[$currency_code]) && !empty($currency_value)) {
-        return number_format($value * $currency_value, 2, '.', ',') .' '. $currency_code;
-      }
-
-      if (settings::get('auto_decimals') && $auto_decimals && round($value, self::$currencies[$currency_code]['decimals']) - floor($value) == 0) {
+      $fraction = ($value * $currency_value) - (int)($value * $currency_value);
+      
+      if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
         $decimals = 0;
       } else {
         $decimals = (int)self::$currencies[$currency_code]['decimals'];

@@ -8,7 +8,7 @@
     <?php if (empty(customer::$data['id'])) { ?>
     <ul class="nav nav-tabs" style="margin-bottom: 1em;">
       <li class="active"><a href="#tab-guests"><?php echo language::translate('title_guests', 'Guests'); ?></a></li>
-      <li><a href="<?php echo document::ilink('login') ?>" data-toggle="lightbox"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a></li>
+      <li><a href="<?php echo document::ilink('login') ?>"><?php echo language::translate('title_sign_in', 'Sign In'); ?></a></li>
     </ul>
     <?php } ?>
 

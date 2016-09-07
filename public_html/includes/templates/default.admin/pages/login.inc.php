@@ -13,45 +13,12 @@ body {
   display: table-row;
 }
 
-#loader img {
-  position: absolute;
+.loader {
+  position: absolute !important;
   top: 50%;
   left: 50%;
-  margin-top: -44px;
-  margin-left: -44px;
-
-  -webkit-animation-name: spin;
-  -webkit-animation-duration: 4000ms;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-  -moz-animation-name: spin;
-  -moz-animation-duration: 4000ms;
-  -moz-animation-iteration-count: infinite;
-  -moz-animation-timing-function: linear;
-  -ms-animation-name: spin;
-  -ms-animation-duration: 4000ms;
-  -ms-animation-iteration-count: infinite;
-  -ms-animation-timing-function: linear;
-  animation-name: spin;
-  animation-duration: 4000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  from { -webkit-transform: rotate(0deg); }
-  to { -webkit-transform: rotate(360deg); }
-}
-@keyframes spin {
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
+  margin-top: -36px;
+  margin-left: -36px;
 }
 
 #box-login-wrapper {
@@ -68,14 +35,7 @@ body {
 
   padding: 0px;
 
-  background: #ffffff;
-  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-  background: -moz-linear-gradient(top, #ffffff 0%, #f9f9f9 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f9f9f9));
-  background: -webkit-linear-gradient(top, #ffffff 0%,#f9f9f9 100%);
-  background: -o-linear-gradient(top, #ffffff 0%,#f9f9f9 100%);
-  background: -ms-linear-gradient(top, #ffffff 0%,#f9f9f9 100%);
-  background: linear-gradient(to bottom, #ffffff 0%,#f9f9f9 100%);
+  background: #fff;
 
   text-align: center;
 
@@ -108,8 +68,8 @@ body {
 }
 </style>
 
-<div id="loader">
-  <img src="{snippet:template_path}images/loader.png" alt="" />
+<div class="loader">
+  <img width="72" height="72" alt="" />
 </div>
 
 <div id="box-login-wrapper">
@@ -117,7 +77,7 @@ body {
   <div id="box-login" class="">
 
     <div class="header">
-      <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" /></a>
+      <a href="<?php echo document::href_ilink(''); ?>"><img src="<?php echo WS_DIR_TEMPLATE; ?>images/logotype.svg" alt="<?php echo settings::get('store_name'); ?>" /></a>
     </div>
 
     <?php echo functions::form_draw_form_begin('login_form', 'post'); ?>

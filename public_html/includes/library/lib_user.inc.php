@@ -137,7 +137,7 @@
       $user = database::fetch($user_query);
 
       if (empty($user)) {
-        sleep(10);
+        sleep(3);
         notices::add('errors', language::translate('error_user_not_found', 'The user could not be found in our database'));
         return;
       }

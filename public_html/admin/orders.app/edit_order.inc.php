@@ -677,7 +677,7 @@
           </tbody>
           </tfoot>
             <tr>
-              <td colspan="6" class="text-right" style="font-size: 1.5em;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
+              <td colspan="6" class="text-right" style="font-size: 1.5em;"><?php echo language::translate('title_payment_due', 'Payment Due'); ?>: <strong class="total"><?php echo currency::format($order->data['payment_due'], false, $_POST['currency_code'], $_POST['currency_value']); ?></strong></td>
             </tr>
           </table>
         </div>
@@ -914,10 +914,10 @@
                + '    <td class="text-right">'
                + '      <div class="input-group">'
                + '        <span class="input-group-addon"><?php echo functions::general_escape_js(functions::form_draw_checkbox('order_total[new_ot_row_index][calculate]', '1', '1', 'title="'. htmlspecialchars(language::translate('title_calculate', 'Calculate')) .'"')); ?></span>'
-               + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format(0, false, true), 'style="text-align: right;"')); ?>'
+               + '        <?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][value]', currency::format_raw(0), 'style="text-align: right;"')); ?>'
                + '      </div>'
                + '    </td>'
-               + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format(0, false, true), 'style="text-align: right;"')); ?></td>'
+               + '    <td class="text-right"><?php echo functions::general_escape_js(functions::form_draw_currency_field($_POST['currency_code'], 'order_total[new_ot_row_index][tax]', currency::format_raw(0), 'style="text-align: right;"')); ?></td>'
                + '    <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '  </tr>';
   output = output.replace(/new_ot_row_index/g, 'new_' + new_ot_row_index);

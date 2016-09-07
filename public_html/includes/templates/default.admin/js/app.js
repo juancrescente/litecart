@@ -1,10 +1,11 @@
 $(document).ready(function(){
-
+/*
 // Set Head Title
-  if ($('h1')) {
+  if ($('h1').length) {
     if (document.title.substring(0, $('h1:first').text().length) == $('h1:first').text()) return;
     document.title = $('h1:first').text() +' | '+ document.title;
   }
+*/
 
 // Enable tooltips
   $('[data-toggle="tooltip"]').tooltip();
@@ -15,10 +16,11 @@ $(document).ready(function(){
 // AJAX Search
   var timer_ajax_search = null;
   $('#search input[name="query"]').on('propertychange input', function(){
-
     if ($(this).val() != '') {
-      $('#box-apps-menu').fadeOut('fast');
-      $('#search .results').html('<div class="loading text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+      if (!$('#search .loader').length) {
+        $('#box-apps-menu').fadeOut('fast');
+        $('#search .results').html('<div class="loader text-center"><img width="48" height="48" alt="" /></div>');
+      }
       var query = $(this).val();
 
       clearTimeout(timer_ajax_search);
@@ -56,7 +58,7 @@ $(document).ready(function(){
             if ($('#search .results').html() == '') {
               $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>')
             }
-          }
+          },
         });
       }, 500);
 
