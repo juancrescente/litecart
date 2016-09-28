@@ -105,7 +105,7 @@
             session::clear();
             sleep(3);
             http_response_code(400);
-            die('HTTP POST Error: The form submit token ('. @$_POST['token'] .') was invalid or issued for another session identity. Your request has therefore not been processed. Please try again.');
+            die('HTTP POST Error: The form submit token was issued for another session identity. Your request has therefore not been processed. Please try again.');
           }
         }
       }
