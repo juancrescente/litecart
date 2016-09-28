@@ -161,6 +161,7 @@ CREATE TABLE `lc_delivery_statuses_info` (
 -- --------------------------------------------------------
 CREATE TABLE `lc_geo_zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(256) NOT NULL,
   `date_updated` datetime NOT NULL,
@@ -229,8 +230,9 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   `status` tinyint(1) NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `settings` text NOT NULL,
-  `date_updated` varchar(32) NOT NULL,
-  `date_created` varchar(32) NOT NULL,
+  `last_log` text NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `module_id` (`module_id`),
   KEY `type` (`type`),

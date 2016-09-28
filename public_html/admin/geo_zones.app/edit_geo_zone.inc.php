@@ -19,6 +19,7 @@
     if (empty(notices::$data['errors'])) {
 
       $fields = array(
+        'code',
         'name',
         'description',
         'zones',
@@ -52,10 +53,17 @@
 
   <div class="row">
     <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_code', 'Code'); ?></label>
+      <?php echo functions::form_draw_text_field('code', true); ?>
+    </div>
+
+    <div class="form-group col-md-6">
       <label><?php echo language::translate('title_name', 'Name'); ?></label>
       <?php echo functions::form_draw_text_field('name', true); ?>
     </div>
+  </div>
 
+  <div class="row">
     <div class="form-group col-md-6">
       <label><?php echo language::translate('title_description', 'Description'); ?></label>
       <?php echo functions::form_draw_text_field('description', true); ?>

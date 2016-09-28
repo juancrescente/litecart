@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
   `status` tinyint(1) NOT NULL,
   `priority` tinyint(4) NOT NULL,
   `settings` text NOT NULL,
+  `last_log` text NOT NULL,
   `date_updated` varchar(32) NOT NULL,
   `date_created` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
@@ -62,4 +63,7 @@ CREATE TABLE IF NOT EXISTS `lc_modules` (
 ) ENGINE=MyISAM DEFAULT;
 -- --------------------------------------------------------
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
+('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', 2, NOW(), NOW()),
 ('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', 20, NOW(), NOW());
+-- --------------------------------------------------------
+ALTER TABLE `lc_geo_zones` ADD COLUMN `code` VARCHAR(32) NOT NULL AFTER `id`;
