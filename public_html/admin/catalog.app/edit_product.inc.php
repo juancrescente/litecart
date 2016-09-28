@@ -349,9 +349,10 @@
               <table id="table-upload-images">
                 <tr>
                   <td><?php echo functions::form_draw_file_field('new_images[]'); ?></td>
+                  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
                 </tr>
                 <tr>
-                  <td><a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+                  <td colspan="2"><a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
                 </tr>
               </table>
             </div>
@@ -697,7 +698,17 @@ foreach (currency::$currencies as $currency) {
 
   $('#table-upload-images .add').click(function(e) {
     e.preventDefault();
-    $(this).closest('table').find('tr:last-child').before('<tr><td><?php echo str_replace(array("\r", "\n"), '', functions::form_draw_file_field('new_images[]')); ?></td></tr>');
+    $(this).closest('table').find('tr:last-child').before(
+      '<tr>' +
+      '  <td><?php echo str_replace(array("\r", "\n"), '', functions::form_draw_file_field('new_images[]')); ?></td>' +
+      '  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
+      '</tr>'
+    );
+  });
+
+  $('#table-upload-images').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('tr').remove();
   });
 
 // Attributes

@@ -136,8 +136,6 @@
 
         default:
 
-          if (isset($this->_data['date_added'])) return;
-
           $query = database::query(
             "select * from ". DB_TABLE_CATEGORIES ."
             where id = '". (int)$this->_id ."'

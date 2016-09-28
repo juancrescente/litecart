@@ -73,8 +73,6 @@
 
         default:
 
-          if (isset($this->_data['date_added'])) return;
-
           $query = database::query(
             "select * from ". DB_TABLE_MANUFACTURERS ."
             where id = '". (int)$this->_id ."'

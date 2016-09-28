@@ -14,12 +14,12 @@
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
         <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
-    </div>
+      </div>
 
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>
         <?php echo functions::form_draw_countries_list('country_code', customer::$data['country_code']); ?>
-    </div>
+      </div>
 
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_zone_state_province', 'Zone/State/Province'); ?></label>
@@ -46,8 +46,6 @@
     $('#regional-settings .title').closest('.modal').find('.modal-title').text($('#regional-settings .title').text());
     $('#regional-settings .title').remove();
   }
-
-  <?php echo (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? ' style="margin-top: 0px;"' : ''; ?>
 
   $("select[name='country_code']").change(function(){
     $('body').css('cursor', 'wait');

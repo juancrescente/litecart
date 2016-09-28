@@ -181,7 +181,7 @@
       }
 
     // Unset zone if not in country
-      if (!isset(reference::country(self::$data['shipping_address']['country_code'])->zones[self::$data['shipping_address']['zone_code'])) {
+      if (!isset(reference::country(self::$data['shipping_address']['country_code'])->zones[self::$data['shipping_address']['zone_code']])) {
         self::$data['shipping_address']['zone_code'] = '';
       }
 

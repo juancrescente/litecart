@@ -4,6 +4,8 @@
 
   <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
+  <h1><?php echo language::translate('title_sign_in', 'Sign In'); ?></h1>
+
   <div class="form-group">
     <?php echo functions::form_draw_email_field('email', true, 'placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
   </div>

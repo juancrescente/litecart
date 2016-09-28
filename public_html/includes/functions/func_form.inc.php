@@ -327,6 +327,7 @@
   }
 
   function form_draw_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
+
     if (!is_array($options)) $options = array($options);
 
     $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
@@ -344,6 +345,60 @@
 
     return $html;
   }
+
+/*
+  function form_draw_bselect_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
+    if (!is_array($options)) $options = array($options);
+
+    document::$snippets['head_tags']['bselect'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'bselect/css/bselect.min.css" />' . PHP_EOL;
+    document::$snippets['foot_tags']['bselect'] = '<script src="'. WS_DIR_EXT .'bselect/js/bselect-select.min.js"></script>';
+    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').bselect({' . PHP_EOL
+                                                                  . '  ' . PHP_EOL
+                                                                  . '});';
+
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+
+    foreach ($options as $option) {
+      if ($input === true) {
+        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+      } else {
+        $option_input = $input;
+      }
+      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+    }
+
+    $html .= '</select>';
+
+    return $html;
+  }
+*/
+
+/*
+  function form_draw_bootstrap_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
+    if (!is_array($options)) $options = array($options);
+
+    document::$snippets['head_tags']['bootstrap-select'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'bootstrap-select/css/bootstrap-select.min.css" />' . PHP_EOL;
+    document::$snippets['foot_tags']['bootstrap-select'] = '<script src="'. WS_DIR_EXT .'bootstrap-select/js/bootstrap-select.min.js"></script>';
+    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectpicker({' . PHP_EOL
+                                                                  . '  ' . PHP_EOL
+                                                                  . '});';
+
+    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
+
+    foreach ($options as $option) {
+      if ($input === true) {
+        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
+      } else {
+        $option_input = $input;
+      }
+      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
+    }
+
+    $html .= '</select>';
+
+    return $html;
+  }
+*/
 
   function form_draw_selectize_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
     if (!is_array($options)) $options = array($options);

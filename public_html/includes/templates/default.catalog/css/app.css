@@ -1,13 +1,18 @@
+html,
 body {
-  background: #f9f9f9;
+  height: 100%;
+}
+body {
+  background: #e6e9ed;
 }
 #page {
   background: #fff;
   max-width: 1280px;
+  min-height: 100%;
   margin: 0 auto;
   padding: 15px;
-  -webkit-transition: filter 2.25s ease-out;
-  transition: filter 2.25s ease-out;
+  /*-webkit-transition: filter 0.25s ease-out;*/
+  /*transition: filter 0.25s ease-out;*/
 }
 body.modal-open #page {
   -webkit-filter: blur(5px);
@@ -16,25 +21,46 @@ body.modal-open #page {
   -ms-filter: blur(5px);
   filter: blur(5px);
 }
+#top-menu > li a:hover {
+  background: #f00;
+}
 #header {
   position: relative;
   margin-bottom: 15px;
 }
+#header .region {
+  top: 18px;
+}
+#header .region ul {
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.25);
+  padding: 0.5em;
+  background: rgba(0, 0, 0, 0.05);
+}
+#header .region a {
+  color: inherit;
+  text-decoration: none;
+}
+#header .region ul {
+  display: inline;
+}
 #cart {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  float: right;
 }
 #cart .btn {
-  height: 64px;
-  line-height: 48px;
+  top: 5px;
 }
-#cart .btn * {
-  vertical-align: middle;
+#cart .btn img {
+  height: 18px;
 }
 #sidebar {
+  clear: both;
   padding-right: 15px;
   padding-left: 15px;
+}
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: static !important;
+  }
 }
 #column-left form[name="search_form"] {
   margin-left: -15px;
@@ -47,6 +73,16 @@ body.modal-open #page {
 #category-tree > ul li {
   margin: 0;
 }
+#category-tree > ul li a {
+  color: inherit;
+}
+#category-tree > ul li.active > a {
+  color: #fff;
+}
+#category-tree > ul li i.fa {
+  font-size: 0.75em;
+  vertical-align: middle;
+}
 #box-information-links .title {
   margin-top: 0;
 }
@@ -57,33 +93,18 @@ body.modal-open #page {
 #box-information-links ul li {
   margin: 0;
 }
-body#checkout #header {
-  position: relative;
+#footer li {
+  padding: 2px 0px;
+  /*
+    &:before {
+      content: "·";
+      position: absolute;
+      margin-left: -10px;
+    }
+    */
 }
-body#checkout #header .back-link {
-  position: absolute;
-  top: 30px;
-  width: 100%;
-  text-align: center;
-}
-body#checkout #header .customer-service {
-  position: absolute;
-  top: 15px;
-  right: 0;
-  text-align: right;
-}
-body#checkout #header .customer-service .title {
-  margin: 0;
-}
-body#checkout #checkout-cart tr td:first-child a {
-  display: inline-block;
-}
-body#checkout #checkout-cart tr td:last-child {
-  text-align: right;
-}
-body#checkout #checkout-shipping .option.btn,
-body#checkout #checkout-payment .option.btn {
-  padding: 12px;
+#footer a {
+  color: inherit;
 }
 table.data-table th.main {
   width: 100%;
@@ -118,20 +139,23 @@ table.data-table th {
 .products .product .thumbnail .sticker.sale {
   background: rgba(191, 121, 121, 0.9);
 }
+.products .product .thumbnail img {
+  /*padding: @grid-gutter-width/2;*/
+}
 .products .product:hover .thumbnail {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .products .product a {
+  color: inherit;
   text-decoration: none;
 }
-.products .product .manufacturer {
+.products .product .caption .manufacturer {
   opacity: 0.75;
 }
 .products .product .price-wrapper {
   margin-top: 0.5em;
   font-size: 1.5em;
   font-weight: bold;
-  text-align: center;
 }
 .products .product .price-wrapper .price {
   white-space: nowrap;
@@ -143,6 +167,21 @@ table.data-table th {
 .products .product .price-wrapper .campaign-price {
   color: #ff0000;
   white-space: nowrap;
+}
+.products .product.product-column {
+  text-align: center;
+}
+.products .product.product-column .caption {
+  height: 4em;
+}
+.products .product.product-row .short-description {
+  height: 3.5em;
+}
+.products .product form[name=buy_now_form] {
+  visibility: hidden;
+}
+.products .product:hover form[name=buy_now_form] {
+  visibility: visible;
 }
 .categories .category {
   padding: 7px;
@@ -232,4 +271,119 @@ table.data-table th {
     width: 50%;
   }
 }
-/*# sourceMappingURL=../less/app.less */
+#product .attributes table {
+  break-inside: avoid;
+}
+body#checkout .loader {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  margin-top: -128px;
+  opacity: 0.1;
+  z-index: 999999;
+}
+body#checkout .loader img {
+  content: url('../images/loader.svg');
+  width: 256px;
+  height: 256px;
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 2000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: spin;
+  -moz-animation-duration: 2000ms;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: spin;
+  -ms-animation-duration: 2000ms;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+body#checkout #header .customer-service .title {
+  margin: 0;
+}
+body#checkout #checkout-cart tr td:first-child a {
+  display: inline-block;
+}
+body#checkout #checkout-cart tr td:last-child {
+  text-align: right;
+}
+body#checkout #checkout-shipping .option.btn,
+body#checkout #checkout-payment .option.btn {
+  padding: 12px;
+}
+body#checkout #checkout-shipping .option:not(.active),
+body#checkout #checkout-payment .option:not(.active) {
+  opacity: 0.75;
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+body#checkout #checkout-shipping .option:not(.active) .content,
+body#checkout #checkout-payment .option:not(.active) .content {
+  max-height: 0;
+  overflow-y: hidden;
+}
+body#checkout #checkout-shipping .option .content,
+body#checkout #checkout-payment .option .content {
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  max-height: 200px;
+  overflow-y: auto;
+}
+body#checkout #checkout-customer button[type=submit]:not([disabled]) {
+  font-weight: bold;
+  color: #ff0000;
+  animation: flasher 1s linear infinite;
+}
+@keyframes flasher {
+  0%,
+  100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0 10px #ff0000;
+  }
+}
+@-ms-keyframes spin {
+  from {
+    -ms-transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/*# sourceMappingURL=app.map */

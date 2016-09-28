@@ -77,8 +77,8 @@
     // Extract in content styles
       if (preg_match_all('#<style>(.*?)</style>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
-          document::$snippets['styles'][] = $match[1];
-          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+          document::$snippets['style'][] = $match[1];
+          $GLOBALS['content'] = preg_replace('#'. preg_quote($match[0], '#') .'#', '', $GLOBALS['content'], 1);
         }
       }
 
@@ -86,7 +86,7 @@
       if (preg_match_all('#<script[^>]+></script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
           document::$snippets['foot_tags'][] = $match[0];
-          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+          $GLOBALS['content'] = preg_replace('#'. preg_quote($match[0], '#') .'#', '', $GLOBALS['content'], 1);
         }
       }
 
@@ -94,7 +94,7 @@
       if (preg_match_all('#<script(?:[^>]*\stype="(?:application|text)/javascript")?[^>]*>(.*?)</script>#is', $GLOBALS['content'], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
           document::$snippets['javascript'][] = $match[1];
-          $GLOBALS['content'] = str_replace($match[0], '', $GLOBALS['content']);
+          $GLOBALS['content'] = preg_replace('#'. preg_quote($match[0], '#') .'#', '', $GLOBALS['content'], 1);
         }
       }
 
@@ -115,13 +115,12 @@
       }
 
     // Prepare styles
-      if (!empty(self::$snippets['styles'])) {
-        self::$snippets['head_tags'][] = '<style>' . PHP_EOL
-                                       . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
-                                       . implode(PHP_EOL . PHP_EOL, self::$snippets['styles']) . PHP_EOL
-                                       . '/*]]>*/-->' . PHP_EOL
-                                       . '</style>' . PHP_EOL;
-        self::$snippets['styles'] = null;
+      if (!empty(self::$snippets['style'])) {
+        self::$snippets['style'] = '<style>' . PHP_EOL
+                                 . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
+                                 . implode(PHP_EOL . PHP_EOL, self::$snippets['style']) . PHP_EOL
+                                 . '/*]]>*/-->' . PHP_EOL
+                                 . '</style>';
       }
 
     // Prepare javascript
@@ -130,7 +129,7 @@
                                         . '<!--/*--><![CDATA[/*><!--*/' . PHP_EOL
                                         . implode(PHP_EOL . PHP_EOL, self::$snippets['javascript']) . PHP_EOL
                                         . '/*]]>*/-->' . PHP_EOL
-                                        . '</script>' . PHP_EOL;
+                                        . '</script>';
       }
 
     // Get template settings

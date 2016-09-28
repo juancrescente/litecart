@@ -38,8 +38,8 @@
         trigger_error('Passed argument cannot be empty', E_USER_WARNING);
         return;
       }
-      
-      if (count(self::$_cache[$resource]) >= 100) {
+
+      if (isset(self::$_cache[$resource]) && count(self::$_cache[$resource]) >= 100) {
         self::$_cache[$resource] = array();
       }
 
@@ -65,7 +65,7 @@
 
           return self::$_cache[$resource][$checksum];
 
-        case ($resource_type == 'ctrl'):
+        case ($component == 'ctrl'):
         case (!$component && is_file(FS_DIR_HTTP_ROOT . WS_DIR_CONTROLLERS . 'ctrl_'.basename($resource).'.inc.php')):
 
           $class_name = 'ctrl_'.$resource;

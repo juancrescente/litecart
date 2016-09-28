@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/theme.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
-
+<!--snippet:style-->
 </head>
 <body>
 

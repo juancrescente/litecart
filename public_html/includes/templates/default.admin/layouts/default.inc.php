@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo WS_DIR_TEMPLATES; ?>default.catalog/css/bootstrap/theme.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
+<!--snippet:style-->
 </head>
 <body>
 
@@ -28,7 +29,10 @@
   </div>
 
   <div id="search" class="container-fluid">
-    <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('text_search_phrase_or_keyword', 'Search phrase or keyword')) .'"'); ?>
+    <div class="input-group">
+      <span class="input-group-addon"><?php echo functions::draw_fonticon('fa-search'); ?></span>
+      <?php echo functions::form_draw_search_field('query', false, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'&hellip;"'); ?>
+    </div>
     <div class="results"></div>
   </div>
 

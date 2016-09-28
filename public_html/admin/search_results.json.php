@@ -26,6 +26,7 @@
   );
   while ($product = database::fetch($products_query)) {
     $search_results['products']['results'][] = array(
+      'id' => $product['id'],
       'title' => $product['name'],
       'description' => reference::category($product['default_category_id'])->name,
       'url' => document::link(WS_DIR_ADMIN, array('app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $product['id'])),
@@ -49,6 +50,7 @@
   );
   while ($customer = database::fetch($customers_query)) {
     $search_results['customers']['results'][] = array(
+      'id' => $customer['id'],
       'title' => $customer['name'],
       'description' => $customer['email'],
       'url' => document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'edit_customer', 'customer_id' => $customer['id'])),
@@ -65,13 +67,16 @@
     where (
       id = '". database::input($_GET['query']) ."'
       or customer_email like '%". database::input($_GET['query']) ."%'
+      or shipping_tracking_id like '%". database::input($_GET['query']) ."%'
+      or payment_transaction_id like '%". database::input($_GET['query']) ."%'
     )
     order by date_created desc
     limit 5;"
   );
   while ($order = database::fetch($orders_query)) {
     $search_results['orders']['results'][] = array(
-      'title' => $order['id'],
+      'id' => $order['id'],
+      'title' => language::translate('title_order', 'Order') .' '. $order['id'],
       'description' => $order['customer_name'],
       'url' => document::link(WS_DIR_ADMIN, array('app' => 'orders', 'doc' => 'edit_order', 'order_id' => $order['id'])),
     );

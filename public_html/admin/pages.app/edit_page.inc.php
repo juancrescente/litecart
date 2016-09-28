@@ -68,28 +68,6 @@
 
   <div class="row">
     <div class="form-group col-md-6">
-      <label><?php echo language::translate('title_title', 'Title'); ?></label>
-      <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label><?php echo language::translate('title_content', 'Content'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="height: 400px;"'); ?>
-  </div>
-
-  <div class="form-group">
-    <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
-  </div>
-
-  <div class="form-group">
-    <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
-    <?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md-6">
       <label><?php echo language::translate('title_dock', 'Dock'); ?></label>
       <div class="checkbox">
         <label><?php echo functions::form_draw_checkbox('dock[]', 'menu', (isset($_POST['dock']) && in_array('menu', $_POST['dock'])) ? 'menu' : '0'); ?> <?php echo language::translate('text_dock_in_dock_menu', 'Dock in site menu'); ?></label>
@@ -106,6 +84,38 @@
       <label><?php echo language::translate('title_priority', 'Priority'); ?></label>
       <?php echo functions::form_draw_number_field('priority', true); ?>
     </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <?php foreach (language::$languages as $language) { ?>
+      <li<?php echo ($language['code'] == language::$selected['code']) ? ' class="active"' : ''; ?>><a data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a></li>
+    <?php } ?>
+  </ul>
+
+  <div class="tab-content">
+    <?php foreach (array_keys(language::$languages) as $language_code) { ?>
+    <div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+      <div class="form-group">
+        <label><?php echo language::translate('title_title', 'Title'); ?></label>
+        <?php echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_content', 'Content'); ?></label>
+        <?php echo functions::form_draw_regional_wysiwyg_field($language_code, 'content['. $language_code .']', true, 'style="height: 400px;"'); ?>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_head_title', 'Head Title'); ?></label>
+        <?php echo functions::form_draw_regional_input_field($language_code, 'head_title['. $language_code .']', true); ?>
+      </div>
+
+      <div class="form-group">
+        <label><?php echo language::translate('title_meta_description', 'Meta Description'); ?></label>
+        <?php echo functions::form_draw_regional_input_field($language_code, 'meta_description['. $language_code .']', true); ?>
+      </div>
+    </div>
+    <?php } ?>
   </div>
 
   <p class="btn-group">

@@ -76,13 +76,13 @@
       success: function(data) {
         if (data['alert']) alert(data['alert']);
         $('#cart .items').html('');
-        $.each(data['items'], function(i, item){
-          $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
-        });
-        $('#cart .items').append(
-          '<li class="divider"></li>'
-        + '<li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_total', 'Total'); ?>: <span class="formatted-value">'+ data['formatted_value'] +'</a></li>'
-        );
+        if (data['items']) {
+          $.each(data['items'], function(i, item){
+            $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
+          });
+          $('#cart .items').append('<li class="divider"></li>');
+        }
+        $('#cart .items').append('<li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_total', 'Total'); ?>: <span class="formatted-value">'+ data['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(data['quantity']);
         $('#cart .formatted_value').html(data['formatted_value']);
         if (data['quantity'] > 0) {

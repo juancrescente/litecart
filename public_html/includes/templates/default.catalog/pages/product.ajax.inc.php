@@ -31,7 +31,7 @@
     <div class="col-sm-8">
       <div class="row">
         <div class="col-md-6">
-          <h1 class="page-title"><?php echo $name; ?></h1>
+          <h1 class="page-title title"><?php echo $name; ?></h1>
 
           <?php if ($description) { ?>
           <p><?php echo $description; ?></p>
@@ -172,6 +172,11 @@
 </div>
 
 <script>
+  if ($('#product .title').parents('.modal')) {
+    $('#product .title').closest('.modal').find('.modal-title').text($('#product .title').text());
+    $('#product .title').remove();
+  }
+
   Number.prototype.toMoney = function() {
     var number = this;
     var decimals = <?php echo currency::$selected['decimals']; ?>;

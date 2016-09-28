@@ -159,14 +159,14 @@
       return self::calculate($value, $to, $from);
     }
 
-    public static function format($value, $auto_decimals=true, $raw=false, $currency_code=null, $currency_value=null) {
+    public static function format($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
 
       if ($currency_code === null) $currency_code = self::$selected['code'];
 
       if ($currency_value === null) $currency_value = isset(self::$currencies[$currency_code]) ? (float)self::$currencies[$currency_code]['value'] : 0;
 
       $fraction = ($value * $currency_value) - (int)($value * $currency_value);
-      
+
       if ($fraction == 0 && $auto_decimals && settings::get('auto_decimals')) {
         $decimals = 0;
       } else {

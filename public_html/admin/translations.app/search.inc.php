@@ -45,13 +45,20 @@
   }
 
   $languages_query = database::query(
-    "select code from ". DB_TABLE_LANGUAGES ."
+    "select * from ". DB_TABLE_LANGUAGES ."
     order by priority;"
   );
 
-  $language_codes = array();
+  $languages = array();
   while ($language = database::fetch($languages_query)) {
-    $language_codes[] = $language['code'];
+    $languages[$language['code']] = $language;
+  }
+
+  $selected_languages = $languages;
+  if (!empty($_GET['languages'])) {
+    foreach (array_keys($selected_languages) as $language_code) {
+      if (!in_array($language_code, $_GET['languages'])) unset($selected_languages[$language_code]);
+    }
   }
 ?>
 <style>
@@ -110,8 +117,8 @@ ul.filter li {
   </li>
 
   <li>
-    <?php echo language::translate('title_languages', 'Languages'); ?>:<br />
-    <?php foreach ($language_codes as $language_code) echo '<label>'. functions::form_draw_checkbox('languages[]', $language_code) .''. $language_code .'</label>'; ?>
+    <label><?php echo language::translate('title_languages', 'Languages'); ?></label>
+    <div><?php foreach (array_keys($languages) as $language_code) echo '<span style="padding: 0.25em;">'. functions::form_draw_checkbox('languages[]', $language_code) .' '. $language_code .'</span>'; ?></div>
   </li>
 
   <li><?php echo functions::form_draw_button('filter', language::translate('title_filter', 'Filter'), 'submit'); ?></li>
@@ -120,7 +127,9 @@ ul.filter li {
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo language::translate('title_search_translations', 'Search Translations'); ?></h1>
 
+<?php if (count($selected_languages) > 1) { ?>
 <p><button type="button" class="btn btn-default translator-tool" data-toggle="modal" data-target="#translator-tool"><?php echo language::translate('title_translator_tool', 'Translator Tool'); ?></button></p>
+<?php } ?>
 
 <?php echo functions::form_draw_form_begin('translation_form', 'post'); ?>
 
@@ -128,7 +137,7 @@ ul.filter li {
     <thead>
       <tr>
         <th><?php echo language::translate('title_code', 'Code');?></th>
-        <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. (!empty(language::$languages[$language_code]['name']) ? language::$languages[$language_code]['name'] : $language_code) .'</th>'; ?>
+        <?php foreach ($_GET['languages'] as $language_code) echo '<th>'. $languages[$language_code]['name'] .'</th>'; ?>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -183,6 +192,7 @@ ul.filter li {
 
 <?php echo functions::draw_pagination(ceil(database::num_rows($translations_query)/settings::get('data_table_rows_per_page'))); ?>
 
+<?php if (count($selected_languages) > 1) { ?>
 <!-- Modal -->
 <div class="modal fade" id="translator-tool" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width: 100%; max-width: 980px;">
@@ -196,11 +206,17 @@ ul.filter li {
           <div class="col-md-6">
             <div class="form-group">
               <label><?php echo language::translate('title_from_language', 'From Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('from_language_code', $_GET['languages'][0]); ?>
+<?php
+  $options = array(array('-- '. language::translate('title_select', 'Select') .' --'));
+  foreach ($selected_languages as $language) {
+    $options[] = array($language['name'], $language['code']);
+  }
+?>
+              <?php echo functions::form_draw_select_field('from_language_code', $options, $_GET['languages'][0]); ?>
             </div>
             <div class="form-group">
               <label><?php echo language::translate('title_to_language', 'To Language'); ?></label>
-              <?php echo functions::form_draw_languages_list('to_language_code'); ?>
+              <?php echo functions::form_draw_select_field('to_language_code', $options); ?>
             </div>
             <div class="form-group">
               <label><?php echo language::translate('text_copy_below_to_translation_service', 'Copy below to translation service'); ?></label>
@@ -229,9 +245,9 @@ ul.filter li {
 
 <script>
   var delimiter = "\r\n----------\r\n";
-  
+
   $('#translator-tool select[name="from_language_code"]').change(function(e){
-    
+
     var selected_language_code = $(this).val();
     var translations = [];
 
@@ -258,7 +274,7 @@ ul.filter li {
   });
 
   $('#translator-tool button[name="prefill_fields"]').click(function(){
-    
+
     var translated = $('#translator-tool textarea[name="result"]').val();
     translated = translated.split(delimiter.trim());
 
@@ -293,3 +309,4 @@ ul.filter li {
     $(form).submit();
   });
 </script>
+<?php } ?>

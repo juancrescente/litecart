@@ -4,43 +4,53 @@
       $title = language::translate('title_customer_modules', 'Customer Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'customer/*.inc.php');
       $modules = new mod_customer();
+      $type = 'customer';
+      $edit_doc = 'edit_customer';
       break;
 
     case 'jobs':
       $title = language::translate('title_job_modules', 'Job Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'jobs/*.inc.php');
       $modules = new mod_jobs();
+      $type = 'job';
+      $edit_doc = 'edit_job';
       break;
 
     case 'order':
       $title = language::translate('title_order_modules', 'Order Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order/*.inc.php');
       $modules = new mod_order();
+      $type = 'order';
+      $edit_doc = 'edit_order';
       break;
 
     case 'order_total':
       $title = language::translate('title_order_total_modules', 'Order Total Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'order_total/*.inc.php');
       $modules = new mod_order_total();
+      $type = 'order_total';
+      $edit_doc = 'edit_order_total';
       break;
 
     case 'payment':
       $title = language::translate('title_payment_modules', 'Payment Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'payment/*.inc.php');
       $modules = new mod_payment();
+      $type = 'payment';
+      $edit_doc = 'edit_payment';
       break;
 
     case 'shipping':
       $title = language::translate('title_shipping_modules', 'Shipping Modules');
       $files = glob(FS_DIR_HTTP_ROOT . WS_DIR_MODULES . 'shipping/*.inc.php');
       $modules = new mod_shipping();
+      $type = 'shipping';
+      $edit_doc = 'edit_shipping';
       break;
 
     default:
       trigger_error('Unknown module type', E_USER_ERROR);
   }
-
-  $type = $_GET['doc'];
 
   $installed_modules_query = database::query(
     "select * from ". DB_TABLE_MODULES ."
@@ -87,7 +97,7 @@
         <td><?php echo (!empty($module->website)) ? '<a href="'. document::link($module->website) .'" target="_blank">'. $module->author .'</a>' : $module->author; ?></td>
         <td><?php echo $module->id; ?></td>
         <td class="text-center"><?php echo $module->priority; ?></td>
-        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => 'edit_'.$type, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
+        <td class="text-right"><a href="<?php echo document::href_link('', array('doc' => $edit_doc, 'module_id' => $module->id), true); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
       </tr>
 <?php
       $total_rows++;

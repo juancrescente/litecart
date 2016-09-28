@@ -113,7 +113,9 @@
         if (task[2]) $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
       },
       complete: function(html) {
-        if (!updateQueue.length) $('body > .loader').remove();
+        if (!updateQueue.length) {
+            $('body > .loader').fadeOut('fast', function(){$(this).remove();});
+        }
         queueRunLock = false;
         runQueue();
       }
