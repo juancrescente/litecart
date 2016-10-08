@@ -4,7 +4,7 @@
     public $actions = array();
 
     public function __construct() {
-      $this->load('order_success');
+      $this->load('order');
     }
 
     public function actions() {
