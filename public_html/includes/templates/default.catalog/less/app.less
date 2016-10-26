@@ -3,6 +3,12 @@
 @sticker-sale-background: rgba(191, 121, 121, 0.9);
 @sticker-new-background: rgba(191, 176, 121, 0.9);
 
+// Preload
+body:after{
+  position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
+  content: url(../images/loader.svg);
+}
+
 // Main
 html, body {
   height: 100%;
@@ -133,7 +139,49 @@ body.modal-open #page {
   }
 }
 
+// Common Objects
 
+img.loader {
+  content: url('../images/loader.svg');
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 2000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: spin;
+  -moz-animation-duration: 2000ms;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: spin;
+  -ms-animation-duration: 2000ms;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes flasher {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: 0 0 10px rgba(255,0,0,1); }
+}
+
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 // Data Tables
 
@@ -154,7 +202,11 @@ table.data-table {
     position: relative;
     margin: 0;
     overflow: hidden;
-
+    
+    img {
+      width: 100%;
+    }
+    
     .sticker {
       position: absolute;
       top: 1.5em;
@@ -180,7 +232,7 @@ table.data-table {
       /*padding: @grid-gutter-width/2;*/
     }
   }
-  &:hover .thumbnail {
+  .thumbnail:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
   }
   a {
@@ -193,7 +245,7 @@ table.data-table {
     }
   }
   .price-wrapper {
-    margin-top: 0.5em;
+    //margin-top: 0.5em;
     font-size: 1.5em;
     font-weight: bold;
     .price {
@@ -216,7 +268,13 @@ table.data-table {
   }
   &.product-row {
     .short-description {
-      height: 3.5em;
+      max-height: 4.25em;
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .action {
+      margin-top: 1em;
     }
   }
   form[name=buy_now_form] {
@@ -237,6 +295,9 @@ table.data-table {
   .thumbnail {
     position: relative;
     margin: 0;
+    & > img {
+      width: 100%;
+    }
   }
   &:hover .thumbnail {
     box-shadow: 0 0 15px rgba(0,0,0,0.3);
@@ -335,7 +396,7 @@ table.data-table {
 // Checkout
 
 body#checkout {
-  .loader {
+  .loader-wrapper {
     position: fixed;
     top: 50%;
     left: 10%;
@@ -345,27 +406,6 @@ body#checkout {
     margin-top: -128px;
     opacity: 0.1;
     z-index: 999999;
-    img {
-      content:url('../images/loader.svg');
-      width: 256px;
-      height: 256px;
-      -webkit-animation-name: spin;
-      -webkit-animation-duration: 2000ms;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      -moz-animation-name: spin;
-      -moz-animation-duration: 2000ms;
-      -moz-animation-iteration-count: infinite;
-      -moz-animation-timing-function: linear;
-      -ms-animation-name: spin;
-      -ms-animation-duration: 2000ms;
-      -ms-animation-iteration-count: infinite;
-      -ms-animation-timing-function: linear;
-      animation-name: spin;
-      animation-duration: 2000ms;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
   }
   #header {
     .customer-service {
@@ -418,26 +458,4 @@ body#checkout {
       animation: flasher 1s linear infinite;
     }
   }
-}
-
-@keyframes flasher {
-  0%, 100% { box-shadow: none; }
-  50% { box-shadow: 0 0 10px rgba(255,0,0,1); }
-}
-
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  from { -webkit-transform: rotate(0deg); }
-  to { -webkit-transform: rotate(360deg); }
-}
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

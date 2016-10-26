@@ -6,21 +6,27 @@
   switch ($_GET['doc']) {
     case 'edit_customer':
       $type = 'customer';
+      $return_doc = 'customer';
       break;
     case 'edit_job':
       $type = 'job';
+      $return_doc = 'jobs';
       break;
     case 'edit_order':
       $type = 'order';
+      $return_doc = 'order';
       break;
     case 'edit_order_total':
       $type = 'order_total';
+      $return_doc = 'order_total';
       break;
     case 'edit_payment':
       $type = 'payment';
+      $return_doc = 'payment';
       break;
     case 'edit_shipping':
       $type = 'shipping';
+      $return_doc = 'shipping';
       break;
     default:
       trigger_error('Unknown module type', E_USER_ERROR);
@@ -65,7 +71,7 @@
 
     $ctrl_module->save();
 
-    header('Location: '. document::link('', array('doc' => $type), array('app')));
+    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
     exit;
   }
 
@@ -75,17 +81,16 @@
 
     $ctrl_module->delete();
 
-    header('Location: '. document::link('', array('doc' => $type), array('app')));
+    header('Location: '. document::link('', array('doc' => $return_doc), array('app')));
     exit;
   }
-
-
 
   breadcrumbs::add($is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'));
 
   if (empty($_POST) && !$is_installed) {
     notices::$data['notices'][] = language::translate('text_make_changes_necessary_to_install', 'Make any changes necessary to continue installation');
   }
+  
 ?>
 <h1 style="margin-top: 0;"><?php echo $app_icon; ?> <?php echo $is_installed ? language::translate('title_edit_module', 'Edit Module') : language::translate('title_install_module', 'Install Module'); ?></h1>
 
@@ -128,3 +133,10 @@
   </p>
 
 <?php echo functions::form_draw_form_end(); ?>
+
+<?php if (!empty($module['last_log'])) { ?>
+<div class="form-group">
+  <label><?php echo language::translate('title_last_log', 'Last Log'); ?></label>
+  <pre><?php echo $module['last_log']; ?></pre>
+</div>
+<?php } ?>

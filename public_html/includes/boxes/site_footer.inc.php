@@ -94,7 +94,7 @@
       );
     }
 
-    echo $box_site_footer->stitch('views/box_site_footer');
+    echo $box_site_footer->stitch('views/site_footer');
 
     cache::end_capture($box_site_footer_cache_id);
   }

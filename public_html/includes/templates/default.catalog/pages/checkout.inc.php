@@ -1,10 +1,10 @@
 <!--snippet:notices-->
 
+<?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
+
 <div id="checkout-cart-wrapper">
   {snippet:box_checkout_cart}
 </div>
-
-<?php echo functions::form_draw_form_begin('checkout_form', 'post'); ?>
 
   <div class="row">
     <div class="col-md-6">
@@ -63,12 +63,9 @@
 
     if (console) console.log('Processing #checkout-' + task[0] + '-wrapper...');
 
-    if (!$('body > .loader').length) {
-      var progress_bar = '<div class="loader" style="position: fixed; top: 50%; left: 10%; right: 10%; text-align: center; font-size: 256px; margin-top: -128px; opacity: 0.05; z-index: 999999;">'
-                       + '  <i class="fa fa-spinner fa-spin"></i>'
-                       + '</div>';
-      var progress_bar = '<div class="loader">'
-                       + '  <img alt="" />'
+    if (!$('body > .loader-wrapper').length) {
+      var progress_bar = '<div class="loader-wrapper">'
+                       + '  <img class="loader" style="width: 256px; height: 256px;" alt="" />'
                        + '</div>';
       $('body').append(progress_bar);
     }
@@ -114,7 +111,7 @@
       },
       complete: function(html) {
         if (!updateQueue.length) {
-            $('body > .loader').fadeOut('fast', function(){$(this).remove();});
+            $('body > .loader-wrapper').fadeOut('fast', function(){$(this).remove();});
         }
         queueRunLock = false;
         runQueue();
@@ -126,7 +123,17 @@
 
 // Cart
 
+  $('body').on('click', '#checkout-cart-wrapper button[name="remove_cart_item"]', function(e){
+    e.preventDefault();
+    var data = $(this).closest('td').find(':input').serialize() + '&remove_cart_item=' + $(this).val();
+    queueUpdateTask('cart', data);
+    queueUpdateTask('shipping');
+    queueUpdateTask('payment');
+    queueUpdateTask('summary');
+  });
+
   $('body').on('click', '#checkout-cart-wrapper button[name="update_cart_item"]', function(e){
+    e.preventDefault();
     var data = $(this).closest('td').find(':input').serialize() + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data);
     queueUpdateTask('shipping');

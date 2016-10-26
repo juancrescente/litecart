@@ -81,5 +81,5 @@
      cache::set($box_site_menu_items_cache_id, 'file', $box_site_menu->snippets['items']);
   }
 
-  echo $box_site_menu->stitch('views/box_site_menu');
+  echo $box_site_menu->stitch('views/site_menu');
 ?>

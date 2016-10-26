@@ -65,7 +65,7 @@
       $sticker = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
     }
 
-    list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
+    list($width, $height) = functions::image_scale_by_width(256, settings::get('product_image_ratio'));
 
     $listing_product->snippets = array(
       'listing_type' => $listing_type,
@@ -117,7 +117,7 @@
                                                        . '    if (!e.shiftKey && !e.ctrlKey) {' . PHP_EOL
                                                        . '      e.preventDefault();' . PHP_EOL
                                                        . '      $(this).ekkoLightbox({' . PHP_EOL
-                                                       . '        loadingMessage: \''. functions::draw_fonticon('fa-spinner fa-2x fa-spin') .'\',' . PHP_EOL
+                                                       . '        loadingMessage: \'<img class="loader" style="width: 24px; height: 24px; "/>\',' . PHP_EOL
                                                        . '        left_arrow: \''. functions::draw_fonticon('fa-chevron-left') .'\',' . PHP_EOL
                                                        . '        right_arrow: \''. functions::draw_fonticon('fa-chevron-right') .'\',' . PHP_EOL
                                                        . '        max_width: \'1024px\',' . PHP_EOL

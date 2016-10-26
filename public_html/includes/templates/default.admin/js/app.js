@@ -15,17 +15,18 @@ $(document).ready(function(){
 
 // AJAX Search
   var timer_ajax_search = null;
+  var xhr_search = null;
   $('#search input[name="query"]').on('propertychange input', function(){
     if ($(this).val() != '') {
-      if (!$('#search .loader').length) {
+      if (!$('#search .loader-wrapper').length) {
         $('#box-apps-menu').fadeOut('fast');
-        $('#search .results').html('<div class="loader text-center"><img width="48" height="48" alt="" /></div>');
+        $('#search .results').html('<div class="loader-wrapper text-center"><img class="loader" style="width: 48px; height: 48px;" alt="" /></div>');
       }
       var query = $(this).val();
 
       clearTimeout(timer_ajax_search);
       timer_ajax_search = setTimeout(function() {
-        $.ajax({
+        xhr_search = $.ajax({
           type: 'get',
           async: true,
           cache: false,
@@ -39,6 +40,7 @@ $(document).ready(function(){
           },
           success: function(json) {
             $('#search .results').html('');
+            if (!$('#search input[name="query"]').val()) return;
             $.each(json, function(i, group){
               if (group.results.length) {
                 $('#search .results').append(
@@ -48,6 +50,7 @@ $(document).ready(function(){
                 $.each(group.results, function(i, result){
                   $('#search .results ul[data-group="'+ group.name +'"]').append(
                     '<li class="list-group-item">' +
+                    '  <small class="id pull-right">#'+ result.id +'</small>' +
                     '  <div class="title"><a href="'+ result.url +'">'+ result.title +'</a></div>' +
                     '  <div class="description"><small>'+ result.description +'</small></div>' +
                     '</li>'
@@ -56,13 +59,14 @@ $(document).ready(function(){
               }
             });
             if ($('#search .results').html() == '') {
-              $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>')
+              $('#search .results').html('<p class="text-center no-results"><em>:(</em></p>');
             }
           },
         });
       }, 500);
 
     } else {
+      xhr_search.abort();
       $('.sidebar .results').html('');
       $('#box-apps-menu').fadeIn('fast');
     }

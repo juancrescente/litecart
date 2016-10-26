@@ -13,7 +13,7 @@ body {
   display: table-row;
 }
 
-.loader {
+.loader-wrapper {
   position: absolute !important;
   top: 50%;
   left: 50%;
@@ -68,8 +68,8 @@ body {
 }
 </style>
 
-<div class="loader">
-  <img width="72" height="72" alt="" />
+<div class="loader-wrapper">
+  <img class="loader" style="width: 72px; height: 72px;" alt="" />
 </div>
 
 <div id="box-login-wrapper">

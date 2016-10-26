@@ -39,15 +39,15 @@
 
   </header>
 
-  <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_menu.inc.php'); ?>
+  <?php include_once vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_menu.inc.php'); ?>
 
   <!--snippet:content-->
 
   <!--snippet:bottom-->
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_site_footer.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'site_footer.inc.php'); ?>
 
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/cookie_notice.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/site_cookie_notice.inc.php'); ?>
 </div>
 
 <!--snippet:foot_tags-->
@@ -86,9 +86,9 @@
         $('#cart .quantity').html(data['quantity']);
         $('#cart .formatted_value').html(data['formatted_value']);
         if (data['quantity'] > 0) {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.png');
+          $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.svg');
         } else {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart.png');
+          $('#cart img').attr('src', '{snippet:template_path}images/cart.svg');
         }
       },
       complete: function() {

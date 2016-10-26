@@ -6,7 +6,7 @@
 
     public function __construct($module_id) {
 
-      if (empty($module_id))  trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
+      if (empty($module_id)) trigger_error('First argument module_id cannot be empty', E_USER_ERROR);
 
       preg_match('#^([^_]+)#', $module_id, $matches);
 
@@ -33,7 +33,7 @@
           trigger_error('Unknown module type for module '. $module_id, E_USER_ERROR);
       }
 
-      $this->load($module_id);
+      $this->load($module_id, $type);
     }
 
     public function reset() {

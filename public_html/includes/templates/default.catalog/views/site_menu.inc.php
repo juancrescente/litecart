@@ -49,7 +49,7 @@
                 <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. htmlspecialchars(language::translate('title_password', 'Password')) .'"'); ?>
               </div>
 
-              <button name="login" type="submit" class="btn btn-default btn-block"><?php echo language::translate('title_sign_in', 'Sign In'); ?></button>
+              <button name="login" value="true" type="submit" class="btn btn-default btn-block"><?php echo language::translate('title_sign_in', 'Sign In'); ?></button>
             <?php echo functions::form_draw_form_end(); ?>
           </li>
           <li role="separator" class="divider"></li>
