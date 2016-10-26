@@ -1,0 +1,105 @@
+// Core variables and mixins
+@import "variables.less";
+@import "mixins.less";
+
+// Variables
+
+@sidebar-width: 250px;
+
+// Wrappers
+
+.twelve-eighty {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: floor(@grid-gutter-width / 2);
+  padding-right: floor(@grid-gutter-width / 2);
+  clear: both;
+}
+
+// Sidebar
+
+@media (min-width: @screen-sm) {
+  .sidebar {
+    float: left;
+    width: @sidebar-width;
+  }
+  .sidebar + .content {
+    margin-left: @sidebar-width + @grid-gutter-width;
+  }
+}
+
+// Effects
+
+.shadow {
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+// Typography
+
+.text-xs-left { text-align: left; }
+.text-xs-right { text-align: right; }
+.text-xs-center { text-align: center; }
+.text-xs-justify { text-align: justify; }
+@media (min-width: @screen-sm-min) {
+  .text-sm-left { text-align: left; }
+  .text-sm-right { text-align: right; }
+  .text-sm-center { text-align: center; }
+  .text-sm-justify { text-align: justify; }
+}
+@media (min-width: @screen-md-min) {
+  .text-md-left { text-align: left; }
+  .text-md-right { text-align: right; }
+  .text-md-center { text-align: center; }
+  .text-md-justify { text-align: justify; }
+}
+@media (min-width: @screen-lg-min) {
+  .text-lg-left { text-align: left; }
+  .text-lg-right { text-align: right; }
+  .text-lg-center { text-align: center; }
+  .text-lg-justify { text-align: justify; }
+}
+
+// Grid
+
+.no-padding {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.row.half-gutter {
+  margin-left: 0 - floor(@grid-gutter-width / 4);
+  margin-right: 0 - floor(@grid-gutter-width / 4);
+  [class*="col-"] {
+    padding: floor(@grid-gutter-width / 4);
+  }
+}
+
+// Horizontal mobile phones
+
+@screen-xxs-min: 384px;
+@container-xxs: (336px + @grid-gutter-width);
+
+.container {
+  @media (min-width: @screen-xxs-min) {
+  }
+}
+
+@media (min-width: @screen-xxs-min) {
+  .container {
+    width: @container-xxs;
+  }
+  .make-grid(xss);
+}
+
+.make-xxs-column(@columns; @gutter: @grid-gutter-width) {
+  position: relative;
+  min-height: 1px;
+  padding-left:  (@gutter / 2);
+  padding-right: (@gutter / 2);
+
+  @media (min-width: @screen-xxs-min) {
+    float: left;
+    width: percentage((@columns / @grid-columns));
+  }
+}
