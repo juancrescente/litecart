@@ -415,5 +415,4 @@
       </li>
     </ul>
   </p>
-
 <?php echo functions::form_draw_form_end(); ?>

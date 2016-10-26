@@ -108,10 +108,8 @@
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
-    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                        . '    $("body").on("change", "input[data-type=\'currency\']", function(){' . PHP_EOL
-                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                                        . '    });' . PHP_EOL
+    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="currency"]\', function(){' . PHP_EOL
+                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                         . '  });';
 
     return '<div class="input-group">' . PHP_EOL
@@ -135,6 +133,7 @@
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
+    $value = strtotime($value);
     if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
       $value = date('Y-m-d H:i', strtotime($value));
     } else {
@@ -426,8 +425,7 @@
                                                 . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'select2/i18n/'. language::$selected['code'] .'.js"></script>' : '');
 
     if (!empty($ajax_url)) {
-      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
-                                          . '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
+      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
                                           . '    theme: \'bootstrap\',' . PHP_EOL
                                           . '    minimumInputLength: 1,' . PHP_EOL
                                           . '    ajax: {' . PHP_EOL
@@ -464,12 +462,9 @@
                                           //.   '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
                                           //.   '  templateResult: formatRepo,' . PHP_EOL
                                           //.   '  templateSelection: formatRepoSelection' . PHP_EOL
-                                          . '  });' . PHP_EOL
                                           . '});';
     } else {
-      document::$snippets['javascript'][] = '$(document).ready(function(){' . PHP_EOL
-                                          . '  $(\'select[name="'.$name.'"]\').select2();' . PHP_EOL
-                                          . '});';
+      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2();';
     }
 
     $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
@@ -588,9 +583,7 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL;
 
-    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>'
-         . '<script>' . PHP_EOL
-         . '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
+    document::$snippets['javascript']['trumbowyg'] = '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
          . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
          . '    btnsDef: {' . PHP_EOL
          . '      image: {' . PHP_EOL
@@ -601,8 +594,9 @@
          . '    semantic: false,' . PHP_EOL
          . '    removeformatPasted: true,' . PHP_EOL
          . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
-         . '  });' . PHP_EOL
-         . '</script>' . PHP_EOL;
+                                                   . '  });';
+
+    return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
 
   ######################################################################
@@ -1059,9 +1053,14 @@
 
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
-    $products_query = functions::catalog_products_query(array('sort' => 'name'));
+    $products_query = database::query(
+      "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id)
+      order by pi.name"
+    );
+
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' â€“ '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
+      $options[] = array($product['name'] .' – '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);

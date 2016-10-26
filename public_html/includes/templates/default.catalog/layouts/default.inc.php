@@ -53,6 +53,8 @@
 <!--snippet:foot_tags-->
 <!--snippet:javascript-->
 <script src="{snippet:template_path}js/app.min.js"></script>
+<!--snippet:foot_tags-->
+<!--snippet:javascript-->
 <script>
   function updateCart(data=null) {
     if (data) $('*').css('cursor', 'wait');

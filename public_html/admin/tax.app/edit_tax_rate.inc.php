@@ -29,8 +29,9 @@
         'description',
         'rate',
         'type',
-        'tax_id_rule',
+        'address_type',
         'customer_type',
+        'tax_id_rule',
       );
 
       foreach ($fields as $field) {
@@ -95,6 +96,14 @@
         <?php echo functions::form_draw_decimal_field('rate', true, 4); ?>
         <span class="input-group-btn"><?php echo functions::form_draw_select_field('type', array(array('percent'), array('fixed')), true, false, 'style="width: 150px;"'); ?></span>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label><?php echo language::translate('title_address_type', 'Address Type'); ?></label>
+      <div class="checkbox"><label><?php echo functions::form_draw_radio_button('address_type', 'payment', true); ?> <?php echo language::translate('title_payment_address', 'Payment Address'); ?></label></div>
+      <div class="checkbox"><label><?php echo functions::form_draw_radio_button('address_type', 'shipping', true); ?> <?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></label></div>
     </div>
   </div>
 

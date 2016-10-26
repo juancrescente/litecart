@@ -176,6 +176,13 @@
 <?php echo functions::draw_pagination(ceil(database::num_rows($orders_query)/settings::get('data_table_rows_per_page'))); ?>
 
 <script>
+  $('input[name="query"]').keypress(function(e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      $(this).closest('form').submit();
+    }
+  });
+
   $('form[name="search_form"] select').change(function(){
     $(this).closest('form').submit();
   });
