@@ -140,6 +140,7 @@
                                                               . '    e.preventDefault();' . PHP_EOL
                                                               . '    var link = $(e.relatedTarget);' . PHP_EOL
                                                               . '    $(this).find(\'.modal-body\').load(link.attr(\'href\'));' . PHP_EOL
+                                                              . '  });' . PHP_EOL
                                                               . '  $(\'body\').on(\'hidden.bs.modal\', \'.modal\', function(){' . PHP_EOL
                                                               . '    $(this).removeData(\'bs.modal\').find(\'.modal-body\').html(\'\');' . PHP_EOL
                                                               . '  });' . PHP_EOL

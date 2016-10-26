@@ -173,11 +173,11 @@
 
     public static function cache_id($keyword, $dependencies=array()) {
 
+      $hash_string = $keyword;
+
       if (!is_array($dependencies)) {
         $dependencies = array($dependencies);
       }
-
-      $hash_string = $keyword;
 
       $dependencies[] = 'site';
 
@@ -259,7 +259,7 @@
       self::$_recorders[$cache_id] = array(
         'id' => $cache_id,
         'type' => $type,
-        'snippets' => document::$snippets, // Record snippets
+        //'snippets' => document::$snippets, // Record snippets
       );
 
       ob_start();
@@ -280,7 +280,8 @@
       $_data = ob_get_flush();
 
       if ($_data === false) trigger_error('No active recording while trying to end buffer recorder', E_USER_ERROR);
-
+      
+/*
     // Function to extract snippets recorded during session
       if (!function_exists('array_diff_assoc_recursive')) {
         function array_diff_assoc_recursive($array, $compare) {
@@ -302,10 +303,10 @@
           return $output;
         }
       }
-
+      
       $snippets = array_diff_assoc_recursive(document::$snippets, self::$_recorders[$cache_id]['snippets']);
-      //var_dump($snippets);exit;
-
+*/
+      
       self::set($cache_id, self::$_recorders[$cache_id]['type'], $_data);
 
       unset(self::$_recorders[$cache_id]);

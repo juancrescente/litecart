@@ -149,10 +149,10 @@
         <div class="form-group col-md-6">
           <label><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? language::translate('title_new_image', 'New Image') : language::translate('title_image', 'Image')); ?></label>
           <?php echo functions::form_draw_file_field('image', ''); ?>
-              <div><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150); ?>" alt="" /></div>
+          <div><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $category->data['image'], 150, 150); ?>" alt="" /></div>
           <?php if (!empty($category->data['image'])) { ?><br />
-              <div><?php echo $category->data['image']; ?></div>
-              <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
+          <div><?php echo $category->data['image']; ?></div>
+          <div><?php echo functions::form_draw_checkbox('delete_image', 'true', true); ?> <?php echo language::translate('title_delete', 'Delete'); ?></div>
           <?php } ?>
         </div>
       </div>

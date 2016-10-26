@@ -41,23 +41,23 @@
         return;
       }
 
-      $post_string = (!empty($post_data) && is_array($post_data)) ? http_build_query($post_data) : $post_data;
+      $request_body = (!empty($post_data) && is_array($post_data)) ? http_build_query($post_data) : $post_data;
 
-      $out = (!empty($post_string) ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : '') ." HTTP/1.1\r\n"
+      $request_head = (!empty($request_body) ? "POST " : "GET ") . $parts['path'] . ((isset($parts['query'])) ? "?" . $parts['query'] : '') ." HTTP/1.1\r\n"
            . "Host: ". $parts['host'] ."\r\n"
-           . (!empty($post_string) ? "Content-Type: application/x-www-form-urlencoded\r\n" : '')
+           . (!empty($request_body) ? "Content-Type: application/x-www-form-urlencoded\r\n" : '')
            . (!empty($headers) ? implode("\r\n", $headers) . "\r\n" : '')
-           . "Content-Length: ". strlen($post_string) ."\r\n"
+           . "Content-Length: ". strlen($request_body) ."\r\n"
            . "Connection: Close\r\n"
            . "\r\n";
 
-      $this->last_request['headers'] = $out;
-      $this->last_request['body'] = $post_string;
+      $this->last_request['headers'] = $request_head;
+      $this->last_request['body'] = $request_body;
 
-      fwrite($fp, $out . $post_string);
+      fwrite($fp, $request_head . $request_body);
 
       $found_body = false;
-      $response_header = '';
+      $response_head = '';
       $response_body = '';
       $start = microtime(true);
       $timeout = 20;
@@ -80,16 +80,16 @@
             $redirect_url = trim($url);
             return $this->call($redirect_url, $post_data, $headers);
           }
-          $response_header .= $row;
+          $response_head .= $row;
         }
       }
 
       fclose($fp);
 
-      $this->last_response['headers'] = $response_header;
+      $this->last_response['headers'] = $response_head;
 
     // Make sure HTTP 200 OK
-      preg_match('/HTTP\/1\.(1|0)\s(\d{3})/', $response_header, $matches);
+      preg_match('/HTTP\/1\.(1|0)\s(\d{3})/', $response_head, $matches);
       if (!isset($matches[2]) || $matches[2] != '200') return false;
 
       $this->last_response['status_code'] = $matches[2];
@@ -97,7 +97,7 @@
       if ($this->_config['asynchronous']) return true;
 
     // Decode chunked data
-      if (preg_match('/Transfer-Encoding: chunked/i', $response_header)) {
+      if (preg_match('/Transfer-Encoding: chunked/i', $response_head)) {
         $response_body = $this->http_decode_chunked_data($response_body);
       }
 

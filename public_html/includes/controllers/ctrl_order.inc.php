@@ -9,13 +9,6 @@
         $this->load((int)$order_id);
       } else {
         $this->reset();
-
-        case 'new':
-          $this->reset();
-          break;
-
-        default:
-          trigger_error('Unknown action for first argument', E_USER_ERROR);
       }
     }
 

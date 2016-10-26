@@ -108,8 +108,10 @@
 
     if (empty($currency_code)) $currency_code = settings::get('store_currency_code');
 
-    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="currency"]\', function(){' . PHP_EOL
-                                                                        . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
+    document::$snippets['javascript']['input-currency-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
+                                                                        . '    $("body").on("change", "input[data-type=\'currency\']", function(){' . PHP_EOL
+                                                                        . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
+                                                                        . '    });' . PHP_EOL
                                                                         . '  });';
 
     return '<div class="input-group">' . PHP_EOL
@@ -594,7 +596,7 @@
          . '    semantic: false,' . PHP_EOL
          . '    removeformatPasted: true,' . PHP_EOL
          . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
-                                                   . '  });';
+         . '  });';
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
@@ -1060,7 +1062,7 @@
     );
 
     while ($product = database::fetch($products_query)) {
-      $options[] = array($product['name'] .' – '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
+      $options[] = array($product['name'] .' &mdash; '. $product['sku'] . ' ['. (float)$product['quantity'] .']', $product['id']);
     }
 
     return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
