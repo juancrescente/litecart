@@ -1,3 +1,11 @@
+body:after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+  content: url(../images/loader.svg);
+}
 html,
 body {
   height: 100%;
@@ -35,6 +43,7 @@ body.modal-open #page {
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.25);
   padding: 0.5em;
   background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 }
 #header .region a {
   color: inherit;
@@ -106,6 +115,66 @@ body.modal-open #page {
 #footer a {
   color: inherit;
 }
+img.loader {
+  content: url('../images/loader.svg');
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 2000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: spin;
+  -moz-animation-duration: 2000ms;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: spin;
+  -ms-animation-duration: 2000ms;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes flasher {
+  0%,
+  100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0 10px #ff0000;
+  }
+}
+@-ms-keyframes spin {
+  from {
+    -ms-transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 table.data-table th.main {
   width: 100%;
 }
@@ -117,6 +186,14 @@ table.data-table th {
   position: relative;
   margin: 0;
   overflow: hidden;
+  -webkit-transition: all 50ms linear;
+  transition: all 50ms linear;
+}
+.products .product .thumbnail:hover {
+  margin: -5px;
+}
+.products .product .thumbnail img {
+  width: 100%;
 }
 .products .product .thumbnail .sticker {
   position: absolute;
@@ -139,10 +216,7 @@ table.data-table th {
 .products .product .thumbnail .sticker.sale {
   background: rgba(191, 121, 121, 0.9);
 }
-.products .product .thumbnail img {
-  /*padding: @grid-gutter-width/2;*/
-}
-.products .product:hover .thumbnail {
+.products .product .thumbnail:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .products .product a {
@@ -153,7 +227,6 @@ table.data-table th {
   opacity: 0.75;
 }
 .products .product .price-wrapper {
-  margin-top: 0.5em;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -175,7 +248,13 @@ table.data-table th {
   height: 4em;
 }
 .products .product.product-row .short-description {
-  height: 3.5em;
+  max-height: 4.25em;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.products .product.product-row .action {
+  margin-top: 1em;
 }
 .products .product form[name=buy_now_form] {
   visibility: hidden;
@@ -192,6 +271,9 @@ table.data-table th {
 .categories .category .thumbnail {
   position: relative;
   margin: 0;
+}
+.categories .category .thumbnail > img {
+  width: 100%;
 }
 .categories .category:hover .thumbnail {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
@@ -274,7 +356,7 @@ table.data-table th {
 #product .attributes table {
   break-inside: avoid;
 }
-body#checkout .loader {
+body#checkout .loader-wrapper {
   position: fixed;
   top: 50%;
   left: 10%;
@@ -283,27 +365,6 @@ body#checkout .loader {
   margin-top: -128px;
   opacity: 0.1;
   z-index: 999999;
-}
-body#checkout .loader img {
-  content: url('../images/loader.svg');
-  width: 256px;
-  height: 256px;
-  -webkit-animation-name: spin;
-  -webkit-animation-duration: 2000ms;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-  -moz-animation-name: spin;
-  -moz-animation-duration: 2000ms;
-  -moz-animation-iteration-count: infinite;
-  -moz-animation-timing-function: linear;
-  -ms-animation-name: spin;
-  -ms-animation-duration: 2000ms;
-  -ms-animation-iteration-count: infinite;
-  -ms-animation-timing-function: linear;
-  animation-name: spin;
-  animation-duration: 2000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 body#checkout #header .customer-service .title {
   margin: 0;
@@ -345,45 +406,10 @@ body#checkout #checkout-customer button[type=submit]:not([disabled]) {
   color: #ff0000;
   animation: flasher 1s linear infinite;
 }
-@keyframes flasher {
-  0%,
-  100% {
-    box-shadow: none;
-  }
-  50% {
-    box-shadow: 0 0 10px #ff0000;
-  }
+.btn {
+  /*transition: all .15s ease;*/
 }
-@-ms-keyframes spin {
-  from {
-    -ms-transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-  }
-}
-@-moz-keyframes spin {
-  from {
-    -moz-transform: rotate(0deg);
-  }
-  to {
-    -moz-transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-control {
+  border: none;
 }
 /*# sourceMappingURL=app.map */

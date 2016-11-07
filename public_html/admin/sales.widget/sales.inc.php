@@ -6,104 +6,91 @@
   $widget_sales_cache_id = cache::cache_id('widget_sales');
   if (cache::capture($widget_sales_cache_id, 'file', 300)) {
 
-  $order_statuses = array();
-  $orders_status_query = database::query(
-    "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
-  );
-  while ($order_status = database::fetch($orders_status_query)) {
-    $order_statuses[] = (int)$order_status['id'];
-  }
-?>
-<div class="row">
-  <div class="widget col-md-5">
-<?php
-  $monthly_sales = array();
-  $monthly_tax = array();
-  for ($timestamp = strtotime('-11 months'); date('Y-m', $timestamp) <= date('Y-m'); $timestamp = strtotime('+1 month', $timestamp)) {
-
-    $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales from ". DB_TABLE_ORDERS ."
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp))) ."'
-      and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('t', $timestamp), date('Y', $timestamp))) ."';"
+  // Order Statuses flagged as Sale
+    $order_statuses = array();
+    $orders_status_query = database::query(
+      "select id from ". DB_TABLE_ORDER_STATUSES ." where is_sale;"
     );
-    $orders = database::fetch($orders_query);
-
-    $monthly_sales[date('Y-m', $timestamp)] = (int)$orders['total_sales'];
+    while ($order_status = database::fetch($orders_status_query)) {
+      $order_statuses[] = (int)$order_status['id'];
     }
-?>
-    <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
-    <script>
-      var data = {
-        labels: <?php echo json_encode(array_keys($monthly_sales)); ?>,
-        series: <?php echo json_encode(array(array_values($monthly_sales))); ?>
-      };
-
-      var options = {
-        seriesBarDistance: 10,
-        showArea: true,
-        lineSmooth: true
-      };
-
-      var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-          seriesBarDistance: 5,
-          axisX: {
-            labelInterpolationFnc: function (value) {
-              return value[0];
-            }
-          }
-        }]
-      ];
-
-      new Chartist.Line('#chart-sales-monthly', data, options, responsiveOptions);
-    </script>
-  </div>
-
-  <div class="widget col-md-5">
-<?php
+    
+  // Monthly Sales
+    $orders_query = database::query(
+      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '%Y-%m') as month from ". DB_TABLE_ORDERS ."
+      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      and date_created >= '". date('Y-m-1 00:00:00', strtotime('-10 months')) ."'
+      group by month
+      order by month asc;"
+    );
+    
+    $monthly_sales = array();
+    while($orders = database::fetch($orders_query)) {
+      $monthly_sales[$orders['month']]['total_sales'] = (int)$orders['total_sales'];
+    }
+    
+    $orders_query = database::query(
+      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, date_format(date_created, '". date('Y') ."-%m') as month from ". DB_TABLE_ORDERS ."
+      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      and date_created >= '". date('Y-m-1 00:00:00', strtotime('-23 months')) ."' and date_created <= '". date('Y-m-t 23:59:59', strtotime('-11 months')) ."'
+      group by month
+      order by month asc;"
+    );
+    
+    
+    
+    while($orders = database::fetch($orders_query)) {
+      $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
+    }
+    
+    for ($timestamp=time(); strtotime('-11 months') <= $timestamp; $timestamp = strtotime('-1 month', $timestamp)) {
+      $monthly_sales[date('Y-m', $timestamp)]['label'] = language::strftime('%b', $timestamp);
+      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales'] = rand(500,1500);
+      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'] = rand(500,1500);
+    }
+     
+    $monthly_sales[date('Y-m')]['label'] = '★'.$monthly_sales[date('Y-m')]['label'];
+    
+    ksort($monthly_sales);
+    
+  // Daily Sales
     $daily_sales = array();
-  for ($timestamp = strtotime('-29 days'); date('Y-m-d', $timestamp) <= date('Y-m-d'); $timestamp = strtotime('+1 day', $timestamp)) {
 
     $orders_query = database::query(
-      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax from ". DB_TABLE_ORDERS ."
+      "select sum(payment_due - tax_total) as total_sales, tax_total as total_tax, weekday(date_created) as weekday from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
-      and date_created >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp))) ."'
-      and date_created <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp))) ."';"
+      and (date_created >= '". date('Y-m-d 00:00:00', strtotime('-6 days')) ."' and date_created <= '". date('Y-m-d 23:59:59') ."')
+      group by weekday
+      order by weekday asc;"
     );
-    $orders = database::fetch($orders_query);
-
-    $daily_sales[date('d', $timestamp)] = (int)$orders['total_sales'];
+    
+    while($orders = database::fetch($orders_query)) {
+      $daily_sales[$orders['weekday']]['total_sales'] = (int)$orders['total_sales'];
     }
-?>
-    <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
-    <script>
-      var data = {
-        labels: <?php echo json_encode(array_keys($daily_sales)); ?>,
-        series: <?php echo json_encode(array(array_values($daily_sales))); ?>
-      };
-
-      var options = {
-        seriesBarDistance: 10
-      };
-
-      var responsiveOptions = [
-        ['screen and (max-width: 640px)', {
-          seriesBarDistance: 5,
-          axisX: {
-            labelInterpolationFnc: function (value) {
-              return value[0];
-            }
-          }
-        }]
-      ];
-
-      new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
-    </script>
-  </div>
-
-  <div class="widget col-md-2">
-<?php
+    
+    $orders_query = database::query(
+      "select avg(payment_due - tax_total) as average_sales, tax_total as total_tax, weekday(date_created) as weekday from ". DB_TABLE_ORDERS ."
+      where order_status_id in ('". implode("', '", $order_statuses) ."')
+      and (date_created >= '". date('Y-m-d H:i:s', strtotime('-28 days')) ."' and date_created <= '". date('Y-m-d 00:00:00', strtotime('-7 days')) ."')
+      group by weekday
+      order by weekday asc;"
+    );
+    
+    while($orders = database::fetch($orders_query)) {
+      $daily_sales[$orders['weekday']]['average_sales'] = (int)$orders['average_sales'];
+    }
+    
+    for ($timestamp=time(); strtotime('-6 days') <= $timestamp; $timestamp = strtotime('-1 day', $timestamp)) {
+      $daily_sales[date('N', $timestamp)]['label'] = language::strftime('%a', $timestamp);
+      if (!isset($daily_sales[date('N', $timestamp)]['total_sales'])) $daily_sales[date('N', $timestamp)]['total_sales'] = 0;
+      if (!isset($daily_sales[date('N', $timestamp)]['average_sales'])) $daily_sales[date('N', $timestamp)]['average_sales'] = 0;
+    }
+    
+    $daily_sales[date('N')]['label'] = '★'.$daily_sales[date('N')]['label'];
+    
+    ksort($daily_sales);
+    
+  // Weekday Spread
     $orders_query = database::query(
       "select avg(payment_due - tax_total) as total_sales, tax_total as total_tax, weekday(date_created) as weekday from ". DB_TABLE_ORDERS ."
       where order_status_id in ('". implode("', '", $order_statuses) ."')
@@ -131,42 +118,107 @@
     while($order = database::fetch($orders_query)) {
       $weekday_sales[$weekday[$order['weekday']]] = (float)$order['total_sales'];
     }
-
 ?>
-    <div id="chart-sales-weekday" style="height: 200px; margin: 25px 0;" title="<?php echo language::translate('title_sales_by_weekday', 'Sales by Weekday'); ?>"></div>
-    <script>
-      var data = {
-        labels: <?php echo json_encode(array_keys($weekday_sales)); ?>,
-        series: <?php echo json_encode(array_values($weekday_sales)); ?>
-      };
+<style>
+#chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
+  stroke: rgba(0,0,0,0.2);
+}
+</style>
 
-      var options = {
-        donut: true,
-        donutWidth: 25,
-        labelInterpolationFnc: function(value) {
-          return value[0]
-        }
-      };
+<div class="row">
+  <div class="widget col-md-7">
+    <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
+  </div>
 
-      var responsiveOptions = [
-        ['screen and (min-width: 640px)', {
-          chartPadding: 30,
-          labelOffset: 100,
-          labelDirection: 'explode',
-          labelInterpolationFnc: function(value) {
-            return value;
-          }
-        }],
-        ['screen and (min-width: 1024px)', {
-          labelOffset: 80,
-          chartPadding: 20
-        }]
-      ];
+  <div class="widget col-md-3">
+    <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
+  </div>
 
-      new Chartist.Pie('#chart-sales-weekday', data, options);
-    </script>
+  <div class="widget col-md-2">
+    <div id="chart-sales-weekday" style="height: 200px; margin: 15px 0;" title="<?php echo language::translate('title_sales_by_weekday', 'Sales by Weekday'); ?>"></div>
   </div>
 </div>
+
+<script>
+// Monthly Sales
+  var data = {
+    labels: <?php echo json_encode(array_column($monthly_sales, 'label')); ?>,
+    series: <?php echo json_encode(array(array_column($monthly_sales, 'total_sales_last_year'), array_column($monthly_sales, 'total_sales'))); ?>
+  };
+
+  var options = {
+    seriesBarDistance: 10,
+    showArea: true,
+    lineSmooth: true
+  };
+
+  var responsiveOptions = [
+    ['screen and (max-width: 640px)', {
+      seriesBarDistance: 5,
+      axisX: {
+        labelInterpolationFnc: function (value) {
+          return value[0];
+        }
+      }
+    }]
+  ];
+
+  new Chartist.Bar('#chart-sales-monthly', data, options, responsiveOptions);
+      
+// Daily Sales
+  var data = {
+    labels: <?php echo json_encode(array_column($daily_sales, 'label')); ?>,
+    series: <?php echo json_encode(array(array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales'))); ?>
+  };
+
+  var options = {
+    seriesBarDistance: 10
+  };
+
+  var responsiveOptions = [
+    ['screen and (max-width: 640px)', {
+      seriesBarDistance: 5,
+      axisX: {
+        labelInterpolationFnc: function (value) {
+          return value[0];
+        }
+      }
+    }]
+  ];
+
+  new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
+
+// Weekday Spread
+  var data = {
+    labels: <?php echo json_encode(array_keys($weekday_sales)); ?>,
+    series: <?php echo json_encode(array_values($weekday_sales)); ?>
+  };
+
+  var options = {
+    donut: true,
+    donutWidth: 25,
+    labelInterpolationFnc: function(value) {
+      return value[0]
+    }
+  };
+
+  var responsiveOptions = [
+    ['screen and (min-width: 640px)', {
+      chartPadding: 30,
+      labelOffset: 100,
+      labelDirection: 'explode',
+      labelInterpolationFnc: function(value) {
+        return value;
+      }
+    }],
+    ['screen and (min-width: 1024px)', {
+      labelOffset: 80,
+      chartPadding: 20
+    }]
+  ];
+
+  new Chartist.Pie('#chart-sales-weekday', data, options);
+</script>
 <?php
     cache::end_capture($widget_sales_cache_id);
   }

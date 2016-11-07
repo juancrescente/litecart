@@ -14,7 +14,7 @@
       <tr>
       <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
       <th><?php echo language::translate('title_id', 'ID'); ?></th>
-      <th><?php echo language::translate('title_icon', 'Icon'); ?></th>
+      <th></th>
       <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
       <th><?php echo language::translate('title_sales', 'Sales'); ?></th>
       <th><?php echo language::translate('title_archived', 'Archived'); ?></th>

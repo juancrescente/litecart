@@ -95,17 +95,26 @@ img.loader {
 #search .loader-wrapper {
   position: relative;
 }
-#search .results .loader {
+#search .results {
+  margin-top: 2em;
+}
+#search .results .result {
+  display: block;
+}
+#search .results .result .loader-wrapper {
   padding: 2em;
   opacity: 0.5;
 }
-#search .results .id {
+#search .results .result .id {
   opacity: 0.5;
 }
-#search .results .description {
+#search .results .result .title {
+  font-weight: bold;
+}
+#search .results .result .description {
   opacity: 0.75;
 }
-#search .results .no-results {
+#search .results .result .no-results {
   font-size: 2em;
 }
 #logotype img {

@@ -3,7 +3,7 @@
   <div class="btn-group">
     <a class="btn btn-default" href="<?php echo document::href_ilink('checkout'); ?>" data-placement="bottom" title="<?php echo language::translate('title_go_to_checkout', 'Go to checkout'); ?>">
       <img src="<?php echo WS_DIR_TEMPLATE; ?>images/cart<?php echo cart::$items ? '_filled' : ''; ?>.svg" alt="" class="" />
-      <span class="quantity"><?php echo cart::$total['items']; ?></span> <?php echo language::translate('title_items_s', 'Item(s)'); ?>
+      <span class="quantity"><?php echo cart::$total['items']; ?></span> <span class="hidden-xs"><?php echo language::translate('title_items_s', 'Item(s)'); ?></span>
     </a>
 
     <div class="btn btn-default dropdown-toggle" data-toggle="dropdown">

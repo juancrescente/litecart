@@ -6,15 +6,19 @@
   <?php echo functions::form_draw_form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 480px;"'); ?>
 
     <div class="row half-gutter">
+      <?php if (count(language::$languages) > 1) { ?>
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_language', 'Language'); ?></label>
         <?php echo functions::form_draw_languages_list('language_code', language::$selected['code']); ?>
       </div>
-
+      <?php } ?>
+      
+      <?php if (count(currency::$currencies) > 1) { ?>
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_currency', 'Currency'); ?></label>
         <?php echo functions::form_draw_currencies_list('currency_code', currency::$selected['code']); ?>
       </div>
+      <?php } ?>
 
       <div class="form-group col-sm-6">
         <label><?php echo language::translate('title_country', 'Country'); ?></label>

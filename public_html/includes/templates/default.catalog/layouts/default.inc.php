@@ -18,7 +18,7 @@
     <div class="row">
       <div class="hidden-xs col-sm-4 logotype">
         <a href="<?php echo document::ilink(''); ?>">
-          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 4em;" />
+          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-width: 250px; max-height: 60px;" />
         </a>
       </div>
 
@@ -51,74 +51,7 @@
 </div>
 
 <!--snippet:foot_tags-->
-<!--snippet:javascript-->
 <script src="{snippet:template_path}js/app.min.js"></script>
-<!--snippet:foot_tags-->
 <!--snippet:javascript-->
-<script>
-  function updateCart(data=null) {
-    if (data) $('*').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::ilink('ajax/cart.json'); ?>',
-      type: data ? 'post' : 'get',
-      data: data,
-      cache: false,
-      async: true,
-      dataType: 'json',
-      beforeSend: function(jqXHR) {
-        jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        if (data) {
-          console.log('Failed adding item to cart');
-          console.debug(jqXHR);
-        }
-        if (data) alert("Error while adding item to cart");
-      },
-      success: function(data) {
-        if (data['alert']) alert(data['alert']);
-        $('#cart .items').html('');
-        if (data['items']) {
-          $.each(data['items'], function(i, item){
-            $('#cart .items').append('<li><a href="'+ item.link +'">'+ item.quantity +' x '+ item.name +' - '+ item.formatted_price +'</a></li>');
-          });
-          $('#cart .items').append('<li class="divider"></li>');
-        }
-        $('#cart .items').append('<li><a href="<?php echo document::href_ilink('checkout'); ?>"><?php echo functions::draw_fonticon('fa-shopping-cart'); ?> <?php echo language::translate('title_total', 'Total'); ?>: <span class="formatted-value">'+ data['formatted_value'] +'</a></li>');
-        $('#cart .quantity').html(data['quantity']);
-        $('#cart .formatted_value').html(data['formatted_value']);
-        if (data['quantity'] > 0) {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.svg');
-        } else {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart.svg');
-        }
-      },
-      complete: function() {
-        if (data) $('*').css('cursor', '');
-      }
-    });
-  }
-
-  var timerCart = setInterval("updateCart()", 60000); // Keeps session alive
-
-// Add to cart animation
-  $('body').on('submit', 'form[name="buy_now_form"]', function(e) {
-    e.preventDefault();
-    var form = $(this);
-    $(this).find('button[name="add_cart_product"]').animate_from_to('#cart', {
-      pixels_per_second: 2000,
-      initial_css: {
-        'border': '1px rgba(0,136,204,1) solid',
-        'background-color': 'rgba(0,136,204,0.5)',
-        'z-index': '999999',
-        'border-radius': '3px',
-        'padding': '5px',
-      },
-      callback: function() {
-        updateCart($(form).serialize() + '&add_cart_product=true');
-      }
-    });
-  });
-</script>
 </body>
 </html>

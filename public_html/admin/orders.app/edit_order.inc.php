@@ -151,7 +151,12 @@
   }
 
   functions::draw_lightbox();
-  functions::form_draw_selectize_field('dummy');
+  
+  $account_name = '('. language::translate('title_guest', 'Guest') .')';
+  if (!empty($_POST['customer']['id'])) {
+    $customer = reference::customer((int)$_POST['customer']['id']);
+    $account_name = $customer->company ? $customer->company : $customer->firstname .' '. $customer->lastname;
+  }
 ?>
 <style>
 #comments {
@@ -254,6 +259,10 @@
   outline: none;
   box-shadow: none;
 }
+
+#modal-customer-picker tbody tr {
+  cursor: pointer;
+}
 </style>
 
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($order->data['id']) ? language::translate('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : language::translate('title_create_new_order', 'Create New Order'); ?></h1>
@@ -294,8 +303,11 @@
                 <div class="form-group col-md-12">
                   <label><?php echo language::translate('title_account', 'Account'); ?></label>
                   <div class="input-group">
-                    <?php echo functions::form_draw_customers_list('customer[id]', true); ?>
-                    <span class="input-group-btn"><?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?></span>
+                    <?php echo functions::form_draw_hidden_field('customer[id]', true); ?>
+                    <div class="selected-account form-control disabled"><?php echo language::translate('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer[id]']; ?></span> <span class="name"><?php echo $account_name; ?></span> [<a href="#" data-toggle="modal" data-target="#modal-customer-picker" type="button"><?php echo language::translate('title_change', 'Change'); ?></a>]</div>
+                    <span class="input-group-btn">
+                      <?php echo functions::form_draw_button('get_address', language::translate('title_get_address', 'Get Address'), 'button'); ?>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -708,6 +720,39 @@
 
 <?php echo functions::form_draw_form_end(); ?>
 
+<div id="modal-customer-picker" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?php echo language::translate('title_customer', 'Customer'); ?></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <?php echo functions::form_draw_text_field('query', true, 'placeholder="'. htmlspecialchars(language::translate('title_search', 'Search')) .'"'); ?>
+        </div>
+        
+        <div class="form-group results table-responsive">
+          <table class="table table-striped table-hover data-table">
+            <thead>
+              <tr>
+                <th><?php echo language::translate('title_id', 'ID'); ?></th>
+                <th><?php echo language::translate('title_name', 'Name'); ?></th>
+                <th class="main"><?php echo language::translate('title_email', 'Email'); ?></th>
+                <th><?php echo language::translate('title_date_registered', 'Date Registered'); ?></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          
+          <p class="text-center"><button class="set-guest btn btn-default" type="button"><?php echo language::translate('text_set_as_guest', 'Set As Guest'); ?></button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // Order
 
@@ -801,7 +846,7 @@
       }
     });
   });
-
+  
 // Comments
 
   var new_comment_index = 0;
@@ -962,5 +1007,71 @@
 
   $('body').on('click keyup', 'input[name^="items"][name$="[price]"], input[name^="items"][name$="[tax]"], input[name^="items"][name$="[quantity]"], input[name^="order_total"][name$="[value]"], input[name^="order_total"][name$="[tax]"], input[name^="order_total"][name$="[calculate]"], #order-items a.remove, #order-total a.remove', function() {
     calculate_total();
+  });
+  
+// Customer Picker
+
+  var xhr_customer_picker = null;
+  $('#modal-customer-picker input[name="query"]').bind('propertyChange input', function(){
+    if ($(this).val() == '') {
+      $('#modal-customer-picker .results tbody').html('');
+      xhr_customer_picker = null;
+      return;
+    }
+    xhr_customer_picker = $.ajax({
+      type: 'get',
+      async: true,
+      cache: false,
+      url: '<?php echo document::link('', array('app' => 'customers', 'doc' => 'customers.json')); ?>&query=' + $(this).val(),
+      dataType: 'json',
+      beforeSend: function(jqXHR) {
+        jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus + ': ' + errorThrown);
+      },
+      success: function(json) {
+        $('#modal-customer-picker .results tbody').html('');
+        $.each(json, function(i, row){
+          if (row) {
+            $('#modal-customer-picker .results tbody').append(
+              '<tr>' +
+              '  <td class="id">' + row.id + '</td>' +
+              '  <td class="name">' + row.name + '</td>' +
+              '  <td class="email">' + row.email + '</td>' +
+              '  <td class="date-created">' + row.date_created + '</td>' +
+              '  <td></td>' +
+              '</tr>'
+            );
+          }
+        });
+        if ($('#modal-customer-picker .results tbody').html() == '') {
+          $('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::general_escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+        }
+      },
+    });
+  });
+  
+  $('#modal-customer-picker tbody').on('click', 'td', function() {
+    var row = $(this).closest('tr');
+    
+    var id = $(row).find('.id').text();
+    var name = $(row).find('.name').text();
+    if (!id) {
+      id = 0;
+      name = '(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)';
+    }
+    
+    $('input[name="customer[id]"]').val(id);
+    $('.selected-account .id').text(id);
+    $('.selected-account .name').text(name);
+    $(row).closest('.modal').modal('hide');
+  });
+  
+  $('#modal-customer-picker .set-guest').click(function(){
+    $('input[name="customer[id]"]').val('0');
+    $('.selected-account .id').text('0');
+    $('.selected-account .name').text('(<?php echo functions::general_escape_js(language::translate('title_guest', 'Guest')); ?>)');
+    $(this).closest('.modal').modal('hide');
   });
 </script>

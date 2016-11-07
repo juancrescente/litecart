@@ -14,7 +14,7 @@
     'results' => array(),
   );
   $products_query = database::query(
-    "select * from ". DB_TABLE_PRODUCTS ." p
+    "select p.id, p.default_category_id, pi.name from ". DB_TABLE_PRODUCTS ." p
     left join ".  DB_TABLE_PRODUCTS_INFO ." pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
     where (
       pi.id = '". database::input($_GET['query']) ."'
@@ -39,7 +39,7 @@
     'results' => array(),
   );
   $customers_query = database::query(
-    "select *, concat(firstname, ' ', lastname) as name from ". DB_TABLE_CUSTOMERS ."
+    "select id, concat(firstname, ' ', lastname) as name, email from ". DB_TABLE_CUSTOMERS ."
     where (
       id = '". database::input($_GET['query']) ."'
       or concat(firstname, ' ', lastname) like '%". database::input($_GET['query']) ."%'
@@ -63,7 +63,7 @@
     'results' => array(),
   );
   $orders_query = database::query(
-    "select *, concat(customer_firstname, ' ', customer_lastname) as customer_name from ". DB_TABLE_ORDERS ."
+    "select id, concat(customer_firstname, ' ', customer_lastname) as customer_name from ". DB_TABLE_ORDERS ."
     where (
       id = '". database::input($_GET['query']) ."'
       or customer_email like '%". database::input($_GET['query']) ."%'

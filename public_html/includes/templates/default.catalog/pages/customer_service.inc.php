@@ -1,7 +1,9 @@
 <!--snippet:notices-->
 
 <div class="sidebar">
-  {snippet:box_customer_service_links}
+  <div id="sidebar">
+    {snippet:box_customer_service_links}
+  </div>
 </div>
 
 <div class="content">

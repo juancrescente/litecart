@@ -65,6 +65,13 @@
         );
         $this->data['id'] = database::insert_id();
       }
+      
+      $this->data['keywords'] = explode(',', $this->data['keywords']);
+      foreach(array_keys($this->data['keywords']) as $key) {
+        $this->data['keywords'][$key] = trim($this->data['keywords'][$key]);
+      }
+      $this->data['keywords'] = array_unique($this->data['keywords']);
+      $this->data['keywords'] = implode(',', $this->data['keywords']);
 
       database::query(
         "update ". DB_TABLE_MANUFACTURERS ." set
@@ -72,7 +79,7 @@
         code = '". database::input($this->data['code']) ."',
         name = '". database::input($this->data['name']) ."',
         image = '". database::input($this->data['image']) ."',
-        keywords = '". database::input($this->data['keywords']) ."'
+        keywords = '". database::input($this->data['keywords']) ."',
         where id = '". (int)$this->data['id'] ."'
         limit 1;"
       );

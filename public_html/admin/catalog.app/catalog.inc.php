@@ -59,7 +59,8 @@
         foreach (array_keys($product->data['name']) as $language_code) {
           $product->data['name'][$language_code] .= ' (copy)';
         }
-
+        
+        $product->data['status'] = 0;
         $product->save();
       }
 

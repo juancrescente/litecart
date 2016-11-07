@@ -1,26 +1,9 @@
 <hr style="clear: both;" />
 
 <footer id="footer">
-  <div class="panel panel-default panel-body">
+  <div class="col-md-12">
     <div class="row">
-<!--
-      <div class="categories col-xs-6 hidden-xs col-md-2">
-        <h4><?php echo language::translate('title_categories', 'Categories'); ?></h4>
-        <ul class="list-unstyled">
-          <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
-        </ul>
-      </div>
-
-      <?php if ($manufacturers) { ?>
-      <div class="manufacturers col-xs-6 hidden-xs col-md-2">
-        <h4><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h4>
-        <ul class="list-unstyled">
-        <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
-        </ul>
-      </div>
-      <?php } ?>
--->
-      <div class="account col-xs-6 col-sm-3 col-md-2">
+      <div class="account col-xs-6 col-sm-4 col-md-2">
         <h4><?php echo language::translate('title_account', 'Account'); ?></h4>
         <ul class="list-unstyled">
           <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
@@ -36,15 +19,14 @@
         </ul>
       </div>
 
-      <div class="information col-xs-6 col-sm-3 col-md-2">
+      <div class="information col-xs-6 col-sm-4 col-md-2">
         <h4><?php echo language::translate('title_information', 'Information'); ?></h4>
         <ul class="list-unstyled">
           <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
         </ul>
       </div>
 
-      <div class="row col-xs-12 col-sm-6 col-md-8">
-        <div class="contact hidden-xs col-sm-6 col-md-8">
+        <div class="contact hidden-xs hidden-sm col-md-5">
           <h4><?php echo language::translate('title_about_us', 'About Us'); ?></h4>
           <p>Lorem ipsum dolor sit amet, populo propriae mei no. Vix tale nonumy id, quis eruditi alienum has at, eu quo utinam possit. Omnis blandit rationibus mel ut, at sit homero ornatus, his choro affert accusam an. Eum ad dolore ignota tractatos. Probo nobis vix at, nam no audiam imperdiet, ius facete singulis accommodare id. No quis meliore disputationi has, in exerci ocurreret mel, mea purto congue id.</p>
 
@@ -56,13 +38,12 @@
           </div>
         </div>
 
-        <div class="contact col-xs-12 col-sm-6 col-md-4">
+        <div class="contact col-xs-6 col-sm-4 col-md-3">
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
           <p><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a><br />
             <?php echo functions::draw_fonticon('fa-envelope'); ?> <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('<a href=\"mailto:". $account ."' + '@' + '". $domain ."\">". $account ."' + '@' + '". $domain ."</a>');</script>"; ?></p>
         </div>
-      </div>
     </div>
   </div>
 

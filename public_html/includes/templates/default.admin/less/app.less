@@ -79,18 +79,25 @@ img.loader {
   }
   margin: 1em 0;
   .results {
-   .loader {
-      padding: 2em;
-      opacity: 0.5;
-    }
-    .id {
-      opacity: 0.5;
-    }
-    .description {
-      opacity: 0.75;
-    }
-    .no-results {
-      font-size: 2em;
+    margin-top: 2em;
+    .result {
+      display: block;
+     .loader-wrapper {
+        padding: 2em;
+        opacity: 0.5;
+      }
+      .id {
+        opacity: 0.5;
+      }
+      .title {
+        font-weight: bold;
+      }
+      .description {
+        opacity: 0.75;
+      }
+      .no-results {
+        font-size: 2em;
+      }
     }
   }
 }

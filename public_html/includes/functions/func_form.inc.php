@@ -347,162 +347,6 @@
     return $html;
   }
 
-/*
-  function form_draw_bselect_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
-    if (!is_array($options)) $options = array($options);
-
-    document::$snippets['head_tags']['bselect'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'bselect/css/bselect.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['bselect'] = '<script src="'. WS_DIR_EXT .'bselect/js/bselect-select.min.js"></script>';
-    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').bselect({' . PHP_EOL
-                                                                  . '  ' . PHP_EOL
-                                                                  . '});';
-
-    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($options as $option) {
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-    }
-
-    $html .= '</select>';
-
-    return $html;
-  }
-*/
-
-/*
-  function form_draw_bootstrap_select_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
-    if (!is_array($options)) $options = array($options);
-
-    document::$snippets['head_tags']['bootstrap-select'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'bootstrap-select/css/bootstrap-select.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['bootstrap-select'] = '<script src="'. WS_DIR_EXT .'bootstrap-select/js/bootstrap-select.min.js"></script>';
-    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectpicker({' . PHP_EOL
-                                                                  . '  ' . PHP_EOL
-                                                                  . '});';
-
-    $html = '<select '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($options as $option) {
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-    }
-
-    $html .= '</select>';
-
-    return $html;
-  }
-*/
-
-  function form_draw_selectize_field($name, $options=array(), $input=true, $multiple=false, $parameters='') {
-    if (!is_array($options)) $options = array($options);
-
-    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
-    document::$snippets['javascript']['select[name="'.$name.'"]'] = '$(\'select[name="'.$name.'"]\').selectize(); $(\'select[name="'.$name.'"]\').change(function(){' . PHP_EOL
-                                                                  . '  $(\'select[name="'.$name.'"]\').selectize()[0].selectize.destroy();' . PHP_EOL
-                                                                  . '});';
-
-    return form_draw_select_field($name, $options, $input, $multiple, $parameters);
-  }
-
-  function form_draw_select2_field($name, $options=array(), $input=true, $multiple=false, $parameters='', $ajax_url=null) {
-    //trigger_error('form_draw_select2_field() is deprecated. Use instead form_draw_selectize_field', E_USER_DEPRECATED);
-    //return form_draw_selectize_field($name, $options, $input, $multiple, $parameters);
-
-    if (!is_array($options)) $options = array($options);
-
-    if (!preg_match('/data-size="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . 'data-size="medium"';
-
-    document::$snippets['head_tags']['select2'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/css/select2.min.css" />' . PHP_EOL
-                                                . '<link rel="stylesheet" href="'. WS_DIR_EXT .'select2/css/select2-bootstrap.min.css" />';
-    document::$snippets['foot_tags']['select2'] = '<script src="'. WS_DIR_EXT .'select2/js/select2.min.js"></script>' . PHP_EOL
-                                                . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'select2/i18n/'. language::$selected['code'] .'.js"></script>' : '');
-
-    if (!empty($ajax_url)) {
-      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2({' . PHP_EOL
-                                          . '    theme: \'bootstrap\',' . PHP_EOL
-                                          . '    minimumInputLength: 1,' . PHP_EOL
-                                          . '    ajax: {' . PHP_EOL
-                                          . '      url: \''. $ajax_url .'\',' . PHP_EOL
-                                          . '      cache: false,' . PHP_EOL
-                                          . '      dataType: \'json\',' . PHP_EOL
-                                          . '      delay: 250,' . PHP_EOL
-                                          . '      data: function(params) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          query: params.term,' . PHP_EOL
-                                          . '          page: params.page || 1' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          /*
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: data' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      }' . PHP_EOL
-                                          */
-                                          . '      processResults: function(data, page) {' . PHP_EOL
-                                          . '        var results = [];' . PHP_EOL
-                                          . '        $.each(data, function(i, v) {' . PHP_EOL
-                                          . '          var o = {};' . PHP_EOL
-                                          . '          o.id = v.id;' . PHP_EOL
-                                          . '          o.text = v.name;' . PHP_EOL
-                                          . '          results.push(o);' . PHP_EOL
-                                          . '        });' . PHP_EOL
-                                          . '        return {' . PHP_EOL
-                                          . '          results: results' . PHP_EOL
-                                          . '        };' . PHP_EOL
-                                          . '      },' . PHP_EOL
-                                          . '    }' . PHP_EOL
-                                          //.   '  escapeMarkup: function (markup) { return markup; },' . PHP_EOL
-                                          //.   '  templateResult: formatRepo,' . PHP_EOL
-                                          //.   '  templateSelection: formatRepoSelection' . PHP_EOL
-                                          . '});';
-    } else {
-      document::$snippets['javascript'][] = '  $(\'select[name="'.$name.'"]\').select2();';
-    }
-
-    $html = '<select name="'. htmlspecialchars($name) .'"'. (($multiple) ? ' multiple="multiple"' : false) .''. (($parameters) ? ' ' . $parameters : false) .'>' . PHP_EOL;
-
-    foreach ($options as $option) {
-      if ($input === true) {
-        $option_input = form_reinsert_value($name, isset($option[1]) ? $option[1] : $option[0]);
-      } else {
-        $option_input = $input;
-      }
-
-      $html .= '  <option value="'. htmlspecialchars(isset($option[1]) ? $option[1] : $option[0]) .'"'. (isset($option[1]) ? (($option[1] == $option_input) ? ' selected="selected"' : false) : (($option[0] == $option_input) ? ' selected="selected"' : false)) . ((isset($option[2])) ? ' ' . $option[2] : false) . '>'. $option[0] .'</option>' . PHP_EOL;
-    }
-
-    $html .= '</select>';
-
-    return $html;
-  }
-
-  function form_draw_tags_field($name, $options=array(), $input=true, $delimiter=',', $parameters='') {
-
-    if (!is_array($options)) $options = array($options);
-
-    document::$snippets['head_tags']['selectize'] = '<link rel="stylesheet" href="'. WS_DIR_EXT .'selectize.js/selectize.bootstrap3.min.css" />' . PHP_EOL;
-    document::$snippets['foot_tags']['selectize'] = '<script src="'. WS_DIR_EXT .'selectize.js/selectize.min.js"></script>';
-    document::$snippets['javascript']['input[name="'.$name.'"]'] = '$(\'input[name="'.$name.'"]\').selectize({' . PHP_EOL
-                                                                  . '  delimiter: "'. $delimiter .'",' . PHP_EOL
-                                                                  . '  persist: false,' . PHP_EOL
-                                                                  . '  create: function(input){return {value: input,text: input}}' . PHP_EOL
-                                                                  . '});';
-
-    $html = '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="text" name="'. htmlspecialchars($name) .'"'. (($parameters) ? ' ' . $parameters : false) .' />' . PHP_EOL;
-
-    return $html;
-  }
-
   function form_draw_textarea($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
@@ -585,7 +429,7 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL;
 
-    document::$snippets['javascript']['trumbowyg'] = '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
+    document::$snippets['javascript'][] = '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
          . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
          . '    btnsDef: {' . PHP_EOL
          . '      image: {' . PHP_EOL
@@ -799,23 +643,20 @@
 
     if ($input === true) $input = form_reinsert_value($name);
 
-    //if (!preg_match('/data-ajax--url="[^"]*"/', $parameters)) $parameters .= (!empty($parameters) ? ' ' : null) . ' data-ajax--url="'. document::href_link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')) .'"'; // Does not work in jQuery <= 1.11.3
-
     $options = array();
 
     if (!empty($input)) {
       $customers_query = database::query(
         "select id, company, firstname, lastname from ". DB_TABLE_CUSTOMERS ."
-        where id = ". (int)$input ."
-        limit 1;"
+        order by email;"
       );
 
       while($customer = database::fetch($customers_query)) {
-        $options[] = array($customer['company'] ? $customer['company'] :  $customer['firstname'] .' '. $customer['lastname'], $customer['id']);
+        $options[] = array($customer['email'], $customer['id']);
       }
     }
 
-    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters, document::link(WS_DIR_ADMIN, array('app' => 'customers', 'doc' => 'customers.json')));
+    return functions::form_draw_select_field($name, $options, $input, $multiple, $parameters);
   }
 
   function form_draw_delivery_statuses_list($name, $input=true, $multiple=false, $parameters='') {

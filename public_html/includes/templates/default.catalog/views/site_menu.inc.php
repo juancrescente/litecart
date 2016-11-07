@@ -41,6 +41,7 @@
           <?php if (empty(customer::$data['id'])) { ?>
           <li>
             <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login', array('redirect_url' => document::ilink())), false, 'style="width: 320px; margin: 0.5em;"'); ?>
+            <?php echo functions::form_draw_hidden_field('redirect_url', document::link()); ?>
               <div class="form-group">
                 <?php echo functions::form_draw_email_field('email', true, 'placeholder="'. htmlspecialchars(language::translate('title_email_address', 'E-mail Address')) .'"'); ?>
               </div>

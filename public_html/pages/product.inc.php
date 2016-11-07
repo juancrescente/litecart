@@ -99,7 +99,7 @@
     'offers' => array(
       '@type' => 'Offer',
       'priceCurrency' => currency::$selected['code'],
-      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign, $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
+      'price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : tax::get_price($product->price, $product->tax_class_id),
       'priceValidUntil' => (isset($product->campaign['price']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       //'itemCondition' => 'http://schema.org/UsedCondition',
       //'availability' => 'http://schema.org/InStock',
@@ -131,7 +131,7 @@
     'extra_images' => array(),
     'manufacturer' => array(),
     'regular_price' => tax::get_price($product->price, $product->tax_class_id),
-    'campaign' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign, $product->tax_class_id) : null,
+    'campaign' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
@@ -182,9 +182,21 @@
     $_page->snippets['manufacturer'] = array(
       'id' => $product->manufacturer['id'],
       'name' => $product->manufacturer['name'],
-      'image' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60),
+      'image' => array(),
       'link' => document::ilink('manufacturer', array('manufacturer_id' => $product->manufacturer['id'])),
     );
+    
+    if (!empty($product->manufacturer['image'])) {
+      $box_product->snippets['manufacturer']['image'] = array(
+        'original' => WS_DIR_IMAGES . $product->manufacturer['image'],
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 400, 120),
+        'viewport' => array(
+          'width' => $width,
+          'height' => $height,
+        ),
+      );
+    }
   }
 
 // Tax

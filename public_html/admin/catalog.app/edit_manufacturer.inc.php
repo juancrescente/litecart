@@ -126,7 +126,7 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-            <?php echo functions::form_draw_tags_field('keywords', true); ?>
+            <?php echo functions::form_draw_text_field('keywords', true); ?>
           </div>
         </div>
       </div>

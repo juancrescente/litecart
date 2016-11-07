@@ -98,8 +98,25 @@
     exit();
   }
 
-  list($image_width, $image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+  list($product_image_width, $product_image_height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 ?>
+<style>
+#table-images .thumbnail {
+  margin: 0;
+}
+#table-images img {
+  max-width: 50px;
+  max-height: 50px;
+}
+#table-images .actions {
+  text-align: right;
+  padding: 0.25em 0;
+}
+#table-images td {
+  border: none;
+}
+</style>
+
 <h1 style="margin-top: 0px;"><?php echo $app_icon; ?> <?php echo !empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'); ?></h1>
 
 <?php echo functions::form_draw_form_begin('product_form', 'post', false, true); ?>
@@ -320,42 +337,46 @@
 <?php
   if (isset($product->data['id']) && !empty($product->data['images'])) {
     $image = current($product->data['images']);
-    echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $image_width, $image_height, settings::get('product_image_clipping')) .'" alt="" />';
+    echo '<img class="main-image" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
     reset($product->data['images']);
   } else {
-    echo '<img src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $image_width, $image_height, settings::get('product_image_clipping')) .'" alt="" />';
+    echo '<img class="main-image" src="'. functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')) .'" alt="" />';
   }
 ?>
               </div>
             </div>
 
-            <?php if (!empty($product->data['images'])) { ?>
-            <div class="form-group">
               <table id="table-images" class="table">
                 <tbody>
                   <?php if (!empty($_POST['images'])) foreach (array_keys($_POST['images']) as $key) { ?>
                   <tr>
-                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $image_width, $image_height, settings::get('product_image_clipping')); ?>" alt="" style="width: 80px; height: 80px; float: left; margin: 5px;" /></td>
-                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?></td>
-                    <td><a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg fa-fw', 'style="color: #3399cc;"'); ?></a> <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg fa-fw', 'style="color: #3399cc;"'); ?></a> <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg fa-fw', 'style="color: #cc3333;"'); ?></a></td>
+                    <td><div class="thumbnail"><?php echo functions::form_draw_hidden_field('images['.$key.'][id]', true); ?><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->data['images'][$key]['filename'], $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
+                    <td><?php echo functions::form_draw_hidden_field('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?><?php echo functions::form_draw_text_field('images['.$key.'][new_filename]', isset($_POST['images'][$key]['new_filename']) ? $_POST['images'][$key]['new_filename'] : $_POST['images'][$key]['filename']); ?>
+                      <div class="actions">
+                        <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+                        <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
+                    </td>
                   </tr>
                   <?php } ?>
                 </tbody>
+                <tbody>
+                  <tr>
+                    <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>
+                    <td><?php echo functions::form_draw_file_field('new_images[]'); ?>
+                      <div class="actions">
+                        <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"><a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+                  </tr>
+                </tfoot>
               </table>
-            </div>
-            <?php } ?>
-
-            <div class="form-group">
-              <table id="table-upload-images">
-                <tr>
-                  <td><?php echo functions::form_draw_file_field('new_images[]'); ?></td>
-                  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
-                </tr>
-                <tr>
-                  <td colspan="2"><a href="#" class="add" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
-                </tr>
-              </table>
-            </div>
           </div>
         </div>
 
@@ -396,7 +417,7 @@ foreach (array_keys(language::$languages) as $language_code) {
         <div class="row">
           <div class="form-group col-md-12">
             <label><?php echo language::translate('title_keywords', 'Keywords'); ?></label>
-            <?php echo functions::form_draw_tags_field('keywords', true); ?>
+            <?php echo functions::form_draw_text_field('keywords', true); ?>
           </div>
         </div>
 
@@ -585,8 +606,8 @@ foreach (currency::$currencies as $currency) {
               <?php if (!empty($_POST['options_stock'])) foreach (array_keys($_POST['options_stock']) as $key) { ?>
               <tr>
                 <td><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][id]', true); ?><?php echo functions::form_draw_hidden_field('options_stock['.$key.'][combination]', true); ?>
-                <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][name]['. language::$selected['name'] .']', true); ?>
-                <?php echo $_POST['options_stock'][$key]['name'][language::$selected['code']]; ?></td>
+                  <?php echo functions::form_draw_hidden_field('options_stock['.$key.'][name]['. language::$selected['name'] .']', true); ?>
+                  <?php echo $_POST['options_stock'][$key]['name'][language::$selected['code']]; ?></td>
                 <td><?php echo functions::form_draw_text_field('options_stock['.$key.'][sku]', true); ?></td>
                 <td><?php echo functions::form_draw_number_field('options_stock['.$key.'][quantity]', true); ?></td>
                 <td>
@@ -606,41 +627,60 @@ foreach (currency::$currencies as $currency) {
                 <td class="text-right">
                   <a class="move-up" href="#" title="<?php echo language::translate('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-up fa-lg', 'style="color: #3399cc;"'); ?></a>
                   <a class="move-down" href="#" title="<?php echo language::translate('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-circle-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+                  <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>
+                </td>
               </tr>
             <?php } ?>
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6"><a href="#" data-toggle="modal" data-target="#tab-stock-options .modal"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
+        
+        <div class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><?php echo language::translate('title_new_stock_option', 'New Stock Option'); ?></h3>
+              </div>
+              
+              <div class="modal-body">
+                <table id="table-new-stock-option" class="table table-striped" id="table-option-combo" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th style="width: 50%;"><?php echo language::translate('title_group', 'Group'); ?></th>
+                      <th style="width: 50%;"><?php echo language::translate('title_value', 'Value'); ?></th>
+                      <th>&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><?php echo functions::form_draw_option_groups_list('new_option[new_1][group_id]', ''); ?></td>
+                      <td><?php echo functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"'); ?></td>
+                      <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?></a></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
 
-        <p>&nbsp;</p>
-
-        <fieldset style="display: inline-block;">
-          <legend><h3><?php echo language::translate('title_new_combination', 'New Combination'); ?></h3></legend>
-          <table id="table-option-combo">
-            <tbody>
-              <tr>
-                <th style="vertical-align: text-top;"><?php echo language::translate('title_group', 'Group'); ?></th>
-                <th style="vertical-align: text-top;"><?php echo language::translate('title_value', 'Value'); ?></th>
-                <th style="vertical-align: text-top;">&nbsp;</th>
-              </tr>
-              <tr>
-                <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_option_groups_list('new_option[new_1][group_id]', '')); ?></td>
-                <td><?php echo str_replace(PHP_EOL, '', functions::form_draw_select_field('new_option[new_1][value_id]', array(array('','')), '', false, false, 'disabled="disabled"')); ?></td>
-              </tr>
-              <tr>
-                <td><a class="add" href="#" title="<?php echo language::translate('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus-circle', 'style="color: #66cc66;"'); ?> <?php echo language::translate('title_another_option', 'Another Option'); ?></a></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td><?php echo functions::form_draw_button('add_combination', language::translate('title_add_combination', 'Add Combination'), 'button'); ?></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" name="add_stock_option"><?php echo language::translate('title_add_stock_option', 'Add Stock Option'); ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo language::translate('title_close', 'Close'); ?></button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -673,6 +713,7 @@ foreach (currency::$currencies as $currency) {
   });
 
 // Quantity Unit
+
   $('select[name="quantity_unit_id"]').change(function(){
     var value = parseFloat($('input[name="quantity"]').val());
     $('input[name="quantity"]').val(value.toFixed($(this).data('decimals')));
@@ -689,32 +730,56 @@ foreach (currency::$currencies as $currency) {
     } else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
       $(row).insertAfter($(row).next());
     }
+    refreshMainImage();
   });
 
   $('#table-images').on('click', '.remove', function(e) {
     e.preventDefault();
     $(this).closest('tr').remove();
+    refreshMainImage();
   });
 
-  $('#table-upload-images .add').click(function(e) {
+  $('#table-images .add').click(function(e) {    
     e.preventDefault();
-    $(this).closest('table').find('tr:last-child').before(
-      '<tr>' +
-      '  <td><?php echo str_replace(array("\r", "\n"), '', functions::form_draw_file_field('new_images[]')); ?></td>' +
-      '  <td><a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a></td>' +
-      '</tr>'
-    );
+    var output = '<tr>'
+               + '  <td><div class="thumbnail"><img src="<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>" alt="" /></div></td>'
+               + '  <td><?php echo functions::form_draw_file_field('new_images[]'); ?></td>'
+               + '    <div class="actions">'
+               + '      <a class="remove" href="#" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"'); ?></a>'
+               + '    </div>'
+               + '  </td>'
+               + '</tr>';
+    $('#table-images tbody:last').append(output);
+    refreshMainImage();
+  });
+  
+  $('#table-images').on('change', 'input[type="file"]', function(e) {
+    var img = $(this).closest('tr').find('img');
+    
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(this.files[0]);
+    oFReader.onload = function(e){
+      $(img).attr('src', e.target.result);
+    };
+    oFReader.onloadend = function(e) {
+      refreshMainImage();
+    };
   });
 
-  $('#table-upload-images').on('click', '.remove', function(e) {
-    e.preventDefault();
-    $(this).closest('tr').remove();
-  });
+  function refreshMainImage() {
+    console.log($('#table-images img:first').attr('src'));
+    if ($('#table-images img:first').length) {
+      $('#tab-general .main-image').attr('src', $('#table-images img:first').attr('src'));
+      return;
+    }
+    
+    $('#tab-general .main-image').attr('src', '<?php echo functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . 'no_image.png', $product_image_width, $product_image_height, settings::get('product_image_clipping')); ?>');
+  }
 
 // Attributes
 
   $('a.attributes-hint').click(function(){
-    alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\nTitle2\nProperty3: Value3...');
+    alert('Syntax:\n\nTitle1\nProperty1: Value1\nProperty2: Value2\n\nTitle2\nProperty3: Value3...');
   });
 
 // Prices
@@ -1029,7 +1094,7 @@ foreach (currency::$currencies as $currency) {
   });
 
   var option_index = 2;
-  $('#table-option-combo .add').click(function(e) {
+  $('#table-new-stock-option .add').click(function(e) {
     e.preventDefault();
     var output = '<tr>'
                + '  <td><?php echo functions::general_escape_js(functions::form_draw_option_groups_list('new_option[option_index][group_id]', '')); ?></td>'
@@ -1037,16 +1102,16 @@ foreach (currency::$currencies as $currency) {
                + '  <td><a class="remove" href="#" title="<?php echo functions::general_escape_js(language::translate('title_remove', 'Remove'), true); ?>"><?php echo functions::general_escape_js(functions::draw_fonticon('fa-times-circle fa-lg', 'style="color: #cc3333;"')); ?></a></td>'
                + '</tr>';
     output = output.replace(/option_index/g, 'new_' + option_index);
-    $(this).closest('tr').before(output);
+    $(this).closest('table').find('tbody').append(output);
     option_index++;
   });
 
-  $('#table-option-combo').on('click', '.remove', function(e) {
+  $('#table-new-stock-option').on('click', '.remove', function(e) {
     e.preventDefault();
     $(this).closest('tr').remove();
   });
 
-  $('#table-option-combo').on('change', 'select[name^="new_option"][name$="[group_id]"]', function(){
+  $('#table-new-stock-option').on('change', 'select[name^="new_option"][name$="[group_id]"]', function(){
     var valueField = this.name.replace(/group/, 'value');
     $('body').css('cursor', 'wait');
     $.ajax({
@@ -1059,14 +1124,14 @@ foreach (currency::$currencies as $currency) {
         alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
       },
       success: function(data) {
-        $('select[name=\''+ valueField +'\']').html('');
-        if ($('select[name=\''+ valueField +'\']').attr('disabled')) $('select[name=\''+ valueField +'\']').removeAttr('disabled');
+        $('select[name="'+ valueField +'"]').html('');
+        if ($('select[name="'+ valueField +'"]').attr('disabled')) $('select[name="'+ valueField +'"]').removeAttr('disabled');
         if (data) {
           $.each(data, function(i, zone) {
-            $('select[name=\''+ valueField +'\']').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+            $('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name=\''+ valueField +'\']').attr('disabled', 'disabled');
+          $('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
         }
       },
       complete: function() {
@@ -1076,7 +1141,7 @@ foreach (currency::$currencies as $currency) {
   });
 
   var new_option_stock_i = 1;
-  $('#table-option-combo').on('click', 'button[name="add_combination"]', function(e) {
+  $('#tab-stock-options .modal').on('click', 'button[name="add_stock_option"]', function(e) {
     e.preventDefault();
     var new_option_code = "";
     var new_option_name = "";
@@ -1130,5 +1195,6 @@ foreach (currency::$currencies as $currency) {
     output = output.replace(/new_option_name/g, new_option_name);
     $('#table-stock-options tbody').append(output);
     new_option_stock_i++;
+    $(this).closest('.modal').modal('hide');
   });
 </script>

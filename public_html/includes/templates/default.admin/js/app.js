@@ -36,7 +36,7 @@ $(document).ready(function(){
             jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            $('#search results').text(textStatus + ': ' + errorThrown);
+            $('#search .results').text(textStatus + ': ' + errorThrown);
           },
           success: function(json) {
             $('#search .results').html('');
@@ -49,10 +49,12 @@ $(document).ready(function(){
                 );
                 $.each(group.results, function(i, result){
                   $('#search .results ul[data-group="'+ group.name +'"]').append(
-                    '<li class="list-group-item">' +
-                    '  <small class="id pull-right">#'+ result.id +'</small>' +
-                    '  <div class="title"><a href="'+ result.url +'">'+ result.title +'</a></div>' +
-                    '  <div class="description"><small>'+ result.description +'</small></div>' +
+                    '<li class="result">' +
+                    '  <a class="list-group-item" href="'+ result.url +'">' +
+                    '    <small class="id pull-right">#'+ result.id +'</small>' +
+                    '    <div class="title">'+ result.title +'</div>' +
+                    '    <div class="description"><small>'+ result.description +'</small></div>' +
+                    '  </a>' +
                     '</li>'
                   );
                 });
