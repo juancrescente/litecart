@@ -311,7 +311,7 @@
 
     database::query(
       "update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
-      set `value` = '". $database->input(PLATFORM_VERSION) ."'
+      set `value` = '". database::input(PLATFORM_VERSION) ."'
       where `key` = 'platform_database_version'
       limit 1;"
     );
