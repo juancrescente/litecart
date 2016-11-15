@@ -34,33 +34,13 @@
 
     public static function prepare_output() {
 
-      $notices = array();
-
       if (!empty(array_filter(notices::$data))) {
-        document::$snippets['notices'] = '<div id="notices">' . PHP_EOL;
-        foreach (array_keys(notices::$data) as $type) {
-          foreach (notices::$data[$type] as $notice) {
-            switch ($type) {
-              case 'errors':
-                 document::$snippets['notices'] .= '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">x</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
-                break;
-              case 'warnings':
-                 document::$snippets['notices'] .= '<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert">x</a>' . functions::draw_fonticon('fa-exclamation-triangle') . ' ' . $notice .'</div>' . PHP_EOL;
-                break;
-              case 'notices':
-                 document::$snippets['notices'] .= '<div class="alert alert-info"><a href="#" class="close" data-dismiss="alert">x</a>' . functions::draw_fonticon('fa-info-circle') . ' ' . $notice .'</div>' . PHP_EOL;
-                break;
-              case 'success':
-                 document::$snippets['notices'] .= '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">x</a>' .functions::draw_fonticon('fa-check-circle') . ' ' . $notice .'</div>' . PHP_EOL;
-                break;
-            }
-          }
-        }
-        document::$snippets['notices'] .= '</div>' . PHP_EOL
-           . '<script>setTimeout(function(){$("#notices").slideUp();}, 25000);</script>';
+        
+        $notices = new view();
+        $notices->snippets['notices'] = notices::$data;       
+        document::$snippets['notices'] = $notices->stitch('views/notices');
+        self::reset();
       }
-
-      self::reset();
     }
 
     public static function before_output() {

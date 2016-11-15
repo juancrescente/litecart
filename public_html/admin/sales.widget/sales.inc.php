@@ -37,16 +37,14 @@
       order by month asc;"
     );
     
-    
-    
     while($orders = database::fetch($orders_query)) {
       $monthly_sales[$orders['month']]['total_sales_last_year'] = (int)$orders['total_sales'];
     }
     
     for ($timestamp=time(); strtotime('-11 months') <= $timestamp; $timestamp = strtotime('-1 month', $timestamp)) {
       $monthly_sales[date('Y-m', $timestamp)]['label'] = language::strftime('%b', $timestamp);
-      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales'] = rand(500,1500);
-      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'] = rand(500,1500);
+      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales'] = 0;
+      if (!isset($monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'])) $monthly_sales[date('Y-m', $timestamp)]['total_sales_last_year'] = 0;
     }
      
     $monthly_sales[date('Y-m')]['label'] = '★'.$monthly_sales[date('Y-m')]['label'];

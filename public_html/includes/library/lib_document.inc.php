@@ -72,13 +72,11 @@
       self::$settings = unserialize(settings::get('store_template_catalog_settings'));
       
     // LiteCart JavaScript Environment
-      
       $config = array(
         'url_platform' => document::ilink(''),
         'url_template' => document::link(WS_DIR_TEMPLATE),
       );
-      
-      self::$snippets['javascript'][] = "  var config = '". json_encode($config, null) ."';";
+      self::$snippets['javascript'][] = "  var config = ". json_encode($config, null) .";";
     }
 
     public static function after_capture() {

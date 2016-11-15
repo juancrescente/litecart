@@ -8,7 +8,7 @@
   {snippet:breadcrumbs}
 
   <div id="box-search-results">
-    <nav class="filter pull-right">
+    <nav class="filter btn-group pull-right">
   <?php
       $separator = false;
       foreach ($sort_alternatives as $key => $value) {
