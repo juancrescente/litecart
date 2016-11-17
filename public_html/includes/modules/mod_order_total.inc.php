@@ -1,8 +1,6 @@
 <?php
 
   class mod_order_total extends module {
-    public $options;
-    public $rows = array();
 
     public function __construct() {
       $this->load('order_total');
@@ -11,6 +9,8 @@
     public function process($order) {
 
       if (empty($this->modules)) return;
+      
+      $output = array();
 
       foreach ($this->modules as $module_id => $module) {
         if ($rows = $module->process($order)) {
@@ -22,16 +22,18 @@
               $row['tax'] = currency::round($row['tax'], $order->data['currency_code']);
             }
 
-            $order->add_ot_row(array(
+            $output[] = array(
               'id' => $module_id,
               'title' => $row['title'],
               'value' => $row['value'],
               'tax' => $row['tax'],
               'calculate' => !empty($row['calculate']) ? 1 : 0,
-            ));
+            );
           }
         }
       }
+      
+      return $output;
     }
 
     public function run($method_name, $module_id) {

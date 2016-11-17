@@ -33,19 +33,23 @@
 // Queue Handler
 
   var updateQueue = [
-    ['cart', null, true],
-    ['customer', null, true],
-    ['shipping', null, true],
-    ['payment', null, true],
-    ['summary', null, true]
+    {component: 'cart',     data: null, refresh: true},
+    {component: 'customer', data: null, refresh: true},
+    {component: 'shipping', data: null, refresh: true},
+    {component: 'payment',  data: null, refresh: true},
+    {component: 'summary',  data: null, refresh: true}
   ];
 
   function queueUpdateTask(component, data=null, refresh=true) {
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
-      return (tasks[0] == component) ? false : true;
+      return (tasks.component == component) ? false : true;
     });
 
-    updateQueue.push([component, data, refresh]);
+    updateQueue.push({
+      component: component,
+      data: data,
+      refresh: refresh
+    });
 
     runQueue();
   }
@@ -61,7 +65,7 @@
 
     task = updateQueue.shift();
 
-    if (console) console.log('Processing #checkout-' + task[0] + '-wrapper...');
+    if (console) console.log('Processing #checkout-' + task.component + '-wrapper...');
 
     if (!$('body > .loader-wrapper').length) {
       var progress_bar = '<div class="loader-wrapper">'
@@ -70,10 +74,12 @@
       $('body').append(progress_bar);
     }
 
-    if (task[2]) $('#checkout-'+ task[0] +'-wrapper').fadeTo('fast', 0.15);
+    if (task.refresh) {
+      $('#checkout-'+ task.component +'-wrapper').fadeTo('fast', 0.15);
+    }
 
     var url = '';
-    switch(task[0]) {
+    switch(task.component) {
       case 'cart':
         url = '<?php echo document::ilink('ajax/checkout_cart.html'); ?>';
         break;
@@ -90,28 +96,28 @@
         url = '<?php echo document::ilink('ajax/checkout_summary.html'); ?>';
         break;
       default:
-        alert('Error: Invalid component ' + task[0]);
+        alert('Error: Invalid component ' + task.component);
         break;
     }
 
     $.ajax({
       type: 'post',
       url: url,
-      data: task[1],
+      data: task.data,
       dataType: 'html',
       beforeSend: function(jqXHR) {
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         if (console) console.warn("Error");
-        $('#checkout-'+ task[0] +'-wrapper').html(textStatus + ': ' + errorThrown);
+        $('#checkout-'+ task.component +'-wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
-        if (task[2]) $('#checkout-'+ task[0] +'-wrapper').html(html).fadeTo('fast', 1);
+        if (task.refresh) $('#checkout-'+ task.component +'-wrapper').html(html).fadeTo('fast', 1);
       },
       complete: function(html) {
         if (!updateQueue.length) {
-            $('body > .loader-wrapper').fadeOut('fast', function(){$(this).remove();});
+          $('body > .loader-wrapper').fadeOut('fast', function(){$(this).remove();});
         }
         queueRunLock = false;
         runQueue();

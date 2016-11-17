@@ -17,47 +17,18 @@
     if (isset($_POST['email'])) $_POST['email'] = strtolower($_POST['email']);
     if (!isset($_POST['different_shipping_address'])) $_POST['different_shipping_address'] = 0;
 
-  // Validate if Save button was pressed
-    if (!empty($_POST['save_customer_details'])) {
-
-      if (empty($_POST['firstname'])) notices::add('errors', language::translate('error_missing_firstname', 'You must enter a first name.'));
-      if (empty($_POST['lastname'])) notices::add('errors', language::translate('error_missing_lastname', 'You must enter a last name.'));
-      if (empty($_POST['address1'])) notices::add('errors', language::translate('error_missing_address1', 'You must enter an address.'));
-      if (empty($_POST['city'])) notices::add('errors', language::translate('error_missing_city', 'You must enter a city.'));
-      if (empty($_POST['postcode'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
-      if (empty($_POST['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
-      if (empty($_POST['zone_code']) && reference::country($_POST['country_code'])->zones) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
-
-      if (!empty($_POST['different_shipping_address'])) {
-        if (empty($_POST['shipping_address']['firstname'])) notices::add('errors', language::translate('error_missing_firstname', 'You must enter a first name.'));
-        if (empty($_POST['shipping_address']['lastname'])) notices::add('errors', language::translate('error_missing_lastname', 'You must enter a last name.'));
-        if (empty($_POST['shipping_address']['address1'])) notices::add('errors', language::translate('error_missing_address1', 'You must enter an address.'));
-        if (empty($_POST['shipping_address']['city'])) notices::add('errors', language::translate('error_missing_city', 'You must enter a city.'));
-        if (empty($_POST['shipping_address']['postcode'])) notices::add('errors', language::translate('error_missing_postcode', 'You must enter a postcode.'));
-        if (empty($_POST['shipping_address']['country_code'])) notices::add('errors', language::translate('error_missing_country', 'You must select a country.'));
-        if (empty($_POST['shipping_address']['zone_code']) && reference::country($_POST['shipping_address']['country_code'])->zones) notices::add('errors', language::translate('error_missing_zone', 'You must select a zone.'));
+  // Validate
+    if (!empty($_POST['create_account']) && settings::get('fields_customer_password')) {
+      if (isset($_POST['email']) && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
+      if (empty($_POST['password']))
+        notices::add('errors', language::translate('error_missing_password', 'You must enter a password.'));
+      } else {
+        if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) notices::add('errors', language::translate('error_passwords_missmatch', 'The passwords did not match.'));
       }
-
-      if (empty($_POST['email'])) notices::add('errors', language::translate('error_missing_email', 'You must enter your email address.'));
-      if (empty($_POST['phone'])) notices::add('errors', language::translate('error_missing_phone', 'You must enter your phone number.'));
-
-      if (!empty($_POST['create_account']) || (settings::get('register_guests') && settings::get('fields_customer_password'))) {
-        if (isset($_POST['email']) && !database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
-        if (empty($_POST['password']))
-          notices::add('errors', language::translate('error_missing_password', 'You must enter a password.'));
-        } else {
-          if (!isset($_POST['confirmed_password']) || $_POST['password'] != $_POST['confirmed_password']) notices::add('errors', language::translate('error_passwords_missmatch', 'The passwords did not match.'));
-        }
-      }
-
-    // Keep first error only
-      if (!empty(notices::$data['errors'])) notices::$data['errors'] = array(array_shift(notices::$data['errors']));
     }
 
-  // If an existing account
-    if (!empty($_POST['email']) && $_POST['email'] != customer::$data['email'] && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
-      notices::add('notices', language::translate('notice_existing_customer_account_will_be_used', 'We found an existing customer account that will be used for this order'));
-    }
+  // Keep first error only
+    if (!empty(notices::$data['errors'])) notices::$data['errors'] = array(array_shift(notices::$data['errors']));
 
   // Billing address
     $fields = array(
@@ -156,8 +127,14 @@
       }
     }
   }
-
+  
+  $account_exists = false;
+  if (empty(customer::$data['id']) && !empty(customer::$data['email']) && database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input(customer::$data['email']) ."' limit 1;"))) {
+    $account_exists = true; 
+  }
+  
   $box_checkout_customer = new view();
+  $box_checkout_customer->snippets['account_exists'] = $account_exists;
 
   echo $box_checkout_customer->stitch('views/box_checkout_customer');
 ?>

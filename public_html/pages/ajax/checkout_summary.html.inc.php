@@ -13,17 +13,27 @@
   session::$data['order'] = new ctrl_order();
   $order = &session::$data['order'];
 
-  $resume_id = @$order->data['id'];
+// Resume incomplete order in session
+  if (!empty($order->data['id']) && empty($order->data['order_status_id']) && strtotime($order->data['date_created']) > strtotime('-15 minutes')) {
+    $resume_id = $order->data['id'];
+  }
+
+  $order->reset();
+  
+  if (!empty($resume_id)) {
+    $order->data['id'] = $resume_id;
+  }
 
 // Build Order
-  $order->reset();
-
   $order->data['weight_class'] = settings::get('store_weight_class');
   $order->data['currency_code'] = currency::$selected['code'];
   $order->data['currency_value'] = currency::$currencies[currency::$selected['code']]['value'];
   $order->data['language_code'] = language::$selected['code'];
-
   $order->data['customer'] = customer::$data;
+
+  foreach (cart::$items as $item) {
+    $order->add_item($item);
+  }
 
   if (!empty($shipping->data['selected'])) {
     $order->data['shipping_option'] = array(
@@ -39,21 +49,10 @@
     );
   }
 
-  foreach (cart::$items as $item) {
-    $order->add_item($item);
-  }
-
   $order_total = new mod_order_total();
-  foreach ($order_total->rows as $row) {
+  $rows = $order_total->process($order);
+  foreach ($rows as $row) {
     $order->add_ot_row($row);
-  }
-
-  $order->data['order_total'] = array();
-  $order_total->process($order);
-
-// Resume incomplete order in session
-  if (!empty($resume_id) && empty($order->data['order_status_id'])) {
-    $order->data['id'] = $resume_id;
   }
 
   $box_checkout_summary = new view();
