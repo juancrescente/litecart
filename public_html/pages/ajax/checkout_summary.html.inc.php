@@ -55,6 +55,7 @@
     $order->add_ot_row($row);
   }
 
+// Output
   $box_checkout_summary = new view();
 
   $box_checkout_summary->snippets = array(
@@ -64,6 +65,7 @@
     'incl_excl_tax' => !empty(customer::$data['display_prices_including_tax']) ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'),
     'payment_due' => currency::format($order->data['payment_due'], false),
     'error' => $order->validate(),
+    'selected_shipping' => null,
     'selected_payment' => null,
     'confirm' => !empty($payment->data['selected']['confirm']) ? $payment->data['selected']['confirm'] : language::translate('title_confirm_order', 'Confirm Order'),
   );
@@ -80,19 +82,26 @@
       'quantity' => (float)$item['quantity'],
     );
   }
+  
+  if (!empty($shipping->data['selected'])) {
+    $box_checkout_summary->snippets['selected_shipping'] = array(
+      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $shipping->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'title' => $shipping->data['selected']['title'],
+    );
+  }
+  
+  if (!empty($payment->data['selected'])) {
+    $box_checkout_summary->snippets['selected_payment'] = array(
+      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
+      'title' => $payment->data['selected']['title'],
+    );
+  }
 
   foreach ($order->data['order_total'] as $row) {
     $box_checkout_summary->snippets['order_total'][] = array(
       'title' => $row['title'],
       'value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format($row['value'] + $row['tax'], false) : currency::format($row['value'], false),
       'tax' => currency::format($row['tax'], false)
-    );
-  }
-
-  if (!empty($payment->data['selected'])) {
-    $box_checkout_summary->snippets['selected_payment'] = array(
-      'icon' => is_file(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon']) ? functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME . $payment->data['selected']['icon'], 160, 60, 'FIT_USE_WHITESPACING') : '',
-      'title' => $payment->data['selected']['title'],
     );
   }
 

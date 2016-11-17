@@ -491,7 +491,7 @@
       );
     
       $i = 1;
-      while (isset($this->data['order_total']['new'.$i])) $i++;
+      while (isset($this->data['order_total']['new_'.$i])) $i++;
       $this->data['order_total']['new_'.$i] = $row;
 
       if (!empty($row['calculate'])) {
