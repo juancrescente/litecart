@@ -18,7 +18,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-3">
         <a class="logotype" href="<?php echo document::ilink(''); ?>">
-          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-height: 4em;" />
+          <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" alt="<?php echo settings::get('store_name'); ?>" style="max-width: 250px; max-height: 60px;" />
         </a>
       </div>
 

@@ -87,35 +87,6 @@
     $daily_sales[date('N')]['label'] = '★'.$daily_sales[date('N')]['label'];
     
     ksort($daily_sales);
-    
-  // Weekday Spread
-    $orders_query = database::query(
-      "select avg(payment_due - tax_total) as total_sales, tax_total as total_tax, weekday(date_created) as weekday from ". DB_TABLE_ORDERS ."
-      where order_status_id in ('". implode("', '", $order_statuses) ."')
-      group by weekday(date_created);"
-    );
-
-    if (!function_exists('mb_ucfirst')) {
-      function mb_ucfirst($str) {
-        $fc = mb_strtoupper(mb_substr($str, 0, 1));
-        return $fc.mb_substr($str, 1);
-      }
-    }
-
-    $weekday = array(
-      '0' => ucfirst(language::strftime('%A', strtotime('Monday'))),
-      '1' => ucfirst(language::strftime('%A', strtotime('Tuesday'))),
-      '2' => ucfirst(language::strftime('%A', strtotime('Wednesday'))),
-      '3' => ucfirst(language::strftime('%A', strtotime('Thursday'))),
-      '4' => ucfirst(language::strftime('%A', strtotime('Friday'))),
-      '5' => ucfirst(language::strftime('%A', strtotime('Saturday'))),
-      '6' => ucfirst(language::strftime('%A', strtotime('Sunday'))),
-    );
-
-    $weekday_sales = array_combine(array_values($weekday), array(0,0,0,0,0,0,0));
-    while($order = database::fetch($orders_query)) {
-      $weekday_sales[$weekday[$order['weekday']]] = (float)$order['total_sales'];
-    }
 ?>
 <style>
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
@@ -124,16 +95,12 @@
 </style>
 
 <div class="row">
-  <div class="widget col-md-7">
+  <div class="widget col-md-8">
     <div id="chart-sales-monthly" style="height: 250px;" title="<?php echo language::translate('title_monthly_sales', 'Monthly Sales'); ?>"></div>
   </div>
 
-  <div class="widget col-md-3">
+  <div class="widget col-md-4">
     <div id="chart-sales-daily" style="height: 250px" title="<?php echo language::translate('title_daily_sales', 'Daily Sales'); ?>"></div>
-  </div>
-
-  <div class="widget col-md-2">
-    <div id="chart-sales-weekday" style="height: 200px; margin: 15px 0;" title="<?php echo language::translate('title_sales_by_weekday', 'Sales by Weekday'); ?>"></div>
   </div>
 </div>
 
@@ -185,37 +152,6 @@
   ];
 
   new Chartist.Bar('#chart-sales-daily', data, options, responsiveOptions);
-
-// Weekday Spread
-  var data = {
-    labels: <?php echo json_encode(array_keys($weekday_sales)); ?>,
-    series: <?php echo json_encode(array_values($weekday_sales)); ?>
-  };
-
-  var options = {
-    donut: true,
-    donutWidth: 25,
-    labelInterpolationFnc: function(value) {
-      return value[0]
-    }
-  };
-
-  var responsiveOptions = [
-    ['screen and (min-width: 640px)', {
-      chartPadding: 30,
-      labelOffset: 100,
-      labelDirection: 'explode',
-      labelInterpolationFnc: function(value) {
-        return value;
-      }
-    }],
-    ['screen and (min-width: 1024px)', {
-      labelOffset: 80,
-      chartPadding: 20
-    }]
-  ];
-
-  new Chartist.Pie('#chart-sales-weekday', data, options);
 </script>
 <?php
     cache::end_capture($widget_sales_cache_id);

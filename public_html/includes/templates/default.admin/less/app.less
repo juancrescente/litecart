@@ -74,18 +74,19 @@ img.loader {
 }
 
 #search {
+  margin: 1em 0;
   .loader-wrapper {
     position: relative;
   }
-  margin: 1em 0;
+  .no-results {
+    font-size: 2em;
+  }
   .results {
+    display: none;
     margin-top: 2em;
     .result {
       display: block;
-     .loader-wrapper {
-        padding: 2em;
-        opacity: 0.5;
-      }
+        margin-bottom: 5px;
       .id {
         opacity: 0.5;
       }
@@ -95,8 +96,10 @@ img.loader {
       .description {
         opacity: 0.75;
       }
-      .no-results {
-        font-size: 2em;
+      hr {
+        margin: 0;
+        padding: 0;
+        border: none;
       }
     }
   }

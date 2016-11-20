@@ -5,12 +5,15 @@
 
   document::$template = settings::get('store_template_admin');
   document::$layout = 'ajax';
+  
+  $app_themes = array_column(functions::admin_get_apps(), 'theme', 'code');
 
   $search_results = array();
 
 // Products
   $search_results['products'] = array(
     'name' => language::translate('title_products', 'Products'),
+    'theme' => $app_themes['catalog'],
     'results' => array(),
   );
   $products_query = database::query(
@@ -28,7 +31,7 @@
     $search_results['products']['results'][] = array(
       'id' => $product['id'],
       'title' => $product['name'],
-      'description' => reference::category($product['default_category_id'])->name,
+      'description' => $product['default_category_id'] ? reference::category($product['default_category_id'])->name : '['.language::translate('title_root', 'Root').']',
       'url' => document::link(WS_DIR_ADMIN, array('app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $product['id'])),
     );
   }
@@ -36,6 +39,7 @@
 // Customers
   $search_results['customers'] = array(
     'name' => language::translate('title_customers', 'Customers'),
+    'theme' => $app_themes['customers'],
     'results' => array(),
   );
   $customers_query = database::query(
@@ -60,6 +64,7 @@
 // Orders
   $search_results['orders'] = array(
     'name' => language::translate('title_orders', 'Orders'),
+    'theme' => $app_themes['orders'],
     'results' => array(),
   );
   $orders_query = database::query(
@@ -67,6 +72,9 @@
     where (
       id = '". database::input($_GET['query']) ."'
       or customer_email like '%". database::input($_GET['query']) ."%'
+      or customer_tax_id like '%". database::input($_GET['query']) ."%'
+      or concat(customer_firstname, ' ', customer_lastname) like '%". database::input($_GET['query']) ."%'
+      or customer_company like '%". database::input($_GET['query']) ."%'
       or shipping_tracking_id like '%". database::input($_GET['query']) ."%'
       or payment_transaction_id like '%". database::input($_GET['query']) ."%'
     )

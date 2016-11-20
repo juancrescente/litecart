@@ -175,6 +175,10 @@ img.loader {
     transform: rotate(360deg);
   }
 }
+input[data-type="number"],
+input[data-type="decimal"] {
+  text-align: center;
+}
 table.data-table th.main {
   width: 100%;
 }
@@ -375,6 +379,14 @@ body#checkout #checkout-cart tr td:first-child a {
 body#checkout #checkout-cart tr td:last-child {
   text-align: right;
 }
+body#checkout #checkout-cart .subtotal {
+  font-size: 1.75em;
+}
+body#checkout #checkout-shipping-wrapper.loading,
+body#checkout #checkout-payment-wrapper.loading {
+  border: 2px #eee solid;
+  height: 200px;
+}
 body#checkout #checkout-shipping .option.btn,
 body#checkout #checkout-payment .option.btn {
   padding: 12px;
@@ -405,11 +417,5 @@ body#checkout #checkout-customer button[type=submit]:not([disabled]) {
   font-weight: bold;
   color: #ff0000;
   animation: flasher 1s linear infinite;
-}
-.btn {
-  /*transition: all .15s ease;*/
-}
-.form-control {
-  border: none;
 }
 /*# sourceMappingURL=app.map */

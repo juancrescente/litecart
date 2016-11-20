@@ -184,6 +184,10 @@ img.loader {
   to { transform: rotate(360deg); }
 }
 
+input[data-type="number"], input[data-type="decimal"] {
+  text-align: center;
+}
+
 // Data Tables
 
 table.data-table {
@@ -236,6 +240,7 @@ table.data-table {
   }
   .thumbnail:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    
   }
   a {
     color: inherit;
@@ -315,7 +320,7 @@ table.data-table {
   }
 }
 
-// Product Page
+// Page: product
 
 #product {
   h1 {
@@ -395,7 +400,7 @@ table.data-table {
   }
 }
 
-// Checkout
+// Page: checkout
 
 body#checkout {
   .loader-wrapper {
@@ -427,6 +432,11 @@ body#checkout {
     .subtotal {
       font-size: 1.75em;
     }
+  }
+  
+  #checkout-shipping-wrapper.loading, #checkout-payment-wrapper.loading {
+    border: 2px #eee solid;
+    height: 200px;
   }
 
   #checkout-shipping, #checkout-payment {

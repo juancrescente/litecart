@@ -256,7 +256,7 @@ $(document).ready(function(){
   function updateCart(data=null) {
     if (data) $('*').css('cursor', 'wait');
     $.ajax({
-      url: config['url_platform'] + 'ajax/cart.json',
+      url: config.platform.url + 'ajax/cart.json',
       type: data ? 'post' : 'get',
       data: data,
       cache: false,
@@ -281,13 +281,13 @@ $(document).ready(function(){
           });
           $('#cart .items').append('<li class="divider"></li>');
         }
-        $('#cart .items').append('<li><a href="' + config['url_platform'] + 'checkout"><i class="fa fa-shopping-cart"></i> ' + data['text_total'] + ': <span class="formatted-value">'+ data['formatted_value'] +'</a></li>');
+        $('#cart .items').append('<li><a href="' + config.platform.url + 'checkout"><i class="fa fa-shopping-cart"></i> ' + data['text_total'] + ': <span class="formatted-value">'+ data['formatted_value'] +'</a></li>');
         $('#cart .quantity').html(data['quantity']);
         $('#cart .formatted_value').html(data['formatted_value']);
         if (data['quantity'] > 0) {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart_filled.svg');
+          $('#cart img').attr('src', config.template.url + 'images/cart_filled.svg');
         } else {
-          $('#cart img').attr('src', '{snippet:template_path}images/cart.svg');
+          $('#cart img').attr('src', config.template.url + 'images/cart.svg');
         }
       },
       complete: function() {
