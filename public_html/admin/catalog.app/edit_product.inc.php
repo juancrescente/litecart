@@ -11,7 +11,7 @@
       $_POST[$key] = $value;
     }
 
-    if (!empty($_GET['category_id'])) $_POST['categories'][] = $_GET['category_id'];
+    if (isset($_GET['category_id']) && empty($_POST['categories'])) $_POST['categories'][] = $_GET['category_id'];
   }
 
   breadcrumbs::add(!empty($product->data['id']) ? language::translate('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : language::translate('title_add_new_product', 'Add New Product'));

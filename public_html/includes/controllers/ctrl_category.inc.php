@@ -34,7 +34,7 @@
           $this->data[$field['Field']][$language_code] = null;
         }
       }
-      
+
       $this->data['dock'] = array();
     }
 
@@ -59,7 +59,7 @@
           $this->data[$key][$category_info['language_code']] = $value;
         }
       }
-      
+
       $this->data['dock'] = explode(',', $this->data['dock']);
     }
 

@@ -143,7 +143,7 @@
   }
 
   // Delete from database
-  if (isset($_POST['delete']) && $order) {
+  if (isset($_POST['delete']) && !empty($order->data['id'])) {
     $order->delete();
     notices::add('success', language::translate('success_post_deleted', 'Post deleted'));
     header('Location: '. (!empty($_GET['redirect']) ? $_GET['redirect'] : document::link('', array('app' => $_GET['app'], 'doc' => 'orders'))));
@@ -151,6 +151,29 @@
   }
 
   functions::draw_lightbox();
+<script>
+  function rewrite_fancybox_link(links, index) {
+    var params = {
+      language_code: $('select[name="language_code"]').val(),
+      currency_code: $('select[name="currency_code"]').val(),
+      currency_value: $('input[name="currency_value"]').val(),
+      customer: {
+        tax_id: $('input[name="customer[tax_id]"]').val(),
+        company: $('input[name="customer[company]"]').val(),
+        country_code: $('select[name="customer[country_code]"]').val(),
+        zone_code: $('select[name="customer[zone_code]"]').val(),
+        shipping_address: {
+          company: $('input[name="customer[shipping_address][company]"]').val(),
+          country_code: $('select[name="customer[shipping_address][country_code]"]').val(),
+          zone_code: $('select[name="customer[shipping_address][zone_code]"]').val(),
+        }
+      }
+    }
+    if ($(links[index]).hasClass('add-product') || $(links[index]).hasClass('add-custom-item')) {
+      $(links[index]).attr('href', $(links[index]).data('href') +'&'+ $.param(params));
+    }
+  }
+</script>
   
   $account_name = '('. language::translate('title_guest', 'Guest') .')';
   if (!empty($_POST['customer']['id'])) {
