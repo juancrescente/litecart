@@ -14,7 +14,8 @@
       'url' => document::ilink(''),
     );
 
-    $response = @functions::http_fetch($url, $store_info, false, false, true);
+    $client = http_client();
+    $response = @$client->call($url, $store_info);
     $rss = @simplexml_load_string($response);
 
     if (!empty($rss->channel->item)) {

@@ -32,14 +32,15 @@
 
       $url = document::link('http://download.finance.yahoo.com/d/quotes.csv', array('f' => 'l1', 's' => settings::get('store_currency_code'), $currency_code => 'X'));
 
-      $result = functions::http_fetch($url);
+      $client = http_client();
+      $response = @$client->call($url);
 
-      if (empty($result)) {
+      if (empty($response)) {
         trigger_error('Could not update currency value for '. $currency_code .': No data ('. $url .')', E_USER_ERROR);
         continue;
       }
 
-      $value = (float)trim($result) * currency::$currencies[settings::get('store_currency_code')]['value'];
+      $value = (float)trim($response) * currency::$currencies[settings::get('store_currency_code')]['value'];
 
       if (empty($value)) {
         trigger_error('Could not update currency value for '. $currency_code .': No value ('. $url .')', E_USER_ERROR);
