@@ -7,22 +7,24 @@
   system::run('after_capture');
 
 // Stitch content
-  $_page = new view();
-  $_page->snippets = array('content' => $content);
-  $_page->stitch('layouts/'.document::$layout);
+  $page = new view();
+  $page->snippets = array('content' => $content);
+  $output = $page->stitch('layouts/'.document::$layout);
 
 // Prepare output
   system::run('prepare_output');
 
+// Stitch global snippets
+  $page->snippets = document::$snippets;
+  $page->html = $output;
+  $output = $page->stitch();
+
 // Run before output processes
   system::run('before_output');
 
-// Load global snippets
-  $_page->snippets = document::$snippets;
-
 // Output page
   header('Content-Language: '. language::$selected['code']);
-  echo $_page->stitch(null, true);
+  echo $output;
 
 // Run after processes
   system::run('shutdown');

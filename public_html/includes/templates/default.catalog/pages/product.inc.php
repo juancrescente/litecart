@@ -209,28 +209,28 @@
 
   $('body').on('change input keyup', 'form[name=buy_now_form]', function(e) {
     var regular_price = <?php echo currency::format_raw($regular_price); ?>;
-    var campaign_price = <?php echo currency::format_raw($campaign ? $campaign['price'] : $regular_price); ?>;
+    var sales_price = <?php echo currency::format_raw($campaign ? $campaign['price'] : $regular_price); ?>;
     var tax = <?php echo currency::format_raw($total_tax); ?>;
     $(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function(){
       if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) campaign_price += $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
       if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
     });
     $(this).find('select option:checked').each(function(){
       if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) campaign_price += $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
       if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
     });
     $(this).find('input[type!="radio"][type!="checkbox"]').each(function(){
       if ($(this).val() != '') {
       if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-      if ($(this).data('price-adjust')) campaign_price += $(this).data('price-adjust');
+      if ($(this).data('price-adjust')) sales_price += $(this).data('price-adjust');
       if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
       }
     });
     $('.regular-price').text(regular_price.toMoney());
-    $('.campaign-price').text(campaign_price.toMoney());
-    $('.price').text(price.toMoney());
+    $('.campaign-price').text(sales_price.toMoney());
+    $('.price').text(sales_price.toMoney());
     $('.total-tax').text(tax.toMoney());
   });
 </script>

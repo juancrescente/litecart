@@ -14,7 +14,7 @@
       'url' => document::ilink(''),
     );
 
-    $client = http_client();
+    $client = new http_client();
     $response = @$client->call($url, $store_info);
     $rss = @simplexml_load_string($response);
 

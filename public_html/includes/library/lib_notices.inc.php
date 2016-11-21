@@ -29,13 +29,9 @@
     //public static function before_capture() {
     //}
 
-    //public static function after_capture() {
-    //}
-
-    public static function prepare_output() {
-
+    public static function after_capture() {
+      
       if (!empty(array_filter(notices::$data))) {
-        
         $notices = new view();
         $notices->snippets['notices'] = notices::$data;       
         document::$snippets['notices'] = $notices->stitch('views/notices');
@@ -43,8 +39,11 @@
       }
     }
 
-    public static function before_output() {
-    }
+    //public static function prepare_output() {
+    //}
+
+    //public static function before_output() {
+    //}
 
     //public static function shutdown() {
     //}

@@ -113,11 +113,11 @@
 <?php echo functions::form_draw_form_end(); ?>
 
 <script>
-  $("select[name$='[zone_code]'][disabled]").each(function() {
+  $('select[name$="[zone_code]"][disabled]').each(function() {
     $(this).html('<option value="">-- <?php echo functions::general_escape_js(language::translate('title_all_zones', 'All Zones')); ?> --</option>');
   });
 
-  $("body").on("change", "select[name$='[country_code]']", function() {
+  $('body').on('change', 'select[name$="[country_code]"]', function() {
     var zone_field = $(this).closest('tr').find("select[name$='[zone_code]']");
     $('body').css('cursor', 'wait');
     $.ajax({
@@ -151,7 +151,7 @@
   var new_zone_i = <?php echo isset($_POST['zones']) ? count($_POST['zones']) : '0'; ?>;
   $('form[name="form_geo_zone"]').on("click", ".add", function(e) {
     e.preventDefault();
-    if ($("select[name='country[code]']").find("option:selected").val() == "") return;
+    if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
     new_zone_i++;
     var output = '    <tr>'
                + '      <td><?php echo functions::general_escape_js(functions::form_draw_hidden_field('zones[new_zone_i][id]', '')); ?></td>'
@@ -163,7 +163,7 @@
     $(this).closest('table').find('tbody').append(output);
   });
 
-  $('form[name="form_geo_zone"]').on("click", ".remove", function(e) {
+  $('form[name="form_geo_zone"]').on('click', '.remove', function(e) {
     e.preventDefault();
     $(this).closest('tr').remove();
   });

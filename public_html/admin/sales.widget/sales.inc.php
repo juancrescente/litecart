@@ -92,6 +92,9 @@
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
   stroke: rgba(0,0,0,0.2);
 }
+#chart-sales-monthly .ct-bar, #chart-sales-daily .ct-bar {
+  stroke-width: 15px;
+}
 </style>
 
 <div class="row">

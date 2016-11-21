@@ -42,7 +42,7 @@
           <h4><?php echo language::translate('title_contact', 'Contact'); ?></h4>
           <p><?php echo nl2br(settings::get('store_postal_address')); ?></p><br />
           <p><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel://<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a><br />
-            <?php echo functions::draw_fonticon('fa-envelope'); ?> <?php list($account, $domain) = explode('@', settings::get('store_email')); echo "<script>document.write('<a href=\"mailto:". $account ."' + '@' + '". $domain ."\">". $account ."' + '@' + '". $domain ."</a>');</script>"; ?></p>
+            <?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
         </div>
     </div>
   </div>
