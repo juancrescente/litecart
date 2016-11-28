@@ -65,12 +65,12 @@
 
     task = updateQueue.shift();
 
-    if (console) console.log('Processing #checkout-' + task.component + '-wrapper...');
+    if (console) console.log('Processing ' + task.component);
 
     if (!$('body > .loader-wrapper').length) {
-      var progress_bar = '<div class="loader-wrapper">'
-                       + '  <img class="loader" style="width: 256px; height: 256px;" alt="" />'
-                       + '</div>';
+      var progress_bar = '<div class="loader-wrapper">' +
+                         '  <img class="loader" style="width: 256px; height: 256px;" alt="" />' +
+                         '</div>';
       $('body').append(progress_bar);
     }
 
@@ -129,7 +129,7 @@
 
 // Cart
 
-  $('body').on('click', '#checkout-cart button[name="remove_cart_item"]', function(e){
+  $('#checkout-cart-wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
     var data = $(this).closest('td').find(':input').serialize() + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data);
@@ -138,7 +138,7 @@
     queueUpdateTask('summary');
   });
 
-  $('body').on('click', '#checkout-cart button[name="update_cart_item"]', function(e){
+  $('#checkout-cart-wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
     var data = $(this).closest('td').find(':input').serialize() + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data);
@@ -165,9 +165,9 @@
     }
   });
 
-// Customer Form: Get Address
+// Customer Form: Get Address / Auto Complete
 
-  $('#checkout-customer').on('change', '.billing-address :input', function() {
+  $('#checkout-customer-wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address (Trigger: "'+ $(this).attr('name') +')');
     $.ajax({
@@ -194,7 +194,7 @@
 
 // Customer Form: Chained Select
 
-  $('#checkout-customer').on('change', 'select[name="country_code"]', function() {
+  $('#checkout-customer-wrapper').on('change', 'select[name="country_code"]', function() {
     if ($(this).find('option:selected').data('tax-id-format') != '') {
       $(this).closest('table').find("input[name='tax_id']").attr('pattern', $(this).find('option:selected').data('tax-id-format'));
     } else {
@@ -246,7 +246,7 @@
     });
   });
   
-  $('#checkout-customer').on('change', 'select[name="shipping_address[country_code]"]', function() {
+  $('#checkout-customer-wrapper').on('change', 'select[name="shipping_address[country_code]"]', function() {
     if ($(this).find('option:selected').data('postcode-format') != '') {
       $(this).closest('table').find("input[name='shipping_address[postcode]']").attr('pattern', $(this).find('option:selected').data('postcode-format'));
       $(this).closest('table').find("input[name='shipping_address[postcode]']").attr('required', 'required');
@@ -287,26 +287,29 @@
     });
   });
 
-// Customer Form: Auto-Save
+// Customer Form: Checksum
 
-  var customer_form_changed = false;
-  var customer_form_checksum = $('#checkout-customer :input').serialize();
-  $('body').on('change keyup', '#checkout-customer', function(e) {
-    if ($('#checkout-customer :input').serialize() != customer_form_checksum) {
-      customer_form_changed = true;
+  window.customer_form_changed = false;
+  window.customer_form_checksum = $('#checkout-customer :input').serialize();
+  
+  $('#checkout-customer-wrapper').on('input change', '#checkout-customer', function(e) {
+    if ($('#checkout-customer :input').serialize() != window.customer_form_checksum) {
+      window.customer_form_changed = true;
       $('#checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
     } else {
-      customer_form_changed = false;
+      window.customer_form_changed = false;
       $('#checkout-customer button[name="save_customer_details"]').attr('disabled', 'disabled');
     }
   });
 
+// Customer Form: Auto-Save
+
   var timerSubmitCustomer;
-  $('body').on('focusout', '#checkout-customer', function() {
+  $('#checkout-customer-wrapper').on('focusout', '#checkout-customer', function() {
     timerSubmitCustomer = setTimeout(
       function() {
         if (!$(this).is(':focus')) {
-          if (customer_form_changed) {
+          if (window.customer_form_changed) {
             if (console) console.log('Autosaving customer details');
             var data = $('#checkout-customer :input').serialize();
             queueUpdateTask('customer', data);
@@ -324,9 +327,9 @@
     clearTimeout(timerSubmitCustomer);
   });
 
-// Process Customer Data
+// Customer Form: Process Data
 
-  $('body').on('click', '#checkout-customer button[name="save_customer_details"]', function(e){
+  $('#checkout-customer-wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
     var data = $('#checkout-customer :input').serialize() + '&save_customer_details=true';
     queueUpdateTask('customer', data);
@@ -338,7 +341,7 @@
     $('#checkout-customer :input:first-child').trigger('change');
   });
 
-// Process Shipping Data
+// Shipping Form: Process Data
 
   $('#checkout-shipping-wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#checkout-shipping .option').removeClass('active');
@@ -350,7 +353,7 @@
     queueUpdateTask('summary');
   });
 
-// Process Payment Data
+// Payment Form: Process Data
 
   $('#checkout-payment-wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#checkout-payment .option').removeClass('active');
@@ -361,16 +364,16 @@
     queueUpdateTask('summary');
   });
 
-// Process Summary
+// Summary Form: Process Data
 
-  $('body').on('click', '#checkout-summary button[name="confirm_order"]', function(e) {
-    if (customer_form_changed) {
+  $('#checkout-summary-wrapper').on('click', 'button[name="confirm_order"]', function(e) {
+    if (window.customer_form_changed) {
       e.preventDefault();
       alert("<?php echo language::translate('warning_your_customer_information_unsaved', 'Your customer information contains unsaved changes.')?>");
     }
   });
 
-  $("body").on('submit', 'form[name="checkout_form"]', function(e) {
+  $('body').on('submit', 'form[name="checkout_form"]', function(e) {
     $('#checkout-summary button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo htmlspecialchars(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
   });
 </script>

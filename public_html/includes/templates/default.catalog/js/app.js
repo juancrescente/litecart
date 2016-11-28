@@ -1,8 +1,5 @@
 $(document).ready(function(){
 
-// Enable tooltips
-  $('[data-toggle="tooltip"]').tooltip();
-
 // Form required asterix
   $(':input[required="required"]').closest('.form-group').addClass('required');
 
@@ -266,11 +263,9 @@ $(document).ready(function(){
         jqXHR.overrideMimeType('text/html;charset=' + $('meta[charset]').attr('charset'));
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        if (data) {
-          console.log('Failed adding item to cart');
-          console.debug(jqXHR);
-        }
-        if (data) alert("Error while adding item to cart");
+        alert('Error while adding item to cart');
+        console.error('Failed adding item to cart');
+        console.debug(jqXHR.responseText);
       },
       success: function(data) {
         if (data['alert']) alert(data['alert']);

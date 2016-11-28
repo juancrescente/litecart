@@ -241,9 +241,6 @@
   alert("<?php echo functions::general_escape_js(notices::$data['errors'][0]); notices::$data['errors'] = array(); ?>");
   <?php } ?>
   
-  var customer_form_changed = false;
-  var customer_form_checksum = $('#checkout-customer :input').serialize();
-
   if ($('select[name="country_code"]').find('option:selected').data('tax-id-format') != '') {
     $('select[name="country_code"]').closest('table').find('input[name="tax_id"]').attr('pattern', $('select[name="country_code"]').find('option:selected').data('tax-id-format'));
   } else {
@@ -281,4 +278,7 @@
   if ($('select[name="shipping_address[zone_code]"] option').length == 0) $('select[name="shipping_address[zone_code]"]').closest('td').css('opacity', 0.15);
   
   $('input[name="create_account"][type="checkbox"]').trigger('change');
+  
+  window.customer_form_changed = false;
+  window.customer_form_checksum = $('#checkout-customer :input').serialize();
 </script>

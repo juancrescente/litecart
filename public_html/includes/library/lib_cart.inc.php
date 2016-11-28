@@ -265,8 +265,8 @@
             }
 
           } else {
-            if ($product->options[$key]['required'] != 0) {
-              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'][language::$selected['code']] .')');
+            if (!empty($product->options[$key]['required'])) {
+              if (!$silent) notices::add('errors', language::translate('error_set_product_options', 'Please set your product options') . ' ('. $product->options[$key]['name'] .')');
               return;
           }
         }

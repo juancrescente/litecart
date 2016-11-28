@@ -203,7 +203,7 @@
           while ($product_option = database::fetch($products_options_query)) {
 
           // Groups
-            if (isset($this->_data['options'][$product_option['group_id']]['function']) == false) {
+            if (!isset($this->_data['options'][$product_option['group_id']]['id'])) {
               $option_group_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS ."
                 where id = '". (int)$product_option['group_id'] ."'
@@ -215,7 +215,7 @@
               }
             }
 
-            if (isset($this->_data['options'][$product_option['group_id']]['name']) == false) {
+            if (!isset($this->_data['options'][$product_option['group_id']]['name'])) {
               $option_group_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_GROUPS_INFO ." pcgi
                 where group_id = '". (int)$product_option['group_id'] ."'
@@ -231,7 +231,7 @@
             }
 
           // Values
-            if (isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['value']) == false) {
+            if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['id'])) {
               $option_value_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES ."
                 where id = '". (int)$product_option['value_id'] ."'
@@ -243,7 +243,7 @@
               }
             }
 
-            if (isset($this->_data['options'][$product_option['group_id']]['values']['name']) == false) {
+            if (!isset($this->_data['options'][$product_option['group_id']]['values'][$product_option['value_id']]['name'])) {
               $option_values_info_query = database::query(
                 "select * from ". DB_TABLE_OPTION_VALUES_INFO ." pcvi
                 where value_id = '". (int)$product_option['value_id'] ."'

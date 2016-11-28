@@ -84,7 +84,7 @@
     if (empty(notices::$data['errors'])) {
 
     // Create customer account
-      if (empty(customer::$data['id'])) {
+      if (empty(customer::$data['id']) && !empty(customer::$data['email'])) {
         if (settings::get('register_guests') || !empty($_POST['create_account'])) {
           if (!database::num_rows(database::query("select id from ". DB_TABLE_CUSTOMERS ." where email = '". database::input($_POST['email']) ."' limit 1;"))) {
 
