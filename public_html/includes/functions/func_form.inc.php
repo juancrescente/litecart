@@ -7,18 +7,17 @@
 
   function form_draw_protected_form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
 
-    document::$snippets['javascript']['form_protect'] = '  $("form").submit(function() {' . PHP_EOL
-                                                      . '    $(this).find(".changed-input").each(function(){' . PHP_EOL
-                                                      . '      $(this).removeClass("unsaved");' . PHP_EOL
-                                                      . '    });' . PHP_EOL
-                                                      . '  });' . PHP_EOL
-                                                      . '  $(window).on("beforeunload", function(){' . PHP_EOL
-                                                      . '    if ($(".unsaved").length) return "'. htmlspecialchars(language::translate('warning_changes_will_go_lost', 'Any changes will go lost!')) .'";' . PHP_EOL
-                                                      . '  });';
-
-    document::$snippets['javascript']['form[name='.$name.']'] = '  $("form[name=\''. $name .'\']").on("change keyup keydown", ":input", function(){' . PHP_EOL
-                                                              . '    $(this).addClass("unsaved");' . PHP_EOL
-                                                              . '  });' . PHP_EOL;
+    document::$snippets['javascript'][] = "  $('form[name=\"". $name ."\"]').on('change keyup keydown', ':input', function(){" . PHP_EOL
+                                        . "    $(this).addClass('unsaved');" . PHP_EOL
+                                        . "  });" . PHP_EOL
+                                        . "  $('form').submit(function() {" . PHP_EOL
+                                        . "    $(this).find('.changed-input').each(function(){" . PHP_EOL
+                                        . "      $(this).removeClass('unsaved');" . PHP_EOL
+                                        . "    });" . PHP_EOL
+                                        . "  });" . PHP_EOL
+                                        . "  $(window).on('beforeunload', function(){" . PHP_EOL
+                                        . "    if ($('.unsaved').length) return '". htmlspecialchars(language::translate('warning_unsaved_changes', 'There are unsaved changes, do you wish to continue?')) ."';" . PHP_EOL
+                                        . "  });";
 
     return form_draw_form_begin($name, $method, $action, $multipart, $parameters);
   }
@@ -135,7 +134,6 @@
   function form_draw_datetime_field($name, $value=true, $parameters='') {
     if ($value === true) $value = form_reinsert_value($name);
 
-    $value = strtotime($value);
     if (!in_array(substr($value, 0, 10), array('', '0000-00-00', '1970-00-00', '1970-01-01'))) {
       $value = date('Y-m-d\TH:i:s', strtotime($value));
     } else {
@@ -150,10 +148,8 @@
 
     $value = number_format((float)$value, (int)$decimals, '.', '');
 
-    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(document).ready(function(){' . PHP_EOL
-                                                                       . '    $("body").on("change", "input[data-type=\'decimal\']", function(){' . PHP_EOL
-                                                                       . '      $(this).val($(this).val().replace(",", "."));' . PHP_EOL
-                                                                       . '    });' . PHP_EOL
+    document::$snippets['javascript']['input-decimal-replace-decimal'] = '  $(\'body\').on(\'change\', \'input[data-type="decimal"]\', function(){' . PHP_EOL
+                                                                       . '    $(this).val($(this).val().replace(\',\', \'.\'));' . PHP_EOL
                                                                        . '  });';
 
     return '<input '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-control"' : '') .' type="number" name="'. htmlspecialchars($name) .'" value="'. $value .'" data-type="decimal" step="any" '. (($min !== null) ? 'min="'. (float)$min .'"' : false) . (($max !== null) ? ' max="'. (float)$max .'"' : false) . (($parameters) ? ' '.$parameters : false) .' />';
@@ -429,18 +425,18 @@
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>';
 
-    document::$snippets['javascript'][] = '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
-                                        . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
-                                        . '    btnsDef: {' . PHP_EOL
-                                        . '      image: {' . PHP_EOL
-                                        . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
-                                        . '       ico: "insertImage"' . PHP_EOL
-                                        . '      }' . PHP_EOL
-                                        . '    },' . PHP_EOL
-                                        . '    semantic: false,' . PHP_EOL
-                                        . '    removeformatPasted: true,' . PHP_EOL
-                                        . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
-                                        . '  });';
+    document::$snippets['javascript'][] = "  $('textarea[name=\"". $name ."\"]').trumbowyg({" . PHP_EOL
+                                        . "    lang: '". language::$selected["code"] ."'," . PHP_EOL
+                                        . "    btnsDef: {" . PHP_EOL
+                                        . "      image: {" . PHP_EOL
+                                        . "       dropdown: ['insertImage', 'base64']," . PHP_EOL
+                                        . "       ico: 'insertImage'" . PHP_EOL
+                                        . "      }" . PHP_EOL
+                                        . "    }," . PHP_EOL
+                                        . "    semantic: false," . PHP_EOL
+                                        . "    removeformatPasted: true," . PHP_EOL
+                                        . "    btns: [['viewHTML'], ['formatting'], 'btnGrp-design', ['link'], ['image'], 'btnGrp-justify', 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']]" . PHP_EOL
+                                        . "  });";
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
@@ -693,7 +689,7 @@
     if (empty($multiple)) $options[] = array('-- '. language::translate('title_select', 'Select') . ' --', '');
 
     if (database::num_rows($geo_zones_query) == 0) {
-      return functions::form_draw_hidden_field($name, '0') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
+      return functions::form_draw_hidden_field($name, '') . form_draw_select_field($name, $options, $input, false, false, $parameters . ' disabled="disabled"');
     }
 
     while ($geo_zone = database::fetch($geo_zones_query)) {

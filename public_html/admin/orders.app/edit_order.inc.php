@@ -158,6 +158,7 @@
       currency_code: $('select[name="currency_code"]').val(),
       currency_value: $('input[name="currency_value"]').val(),
       customer: {
+        id: $(':input[name="customer[id]"]').val(),
         tax_id: $('input[name="customer[tax_id]"]').val(),
         company: $('input[name="customer[company]"]').val(),
         country_code: $('select[name="customer[country_code]"]').val(),
@@ -800,7 +801,6 @@
       },
       success: function(data) {
         $.each(data, function(key, value) {
-          if (console) console.log(key +": "+ value);
           if ($('*[name="customer['+key+']"]').length) $('*[name="customer['+key+']"]').val(data[key]).trigger('change');
         });
       },

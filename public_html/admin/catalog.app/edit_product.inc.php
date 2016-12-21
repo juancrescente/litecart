@@ -828,7 +828,7 @@ foreach (currency::$currencies as $currency) {
 
   $('select[name="tax_class_id"], input[name^="prices"]').bind('change keyup', function() {
 
-    var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
+    var currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
     var price = Number($(this).val());
     var net_price = Number($(this).val()) * (1+(get_tax_rate()/100));
 
@@ -874,7 +874,7 @@ foreach (currency::$currencies as $currency) {
 
   $('input[name^="gross_prices"]').bind('change keyup', function() {
 
-    var currency_code = $(this).attr('name').replace(/^gross_prices\[(.*)\]$/, "$1");
+    var currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
     var price = Number($(this).val()) / (1+(get_tax_rate()/100));
     var net_price = Number($(this).val());
 
@@ -885,7 +885,7 @@ foreach (currency::$currencies as $currency) {
       $('input[name="prices['+ currency_code +']"]').val(price.toFixed(get_currency_decimals(currency_code)));
     }
 
-    if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') return;
+    if (currency_code != "<?php echo settings::get("store_currency_code"); ?>") return;
 
   // Update system currency price
     var currency_price = price * get_currency_value(currency_code);
@@ -903,7 +903,7 @@ foreach (currency::$currencies as $currency) {
     $('input[name^="prices"]').each(function() {
       var currency_code = $(this).attr('name').replace(/^prices\[(.*)\]$/, "$1");
 
-      if (currency_code != '<?php echo settings::get('store_currency_code'); ?>') {
+        if (currency_code != "<?php echo settings::get("store_currency_code"); ?>") {
 
         var currency_price = price * get_currency_value(currency_code);
                 var currency_gross_price = net_price * get_currency_value(currency_code);
@@ -1038,14 +1038,14 @@ foreach (currency::$currencies as $currency) {
         alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
       },
       success: function(data) {
-        $('select[name=\''+ valueField +'\']').html('');
-        if ($('select[name=\''+ valueField +'\']').attr('disabled')) $('select[name=\''+ valueField +'\']').removeAttr('disabled');
+        $('select[name="'+ valueField +'"]').html('');
+        if ($('select[name="'+ valueField +'"]').attr('disabled')) $('select[name="'+ valueField +'"]').removeAttr('disabled');
         if (data) {
           $.each(data, function(i, zone) {
-            $('select[name=\''+ valueField +'\']').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
+            $('select[name="'+ valueField +'"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
           });
         } else {
-          $('select[name=\''+ valueField +'\']').attr('disabled', 'disabled');
+          $('select[name="'+ valueField +'"]').attr('disabled', 'disabled');
         }
       },
       complete: function() {

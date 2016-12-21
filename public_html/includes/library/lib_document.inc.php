@@ -121,13 +121,13 @@
       if (!function_exists('replace_first_occurrence')) {
         function replace_first_occurrence($search, $replace, $subject) {
           if (strlen($search) > 4096) {
-            return preg_replace('#'. preg_quote(substr($search, 0, 1024), '#') .'.*?'. preg_quote(substr($search, -1024), '#') .'#s', $replace, $subject, 1);
+            return preg_replace('#'. preg_quote(mb_substr($search, 0, 1024, language::$selected['charset']), '#') .'.*?'. preg_quote(mb_substr($search, -1024, null, language::$selected['charset']), '#') .'#s', $replace, $subject, 1);
           } else {
             return preg_replace('#'. preg_quote($search, '#') .'#', $replace, $subject, 1);
           }
         }
       }
-      
+
     // Extract and group in content stylesheets
       if (preg_match('#^.*<html(?:[^>]+)?>(.*)</html>.*$#is', $GLOBALS['output'], $matches)) {
         $content = $matches[1];
@@ -142,10 +142,12 @@
           
         if (!empty($stylesheets)) {
             $stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
-            
-            $GLOBALS['output'] = preg_replace('#</head>#', $stylesheets . '</head>', $GLOBALS['output'], 1);
+
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', $stylesheets . '</head>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting stylesheets', E_USER_ERROR);
           }
         }
+      }
       }
 
     // Extract and group in content styling
@@ -167,9 +169,11 @@
                    . '/*]]>*/-->' . PHP_EOL
                    . '</style>' . PHP_EOL;
 
-            $GLOBALS['output'] = preg_replace('#</head>#', $styles . '</head>', $GLOBALS['output'], 1);
+            if (!$GLOBALS['output'] = preg_replace('#</head>#', $styles . '</head>', $GLOBALS['output'], 1)) {
+              trigger_error('Failed extracting styles', E_USER_ERROR);
           }
         }
+      }
       }
 
     // Extract and group javascript resources
@@ -191,6 +195,7 @@
             $GLOBALS['output'] = preg_replace('#</body>#is', $js_resources .'</body>', $GLOBALS['output'], 1);
           }
         }
+      }
       }
 
     // Extract and group inline javascript
