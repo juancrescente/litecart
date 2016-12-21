@@ -1,7 +1,7 @@
 <?php
   if (empty($_GET['product_id'])) return;
 
-  $product = new ref_product($_GET['product_id']);
+  $product = new reference::product($_GET['product_id']);
 
   if (settings::get('box_similar_products_num_items') == 0) return;
 

@@ -1,7 +1,7 @@
 <?php
 
   function form_draw_form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
-    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" role="form" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
+    return  '<form'. (($name) ? ' name="'. htmlspecialchars($name) .'"' : false) .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. language::$selected['charset'] .'"'. (($action) ? ' action="'. htmlspecialchars($action) .'"' : '') . (($parameters) ? ' ' . $parameters : false) .'>'. PHP_EOL
           . ((strtolower($method) == 'post') ? form_draw_hidden_field('token', form::session_post_token()) . PHP_EOL : '');
   }
 
@@ -422,25 +422,25 @@
     if ($value === true) $value = form_reinsert_value($name);
 
     document::$snippets['head_tags']['trumbowyg'] = '<link href="'. WS_DIR_EXT .'trumbowyg/ui/trumbowyg.min.css" rel="stylesheet" />' . PHP_EOL
-                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />' . PHP_EOL;
+                                                  . '<link href="'. WS_DIR_EXT .'trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />';
 
     document::$snippets['foot_tags']['trumbowyg'] = '<script src="'. WS_DIR_EXT .'trumbowyg/trumbowyg.min.js"></script>' . PHP_EOL
                                                   . ((language::$selected['code'] != 'en') ? '<script src="'. WS_DIR_EXT .'trumbowyg/langs/'. language::$selected['code'] .'.min.js"></script>' . PHP_EOL : '')
                                                   . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/base64/trumbowyg.base64.min.js"></script>' . PHP_EOL
-                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>' . PHP_EOL;
+                                                  . '<script src="'. WS_DIR_EXT .'trumbowyg/plugins/colors/trumbowyg.colors.min.js"></script>';
 
     document::$snippets['javascript'][] = '  $("textarea[name=\''. $name .'\']").trumbowyg({' . PHP_EOL
-         . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
-         . '    btnsDef: {' . PHP_EOL
-         . '      image: {' . PHP_EOL
-         . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
-         . '       ico: "insertImage"' . PHP_EOL
-         . '      }' . PHP_EOL
-         . '    },' . PHP_EOL
-         . '    semantic: false,' . PHP_EOL
-         . '    removeformatPasted: true,' . PHP_EOL
-         . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
-         . '  });';
+                                        . '    lang: "'. language::$selected['code'] .'",' . PHP_EOL
+                                        . '    btnsDef: {' . PHP_EOL
+                                        . '      image: {' . PHP_EOL
+                                        . '       dropdown: ["insertImage", "base64"],' . PHP_EOL
+                                        . '       ico: "insertImage"' . PHP_EOL
+                                        . '      }' . PHP_EOL
+                                        . '    },' . PHP_EOL
+                                        . '    semantic: false,' . PHP_EOL
+                                        . '    removeformatPasted: true,' . PHP_EOL
+                                        . '    btns: [["viewHTML"], ["formatting"], "btnGrp-design", ["link"], ["image"], "btnGrp-justify", "btnGrp-lists", ["foreColor", "backColor"], ["preformatted"], ["horizontalRule"], ["fullscreen"]]' . PHP_EOL
+                                        . '  });';
 
     return '<textarea name="'. htmlspecialchars($name) .'" data-type="wysiwyg"'. (($parameters) ? ' '.$parameters : false) .'>'. htmlspecialchars($value) .'</textarea>';
   }
@@ -898,7 +898,7 @@
 
     $products_query = database::query(
       "select p.*, pi.name from ". DB_TABLE_PRODUCTS ." p
-      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id)
+      left join ". DB_TABLE_PRODUCTS_INFO ." pi on (p.id = pi.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
       order by pi.name"
     );
 

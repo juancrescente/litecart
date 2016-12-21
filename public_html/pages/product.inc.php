@@ -22,7 +22,7 @@
     exit;
   }
 
-  if ( empty($product->status)) {
+  if (empty($product->status)) {
     notices::add('errors', language::translate('error_404_not_found', 'The requested file could not be found'));
     http_response_code(404);
     header('Refresh: 0; url='. document::ilink(''));
@@ -58,7 +58,7 @@
 
   if (!empty($product->image)) {
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::link(WS_DIR_IMAGES . $product->image) .'"/>';
-    }
+  }
 
   if (!empty($_GET['category_id'])) {
     breadcrumbs::add(language::translate('title_categories', 'Categories'), document::ilink('categories'));
@@ -87,8 +87,6 @@
 // Page
   $_page = new view();
 
-  list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
-
   $schema_json = array(
     '@context' => 'http://schema.org/',
     '@type' => 'Product',
@@ -105,6 +103,8 @@
       //'availability' => 'http://schema.org/InStock',
     ),
   );
+
+  list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
 
   $_page->snippets = array(
     'product_id' => $product->id,
@@ -189,8 +189,8 @@
     if (!empty($product->manufacturer['image'])) {
       $box_product->snippets['manufacturer']['image'] = array(
         'original' => WS_DIR_IMAGES . $product->manufacturer['image'],
-        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 200, 60),
-        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $image, 400, 120),
+        'thumbnail' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 200, 60),
+        'thumbnail_2x' => functions::image_thumbnail(FS_DIR_HTTP_ROOT . WS_DIR_IMAGES . $product->manufacturer['image'], 400, 120),
         'viewport' => array(
           'width' => $width,
           'height' => $height,
@@ -200,7 +200,7 @@
   }
 
 // Tax
-  $tax_rates = tax::get_tax_by_rate($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id);
+  $tax_rates = tax::get_tax_by_rate(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id);
   if (!empty($tax_rates)) {
     foreach ($tax_rates as $tax_rate) {
       $_page->snippets['tax_rates'][] = currency::format($tax_rate['tax']) .' ('. $tax_rate['name'] .')';
@@ -215,7 +215,7 @@
         $product->id => array(
           'quantity' => 1,
           'product_id' => $product->id,
-          'price' => $product->campaign['price'] ? $product->campaign['price'] : $product->price,
+          'price' => !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
           'tax_class_id' => $product->tax_class_id,
           'weight' => $product->weight,
           'weight_class' => $product->weight_class,
@@ -226,8 +226,8 @@
           'dim_class' => $product->dim_class,
         ),
       ),
-      $product->campaign['price'] ? $product->campaign['price'] : $product->price,
-      tax::get_tax($product->campaign['price'] ? $product->campaign['price'] : $product->price, $product->tax_class_id),
+      !empty($product->campaign['price']) ? $product->campaign['price'] : $product->price,
+      tax::get_tax(!empty($product->campaign['price']) ? $product->campaign['price'] : $product->price, $product->tax_class_id),
       currency::$selected['code'],
       customer::$data
     );
@@ -235,13 +235,13 @@
       $box_product->snippets['cheapest_shipping'] = null;
       list($module_id, $option_id) = explode(':', $cheapest_shipping);
       if (empty($shipping->data['options'][$module_id]['options'][$option_id]['error']) && !empty($shipping->data['options'][$module_id]['options'][$option_id]['cost'])) {
-      $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
-      $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
+        $shipping_cost = $shipping->data['options'][$module_id]['options'][$option_id]['cost'];
+        $shipping_tax_class_id = $shipping->data['options'][$module_id]['options'][$option_id]['tax_class_id'];
         $box_product->snippets['cheapest_shipping'] = strtr(language::translate('text_cheapest_shipping_from_price', 'Cheapest shipping from %price'), array(
           '%price' => currency::format(tax::get_price($shipping_cost, $shipping_tax_class_id)),
         ));
+      }
     }
-  }
   }
 
 // Options
