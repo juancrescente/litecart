@@ -1,37 +1,45 @@
 <?php
-  require('../includes/compatibility.inc.php');
-  require('includes/header.inc.php');
+require '../includes/compatibility.inc.php';
+require 'includes/header.inc.php';
 
-  ini_set('display_errors', 'On');
+ini_set('display_errors', 'On');
 
 // Function to get object from a relative path to this script
-  function get_absolute_path($path=null) {
-    if (empty($path)) $path = dirname(__FILE__);
+function get_absolute_path($path = null)
+{
+    if (empty($path)) {
+        $path = dirname(__FILE__);
+    }
+
     $path = str_replace('\\', '/', $path);
     $parts = array_filter(explode('/', $path), 'strlen');
     $absolutes = array();
     foreach ($parts as $part) {
-      if ('.' == $part) continue;
-      if ('..' == $part) {
-        array_pop($absolutes);
-      } else {
-        $absolutes[] = $part;
-      }
+        if ('.' == $part) {
+            continue;
+        }
+
+        if ('..' == $part) {
+            array_pop($absolutes);
+        } else {
+            $absolutes[] = $part;
+        }
     }
     return ((substr(PHP_OS, 0, 3) == 'WIN') ? '' : '/') . implode('/', $absolutes);
-  }
+}
 
-  $document_root = get_absolute_path(dirname(__FILE__) . '/..') .'/';
+$document_root = get_absolute_path(dirname(__FILE__) . '/..') . '/';
 
-  function return_bytes($string) {
+function return_bytes($string)
+{
     sscanf($string, '%u%c', $number, $suffix);
     if (isset($suffix)) {
-      $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
+        $number = $number * pow(1024, strpos(' KMG', strtoupper($suffix)));
     }
     return $number;
-  }
+}
 
-  $countries = array(
+$countries = array(
     'AF' => 'Afghanistan',
     'AL' => 'Albania',
     'DZ' => 'Algeria',
@@ -270,7 +278,7 @@
     'YE' => 'Yemen',
     'ZM' => 'Zambia',
     'ZW' => 'Zimbabwe',
-  );
+);
 
 ?>
 
@@ -281,13 +289,13 @@
       <h2>System Requirements</h2>
 
       <ul class="list-unstyled">
-        <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?>
+        <li>PHP 5.3+ <?php echo version_compare(PHP_VERSION, '5.3', '>=') ? '<span class="ok">[' . PHP_VERSION . ']</span>' : '<span class="error">[' . PHP_VERSION . ']</span>'; ?>
           <ul>
             <li>Settings
               <ul>
                 <li>register_globals = <?php echo ini_get('register_globals'); ?> <?php echo in_array(strtolower(ini_get('register_globals')), array('off', 'false', '', '0')) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
                 <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
-                <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
+                <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128 * 1024 * 1024) ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
               </ul>
             </li>
             <li>Extensions
@@ -301,17 +309,35 @@
           </ul>
         </li>
         <li>Apache 2 compatible HTTP daemon
-          <?php if (function_exists('apache_get_modules')) $installed_apache_modules = apache_get_modules(); ?>
+          <?php if (function_exists('apache_get_modules')) {
+    $installed_apache_modules = apache_get_modules();
+}
+?>
           <ul>
             <li>Allow, Deny</li>
             <li>Options -Indexes</li>
             <li>Modules
               <ul>
-                <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-                <li>mod_deflate <?php if (!empty($installed_apache_modules)) echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-                <li>mod_env <?php if (!empty($installed_apache_modules)) echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-                <li>mod_headers <?php if (!empty($installed_apache_modules)) echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
-                <li>mod_rewrite <?php if (!empty($installed_apache_modules)) echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>'; ?></li>
+                <li>mod_auth_basic <?php if (!empty($installed_apache_modules)) {
+    echo (in_array('mod_auth', $installed_apache_modules) || in_array('mod_auth_basic', $installed_apache_modules)) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>';
+}
+?></li>
+                <li>mod_deflate <?php if (!empty($installed_apache_modules)) {
+    echo in_array('mod_deflate', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>';
+}
+?></li>
+                <li>mod_env <?php if (!empty($installed_apache_modules)) {
+    echo in_array('mod_env', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>';
+}
+?></li>
+                <li>mod_headers <?php if (!empty($installed_apache_modules)) {
+    echo in_array('mod_headers', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>';
+}
+?></li>
+                <li>mod_rewrite <?php if (!empty($installed_apache_modules)) {
+    echo in_array('mod_rewrite', $installed_apache_modules) ? '<span class="ok">[OK]</span>' : '<span class="error">[Missing]</span>';
+}
+?></li>
               </ul>
             </li>
           </ul>
@@ -326,7 +352,7 @@
 
       <ul class="list-unstyled">
 <?php
-  $paths = array(
+$paths = array(
     'admin/.htaccess',
     'admin/.htpasswd',
     'cache/',
@@ -339,16 +365,16 @@
     'vqmod/checked.cache',
     'vqmod/mods.cache',
     '.htaccess',
-  );
-  foreach($paths as $path) {
+);
+foreach ($paths as $path) {
     if (file_exists($path) && is_writable('../' . $path)) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+        echo '    <li>~/' . $path . ' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
-      echo '    <li>~/'. $path .' <span class="ok">[OK]</span></li>' . PHP_EOL;
+        echo '    <li>~/' . $path . ' <span class="ok">[OK]</span></li>' . PHP_EOL;
     } else {
-      echo '    <li>~/'. $path .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+        echo '    <li>~/' . $path . ' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
     }
-  }
+}
 ?>
       </ul>
     </div>
@@ -356,11 +382,11 @@
 
   <h2>Installation Parameters</h2>
 
-  <?php if (file_exists('../includes/config.inc.php')) { ?>
+  <?php if (file_exists('../includes/config.inc.php')) {?>
   <p class="alert alert-danger">
     Attention: An existing installation has been detected. The existing installation <strong>WILL BE DELETED</strong> if you continue! <a href="upgrade.php">Upgraders click here to for the upgrade tool</a>.
   </p>
-  <?php } ?>
+  <?php }?>
 
   <form name="installation_form" method="post" action="install.php">
 
@@ -461,24 +487,31 @@
         <label>Country</label>
         <select class="form-control" name="country_code" required="required">
           <option value="">-- Select --</option>
-          <?php foreach ($countries as $code => $name) echo '<option value="'. $code .'">'. $name .'</option>' . PHP_EOL; ?>
+          <?php foreach ($countries as $code => $name) {
+    echo '<option value="' . $code . '">' . $name . '</option>' . PHP_EOL;
+}
+?>
         </select>
       </div>
 
       <div class="form-group col-md-6">
         <label>Time Zone<br />
         <select class="form-control" name="store_time_zone" required="required">
-<?php
-  foreach (timezone_identifiers_list() as $zone) {
+        <?php
+foreach (timezone_identifiers_list() as $zone) {
     $zone = explode('/', $zone); // 0 => Continent, 1 => City
     if (in_array($zone[0], array('Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'))) {
-      if (!empty($zone[1])) {
-        echo '<option>'. $zone[0]. '/' . $zone[1]  .'</option>';
-      }
+        if (!empty($zone[1])) {
+            if (!empty($zone[2])) {
+                echo '<option>' . $zone[0] . '/' . $zone[1] . '/' . $zone[2] . '</option>';
+            } else {
+
+                echo '<option>' . $zone[0] . '/' . $zone[1] . '</option>';
+            }
+        }
     }
-  }
-?>
-        </select>
+}
+?>        </select>
       </div>
     </div>
 
@@ -514,4 +547,4 @@
     <input class="btn btn-default btn-block" type="submit" name="install" value="Install Now" onclick="if(!confirm('This will now install LiteCart. Any existing databases tables will be overwritten with new data.')) return false;" style="font-size: 1.5em; padding: 0.5em;" />
   </form>
 
-<?php require('includes/footer.inc.php'); ?>
+<?php require 'includes/footer.inc.php';?>
